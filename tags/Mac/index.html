@@ -233,19 +233,20 @@
     <div class="article-entry" itemprop="articleBody">
       
         <p><strong>Mac连接Github</strong></p>
-<p>出现问题：permission denied</p>
+<p>出现问题：<em>permission denied</em></p>
 <p>解决方法：</p>
 <p><strong>Step 1</strong>: Check for SSH keys</p>
-<p>  $ ls -al ~/.ssh</p>
+<p>  <code>$ ls -al ~/.ssh</code></p>
 <p><strong>Step 2</strong>: Generate a new SSH key</p>
-<p>$ ssh-keygen -t rsa -b 4096 -C “your_email@example.com”</p>
+<p><code>$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</code></p>
 <p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
-<p>$ eval “$(ssh-agent -s)”<br>$ ssh-add ~/.ssh/id_rsa</p>
+<p><code>$ eval &quot;$(ssh-agent -s)&quot;</code></p>
+<p><code>$ ssh-add ~/.ssh/id_rsa</code></p>
 <p><strong>Step 4</strong>: Add your SSH key to your account</p>
-<p>$ pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+<p><code>$ pbcopy &lt; ~/.ssh/id_rsa.pub</code></p>
 <p>Add the copied key to GitHub: 登录github网站完成。</p>
 <p><strong>Step 5</strong>: Test the connection</p>
-<p>$ ssh -T git@github.com</p>
+<p><code>$ ssh -T git@github.com</code></p>
 
       
     </div>
