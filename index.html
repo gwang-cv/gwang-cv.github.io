@@ -81,6 +81,69 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2016/01/23/Mac Link Github/" title="" itemprop="url"></a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Gang Wang" target="_blank" itemprop="author">Gang Wang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-01-23T11:33:22.000Z" itemprop="datePublished"> 發表於 2016-01-23</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <p><strong>Mac连接Github</strong></p>
+<p>出现问题：permission denied</p>
+<p>解决方法：</p>
+<p><strong>Step 1</strong>: Check for SSH keys</p>
+<p>  $ ls -al ~/.ssh</p>
+<p><strong>Step 2</strong>: Generate a new SSH key</p>
+<p>$ ssh-keygen -t rsa -b 4096 -C “your_email@example.com”</p>
+<p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
+<p>$ eval “$(ssh-agent -s)”<br>$ ssh-add ~/.ssh/id_rsa</p>
+<p><strong>Step 4</strong>: Add your SSH key to your account</p>
+<p>$ pbcopy &lt; ~/.ssh/id_rsa.pub</p>
+<p>Add the copied key to GitHub: 登录github网站完成。</p>
+<p><strong>Step 5</strong>: Test the connection</p>
+<p>$ ssh -T git@github.com</p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2015/11/15/数学体系解读（by MIT Lin Dahua）/" title="数学体系解读" itemprop="url">数学体系解读</a>
   </h1>
   <p class="article-author">By
@@ -357,7 +420,7 @@
 		
 
 		<p class="copyright">
-		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2015 
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
 		
 		<a href="/about" target="_blank" title="Gang Wang">Gang Wang</a>
 		
