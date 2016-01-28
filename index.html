@@ -206,6 +206,74 @@
 
       <div class="body-wrap">
   
+    <article id="post-Mac安装OpenCV" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/28/Mac安装OpenCV/" class="article-date">
+  	<time datetime="2016-01-28T15:56:03.000Z" itemprop="datePublished">2016-01-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Mac安装OpenCV"><strong>Mac安装OpenCV</strong></h1><hr>
+<p><strong>1、安装Homebrew</strong></p>
+<p><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
+<p><strong>2、安装CMake</strong></p>
+<p><code>brew install cmake</code></p>
+<p><strong>3、安装OpenCV</strong></p>
+<p>在下载的<a href="http://opencv.org/" target="_blank" rel="external">OpenCV</a>源码文件夹内，执行如下命令：</p>
+<p><code>mkdir build</code></p>
+<p><code>cd build</code></p>
+<p><code>cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_PYTHON_SUPPORT=ON -D BUILD_EXAMPLES=ON ..</code></p>
+<p><code>make</code></p>
+<p><code>sudo make install</code></p>
+<p><strong>4、配置Python路径</strong></p>
+<p>在~目录下</p>
+<p><code>vim .bash_profile</code></p>
+<p>在.bash_profile中添加：</p>
+<p><code>export PYTHONPATH=/usr/local/lib/python2.7/site-packages/</code></p>
+<p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
+<p><code>source .bash_profile</code></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
