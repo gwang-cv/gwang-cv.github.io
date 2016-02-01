@@ -11,37 +11,25 @@
     
 
     
-    <meta name="description" content="Mac设置环境变量
-
- （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
-echo $SHELL
-如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
-如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
-Mac OS X 10.2之前默认的是C Shell。
-Mac OS X 10.3之后默认的是Bourne Shel">
+    <meta name="description" content="Deployer not found: github
+_config.yml配置中的deploy下的“type”字段为“git”，运行正常。hexo d 执行后报错，解决方法：
+npm install hexo-deployer-git --save
+重新执行hexo d即可。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Space">
-<meta property="og:url" content="http://gwang-cv.github.io/2016/01/28/Mac设置环境变量/index.html">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/02/01/Deployer not found/index.html">
 <meta property="og:site_name" content="Space">
-<meta property="og:description" content="Mac设置环境变量
-
- （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
-echo $SHELL
-如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
-如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
-Mac OS X 10.2之前默认的是C Shell。
-Mac OS X 10.3之后默认的是Bourne Shel">
-<meta property="og:updated_time" content="2016-01-28T13:48:35.000Z">
+<meta property="og:description" content="Deployer not found: github
+_config.yml配置中的deploy下的“type”字段为“git”，运行正常。hexo d 执行后报错，解决方法：
+npm install hexo-deployer-git --save
+重新执行hexo d即可。">
+<meta property="og:updated_time" content="2016-02-01T08:57:53.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Space">
-<meta name="twitter:description" content="Mac设置环境变量
-
- （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
-echo $SHELL
-如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
-如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
-Mac OS X 10.2之前默认的是C Shell。
-Mac OS X 10.3之后默认的是Bourne Shel">
+<meta name="twitter:description" content="Deployer not found: github
+_config.yml配置中的deploy下的“type”字段为“git”，运行正常。hexo d 执行后报错，解决方法：
+npm install hexo-deployer-git --save
+重新执行hexo d即可。">
 
     
     <link rel="alternative" href="/atom.xml" title="Space" type="application/atom+xml">
@@ -101,14 +89,14 @@ Mac OS X 10.3之后默认的是Bourne Shel">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/28/Mac设置环境变量/" title="" itemprop="url"></a>
+      <a href="/2016/02/01/Deployer not found/" title="" itemprop="url"></a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Gary Wang" target="_blank" itemprop="author">Gary Wang</a>
 		
   <p class="article-time">
-    <time datetime="2016-01-28T13:48:35.000Z" itemprop="datePublished"> 發表於 2016-01-28</time>
+    <time datetime="2016-02-01T08:57:53.000Z" itemprop="datePublished"> 發表於 2016-02-01</time>
     
   </p>
 </header>
@@ -117,34 +105,14 @@ Mac OS X 10.3之后默认的是Bourne Shel">
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Deployer_not_found:_github"><span class="toc-number">1.</span> <span class="toc-text">Deployer not found: github</span></a></li></ol>
 		
 		</div>
 		
-		<p><strong>Mac设置环境变量</strong></p>
-<hr>
-<p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
-<p><code>echo $SHELL</code></p>
-<p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
-<p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
-<p>Mac OS X 10.2之前默认的是C Shell。</p>
-<p>Mac OS X 10.3之后默认的是Bourne Shell。</p>
-<p>（2）如果是Bourne Shell。</p>
-<p>那么你可以把你要添加的环境变量添加到你主目录下面的.profile或者.bash_profile，如果存在没有关系添加进去即可，如果没有生成一个。</p>
-<p> 1.<code>open/vim  /etc/profile</code>   （建议不修改这个文件 ）</p>
-<p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
-<p> 2.<code>/etc/bashrc</code>    （一般在这个文件中添加系统级环境变量）</p>
-<p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
-<p> 我在这里加入mysqlstart、mysql和mysqladmin命令的别名，保证每一个用户都可以使用这3个命令。</p>
-<p> 3.<code>~/.bash_profile</code>  （一般在这个文件中添加用户级环境变量）</p>
-<p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
-<p> 若bash shell是以login方式执行时，才会读取此文件。该文件仅仅执行一次!默认情况下,他设置一些环境变量</p>
-<p> 我在这里：设置终端配色、</p>
-<p> 我在这里：设置命令别名<code>alias ll=&#39;ls -la&#39;</code></p>
-<p> 我在这里：设置环境变量：<code>export PATH=/opt/local/bin:/opt/local/sbin:$PATH</code></p>
-<hr>
-<p>MAC 修改host文件 </p>
-<p><code>sudo vi /etc/hosts</code></p>
+		<h1 id="Deployer_not_found:_github"><strong>Deployer not found: github</strong></h1><hr>
+<p>_config.yml配置中的deploy下的“type”字段为“git”，运行正常。hexo d 执行后报错，解决方法：</p>
+<p><code>npm install hexo-deployer-git --save</code></p>
+<p>重新执行hexo d即可。</p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -167,7 +135,7 @@ Mac OS X 10.3之后默认的是Bourne Shel">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://gwang-cv.github.io/2016/01/28/Mac设置环境变量/" data-title="Space" data-tsina="null" class="share clearfix">
+	  <div data-url="http://gwang-cv.github.io/2016/02/01/Deployer not found/" data-title="Space" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -180,19 +148,11 @@ Mac OS X 10.3之后默认的是Bourne Shel">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/01/28/Homebrew设置PATH/" title="">
-  <strong>上一篇：</strong><br/>
-  <span>
-  (no title)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/01/23/Mac Link Github/"  title="Mac连接Github">
+<a href="/2016/02/01/hello-world/"  title="Hello World">
  <strong>下一篇：</strong><br/> 
- <span>Mac连接Github
+ <span>Hello World
 </span>
 </a>
 </div>
@@ -207,7 +167,7 @@ Mac OS X 10.3之后默认的是Bourne Shel">
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Deployer_not_found:_github"><span class="toc-number">1.</span> <span class="toc-text">Deployer not found: github</span></a></li></ol>
  
   </div>
 
