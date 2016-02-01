@@ -4,50 +4,41 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World</title>
+    <title>Mac设置环境变量 | Hello World</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="Gary Wang">
     
 
     
-    <meta name="description" content="Homebrew设置PATH路径
-
-Homebrew安装时”-bash:brew:command not found”的问题
-按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：
--bash:brew:command not found
-无法找到brew命令。
-卸载Homebrew重装后，终端提示：
-/usr/local/bin不在PATH中
-解决：
-用vim打开，">
+    <meta name="description" content="Mac设置环境变量
+ （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
+echo $SHELL
+如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
+如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
+Mac OS X 10.2之前默认的是C Shell。
+Mac OS X 10.3之后默认的是Bourne Shell">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://gwang-cv.github.io/2016/01/28/Homebrew设置PATH/index.html">
+<meta property="og:title" content="Mac设置环境变量">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/02/01/Mac设置环境变量/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="Homebrew设置PATH路径
-
-Homebrew安装时”-bash:brew:command not found”的问题
-按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：
--bash:brew:command not found
-无法找到brew命令。
-卸载Homebrew重装后，终端提示：
-/usr/local/bin不在PATH中
-解决：
-用vim打开，">
-<meta property="og:updated_time" content="2016-01-28T14:21:07.000Z">
+<meta property="og:description" content="Mac设置环境变量
+ （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
+echo $SHELL
+如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
+如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
+Mac OS X 10.2之前默认的是C Shell。
+Mac OS X 10.3之后默认的是Bourne Shell">
+<meta property="og:updated_time" content="2016-02-01T15:34:54.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Homebrew设置PATH路径
-
-Homebrew安装时”-bash:brew:command not found”的问题
-按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：
--bash:brew:command not found
-无法找到brew命令。
-卸载Homebrew重装后，终端提示：
-/usr/local/bin不在PATH中
-解决：
-用vim打开，">
+<meta name="twitter:title" content="Mac设置环境变量">
+<meta name="twitter:description" content="Mac设置环境变量
+ （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令
+echo $SHELL
+如果输出的是：csh或者是tcsh，那么你用的就是C Shell。
+如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。
+Mac OS X 10.2之前默认的是C Shell。
+Mac OS X 10.3之后默认的是Bourne Shell">
 
     
     <link rel="alternative" href="/atom.xml" title="Hello World" type="application/atom+xml">
@@ -105,14 +96,14 @@ Homebrew安装时”-bash:brew:command not found”的问题
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/01/28/Homebrew设置PATH/" title="" itemprop="url"></a>
+      <a href="/2016/02/01/Mac设置环境变量/" title="Mac设置环境变量" itemprop="url">Mac设置环境变量</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="Gary Wang" target="_blank" itemprop="author">Gary Wang</a>
 		
   <p class="article-time">
-    <time datetime="2016-01-28T14:21:07.000Z" itemprop="datePublished"> 發表於 2016-01-28</time>
+    <time datetime="2016-02-01T15:34:54.000Z" itemprop="datePublished"> 發表於 2016-02-01</time>
     
   </p>
 </header>
@@ -121,22 +112,33 @@ Homebrew安装时”-bash:brew:command not found”的问题
 		<div id="toc" class="toc-article">
 			<strong class="toc-title">文章目錄</strong>
 		
-			
+			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mac设置环境变量"><span class="toc-number">1.</span> <span class="toc-text">Mac设置环境变量</span></a></li></ol>
 		
 		</div>
 		
-		<p><strong>Homebrew设置PATH路径</strong></p>
+		<h1 id="Mac设置环境变量"><strong>Mac设置环境变量</strong></h1><hr>
+<p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
+<p><code>echo $SHELL</code></p>
+<p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
+<p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
+<p>Mac OS X 10.2之前默认的是C Shell。</p>
+<p>Mac OS X 10.3之后默认的是Bourne Shell。</p>
+<p>（2）如果是Bourne Shell。</p>
+<p>那么你可以把你要添加的环境变量添加到你主目录下面的.profile或者.bash_profile，如果存在没有关系添加进去即可，如果没有生成一个。</p>
+<p> 1.<code>open/vim  /etc/profile</code>   （建议不修改这个文件 ）</p>
+<p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
+<p> 2.<code>/etc/bashrc</code>    （一般在这个文件中添加系统级环境变量）</p>
+<p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
+<p> 我在这里加入mysqlstart、mysql和mysqladmin命令的别名，保证每一个用户都可以使用这3个命令。</p>
+<p> 3.<code>~/.bash_profile</code>  （一般在这个文件中添加用户级环境变量）</p>
+<p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
+<p> 若bash shell是以login方式执行时，才会读取此文件。该文件仅仅执行一次!默认情况下,他设置一些环境变量</p>
+<p> 我在这里：设置终端配色、</p>
+<p> 我在这里：设置命令别名<code>alias ll=&#39;ls -la&#39;</code></p>
+<p> 我在这里：设置环境变量：<code>export PATH=/opt/local/bin:/opt/local/sbin:$PATH</code></p>
 <hr>
-<p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
-<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
-<p><code>-bash:brew:command not found</code></p>
-<p>无法找到brew命令。</p>
-<p>卸载Homebrew重装后，终端提示：</p>
-<p><code>/usr/local/bin不在PATH中</code></p>
-<p><strong>解决</strong>：</p>
-<p>用vim打开，在profile文件最后添加如下语句：</p>
-<p><code>PATH=“.;$PATH:/usr/local/bin”</code></p>
-<p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
+<p>MAC 修改host文件 </p>
+<p><code>sudo vi /etc/hosts</code></p>
   
 	</div>
 		<footer class="article-footer clearfix">
@@ -159,7 +161,7 @@ Homebrew安装时”-bash:brew:command not found”的问题
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://gwang-cv.github.io/2016/01/28/Homebrew设置PATH/" data-title="Hello World" data-tsina="null" class="share clearfix">
+	  <div data-url="http://gwang-cv.github.io/2016/02/01/Mac设置环境变量/" data-title="Mac设置环境变量 | Hello World" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -172,19 +174,11 @@ Homebrew安装时”-bash:brew:command not found”的问题
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/01/28/Mac安装OpenCV/" title="">
-  <strong>上一篇：</strong><br/>
-  <span>
-  (no title)</span>
-</a>
-</div>
-
 
 <div class="next">
-<a href="/2016/01/28/Mac设置环境变量/"  title="">
+<a href="/2016/02/01/Mac安装OpenCV/"  title="Mac安装OpenCV">
  <strong>下一篇：</strong><br/> 
- <span>(no title)
+ <span>Mac安装OpenCV
 </span>
 </a>
 </div>
@@ -199,7 +193,7 @@ Homebrew安装时”-bash:brew:command not found”的问题
   <div id="toc" class="toc-aside">
   <strong class="toc-title">文章目錄</strong>
  
- 
+ <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Mac设置环境变量"><span class="toc-number">1.</span> <span class="toc-text">Mac设置环境变量</span></a></li></ol>
  
   </div>
 
@@ -213,7 +207,7 @@ Homebrew安装时”-bash:brew:command not found”的问题
 		<ul>
 		
 		  
-			<li><a href="/categories/Debug/" title="Debug">Debug<sup>5</sup></a></li>
+			<li><a href="/categories/Debug/" title="Debug">Debug<sup>4</sup></a></li>
 		  
 		
 		  
@@ -230,7 +224,7 @@ Homebrew安装时”-bash:brew:command not found”的问题
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Mac/" title="Mac">Mac<sup>5</sup></a></li>
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>4</sup></a></li>
 			
 		
 			
