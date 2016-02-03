@@ -79,6 +79,92 @@
         <header class="article-info clearfix">
   <h1 itemprop="name">
     
+      <a href="/2016/02/03/install nose numpy scipy/" title="Mac安装Nose pip" itemprop="url">Mac安装Nose pip</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="Gary Wang" target="_blank" itemprop="author">Gary Wang</a>
+		
+  <p class="article-time">
+    <time datetime="2016-02-03T11:40:12.000Z" itemprop="datePublished"> 發表於 2016-02-03</time>
+    
+  </p>
+</header>
+    <div class="article-content">
+        
+        <h1 id="Mac安装Nose_pip">Mac安装Nose pip</h1><p><strong>ImportError: Need nose</strong></p>
+<p>‘import numpy;numpy.test()’</p>
+<p>Running unit tests for numpy</p>
+<p>Traceback (most recent call last):</p>
+<p>File “”, line 1, in </p>
+<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 326, in test<br>self._show_system_info()</p>
+<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 187, in _show_system_info</p>
+<p>nose = import_nose()</p>
+<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 69, in import_nose<br>raise ImportError(msg)</p>
+<p><code>ImportError: Need nose &gt;= 0.10.0 for tests - see http://somethingaboutorange.com/mrl/projects/nose</code></p>
+<hr>
+<p><strong>安装 pip</strong> </p>
+<p>mac默认是不带pip的：</p>
+<p><code>sudo easy_install pip</code></p>
+<hr>
+<p><strong>安装nose</strong></p>
+<p>最好用easy_install：</p>
+<p><code>sudo easy_install nose</code></p>
+<p>别用pip，我用pip装出各种问题</p>
+<hr>
+<p>terminal退出phthon命令：</p>
+<p><code>quit()</code></p>
+<p>or</p>
+<p><code>Control + D</code></p>
+<hr>
+<p><strong>安装matplotlib</strong></p>
+<p><code>sudo pip install matplotlib</code></p>
+
+        
+        
+        <p class="article-more-link">
+          
+       </p>
+    </div>
+    <footer class="article-footer clearfix">
+<div class="article-catetags">
+
+<div class="article-categories">
+  <span></span>
+  <a class="article-category-link" href="/categories/Debug/">Debug</a>
+</div>
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Mac/">Mac</a>
+  </div>
+
+</div>
+
+
+
+
+<div class="comments-count">
+	
+</div>
+
+</footer>
+
+
+    </article>
+
+
+
+
+
+
+   
+    
+    <article class="post-expand post" itemprop="articleBody"> 
+        <header class="article-info clearfix">
+  <h1 itemprop="name">
+    
       <a href="/2016/02/01/机器学习数学基础/" title="机器学习之数学基础" itemprop="url">机器学习之数学基础</a>
   </h1>
   <p class="article-author">By
@@ -576,7 +662,7 @@
 		<ul>
 		
 		  
-			<li><a href="/categories/Debug/" title="Debug">Debug<sup>4</sup></a></li>
+			<li><a href="/categories/Debug/" title="Debug">Debug<sup>5</sup></a></li>
 		  
 		
 		  
@@ -593,7 +679,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/Mac/" title="Mac">Mac<sup>4</sup></a></li>
+				<li><a href="/tags/Mac/" title="Mac">Mac<sup>5</sup></a></li>
 			
 		
 			
