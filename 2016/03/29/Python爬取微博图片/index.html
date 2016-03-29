@@ -4,27 +4,45 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Xcode安装command line tools | Hello World</title>
+  <title>Python爬取微博图片 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Xcode安装command line tools
-command line tools
-打开命令行，输入：
-xcode-select --install">
+  <meta name="description" content="Python爬取微博图片
+爬取指定用户的页面内容，并将图片下载保存到本地
+import requests
+import urllib2
+from lxml import etree
+import re
+from multiprocessing.dummy import Pool
+def tosave(texta):
+    f = open(&apos;weibo.txt&apos;, &apos;a&apos;)    
+    f.">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Xcode安装command line tools">
-<meta property="og:url" content="http://gwang-cv.github.io/2016/03/29/xcode安装command_line_tools/index.html">
+<meta property="og:title" content="Python爬取微博图片">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/03/29/Python爬取微博图片/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="Xcode安装command line tools
-command line tools
-打开命令行，输入：
-xcode-select --install">
-<meta property="og:updated_time" content="2016-03-29T04:41:18.000Z">
+<meta property="og:description" content="Python爬取微博图片
+爬取指定用户的页面内容，并将图片下载保存到本地
+import requests
+import urllib2
+from lxml import etree
+import re
+from multiprocessing.dummy import Pool
+def tosave(texta):
+    f = open(&apos;weibo.txt&apos;, &apos;a&apos;)    
+    f.">
+<meta property="og:updated_time" content="2016-03-29T14:57:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xcode安装command line tools">
-<meta name="twitter:description" content="Xcode安装command line tools
-command line tools
-打开命令行，输入：
-xcode-select --install">
+<meta name="twitter:title" content="Python爬取微博图片">
+<meta name="twitter:description" content="Python爬取微博图片
+爬取指定用户的页面内容，并将图片下载保存到本地
+import requests
+import urllib2
+from lxml import etree
+import re
+from multiprocessing.dummy import Pool
+def tosave(texta):
+    f = open(&apos;weibo.txt&apos;, &apos;a&apos;)    
+    f.">
   
   
     <link rel="icon" href="/favicon.png">
@@ -159,11 +177,11 @@ xcode-select --install">
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Python爬取微博图片" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/xcode安装command_line_tools/" class="article-date">
-  	<time datetime="2016-03-29T04:41:18.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/29/Python爬取微博图片/" class="article-date">
+  	<time datetime="2016-03-29T14:57:22.000Z" itemprop="datePublished">2016-03-29</time>
 </a>
     </div>
   
@@ -176,7 +194,7 @@ xcode-select --install">
         
   
     <h1 class="article-title" itemprop="name">
-      Xcode安装command line tools
+      Python爬取微博图片
     </h1>
   
 
@@ -200,11 +218,50 @@ xcode-select --install">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Xcode安装command_line_tools"><strong>Xcode安装command line tools</strong></h1><hr>
-<p>command line tools</p>
-<p>打开命令行，输入：</p>
-<p><code>xcode-select --install</code></p>
+        <h1 id="Python爬取微博图片"><strong>Python爬取微博图片</strong></h1><hr>
+<p>爬取指定用户的页面内容，并将图片下载保存到本地</p>
+<pre><code><span class="keyword">import</span> requests
+<span class="keyword">import</span> urllib2
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+<span class="keyword">import</span> re
+<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool
+<span class="function"><span class="keyword">def</span> <span class="title">tosave</span><span class="params">(texta)</span>:</span>
+    f = open(<span class="string">'weibo.txt'</span>, <span class="string">'a'</span>)    
+    f.write(texta + <span class="string">'\n'</span>)    
+    f.close()
+cook = {<span class="string">"Cookie"</span>: <span class="string">"XXXXXX"</span>}
+url0 = <span class="string">'http://weibo.cn/u/XXXXX'</span>
+<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(url, cook)</span>:</span>
+    html = requests.get(url, cookies=cook).content
+    selector = etree.HTML(html)
+    <span class="comment"># read text from weibo</span>
+    content = selector.xpath(<span class="string">'//span[@class="ctt"]'</span>)
+    <span class="keyword">for</span> each <span class="keyword">in</span> content:
+        text = each.xpath(<span class="string">'string(.)'</span>)
+        <span class="keyword">print</span> text        
+content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <span class="comment"># copy from chrome # print content</span>
+<span class="keyword">return</span> content
 
+<span class="function"><span class="keyword">def</span> <span class="title">getDownImg</span><span class="params">(cons, page)</span>:</span>
+    x = <span class="number">0</span>
+    <span class="keyword">for</span> each <span class="keyword">in</span> cons:
+       <span class="keyword">print</span> each
+       fn = <span class="string">'%s'</span> % page + <span class="string">'%s'</span> % x
+       fl=<span class="string">'%s.jpg'</span> % fn
+       url=each.replace(<span class="string">'wap180'</span>,<span class="string">'large'</span>)
+       <span class="keyword">print</span> url
+       <span class="keyword">print</span> fn
+       r = requests.get(url)
+       <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
+           code.write(r.content)
+       x += <span class="number">1</span>
+
+<span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):
+   url = url0 + <span class="string">'?page='</span> + <span class="string">'%s'</span> % page
+   <span class="keyword">print</span> url
+   cons = getContent(url, cook)
+   getDownImg(cons, page)
+</code></pre>
       
     </div>
     
@@ -213,18 +270,9 @@ xcode-select --install">
     
 <nav id="article-nav">
   
-    <a href="/2016/03/29/Python爬取微博图片/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Python爬取微博图片
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/29/Mac终端安装lxml失败/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Mac终端安装lxml失败</div>
+    <a href="/2016/03/29/xcode安装command_line_tools/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Xcode安装command line tools</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
