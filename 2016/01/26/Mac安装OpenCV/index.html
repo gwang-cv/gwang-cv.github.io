@@ -8,41 +8,41 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Mac安装OpenCV
 1、安装Homebrew
-ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;
+ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
 2、安装CMake
 brew install cmake
 3、安装OpenCV
 在下载的OpenCV源码文件夹内，执行如下命令：
 mkdir build
-cd build
-cma">
+cd build 
+cmake -D CMA">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac安装OpenCV">
 <meta property="og:url" content="http://gwang-cv.github.io/2016/01/26/Mac安装OpenCV/index.html">
 <meta property="og:site_name" content="Hello World">
 <meta property="og:description" content="Mac安装OpenCV
 1、安装Homebrew
-ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;
+ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
 2、安装CMake
 brew install cmake
 3、安装OpenCV
 在下载的OpenCV源码文件夹内，执行如下命令：
 mkdir build
-cd build
-cma">
-<meta property="og:updated_time" content="2016-02-01T15:37:40.000Z">
+cd build 
+cmake -D CMA">
+<meta property="og:updated_time" content="2016-03-29T15:03:26.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac安装OpenCV">
 <meta name="twitter:description" content="Mac安装OpenCV
 1、安装Homebrew
-ruby -e &amp;quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&amp;quot;
+ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;
 2、安装CMake
 brew install cmake
 3、安装OpenCV
 在下载的OpenCV源码文件夹内，执行如下命令：
 mkdir build
-cd build
-cma">
+cd build 
+cmake -D CMA">
   
   
     <link rel="icon" href="/favicon.png">
@@ -220,24 +220,24 @@ cma">
       
         <h1 id="Mac安装OpenCV"><strong>Mac安装OpenCV</strong></h1><hr>
 <p><strong>1、安装Homebrew</strong></p>
-<p><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-<p><strong>2、安装CMake</strong></p>
-<p><code>brew install cmake</code></p>
-<p><strong>3、安装OpenCV</strong></p>
+<pre><code>ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)</span>"</span>
+</code></pre><p><strong>2、安装CMake</strong></p>
+<pre><code><span class="keyword">brew </span>install cmake
+</code></pre><p><strong>3、安装OpenCV</strong></p>
 <p>在下载的<a href="http://opencv.org/" target="_blank" rel="external">OpenCV</a>源码文件夹内，执行如下命令：</p>
-<p><code>mkdir build</code></p>
-<p><code>cd build</code></p>
-<p><code>cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_PYTHON_SUPPORT=ON -D BUILD_EXAMPLES=ON ..</code></p>
-<p><code>make</code></p>
-<p><code>sudo make install</code></p>
-<p><strong>4、配置Python路径</strong></p>
+<pre><code><span class="keyword">mkdir</span> build
+<span class="keyword">cd</span> build 
+cmake -<span class="keyword">D</span> CMAKE_BUILD_TYPE=RELEASE -<span class="keyword">D</span> CMAKE_INSTALL_PREFIX=/usr/<span class="keyword">local</span> -<span class="keyword">D</span> BUILD_PYTHON_SUPPORT=<span class="keyword">ON</span> -<span class="keyword">D</span> BUILD_EXAMPLES=<span class="keyword">ON</span> ..
+make
+sudo make install
+</code></pre><p><strong>4、配置Python路径</strong></p>
 <p>在~目录下</p>
-<p><code>vim .bash_profile</code></p>
-<p>在.bash_profile中添加：</p>
-<p><code>export PYTHONPATH=/usr/local/lib/python2.7/site-packages/</code></p>
-<p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
-<p><code>source .bash_profile</code></p>
-
+<pre><code><span class="tag">vim</span> <span class="class">.bash_profile</span>
+</code></pre><p>在.bash_profile中添加：</p>
+<pre><code>export PYTHONPATH=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.<span class="number">7</span><span class="regexp">/site-packages/</span>
+</code></pre><p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
+<pre><code><span class="built_in">source</span> .bash_profile
+</code></pre>
       
     </div>
     
@@ -246,11 +246,11 @@ cma">
     
 <nav id="article-nav">
   
-    <a href="/2016/02/01/Homebrew设置PATH/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/02/01/机器学习数学基础/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Homebrew设置PATH路径
+          机器学习之数学基础
         
       </div>
     </a>

@@ -7,30 +7,42 @@
   <title>Mac安装Nose pip | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="Mac安装Nose pipImportError: Need nose
-‘import numpy;numpy.test()’
+import numpy;numpy.test()
+
 Running unit tests for numpy
+
 Traceback (most recent call last):
-File “”, line 1, in 
-File “/usr/lib/python2.7/site-packages/numpy/testin">
+
+File &quot;&quot;, line 1, in 
+
+File &quot;/usr/lib/python2.7/site-packages/numpy/test">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac安装Nose pip">
-<meta property="og:url" content="http://gwang-cv.github.io/2016/02/03/install nose numpy scipy/index.html">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/03/29/install nose numpy scipy/index.html">
 <meta property="og:site_name" content="Hello World">
 <meta property="og:description" content="Mac安装Nose pipImportError: Need nose
-‘import numpy;numpy.test()’
+import numpy;numpy.test()
+
 Running unit tests for numpy
+
 Traceback (most recent call last):
-File “”, line 1, in 
-File “/usr/lib/python2.7/site-packages/numpy/testin">
-<meta property="og:updated_time" content="2016-02-03T11:40:12.000Z">
+
+File &quot;&quot;, line 1, in 
+
+File &quot;/usr/lib/python2.7/site-packages/numpy/test">
+<meta property="og:updated_time" content="2016-03-29T15:04:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac安装Nose pip">
 <meta name="twitter:description" content="Mac安装Nose pipImportError: Need nose
-‘import numpy;numpy.test()’
+import numpy;numpy.test()
+
 Running unit tests for numpy
+
 Traceback (most recent call last):
-File “”, line 1, in 
-File “/usr/lib/python2.7/site-packages/numpy/testin">
+
+File &quot;&quot;, line 1, in 
+
+File &quot;/usr/lib/python2.7/site-packages/numpy/test">
   
   
     <link rel="icon" href="/favicon.png">
@@ -168,8 +180,8 @@ File “/usr/lib/python2.7/site-packages/numpy/testin">
       <div class="body-wrap"><article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/02/03/install nose numpy scipy/" class="article-date">
-  	<time datetime="2016-02-03T11:40:12.000Z" itemprop="datePublished">2016-02-03</time>
+      <a href="/2016/03/29/install nose numpy scipy/" class="article-date">
+  	<time datetime="2016-03-29T15:04:51.000Z" itemprop="datePublished">2016-03-29</time>
 </a>
     </div>
   
@@ -207,33 +219,43 @@ File “/usr/lib/python2.7/site-packages/numpy/testin">
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Mac安装Nose_pip">Mac安装Nose pip</h1><p><strong>ImportError: Need nose</strong></p>
-<p>‘import numpy;numpy.test()’</p>
-<p>Running unit tests for numpy</p>
-<p>Traceback (most recent call last):</p>
-<p>File “”, line 1, in </p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 326, in test<br>self._show_system_info()</p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 187, in _show_system_info</p>
-<p>nose = import_nose()</p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 69, in import_nose<br>raise ImportError(msg)</p>
-<p><code>ImportError: Need nose &gt;= 0.10.0 for tests - see http://somethingaboutorange.com/mrl/projects/nose</code></p>
-<hr>
+<pre><code>import numpy;numpy.<span class="keyword">test</span>()
+
+Running unit tests <span class="keyword">for</span> numpy
+
+Traceback (most recent call last):
+
+<span class="keyword">File</span> <span class="string">""</span>, <span class="keyword">line</span> 1, <span class="keyword">in</span> 
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 326, <span class="keyword">in</span> <span class="keyword">test</span>
+self._show_system_info()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 187, <span class="keyword">in</span> _show_system_info
+
+nose = import_nose()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 69, <span class="keyword">in</span> import_nose
+raise ImportError(msg)
+
+ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see http:<span class="comment">//somethingaboutorange.com/mrl/projects/nose</span>
+</code></pre><hr>
 <p><strong>安装 pip</strong> </p>
 <p>mac默认是不带pip的：</p>
-<p><code>sudo easy_install pip</code></p>
-<hr>
+<pre><code><span class="title">sudo</span> easy_install pip    
+</code></pre><hr>
 <p><strong>安装nose</strong></p>
 <p>最好用easy_install：</p>
-<p><code>sudo easy_install nose</code></p>
-<p>别用pip，我用pip装出各种问题</p>
+<pre><code><span class="title">sudo</span> easy_install nose    
+</code></pre><p>别用pip，我用pip装出各种问题</p>
 <hr>
 <p>terminal退出phthon命令：</p>
-<p><code>quit()</code></p>
-<p>or</p>
-<p><code>Control + D</code></p>
-<hr>
+<pre><code><span class="function"><span class="title">quit</span><span class="params">()</span></span>    
+</code></pre><p>or</p>
+<pre><code><span class="keyword">Control</span> + <span class="keyword">D</span>    
+</code></pre><hr>
 <p><strong>安装matplotlib</strong></p>
-<p><code>sudo pip install matplotlib</code></p>
-
+<pre><code>sudo pip <span class="keyword">install</span> matplotlib    
+</code></pre>
       
     </div>
     
@@ -242,18 +264,18 @@ File “/usr/lib/python2.7/site-packages/numpy/testin">
     
 <nav id="article-nav">
   
-    <a href="/2016/03/29/Mac终端安装lxml失败/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2016/03/29/Homebrew设置PATH/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          Mac终端安装lxml失败
+          Homebrew设置PATH路径
         
       </div>
     </a>
   
   
-    <a href="/2016/02/01/机器学习数学基础/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">机器学习之数学基础</div>
+    <a href="/2016/03/29/Mac终端安装lxml失败/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Mac终端安装lxml失败</div>
       <strong class="article-nav-caption">></strong>
     </a>
   

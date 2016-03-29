@@ -9,10 +9,10 @@
   <meta name="description" content="Mac连接Github出现问题：permission denied
 解决方法：
 Step 1: Check for SSH keys
-  $ ls -al ~/.ssh
+$ ls -al ~/.ssh
 Step 2: Generate a new SSH key
-$ ssh-keygen -t rsa -b 4096 -C &amp;quot;your_email@example.com&amp;quot;
-Step 3: Add your k">
+$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;
+Step 3: Add your key to the ss">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Mac连接Github">
 <meta property="og:url" content="http://gwang-cv.github.io/2016/01/23/Mac Link Github/index.html">
@@ -20,20 +20,20 @@ Step 3: Add your k">
 <meta property="og:description" content="Mac连接Github出现问题：permission denied
 解决方法：
 Step 1: Check for SSH keys
-  $ ls -al ~/.ssh
+$ ls -al ~/.ssh
 Step 2: Generate a new SSH key
-$ ssh-keygen -t rsa -b 4096 -C &amp;quot;your_email@example.com&amp;quot;
-Step 3: Add your k">
-<meta property="og:updated_time" content="2016-02-01T15:34:23.000Z">
+$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;
+Step 3: Add your key to the ss">
+<meta property="og:updated_time" content="2016-03-29T15:03:51.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Mac连接Github">
 <meta name="twitter:description" content="Mac连接Github出现问题：permission denied
 解决方法：
 Step 1: Check for SSH keys
-  $ ls -al ~/.ssh
+$ ls -al ~/.ssh
 Step 2: Generate a new SSH key
-$ ssh-keygen -t rsa -b 4096 -C &amp;quot;your_email@example.com&amp;quot;
-Step 3: Add your k">
+$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;
+Step 3: Add your key to the ss">
   
   
     <link rel="icon" href="/favicon.png">
@@ -212,18 +212,19 @@ Step 3: Add your k">
         <h1 id="Mac连接Github"><strong>Mac连接Github</strong></h1><p>出现问题：<em>permission denied</em></p>
 <p>解决方法：</p>
 <p><strong>Step 1</strong>: Check for SSH keys</p>
-<p>  <code>$ ls -al ~/.ssh</code></p>
-<p><strong>Step 2</strong>: Generate a new SSH key</p>
-<p><code>$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</code></p>
-<p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
-<p><code>$ eval &quot;$(ssh-agent -s)&quot;</code></p>
-<p><code>$ ssh-add ~/.ssh/id_rsa</code></p>
-<p><strong>Step 4</strong>: Add your SSH key to your account</p>
-<p><code>$ pbcopy &lt; ~/.ssh/id_rsa.pub</code></p>
-<p>Add the copied key to GitHub: 登录github网站完成。</p>
-<p><strong>Step 5</strong>: Test the connection</p>
-<p><code>$ ssh -T git@github.com</code></p>
+<pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
+</code></pre><p><strong>Step 2</strong>: Generate a new SSH key</p>
+<pre><code>$ ssh-keygen -t rsa -<span class="tag">b</span> <span class="number">4096</span> -C <span class="string">"your_email@example.com"</span>
+</code></pre><p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
+<pre><code><span class="variable">$ </span>eval <span class="string">"$(ssh-agent -s)"</span>
 
+<span class="variable">$ </span>ssh-add ~<span class="regexp">/.ssh/id</span>_rsa
+</code></pre><p><strong>Step 4</strong>: Add your SSH key to your account</p>
+<pre><code><span class="variable">$ </span>pbcopy &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub
+</code></pre><p>Add the copied key to GitHub: 登录github网站完成。</p>
+<p><strong>Step 5</strong>: Test the connection</p>
+<pre><code><span class="variable">$ </span>ssh -<span class="constant">T </span>git<span class="variable">@github</span>.com
+</code></pre>
       
     </div>
     

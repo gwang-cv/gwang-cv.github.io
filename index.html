@@ -151,6 +151,316 @@
 
       <div class="body-wrap">
   
+    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/Homebrew设置PATH/" class="article-date">
+  	<time datetime="2016-03-29T15:05:05.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/29/Homebrew设置PATH/">Homebrew设置PATH路径</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Homebrew设置PATH路径"><strong>Homebrew设置PATH路径</strong></h1><hr>
+<p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
+<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
+<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
+</code></pre><p>无法找到brew命令。</p>
+<p>卸载Homebrew重装后，终端提示：</p>
+<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
+</code></pre><p><strong>解决</strong>：</p>
+<p>用vim打开，在profile文件最后添加如下语句：</p>
+<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
+</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/install nose numpy scipy/" class="article-date">
+  	<time datetime="2016-03-29T15:04:51.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/29/install nose numpy scipy/">Mac安装Nose pip</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Mac安装Nose_pip">Mac安装Nose pip</h1><p><strong>ImportError: Need nose</strong></p>
+<pre><code>import numpy;numpy.<span class="keyword">test</span>()
+
+Running unit tests <span class="keyword">for</span> numpy
+
+Traceback (most recent call last):
+
+<span class="keyword">File</span> <span class="string">""</span>, <span class="keyword">line</span> 1, <span class="keyword">in</span> 
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 326, <span class="keyword">in</span> <span class="keyword">test</span>
+self._show_system_info()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 187, <span class="keyword">in</span> _show_system_info
+
+nose = import_nose()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 69, <span class="keyword">in</span> import_nose
+raise ImportError(msg)
+
+ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see http:<span class="comment">//somethingaboutorange.com/mrl/projects/nose</span>
+</code></pre><hr>
+<p><strong>安装 pip</strong> </p>
+<p>mac默认是不带pip的：</p>
+<pre><code><span class="title">sudo</span> easy_install pip    
+</code></pre><hr>
+<p><strong>安装nose</strong></p>
+<p>最好用easy_install：</p>
+<pre><code><span class="title">sudo</span> easy_install nose    
+</code></pre><p>别用pip，我用pip装出各种问题</p>
+<hr>
+<p>terminal退出phthon命令：</p>
+<pre><code><span class="function"><span class="title">quit</span><span class="params">()</span></span>    
+</code></pre><p>or</p>
+<pre><code><span class="keyword">Control</span> + <span class="keyword">D</span>    
+</code></pre><hr>
+<p><strong>安装matplotlib</strong></p>
+<pre><code>sudo pip <span class="keyword">install</span> matplotlib    
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/Mac终端安装lxml失败/" class="article-date">
+  	<time datetime="2016-03-29T15:00:52.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/29/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Mac终端安装lxml失败"><strong>Mac终端安装lxml失败</strong></h1><hr>
+<p><strong>安装lxml，出现错误</strong></p>
+<pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
+Collecting lxml
+Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
+<span class="number">100</span>% |████████████████████████████████| <span class="number">3.7</span>MB <span class="number">157</span>kB/s 
+Installing collected packages: lxml
+Running setup.py <span class="keyword">install</span> <span class="keyword">for</span> lxml ... error</span>
+</code></pre><hr>
+<p><strong><strong> 解决方法</strong></strong></p>
+<pre><code>sudo C_INCLUDE_PATH=<span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span><span class="string">libxml2:</span><span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span>libxml2<span class="regexp">/libxml:/</span>Applications<span class="regexp">/Xcode.app/</span>Contents<span class="regexp">/Developer/</span>Platforms<span class="regexp">/MacOSX.platform/</span>Developer<span class="regexp">/SDKs/</span>MacOSX10.11.sdk<span class="regexp">/usr/</span>include
+
+pip install lxml
+
+Installing collected <span class="string">packages:</span> lxml
+Running setup.py install <span class="keyword">for</span> lxml ... done
+Successfully installed lxml-<span class="number">3.6</span>.0`
+</code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/29/xcode安装command_line_tools/" class="article-date">
+  	<time datetime="2016-03-29T14:59:28.000Z" itemprop="datePublished">2016-03-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/29/xcode安装command_line_tools/">Xcode安装command line tools</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Xcode安装command_line_tools"><strong>Xcode安装command line tools</strong></h1><hr>
+<p>command line tools</p>
+<p>打开命令行，输入：</p>
+<pre><code>xcode-<span class="built_in">select</span> <span class="comment">--install</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Python爬取微博图片" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -254,233 +564,6 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
 
 
   
-    <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/29/xcode安装command_line_tools/" class="article-date">
-  	<time datetime="2016-03-29T04:41:18.000Z" itemprop="datePublished">2016-03-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/xcode安装command_line_tools/">Xcode安装command line tools</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Xcode安装command_line_tools"><strong>Xcode安装command line tools</strong></h1><hr>
-<p>command line tools</p>
-<p>打开命令行，输入：</p>
-<p><code>xcode-select --install</code></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/29/Mac终端安装lxml失败/" class="article-date">
-  	<time datetime="2016-03-29T04:40:02.000Z" itemprop="datePublished">2016-03-29</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mac终端安装lxml失败"><strong>Mac终端安装lxml失败</strong></h1><hr>
-<p><strong>安装lxml，出现错误</strong></p>
-<p><code>sudo pip install lxml</code></p>
-<p><code>Collecting lxml</code></p>
-<p>  <code>Downloading lxml-3.6.0.tar.gz (3.7MB)</code></p>
-<p>   <code>100% |████████████████████████████████| 3.7MB 157kB/s</code></p>
-<p><code>Installing collected packages: lxml</code></p>
-<p>  <code>Running setup.py install for lxml ... error</code></p>
-<hr>
-<p><strong><strong> 解决方法</strong></strong></p>
-<p><code>sudo C_INCLUDE_PATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include/libxml2/libxml:/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.11.sdk/usr/include</code></p>
-<p><code>pip install lxml</code></p>
-<p>&lt;&lt;&lt;&lt;<code>Installing collected packages: lxml
-  Running setup.py install for lxml ... done
-Successfully installed lxml-3.6.0</code></p>
-<p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/03/install nose numpy scipy/" class="article-date">
-  	<time datetime="2016-02-03T11:40:12.000Z" itemprop="datePublished">2016-02-03</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/03/install nose numpy scipy/">Mac安装Nose pip</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Mac安装Nose_pip">Mac安装Nose pip</h1><p><strong>ImportError: Need nose</strong></p>
-<p>‘import numpy;numpy.test()’</p>
-<p>Running unit tests for numpy</p>
-<p>Traceback (most recent call last):</p>
-<p>File “”, line 1, in </p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 326, in test<br>self._show_system_info()</p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 187, in _show_system_info</p>
-<p>nose = import_nose()</p>
-<p>File “/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py”, line 69, in import_nose<br>raise ImportError(msg)</p>
-<p><code>ImportError: Need nose &gt;= 0.10.0 for tests - see http://somethingaboutorange.com/mrl/projects/nose</code></p>
-<hr>
-<p><strong>安装 pip</strong> </p>
-<p>mac默认是不带pip的：</p>
-<p><code>sudo easy_install pip</code></p>
-<hr>
-<p><strong>安装nose</strong></p>
-<p>最好用easy_install：</p>
-<p><code>sudo easy_install nose</code></p>
-<p>别用pip，我用pip装出各种问题</p>
-<hr>
-<p>terminal退出phthon命令：</p>
-<p><code>quit()</code></p>
-<p>or</p>
-<p><code>Control + D</code></p>
-<hr>
-<p><strong>安装matplotlib</strong></p>
-<p><code>sudo pip install matplotlib</code></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
     <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -546,77 +629,6 @@ Successfully installed lxml-3.6.0</code></p>
 
 
   
-    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/02/01/Homebrew设置PATH/" class="article-date">
-  	<time datetime="2016-02-01T15:34:13.000Z" itemprop="datePublished">2016-02-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/01/Homebrew设置PATH/">Homebrew设置PATH路径</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Homebrew设置PATH路径"><strong>Homebrew设置PATH路径</strong></h1><hr>
-<p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
-<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
-<p><code>-bash:brew:command not found</code></p>
-<p>无法找到brew命令。</p>
-<p>卸载Homebrew重装后，终端提示：</p>
-<p><code>/usr/local/bin不在PATH中</code></p>
-<p><strong>解决</strong>：</p>
-<p>用vim打开，在profile文件最后添加如下语句：</p>
-<p><code>PATH=“.;$PATH:/usr/local/bin”</code></p>
-<p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
     <article id="post-Mac安装OpenCV" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -645,24 +657,24 @@ Successfully installed lxml-3.6.0</code></p>
       
         <h1 id="Mac安装OpenCV"><strong>Mac安装OpenCV</strong></h1><hr>
 <p><strong>1、安装Homebrew</strong></p>
-<p><code>ruby -e &quot;$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)&quot;</code></p>
-<p><strong>2、安装CMake</strong></p>
-<p><code>brew install cmake</code></p>
-<p><strong>3、安装OpenCV</strong></p>
+<pre><code>ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)</span>"</span>
+</code></pre><p><strong>2、安装CMake</strong></p>
+<pre><code><span class="keyword">brew </span>install cmake
+</code></pre><p><strong>3、安装OpenCV</strong></p>
 <p>在下载的<a href="http://opencv.org/" target="_blank" rel="external">OpenCV</a>源码文件夹内，执行如下命令：</p>
-<p><code>mkdir build</code></p>
-<p><code>cd build</code></p>
-<p><code>cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D BUILD_PYTHON_SUPPORT=ON -D BUILD_EXAMPLES=ON ..</code></p>
-<p><code>make</code></p>
-<p><code>sudo make install</code></p>
-<p><strong>4、配置Python路径</strong></p>
+<pre><code><span class="keyword">mkdir</span> build
+<span class="keyword">cd</span> build 
+cmake -<span class="keyword">D</span> CMAKE_BUILD_TYPE=RELEASE -<span class="keyword">D</span> CMAKE_INSTALL_PREFIX=/usr/<span class="keyword">local</span> -<span class="keyword">D</span> BUILD_PYTHON_SUPPORT=<span class="keyword">ON</span> -<span class="keyword">D</span> BUILD_EXAMPLES=<span class="keyword">ON</span> ..
+make
+sudo make install
+</code></pre><p><strong>4、配置Python路径</strong></p>
 <p>在~目录下</p>
-<p><code>vim .bash_profile</code></p>
-<p>在.bash_profile中添加：</p>
-<p><code>export PYTHONPATH=/usr/local/lib/python2.7/site-packages/</code></p>
-<p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
-<p><code>source .bash_profile</code></p>
-
+<pre><code><span class="tag">vim</span> <span class="class">.bash_profile</span>
+</code></pre><p>在.bash_profile中添加：</p>
+<pre><code>export PYTHONPATH=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.<span class="number">7</span><span class="regexp">/site-packages/</span>
+</code></pre><p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
+<pre><code><span class="built_in">source</span> .bash_profile
+</code></pre>
       
     </div>
     
@@ -724,28 +736,30 @@ Successfully installed lxml-3.6.0</code></p>
       
         <h1 id="Mac设置环境变量"><strong>Mac设置环境变量</strong></h1><hr>
 <p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
-<p><code>echo $SHELL</code></p>
-<p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
+<pre><code><span class="built_in">echo</span> <span class="variable">$SHELL</span>
+</code></pre><p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
 <p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
 <p>Mac OS X 10.2之前默认的是C Shell。</p>
 <p>Mac OS X 10.3之后默认的是Bourne Shell。</p>
 <p>（2）如果是Bourne Shell。</p>
 <p>那么你可以把你要添加的环境变量添加到你主目录下面的.profile或者.bash_profile，如果存在没有关系添加进去即可，如果没有生成一个。</p>
-<p> 1.<code>open/vim  /etc/profile</code>   （建议不修改这个文件 ）</p>
-<p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
-<p> 2.<code>/etc/bashrc</code>    （一般在这个文件中添加系统级环境变量）</p>
-<p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
+<pre><code><span class="number">1</span>. <span class="keyword">open</span>/<span class="keyword">vim</span>  /etc/<span class="keyword">profile</span>   （建议不修改这个文件 ）
+</code></pre><p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
+<pre><code><span class="number">2</span>. /etc/<span class="keyword">bashrc </span>   （一般在这个文件中添加系统级环境变量）
+</code></pre><p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
 <p> 我在这里加入mysqlstart、mysql和mysqladmin命令的别名，保证每一个用户都可以使用这3个命令。</p>
-<p> 3.<code>~/.bash_profile</code>  （一般在这个文件中添加用户级环境变量）</p>
-<p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
+<pre><code><span class="number">3</span>. ~/<span class="class">.bash_profile</span>  （一般在这个文件中添加用户级环境变量）
+</code></pre><p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
 <p> 若bash shell是以login方式执行时，才会读取此文件。该文件仅仅执行一次!默认情况下,他设置一些环境变量</p>
 <p> 我在这里：设置终端配色、</p>
-<p> 我在这里：设置命令别名<code>alias ll=&#39;ls -la&#39;</code></p>
-<p> 我在这里：设置环境变量：<code>export PATH=/opt/local/bin:/opt/local/sbin:$PATH</code></p>
-<hr>
+<p> 我在这里：设置命令别名     </p>
+<pre><code><span class="built_in">alias</span> ll=<span class="string">'ls -la'</span>
+</code></pre><p> 我在这里：设置环境变量：</p>
+<pre><code><span class="built_in">export</span> PATH=/opt/<span class="built_in">local</span>/bin:/opt/<span class="built_in">local</span>/sbin:<span class="variable">$PATH</span>
+</code></pre><hr>
 <p>MAC 修改host文件 </p>
-<p><code>sudo vi /etc/hosts</code></p>
-
+<pre><code>sudo vi <span class="regexp">/etc/</span>hosts
+</code></pre>
       
     </div>
     
@@ -808,18 +822,19 @@ Successfully installed lxml-3.6.0</code></p>
         <h1 id="Mac连接Github"><strong>Mac连接Github</strong></h1><p>出现问题：<em>permission denied</em></p>
 <p>解决方法：</p>
 <p><strong>Step 1</strong>: Check for SSH keys</p>
-<p>  <code>$ ls -al ~/.ssh</code></p>
-<p><strong>Step 2</strong>: Generate a new SSH key</p>
-<p><code>$ ssh-keygen -t rsa -b 4096 -C &quot;your_email@example.com&quot;</code></p>
-<p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
-<p><code>$ eval &quot;$(ssh-agent -s)&quot;</code></p>
-<p><code>$ ssh-add ~/.ssh/id_rsa</code></p>
-<p><strong>Step 4</strong>: Add your SSH key to your account</p>
-<p><code>$ pbcopy &lt; ~/.ssh/id_rsa.pub</code></p>
-<p>Add the copied key to GitHub: 登录github网站完成。</p>
-<p><strong>Step 5</strong>: Test the connection</p>
-<p><code>$ ssh -T git@github.com</code></p>
+<pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
+</code></pre><p><strong>Step 2</strong>: Generate a new SSH key</p>
+<pre><code>$ ssh-keygen -t rsa -<span class="tag">b</span> <span class="number">4096</span> -C <span class="string">"your_email@example.com"</span>
+</code></pre><p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
+<pre><code><span class="variable">$ </span>eval <span class="string">"$(ssh-agent -s)"</span>
 
+<span class="variable">$ </span>ssh-add ~<span class="regexp">/.ssh/id</span>_rsa
+</code></pre><p><strong>Step 4</strong>: Add your SSH key to your account</p>
+<pre><code><span class="variable">$ </span>pbcopy &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub
+</code></pre><p>Add the copied key to GitHub: 登录github网站完成。</p>
+<p><strong>Step 5</strong>: Test the connection</p>
+<pre><code><span class="variable">$ </span>ssh -<span class="constant">T </span>git<span class="variable">@github</span>.com
+</code></pre>
       
     </div>
     
