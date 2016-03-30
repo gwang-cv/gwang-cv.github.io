@@ -151,11 +151,11 @@
 
       <div class="body-wrap">
   
-    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:35:18.000Z" itemprop="datePublished">2016-03-30</time>
+      <a href="/2016/03/30/机器学习数学基础/" class="article-date">
+  	<time datetime="2016-03-30T14:38:23.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -168,7 +168,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
+      <a class="article-title" href="/2016/03/30/机器学习数学基础/">机器学习之数学基础</a>
     </h1>
   
 
@@ -177,18 +177,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
-</code></pre><p>解决方案1：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p>解决方案2:</p>
-<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.open(‘XX.txt’, ‘a’, ‘utf-8’)<span class="comment">;;</span>
-f.write(txts)<span class="comment">;</span>
-f.close()<span class="comment">;</span>
-</code></pre>
+        <pre><code><span class="built_in">Math</span> <span class="keyword">for</span> Machine Learning
+</code></pre><p>author：Hal Daume III</p>
+<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
+<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
+
       
     </div>
     
@@ -196,12 +189,12 @@ f.close()<span class="comment">;</span>
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	<a class="article-category-link" href="/categories/Math/">Math</a>
 	</div>
 
 
@@ -225,8 +218,8 @@ f.close()<span class="comment">;</span>
     <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/Homebrew设置PATH/" class="article-date">
-  	<time datetime="2016-03-29T15:08:23.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/30/Homebrew设置PATH/" class="article-date">
+  	<time datetime="2016-03-30T14:37:51.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -239,7 +232,7 @@ f.close()<span class="comment">;</span>
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/Homebrew设置PATH/">Homebrew设置PATH路径</a>
+      <a class="article-title" href="/2016/03/30/Homebrew设置PATH/">Homebrew设置PATH路径</a>
     </h1>
   
 
@@ -248,8 +241,7 @@ f.close()<span class="comment">;</span>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Homebrew设置PATH路径"><strong>Homebrew设置PATH路径</strong></h1><hr>
-<p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
+        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
 <p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
 <pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
 </code></pre><p>无法找到brew命令。</p>
@@ -296,8 +288,8 @@ f.close()<span class="comment">;</span>
     <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/install nose numpy scipy/" class="article-date">
-  	<time datetime="2016-03-29T15:04:51.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/30/install nose numpy scipy/" class="article-date">
+  	<time datetime="2016-03-30T14:37:44.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -310,7 +302,7 @@ f.close()<span class="comment">;</span>
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/install nose numpy scipy/">Mac安装Nose pip</a>
+      <a class="article-title" href="/2016/03/30/install nose numpy scipy/">Mac安装Nose pip</a>
     </h1>
   
 
@@ -319,7 +311,7 @@ f.close()<span class="comment">;</span>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac安装Nose_pip">Mac安装Nose pip</h1><p><strong>ImportError: Need nose</strong></p>
+        <p><strong>ImportError: Need nose</strong></p>
 <pre><code>import numpy;numpy.<span class="keyword">test</span>()
 
 Running unit tests <span class="keyword">for</span> numpy
@@ -393,8 +385,8 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
     <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/Mac终端安装lxml失败/" class="article-date">
-  	<time datetime="2016-03-29T15:00:52.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/30/Mac终端安装lxml失败/" class="article-date">
+  	<time datetime="2016-03-30T14:37:23.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -407,7 +399,7 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
+      <a class="article-title" href="/2016/03/30/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
     </h1>
   
 
@@ -416,8 +408,7 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac终端安装lxml失败"><strong>Mac终端安装lxml失败</strong></h1><hr>
-<p><strong>安装lxml，出现错误</strong></p>
+        <p><strong>安装lxml，出现错误</strong></p>
 <pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
 Collecting lxml
 Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
@@ -471,8 +462,8 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
     <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/xcode安装command_line_tools/" class="article-date">
-  	<time datetime="2016-03-29T14:59:28.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/30/xcode安装command_line_tools/" class="article-date">
+  	<time datetime="2016-03-30T14:37:17.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -485,7 +476,7 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/xcode安装command_line_tools/">Xcode安装command line tools</a>
+      <a class="article-title" href="/2016/03/30/xcode安装command_line_tools/">Xcode安装command line tools</a>
     </h1>
   
 
@@ -494,8 +485,7 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Xcode安装command_line_tools"><strong>Xcode安装command line tools</strong></h1><hr>
-<p>command line tools</p>
+        <p>command line tools</p>
 <p>打开命令行，输入：</p>
 <pre><code>xcode-<span class="built_in">select</span> <span class="comment">--install</span>
 </code></pre>
@@ -535,8 +525,8 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
     <article id="post-Python爬取微博图片" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/29/Python爬取微博图片/" class="article-date">
-  	<time datetime="2016-03-29T14:57:22.000Z" itemprop="datePublished">2016-03-29</time>
+      <a href="/2016/03/30/Python爬取微博图片/" class="article-date">
+  	<time datetime="2016-03-30T14:36:34.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -549,7 +539,7 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/29/Python爬取微博图片/">Python爬取微博图片</a>
+      <a class="article-title" href="/2016/03/30/Python爬取微博图片/">Python爬取微博图片</a>
     </h1>
   
 
@@ -558,8 +548,7 @@ Successfully installed lxml-<span class="number">3.6</span>.0`
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Python爬取微博图片"><strong>Python爬取微博图片</strong></h1><hr>
-<p>爬取指定用户的页面内容，并将图片下载保存到本地</p>
+        <p>爬取指定用户的页面内容，并将图片下载保存到本地</p>
 <pre><code><span class="keyword">import</span> requests
 <span class="keyword">import</span> urllib2
 <span class="keyword">from</span> lxml <span class="keyword">import</span> etree
@@ -635,11 +624,11 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
 
 
   
-    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/02/01/机器学习数学基础/" class="article-date">
-  	<time datetime="2016-02-01T15:53:29.000Z" itemprop="datePublished">2016-02-01</time>
+      <a href="/2016/03/30/python中文编码错误/" class="article-date">
+  	<time datetime="2016-03-30T14:35:18.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -652,7 +641,7 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/02/01/机器学习数学基础/">机器学习之数学基础</a>
+      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
     </h1>
   
 
@@ -661,12 +650,18 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="机器学习之数学基础"><strong>机器学习之数学基础</strong></h1><hr>
-<p><code>Math for Machine Learning</code></p>
-<p>author：Hal Daume III</p>
-<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
-<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
-
+        <hr>
+<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
+</code></pre><p>解决方案1：</p>
+<pre><code>import sys
+<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
+sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
+</code></pre><p>解决方案2:</p>
+<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
+<pre><code>f = codecs.open(‘XX.txt’, ‘a’, ‘utf-8’)<span class="comment">;;</span>
+f.write(txts)<span class="comment">;</span>
+f.close()<span class="comment">;</span>
+</code></pre>
       
     </div>
     
@@ -674,12 +669,12 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Math/">Math</a>
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
@@ -726,8 +721,7 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac安装OpenCV"><strong>Mac安装OpenCV</strong></h1><hr>
-<p><strong>1、安装Homebrew</strong></p>
+        <p><strong>1、安装Homebrew</strong></p>
 <pre><code>ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)</span>"</span>
 </code></pre><p><strong>2、安装CMake</strong></p>
 <pre><code><span class="keyword">brew </span>install cmake
@@ -805,8 +799,7 @@ sudo make install
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac设置环境变量"><strong>Mac设置环境变量</strong></h1><hr>
-<p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
+        <p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
 <pre><code><span class="built_in">echo</span> <span class="variable">$SHELL</span>
 </code></pre><p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
 <p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
@@ -890,7 +883,7 @@ sudo make install
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Mac连接Github"><strong>Mac连接Github</strong></h1><p>出现问题：<em>permission denied</em></p>
+        <p>出现问题：<em>permission denied</em></p>
 <p>解决方法：</p>
 <p><strong>Step 1</strong>: Check for SSH keys</p>
 <pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
