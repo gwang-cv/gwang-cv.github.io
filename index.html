@@ -151,6 +151,77 @@
 
       <div class="body-wrap">
   
+    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/python中文编码错误/" class="article-date">
+  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
+</code></pre><p>解决方案1：</p>
+<pre><code>import sys
+<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
+sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
+</code></pre><p>解决方案2:</p>
+<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
+<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
+f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
+f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -590,77 +661,6 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
    <span class="keyword">print</span> url
    cons = getContent(url, cook)
    getDownImg(cons, page)
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:35:18.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
-</code></pre><p>解决方案1：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p>解决方案2:</p>
-<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.open(‘XX.txt’, ‘a’, ‘utf-8’)<span class="comment">;;</span>
-f.write(txts)<span class="comment">;</span>
-f.close()<span class="comment">;</span>
 </code></pre>
       
     </div>

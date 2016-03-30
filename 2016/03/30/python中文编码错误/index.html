@@ -26,7 +26,7 @@ sys.setdefaultencoding(&apos;utf-8&apos;)
 解决方案2:
 不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
 f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
-<meta property="og:updated_time" content="2016-03-30T14:35:18.000Z">
+<meta property="og:updated_time" content="2016-03-30T14:40:33.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python中文编码错误(UnicodeEncodeError)">
 <meta name="twitter:description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
@@ -175,7 +175,7 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
   
     <div class="article-meta">
       <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:35:18.000Z" itemprop="datePublished">2016-03-30</time>
+  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -220,9 +220,9 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
 sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
 </code></pre><p>解决方案2:</p>
 <p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.open(‘XX.txt’, ‘a’, ‘utf-8’)<span class="comment">;;</span>
-f.write(txts)<span class="comment">;</span>
-f.close()<span class="comment">;</span>
+<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
+f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
+f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
 </code></pre>
       
     </div>
@@ -232,18 +232,9 @@ f.close()<span class="comment">;</span>
     
 <nav id="article-nav">
   
-    <a href="/2016/03/30/Python爬取微博图片/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Python爬取微博图片
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/01/26/Mac安装OpenCV/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Mac安装OpenCV</div>
+    <a href="/2016/03/30/机器学习数学基础/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">机器学习之数学基础</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
