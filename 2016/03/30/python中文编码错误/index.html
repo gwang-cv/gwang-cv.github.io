@@ -4,42 +4,39 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Python爬取微博图片 | Hello World</title>
+  <title>Python中文编码错误(UnicodeEncodeError) | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Python中文编码错误(UnicodeEncodeError)
-UnicodeEncodeError: ‘ascii’ codec can’t encode
+  <meta name="description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
 解决方案1：
 import sys
 reload(sys)
 sys.setdefaultencoding(&apos;utf-8&apos;)
 解决方案2:
 不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f">
+f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python爬取微博图片">
+<meta property="og:title" content="Python中文编码错误(UnicodeEncodeError)">
 <meta property="og:url" content="http://gwang-cv.github.io/2016/03/30/python中文编码错误/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="Python中文编码错误(UnicodeEncodeError)
-UnicodeEncodeError: ‘ascii’ codec can’t encode
+<meta property="og:description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
 解决方案1：
 import sys
 reload(sys)
 sys.setdefaultencoding(&apos;utf-8&apos;)
 解决方案2:
 不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f">
-<meta property="og:updated_time" content="2016-03-30T14:28:49.000Z">
+f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
+<meta property="og:updated_time" content="2016-03-30T14:35:18.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python爬取微博图片">
-<meta name="twitter:description" content="Python中文编码错误(UnicodeEncodeError)
-UnicodeEncodeError: ‘ascii’ codec can’t encode
+<meta name="twitter:title" content="Python中文编码错误(UnicodeEncodeError)">
+<meta name="twitter:description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
 解决方案1：
 import sys
 reload(sys)
 sys.setdefaultencoding(&apos;utf-8&apos;)
 解决方案2:
 不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f">
+f = codecs.open(‘XX.txt’, ‘a’, ‘ut">
   
   
     <link rel="icon" href="/favicon.png">
@@ -178,7 +175,7 @@ f">
   
     <div class="article-meta">
       <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:28:49.000Z" itemprop="datePublished">2016-03-30</time>
+  	<time datetime="2016-03-30T14:35:18.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -191,7 +188,7 @@ f">
         
   
     <h1 class="article-title" itemprop="name">
-      Python爬取微博图片
+      Python中文编码错误(UnicodeEncodeError)
     </h1>
   
 
@@ -215,7 +212,7 @@ f">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Python中文编码错误(UnicodeEncodeError)"><strong>Python中文编码错误(UnicodeEncodeError)</strong></h1><hr>
+        <hr>
 <pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
 </code></pre><p>解决方案1：</p>
 <pre><code>import sys
