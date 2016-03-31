@@ -151,6 +151,86 @@
 
       <div class="body-wrap">
   
+    <article id="post-Markdown插入公式" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/31/Markdown插入公式/" class="article-date">
+  	<time datetime="2016-03-31T05:16:50.000Z" itemprop="datePublished">2016-03-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/31/Markdown插入公式/">Markdown插入公式</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>在Markdown中插入数学公式可以采用如下几种方式：</p>
+<p><strong>解决方法1:</strong><br>使用Google Chart的服务器</p>
+<pre><code>&lt;img src="http://chart.googleapis.com/chart?cht=tx<span class="special">&amp;</span>chl= <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>" style="border:none;"&gt;
+</code></pre><p><img src="http://chart.googleapis.com/chart?cht=tx&chl= \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}" style="border:none;"></p>
+<p><strong>解决方法2:</strong><br>使用CodeCogs网站的latex服务接口</p>
+<pre><code>&lt;img src="http://latex.codecogs.com/svg.latex? <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>" style="border:none;"&gt;
+</code></pre><p><img src="http://latex.codecogs.com/svg.latex? \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}" style="border:none;"></p>
+<p><strong>解决方法3:</strong><br>使用forkosh服务器</p>
+<pre><code>&lt;img src="http://www.forkosh.com/mathtex.cgi? <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>"&gt;
+</code></pre><p><img src="http://www.forkosh.com/mathtex.cgi? \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}"></p>
+<p><strong>解决方法4:</strong><br>使用MathJax引擎</p>
+<pre><code>&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"</span>&gt;&lt;/script&gt;
+
+$$\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span class="list">{2\sqrt{2}</span>}<span class="list">{9801}</span>\sum_<span class="list">{k=0}</span>^\infty\frac<span class="list">{(4k)!(1103+26390k)}</span><span class="list">{(k!)^4396^{4k}</span>}$$ 行间
+
+\\(\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span class="list">{2\sqrt{2}</span>}<span class="list">{9801}</span>\sum_<span class="list">{k=0}</span>^\infty\frac<span class="list">{(4k)!(1103+26390k)}</span><span class="list">{(k!)^4396^{4k}</span>}\\) 行内
+</code></pre><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
+
+<p>$$\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}$$</p>
+<p>\(\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}\)</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -823,81 +903,6 @@ sudo make install
 </code></pre><hr>
 <p>MAC 修改host文件 </p>
 <pre><code>sudo vi <span class="regexp">/etc/</span>hosts
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mac Link Github" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/23/Mac Link Github/" class="article-date">
-  	<time datetime="2016-01-23T12:35:51.000Z" itemprop="datePublished">2016-01-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/23/Mac Link Github/">Mac连接Github</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>出现问题：<em>permission denied</em></p>
-<p>解决方法：</p>
-<p><strong>Step 1</strong>: Check for SSH keys</p>
-<pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
-</code></pre><p><strong>Step 2</strong>: Generate a new SSH key</p>
-<pre><code>$ ssh-keygen -t rsa -<span class="tag">b</span> <span class="number">4096</span> -C <span class="string">"your_email@example.com"</span>
-</code></pre><p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
-<pre><code><span class="variable">$ </span>eval <span class="string">"$(ssh-agent -s)"</span>
-
-<span class="variable">$ </span>ssh-add ~<span class="regexp">/.ssh/id</span>_rsa
-</code></pre><p><strong>Step 4</strong>: Add your SSH key to your account</p>
-<pre><code><span class="variable">$ </span>pbcopy &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub
-</code></pre><p>Add the copied key to GitHub: 登录github网站完成。</p>
-<p><strong>Step 5</strong>: Test the connection</p>
-<pre><code><span class="variable">$ </span>ssh -<span class="constant">T </span>git<span class="variable">@github</span>.com
 </code></pre>
       
     </div>
