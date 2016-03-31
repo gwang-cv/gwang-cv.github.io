@@ -103,7 +103,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a>
+						<a href="/tags/DeepLearning/" style="font-size: 10px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a>
 					</div>
 				</section>
 				
@@ -166,6 +166,84 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Mac安装OpenCV" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/26/Mac安装OpenCV/" class="article-date">
+  	<time datetime="2016-01-26T12:35:51.000Z" itemprop="datePublished">2016-01-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/26/Mac安装OpenCV/">Mac安装OpenCV</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1、安装Homebrew</strong></p>
+<pre><code>ruby <span class="operator">-e</span> <span class="string">"<span class="variable">$(curl -fsSL https://raw.github.com/Homebrew/homebrew/go/install)</span>"</span>
+</code></pre><p><strong>2、安装CMake</strong></p>
+<pre><code><span class="keyword">brew </span>install cmake
+</code></pre><p><strong>3、安装OpenCV</strong></p>
+<p>在下载的<a href="http://opencv.org/" target="_blank" rel="external">OpenCV</a>源码文件夹内，执行如下命令：</p>
+<pre><code><span class="keyword">mkdir</span> build
+<span class="keyword">cd</span> build 
+cmake -<span class="keyword">D</span> CMAKE_BUILD_TYPE=RELEASE -<span class="keyword">D</span> CMAKE_INSTALL_PREFIX=/usr/<span class="keyword">local</span> -<span class="keyword">D</span> BUILD_PYTHON_SUPPORT=<span class="keyword">ON</span> -<span class="keyword">D</span> BUILD_EXAMPLES=<span class="keyword">ON</span> ..
+make
+sudo make install
+</code></pre><p><strong>4、配置Python路径</strong></p>
+<p>在~目录下</p>
+<pre><code><span class="tag">vim</span> <span class="class">.bash_profile</span>
+</code></pre><p>在.bash_profile中添加：</p>
+<pre><code>export PYTHONPATH=<span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.<span class="number">7</span><span class="regexp">/site-packages/</span>
+</code></pre><p>保存(Esc后要输入:进入命令模式,键入w!强制写入；键入q!强制退出vim)，在~目录下执行下面命令:</p>
+<pre><code><span class="built_in">source</span> .bash_profile
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Mac设置环境变量" class="article article-type-post" itemscope itemprop="blogPost">
   
