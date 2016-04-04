@@ -167,6 +167,83 @@
 
       <div class="body-wrap">
   
+    <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/Mac终端安装lxml失败/" class="article-date">
+  	<time datetime="2016-03-30T14:37:23.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>安装lxml，出现错误</strong></p>
+<pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
+Collecting lxml
+Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
+<span class="number">100</span>% |████████████████████████████████| <span class="number">3.7</span>MB <span class="number">157</span>kB/s 
+Installing collected packages: lxml
+Running setup.py <span class="keyword">install</span> <span class="keyword">for</span> lxml ... error</span>
+</code></pre><hr>
+<p><strong><strong> 解决方法</strong></strong></p>
+<pre><code>sudo C_INCLUDE_PATH=<span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span><span class="string">libxml2:</span><span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span>libxml2<span class="regexp">/libxml:/</span>Applications<span class="regexp">/Xcode.app/</span>Contents<span class="regexp">/Developer/</span>Platforms<span class="regexp">/MacOSX.platform/</span>Developer<span class="regexp">/SDKs/</span>MacOSX10.11.sdk<span class="regexp">/usr/</span>include
+
+pip install lxml
+
+Installing collected <span class="string">packages:</span> lxml
+Running setup.py install <span class="keyword">for</span> lxml ... done
+Successfully installed lxml-<span class="number">3.6</span>.0`
+</code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
