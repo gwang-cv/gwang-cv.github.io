@@ -105,7 +105,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/DeepLearning/" style="font-size: 10px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a>
+						<a href="/tags/DeepLearning/" style="font-size: 13.33px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Python/" style="font-size: 16.67px;">Python</a>
 					</div>
 				</section>
 				
@@ -170,6 +170,162 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-MacOS安装caffe" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/07/MacOS安装caffe/" class="article-date">
+  	<time datetime="2016-04-06T17:00:18.000Z" itemprop="datePublished">2016-04-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/07/MacOS安装caffe/">MacOS安装caffe</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li>需要安装CUDA，不管有没有N卡</li>
+<li><p>安装OpenBLAS，并在caffe设置文件中设置为：</p>
+<pre><code><span class="preprocessor"># BLAS choice:</span>
+<span class="preprocessor"># atlas for ATLAS (default)</span>
+<span class="preprocessor"># mkl for MKL</span>
+<span class="preprocessor"># open for OpenBlas</span>
+BLAS := open
+<span class="preprocessor"># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.</span>
+<span class="preprocessor"># Leave commented to accept the defaults for your choice of BLAS</span>
+<span class="preprocessor"># (which should work)!</span>
+BLAS_INCLUDE := /opt/OpenBLAS/include
+BLAS_LIB := /opt/OpenBLAS/lib
+</code></pre></li>
+<li><p>安装依赖库，可用<code>brew list</code>检查安装是否完全</p>
+</li>
+<li><p>添加路径：</p>
+<pre><code>export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local/lib  
+
+export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span>$HOME<span class="regexp">/anaconda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local<span class="regexp">/lib:/</span>usr<span class="regexp">/lib:/</span>opt<span class="regexp">/OpenBLAS/</span><span class="string">lib:</span><span class="regexp">/opt/</span>OpenBLAS
+</code></pre></li>
+<li><p>下载caffe源文件，编译：<code>make all</code>时报错：</p>
+<pre><code>PROTOC src<span class="regexp">/caffe/</span>proto/caffe.proto  
+<span class="string">make:</span> <span class="string">protoc:</span> No such file or directory 
+</code></pre><p> 解决： </p>
+<pre><code>sudo <span class="keyword">chown</span> yourname /usr/<span class="keyword">local</span>  
+
+brew <span class="keyword">link</span> yourlibpackage
+</code></pre></li>
+<li><p>Build: 继续编译：<code>make test</code>， <code>make runtest</code></p>
+<p> 添加路径：</p>
+<pre><code><span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda/lib
+
+<span class="comment">#python</span>
+<span class="keyword">for</span> req <span class="keyword">in</span> $(cat python/requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span>
+make pycaffe
+<span class="built_in">export</span> PYTHONPATH=~/technologies/caffe/python/:<span class="variable">$PYTHONPATH</span>
+<span class="built_in">cd</span> ..
+</code></pre></li>
+</ol>
+<p>make runtest的结果：</p>
+<pre><code>[----------] <span class="number">10</span> tests from PowerLayerTest/<span class="number">0</span>, where TypeParam = N5caffe9CPUDeviceIfEE
+[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span>
+[       OK ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span> (<span class="number">2</span> ms)
+[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerZeroGradient</span>
+[       OK ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerZeroGradient</span> (<span class="number">1</span> ms)
+[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerTwoGradient</span>
+...
+[----------] <span class="number">10</span> tests from PowerLayerTest/<span class="number">0</span> (<span class="number">16</span> ms total)
+</code></pre><p>Bugs:</p>
+<pre><code>    <span class="keyword">library</span> <span class="keyword">not</span> found <span class="keyword">for</span> -lboost_python
+
+解决： 
+
+    brew install boost-python
+</code></pre><hr>
+<h3 id="测试">测试</h3><p>MNIST</p>
+<p>下载mnist数据，如下代码，报错，需安装<code>brew install wget</code></p>
+<pre><code>./<span class="typedef"><span class="keyword">data</span>/mnist/get_mnist.sh </span>
+</code></pre><p>转数据：</p>
+<pre><code>./examples/mnist/create_mnist.sh
+<span class="variable">Creating</span> lmdb...
+<span class="variable">Done</span>.
+
+./examples/mnist/train_lenet.sh
+</code></pre><p>问题：</p>
+<pre><code>Cannot use GPU in CPU-only Caffe:<span class="instruction"> check </span>mode.
+</code></pre><p>解决： 修改lenet_solver.prototxt 最后一行的GPU改为CPU，继续执行<code>./examples/mnist/train_lenet.sh</code></p>
+<pre><code>I<span class="number">0407 00:51</span>:<span class="number">59.023721</span> <span class="number">2035871744</span> caffe.cpp:178] Use CPU.
+I<span class="number">0407 00:51</span>:<span class="number">59.024705</span> <span class="number">2035871744</span> solver.cpp:48] Initializing solver from parameters: 
+test_iter: 100
+test_interval: 500
+base_lr: 0.01
+display: 100
+max_iter: 10000
+lr_policy: "inv"
+gamma: 0.0001
+power: 0.75
+momentum: 0.9
+weight_decay: 0.0005
+snapshot: 5000
+snapshot_prefix: "examples/mnist/lenet"
+solver_mode: CPU
+net: "examples/mnist/lenet_train_test.prototxt"
+I<span class="number">0407 00:51</span>:<span class="number">59.024927</span> <span class="number">2035871744</span> solver.cpp:91] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
+I<span class="number">0407 00:51</span>:<span class="number">59.026877</span> <span class="number">2035871744</span> net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
+I<span class="number">0407 00:51</span>:<span class="number">59.026897</span> <span class="number">2035871744</span> net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
+
+...结果...
+
+I<span class="number">0407 00:57</span>:<span class="number">52.664399</span> <span class="number">2035871744</span> solver.cpp:317] Iteration 10000, loss = <span class="number">0.0032766</span>
+I<span class="number">0407 00:57</span>:<span class="number">52.664429</span> <span class="number">2035871744</span> solver.cpp:337] Iteration 10000, Testing net (#0)
+I<span class="number">0407 00:57</span>:<span class="number">54.761032</span> <span class="number">2035871744</span> solver.cpp:404]     Test net output #0: accuracy = 0.9901
+I<span class="number">0407 00:57</span>:<span class="number">54.761072</span> <span class="number">2035871744</span> solver.cpp:404]     Test net output #1: loss = <span class="number">0.0290336</span> (* 1 = <span class="number">0.0290336</span> loss)
+I<span class="number">0407 00:57</span>:<span class="number">54.761081</span> <span class="number">2035871744</span> solver.cpp:322] Optimization Done.
+I<span class="number">0407 00:57</span>:<span class="number">54.761087</span> <span class="number">2035871744</span> caffe.cpp:222] Optimization Done.
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Python爬取优酷视频" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -987,103 +1143,6 @@ f.<span class="function"><span class="title">close</span><span class="params">()
 <pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
 </code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/install nose numpy scipy/" class="article-date">
-  	<time datetime="2016-03-30T14:37:44.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/install nose numpy scipy/">Mac安装Nose pip</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>ImportError: Need nose</strong></p>
-<pre><code>import numpy;numpy.<span class="keyword">test</span>()
-
-Running unit tests <span class="keyword">for</span> numpy
-
-Traceback (most recent call last):
-
-<span class="keyword">File</span> <span class="string">""</span>, <span class="keyword">line</span> 1, <span class="keyword">in</span> 
-
-<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 326, <span class="keyword">in</span> <span class="keyword">test</span>
-self._show_system_info()
-
-<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 187, <span class="keyword">in</span> _show_system_info
-
-nose = import_nose()
-
-<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 69, <span class="keyword">in</span> import_nose
-raise ImportError(msg)
-
-ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see http:<span class="comment">//somethingaboutorange.com/mrl/projects/nose</span>
-</code></pre><hr>
-<p><strong>安装 pip</strong> </p>
-<p>mac默认是不带pip的：</p>
-<pre><code><span class="title">sudo</span> easy_install pip    
-</code></pre><hr>
-<p><strong>安装nose</strong></p>
-<p>最好用easy_install：</p>
-<pre><code><span class="title">sudo</span> easy_install nose    
-</code></pre><p>别用pip，我用pip装出各种问题</p>
-<hr>
-<p>terminal退出phthon命令：</p>
-<pre><code><span class="function"><span class="title">quit</span><span class="params">()</span></span>    
-</code></pre><p>or</p>
-<pre><code><span class="keyword">Control</span> + <span class="keyword">D</span>    
-</code></pre><hr>
-<p><strong>安装matplotlib</strong></p>
-<pre><code>sudo pip <span class="keyword">install</span> matplotlib    
-</code></pre>
       
     </div>
     
