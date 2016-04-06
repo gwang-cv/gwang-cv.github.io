@@ -175,7 +175,7 @@
   
     <div class="article-meta">
       <a href="/2016/04/07/MacOS安装caffe/" class="article-date">
-  	<time datetime="2016-04-06T17:00:18.000Z" itemprop="datePublished">2016-04-07</time>
+  	<time datetime="2016-04-06T17:03:37.000Z" itemprop="datePublished">2016-04-07</time>
 </a>
     </div>
   
@@ -197,9 +197,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li>需要安装CUDA，不管有没有N卡</li>
-<li><p>安装OpenBLAS，并在caffe设置文件中设置为：</p>
+        <p>1.需要安装CUDA，不管有没有N卡<br>2.安装OpenBLAS，并在caffe设置文件中设置为：</p>
 <pre><code><span class="preprocessor"># BLAS choice:</span>
 <span class="preprocessor"># atlas for ATLAS (default)</span>
 <span class="preprocessor"># mkl for MKL</span>
@@ -210,34 +208,30 @@ BLAS := open
 <span class="preprocessor"># (which should work)!</span>
 BLAS_INCLUDE := /opt/OpenBLAS/include
 BLAS_LIB := /opt/OpenBLAS/lib
-</code></pre></li>
-<li><p>安装依赖库，可用<code>brew list</code>检查安装是否完全</p>
-</li>
-<li><p>添加路径：</p>
+</code></pre><p>3.安装依赖库，可用<code>brew list</code>检查安装是否完全<br>4.添加路径：</p>
 <pre><code>export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local/lib  
 
 export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span>$HOME<span class="regexp">/anaconda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local<span class="regexp">/lib:/</span>usr<span class="regexp">/lib:/</span>opt<span class="regexp">/OpenBLAS/</span><span class="string">lib:</span><span class="regexp">/opt/</span>OpenBLAS
-</code></pre></li>
-<li><p>下载caffe源文件，编译：<code>make all</code>时报错：</p>
-<pre><code>PROTOC src<span class="regexp">/caffe/</span>proto/caffe.proto  
-<span class="string">make:</span> <span class="string">protoc:</span> No such file or directory 
-</code></pre><p> 解决： </p>
-<pre><code>sudo <span class="keyword">chown</span> yourname /usr/<span class="keyword">local</span>  
+</code></pre><p>5.下载caffe源文件，编译：<code>make all</code>时报错：</p>
+<pre><code>    PROTOC src/caffe/proto/caffe.proto  
+    make: protoc: No such <span class="built_in">file</span> <span class="operator">or</span> <span class="built_in">directory</span> 
 
-brew <span class="keyword">link</span> yourlibpackage
-</code></pre></li>
-<li><p>Build: 继续编译：<code>make test</code>， <code>make runtest</code></p>
-<p> 添加路径：</p>
-<pre><code><span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda/lib
+解决： 
 
-<span class="comment">#python</span>
-<span class="keyword">for</span> req <span class="keyword">in</span> $(cat python/requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span>
-make pycaffe
-<span class="built_in">export</span> PYTHONPATH=~/technologies/caffe/python/:<span class="variable">$PYTHONPATH</span>
-<span class="built_in">cd</span> ..
-</code></pre></li>
-</ol>
-<p>make runtest的结果：</p>
+    sudo chown yourname /usr/<span class="built_in">local</span>  
+
+    brew link yourlibpackage
+</code></pre><p>6.Build: 继续编译：<code>make test</code>， <code>make runtest</code></p>
+<pre><code>添加路径：
+
+    <span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda/lib
+
+    <span class="comment">#python</span>
+    <span class="keyword">for</span> req <span class="keyword">in</span> $(cat python/requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span>
+    make pycaffe
+    <span class="built_in">export</span> PYTHONPATH=~/technologies/caffe/python/:<span class="variable">$PYTHONPATH</span>
+    <span class="built_in">cd</span> ..
+</code></pre><p>make runtest的结果：</p>
 <pre><code>[----------] <span class="number">10</span> tests from PowerLayerTest/<span class="number">0</span>, where TypeParam = N5caffe9CPUDeviceIfEE
 [ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span>
 [       OK ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span> (<span class="number">2</span> ms)
