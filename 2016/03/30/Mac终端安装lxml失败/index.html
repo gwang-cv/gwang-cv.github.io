@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Mac终端安装lxml失败 | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="安装lxml，出现错误
+sudo pip install lxml
+Collecting lxml
+Downloading lxml-3.6.0.tar.gz (3.7MB)
+100% |████████████████████████████████| 3.7MB 157kB/s 
+Installing collected packages: lxml
+Running setup.py inst">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mac终端安装lxml失败">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/03/30/Mac终端安装lxml失败/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="安装lxml，出现错误
+sudo pip install lxml
+Collecting lxml
+Downloading lxml-3.6.0.tar.gz (3.7MB)
+100% |████████████████████████████████| 3.7MB 157kB/s 
+Installing collected packages: lxml
+Running setup.py inst">
+<meta property="og:updated_time" content="2016-03-30T14:37:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mac终端安装lxml失败">
+<meta name="twitter:description" content="安装lxml，出现错误
+sudo pip install lxml
+Collecting lxml
+Downloading lxml-3.6.0.tar.gz (3.7MB)
+100% |████████████████████████████████| 3.7MB 157kB/s 
+Installing collected packages: lxml
+Running setup.py inst">
+  
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img src="undefined" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gary Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researchGO</p>
+		
+
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+						</div>
+					</nav>
+				</section>
+				
+				
+				
+				
+
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gary Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img src="undefined" class="js-avatar" style="width: 100%;height: 100%;opacity: 1;">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gary Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researchGO</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/Mac终端安装lxml失败/" class="article-date">
+  	<time datetime="2016-03-30T14:37:23.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Mac终端安装lxml失败
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>安装lxml，出现错误</strong></p>
+<pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
+Collecting lxml
+Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
+<span class="number">100</span>% |████████████████████████████████| <span class="number">3.7</span>MB <span class="number">157</span>kB/s 
+Installing collected packages: lxml
+Running setup.py <span class="keyword">install</span> <span class="keyword">for</span> lxml ... error</span>
+</code></pre><hr>
+<p><strong><strong> 解决方法</strong></strong></p>
+<pre><code>sudo C_INCLUDE_PATH=<span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span><span class="string">libxml2:</span><span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span>libxml2<span class="regexp">/libxml:/</span>Applications<span class="regexp">/Xcode.app/</span>Contents<span class="regexp">/Developer/</span>Platforms<span class="regexp">/MacOSX.platform/</span>Developer<span class="regexp">/SDKs/</span>MacOSX10.11.sdk<span class="regexp">/usr/</span>include
+
+pip install lxml
+
+Installing collected <span class="string">packages:</span> lxml
+Running setup.py install <span class="keyword">for</span> lxml ... done
+Successfully installed lxml-<span class="number">3.6</span>.0`
+</code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2016/03/30/install nose numpy scipy/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Mac安装Nose pip
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2016/03/30/xcode安装command_line_tools/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Xcode安装command line tools</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Gary Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+
+<script>
+	var yiliaConfig = {
+		fancybox: undefined,
+		mathjax: undefined,
+		animate: undefined,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: undefined
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+  </div>
+</body>
+</html>
