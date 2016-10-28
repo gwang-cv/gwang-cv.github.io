@@ -23,7 +23,7 @@ ii. 广义线性：\(y=f(x)=w^T\phi(x)+b\">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/SingleNeuron.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network331.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network3322.png">
-<meta property="og:updated_time" content="2016-10-28T09:00:21.000Z">
+<meta property="og:updated_time" content="2016-10-28T09:02:14.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DL学习笔记">
 <meta name="twitter:description" content="（一）DeepLearning (DL)概述1. 什么是DL？机器学习ML的框架：
@@ -310,7 +310,7 @@ x_p -w_p-/
 <p>(iv)计算所需的偏导数：<br>$$\frac{\partial J}{\partial w^l}=\delta^{l+1}\cdot(a^l)^T$$<br>$$\frac{\partial J}{\partial b^l}=\delta^{l+1}$$</p>
 <p>其中，假设 \( f(z) \)是sigmoid函数，并且我们已经在前向传导运算中得到了 \( a^{(l)}_i\)。那么，使用我们早先推导出的 \( f’(z)\)表达式，就可以计算得到 \( f’(z^{(l)}_i) = a^{(l)}_i (1- a^{(l)}_i)\)。</p>
 <h5 id="3-梯度下降法求解过程">3.梯度下降法求解过程</h5><p>(1) 对所有 \(  l\)，令 \(  \Delta W^{(l)} := 0 \),  \(  \Delta b^{(l)} := 0 \)（设置为全零矩阵或全零向量）</p>
-<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法<br>计算<br>$$<br>\begin{align}<br>&amp; \nabla<em>{W^{(l)}} J(W,b;x,y) \\<br>&amp; \nabla</em>{b^{(l)}} J(W,b;x,y) \\<br>&amp; \Delta W^{(l)} := \Delta W^{(l)} + \nabla<em>{W^{(l)}} J(W,b;x,y) \\<br>&amp; \Delta b^{(l)} := \Delta b^{(l)} + \nabla</em>{b^{(l)}} J(W,b;x,y)<br>\end{align}$$</p>
+<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法<br>计算<br>$$<br> \nabla<em>{W^{(l)}} J(W,b;x,y) \\<br> \nabla</em>{b^{(l)}} J(W,b;x,y) \\<br> \Delta W^{(l)} := \Delta W^{(l)} + \nabla<em>{W^{(l)}} J(W,b;x,y) \\<br> \Delta b^{(l)} := \Delta b^{(l)} + \nabla</em>{b^{(l)}} J(W,b;x,y)<br>$$</p>
 <p>(3) 更新参数：<br>$$ \begin{align}<br>W^{(l)} &amp;= W^{(l)} - \alpha \left[ \left(\frac{1}{m} \Delta W^{(l)} \right) + \lambda W^{(l)}\right] \\<br>b^{(l)} &amp;= b^{(l)} - \alpha \left[\frac{1}{m} \Delta b^{(l)}\right]<br>\end{align}$$</p>
 <p>重复梯度下降法的迭代步骤来减小代价函数 \( J(W,b)\) ，以训练我们的神经网络。</p>
 
