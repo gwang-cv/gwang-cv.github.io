@@ -23,7 +23,7 @@ ii. 广义线性：\(y=f(x)=w^T\phi(x)+b\">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/SingleNeuron.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network331.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network3322.png">
-<meta property="og:updated_time" content="2016-10-28T09:06:44.000Z">
+<meta property="og:updated_time" content="2016-10-28T09:08:10.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="DL学习笔记">
 <meta name="twitter:description" content="（一）DeepLearning (DL)概述1. 什么是DL？机器学习ML的框架：
@@ -87,7 +87,7 @@ ii. 广义线性：\(y=f(x)=w^T\phi(x)+b\">
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -302,7 +302,7 @@ x_p -w_p-/
 <h5 id="1-多元函数的偏导数">1.多元函数的偏导数</h5><p>(1)<br>$$X=[x_1,…,x_p]^T\in R^p,~ y=f(X)=f(x_1,…,x_p)$$<br>$$\nabla_x f(x)=\nabla_x y=\frac{\partial y}{\partial x}=[\frac{\partial f(x_1)}{\partial x},…,\frac{\partial f(x_p)}{\partial x}]^T\in R^p$$<br>(2)<br>$$x\in R^p, y=[..]^T\in R^q$$<br>$$y=[f_1(x),..,f_q(x)]^T$$<br>$$\nabla_xy=\nabla_x f(x)=\frac{\partial y}{\partial x}=[\frac{\partial f(x)}{\partial x_i}]^T\in R^{p\times q}$$<br>(3) 导数法则：链式法则</p>
 <h5 id="2-BP算法">2.BP算法</h5><p>BP思路：给定一个样例 \( (x,y)\)，我们首先进行“前向传导”运算，计算出网络中所有的激活值，包括 \( h_{W,b}(x) \)的输出值。之后，针对第 \( l \)层的每一个节点 \( i\)，我们计算出其“残差” \( \delta^{(l)}_i\)，该残差表明了该节点对最终输出值的残差产生了多少影响。对于最终的输出节点，我们可以直接算出网络产生的激活值与实际值之间的差距，我们将这个差距定义为 \( \delta^{(n_l)}_i \)（第 \( n_l \)层表示输出层）。对于隐藏单元我们如何处理呢？我们将基于节点（第 \( l+1 \)层节点）残差的加权平均值计算 \( \delta^{(l)}_i\)，这些节点以 \( a^{(l)}_i \)作为输入。</p>
 <p>BP算法步骤：</p>
-<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots  \) 直到输出层 \( L</em>{n_l}  \)的激活值。</p>
+<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots \) 直到输出层 \( L</em>{n_l} \)的激活值。</p>
 <p>(ii)对于第 \( n_l \)层（输出层）的每个输出单元 \( i\)，我们根据以下公式计算残差：</p>
 <p>$$\delta_i^{(n_l)}= \frac{\partial J}{\partial z_i^{n_l}}=-(y_i-a_i^{(n_l)})\cdot f’(z_i^{(n_l)})$$</p>
 <p>(iii)令\(\delta^l=\frac{\partial J}{\partial z^l}\)，则对 \(  l = n_l-1, n_l-2, n_l-3, \ldots, 2 \)的各个层，第 \(  l \)层的第 \(  i \)个节点的残差计算方法如下：（矩阵向量形式）</p>
@@ -310,7 +310,8 @@ x_p -w_p-/
 <p>(iv)计算所需的偏导数：<br>$$\frac{\partial J}{\partial w^l}=\delta^{l+1}\cdot(a^l)^T$$<br>$$\frac{\partial J}{\partial b^l}=\delta^{l+1}$$</p>
 <p>其中，假设 \( f(z) \)是sigmoid函数，并且我们已经在前向传导运算中得到了 \( a^{(l)}_i\)。那么，使用我们早先推导出的 \( f’(z)\)表达式，就可以计算得到 \( f’(z^{(l)}_i) = a^{(l)}_i (1- a^{(l)}_i)\)。</p>
 <h5 id="3-梯度下降法求解过程">3.梯度下降法求解过程</h5><p>(1) 对所有 \(  l\)，令 \(  \Delta W^{(l)} := 0 \),  \(  \Delta b^{(l)} := 0 \)（设置为全零矩阵或全零向量）</p>
-<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算:<br>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
+<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算: </p>
+<p>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \nabla_{b^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \Delta W^{(l)} := \Delta W^{(l)} + \nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \Delta b^{(l)} := \Delta b^{(l)} + \nabla_{b^{(l)}} J(W,b;x,y) \)</p>
@@ -324,6 +325,15 @@ x_p -w_p-/
   
     
 <nav id="article-nav">
+  
+    <a href="/2016/11/02/Clarifai API体验/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption"><</strong>
+      <div class="article-nav-title">
+        
+          Clarifai API体验
+        
+      </div>
+    </a>
   
   
     <a href="/2016/10/21/Clarifai/" id="article-nav-older" class="article-nav-link-wrap">

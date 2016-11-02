@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,124 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Clarifai API体验" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/02/Clarifai API体验/" class="article-date">
+  	<time datetime="2016-11-02T07:24:53.000Z" itemprop="datePublished">2016-11-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
+<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
+<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
+<pre><code>pip install clarifai==<span class="number">2.0</span>.10
+clarifai config
+<span class="label">CLARIFAI_APP_ID:</span>
+<span class="label">CLARIFAI_APP_SECRET:</span>
+</code></pre><p>在python中实现测试：</p>
+<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
+app = ClarifaiApp()
+model = app.models.get(<span class="string">'general-v1.3'</span>)
+<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
+<span class="comment"># or local image</span>
+<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
+</code></pre><p>一、打开MAC终端，输入Request命令：</p>
+<ol>
+<li><p>测试在线图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试本地图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试多幅图像</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+</ol>
+<p>二、读取Response结果</p>
+<p>在python中使用json来解析文本结果：</p>
+<pre><code># -*- coding: utf-<span class="number">8</span> -*-
+<span class="keyword">import</span> json
+<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
+    <span class="built_in">print</span> <span class="built_in">line</span>
+<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
+results=<span class="built_in">str</span>[<span class="string">'results'</span>]
+strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
+<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
+    <span class="built_in">print</span> ind
+    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
+</code></pre><p>输出解析结果（图像的tag类别）：</p>
+<pre><code><span class="number">0</span>
+[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
+<span class="number">1</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
+<span class="number">2</span>
+[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
+<span class="number">3</span>
+[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
+<span class="number">4</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-DL学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -269,7 +387,7 @@ x_p -w_p-/
 <h5 id="1-多元函数的偏导数">1.多元函数的偏导数</h5><p>(1)<br>$$X=[x_1,…,x_p]^T\in R^p,~ y=f(X)=f(x_1,…,x_p)$$<br>$$\nabla_x f(x)=\nabla_x y=\frac{\partial y}{\partial x}=[\frac{\partial f(x_1)}{\partial x},…,\frac{\partial f(x_p)}{\partial x}]^T\in R^p$$<br>(2)<br>$$x\in R^p, y=[..]^T\in R^q$$<br>$$y=[f_1(x),..,f_q(x)]^T$$<br>$$\nabla_xy=\nabla_x f(x)=\frac{\partial y}{\partial x}=[\frac{\partial f(x)}{\partial x_i}]^T\in R^{p\times q}$$<br>(3) 导数法则：链式法则</p>
 <h5 id="2-BP算法">2.BP算法</h5><p>BP思路：给定一个样例 \( (x,y)\)，我们首先进行“前向传导”运算，计算出网络中所有的激活值，包括 \( h_{W,b}(x) \)的输出值。之后，针对第 \( l \)层的每一个节点 \( i\)，我们计算出其“残差” \( \delta^{(l)}_i\)，该残差表明了该节点对最终输出值的残差产生了多少影响。对于最终的输出节点，我们可以直接算出网络产生的激活值与实际值之间的差距，我们将这个差距定义为 \( \delta^{(n_l)}_i \)（第 \( n_l \)层表示输出层）。对于隐藏单元我们如何处理呢？我们将基于节点（第 \( l+1 \)层节点）残差的加权平均值计算 \( \delta^{(l)}_i\)，这些节点以 \( a^{(l)}_i \)作为输入。</p>
 <p>BP算法步骤：</p>
-<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots  \) 直到输出层 \( L</em>{n_l}  \)的激活值。</p>
+<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots \) 直到输出层 \( L</em>{n_l} \)的激活值。</p>
 <p>(ii)对于第 \( n_l \)层（输出层）的每个输出单元 \( i\)，我们根据以下公式计算残差：</p>
 <p>$$\delta_i^{(n_l)}= \frac{\partial J}{\partial z_i^{n_l}}=-(y_i-a_i^{(n_l)})\cdot f’(z_i^{(n_l)})$$</p>
 <p>(iii)令\(\delta^l=\frac{\partial J}{\partial z^l}\)，则对 \(  l = n_l-1, n_l-2, n_l-3, \ldots, 2 \)的各个层，第 \(  l \)层的第 \(  i \)个节点的残差计算方法如下：（矩阵向量形式）</p>
@@ -277,7 +395,8 @@ x_p -w_p-/
 <p>(iv)计算所需的偏导数：<br>$$\frac{\partial J}{\partial w^l}=\delta^{l+1}\cdot(a^l)^T$$<br>$$\frac{\partial J}{\partial b^l}=\delta^{l+1}$$</p>
 <p>其中，假设 \( f(z) \)是sigmoid函数，并且我们已经在前向传导运算中得到了 \( a^{(l)}_i\)。那么，使用我们早先推导出的 \( f’(z)\)表达式，就可以计算得到 \( f’(z^{(l)}_i) = a^{(l)}_i (1- a^{(l)}_i)\)。</p>
 <h5 id="3-梯度下降法求解过程">3.梯度下降法求解过程</h5><p>(1) 对所有 \(  l\)，令 \(  \Delta W^{(l)} := 0 \),  \(  \Delta b^{(l)} := 0 \)（设置为全零矩阵或全零向量）</p>
-<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算:<br>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
+<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算: </p>
+<p>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \nabla_{b^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \Delta W^{(l)} := \Delta W^{(l)} + \nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
 <p>\( \Delta b^{(l)} := \Delta b^{(l)} + \nabla_{b^{(l)}} J(W,b;x,y) \)</p>
@@ -1527,108 +1646,6 @@ folder = cons_date[<span class="number">0</span>].split(<span class="string">', 
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Python爬取微博图片" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/31/Python爬取微博图片/" class="article-date">
-  	<time datetime="2016-03-31T08:13:29.000Z" itemprop="datePublished">2016-03-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/Python爬取微博图片/">Python爬取微博图片</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>爬取指定用户的页面内容，并将图片下载保存到本地</p>
-<pre><code><span class="keyword">import</span> requests
-<span class="keyword">import</span> urllib2
-<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
-<span class="keyword">import</span> re
-<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool
-<span class="function"><span class="keyword">def</span> <span class="title">tosave</span><span class="params">(texta)</span>:</span>
-    f = open(<span class="string">'weibo.txt'</span>, <span class="string">'a'</span>)    
-    f.write(texta + <span class="string">'\n'</span>)    
-    f.close()
-cook = {<span class="string">"Cookie"</span>: <span class="string">"XXXXXX"</span>}
-url0 = <span class="string">'http://weibo.cn/u/XXXXX'</span>
-<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(url, cook)</span>:</span>
-    html = requests.get(url, cookies=cook).content
-    selector = etree.HTML(html)
-    <span class="comment"># read text from weibo</span>
-    content = selector.xpath(<span class="string">'//span[@class="ctt"]'</span>)
-    <span class="keyword">for</span> each <span class="keyword">in</span> content:
-        text = each.xpath(<span class="string">'string(.)'</span>)
-        <span class="keyword">print</span> text        
-content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <span class="comment"># copy from chrome # print content</span>
-<span class="keyword">return</span> content
-
-<span class="function"><span class="keyword">def</span> <span class="title">getDownImg</span><span class="params">(cons, page)</span>:</span>
-    x = <span class="number">0</span>
-    <span class="keyword">for</span> each <span class="keyword">in</span> cons:
-       <span class="keyword">print</span> each
-       fn = <span class="string">'%s'</span> % page + <span class="string">'%s'</span> % x
-       fl=<span class="string">'%s.jpg'</span> % fn
-       url=each.replace(<span class="string">'wap180'</span>,<span class="string">'large'</span>)
-       <span class="keyword">print</span> url
-       <span class="keyword">print</span> fn
-       r = requests.get(url)
-       <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
-           code.write(r.content)
-       x += <span class="number">1</span>
-
-<span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):
-   url = url0 + <span class="string">'?page='</span> + <span class="string">'%s'</span> % page
-   <span class="keyword">print</span> url
-   cons = getContent(url, cook)
-   getDownImg(cons, page)
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
