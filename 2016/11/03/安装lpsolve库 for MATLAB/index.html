@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>安装lpsolve库 for MATLAB | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="lpsolve是sourceforge下的一个开源项目，它的介绍如下： 
+Mixed Integer Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) integer/binary, semi-cont and special ordered sets (SOS) models.lp_solve is wri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="安装lpsolve库 for MATLAB">
+<meta property="og:url" content="http://gwang-cv.github.io/2016/11/03/安装lpsolve库 for MATLAB/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="lpsolve是sourceforge下的一个开源项目，它的介绍如下： 
+Mixed Integer Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) integer/binary, semi-cont and special ordered sets (SOS) models.lp_solve is wri">
+<meta property="og:updated_time" content="2016-11-03T02:28:40.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="安装lpsolve库 for MATLAB">
+<meta name="twitter:description" content="lpsolve是sourceforge下的一个开源项目，它的介绍如下： 
+Mixed Integer Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) integer/binary, semi-cont and special ordered sets (SOS) models.lp_solve is wri">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gang Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researchGO</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						
+						<li>About</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">Home</a></li>
+				        
+							<li><a href="/archives">Archives</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">Hello, I&#39;m Gang Wang. This is my blog, enjoy it.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gang Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gang Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researchGO</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Archives</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-安装lpsolve库 for MATLAB" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/03/安装lpsolve库 for MATLAB/" class="article-date">
+  	<time datetime="2016-11-03T01:42:53.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      安装lpsolve库 for MATLAB
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matlab/">Matlab</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>lpsolve是sourceforge下的一个开源项目，它的介绍如下： </p>
+<pre><code>Mixed <span class="built_in">Integer</span> Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) <span class="built_in">integer</span>/<span class="keyword">binary</span>, semi-cont <span class="keyword">and</span> special ordered sets (SOS) models.lp_solve <span class="keyword">is</span> written <span class="keyword">in</span> <span class="keyword">ANSI</span> C <span class="keyword">and</span> can be compiled <span class="keyword">on</span> many different platforms <span class="keyword">like</span> Linux <span class="keyword">and</span> WINDOWS 
+</code></pre><p>lpsolve是一个混合整数线性规划求解器，可以求解纯线性、（混合）整数/二值、半连续和特殊有序集模型。并且经过实际验证，有极高的求解效率。 </p>
+<p><a href="http://sourceforge.net/projects/lpsolve/?source=directory" target="_blank" rel="external">sourceforge主页</a></p>
+<p>1.在Windows x64和Matlab环境下使用lpsolve</p>
+<p>需要在网址<a href="https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.5/" target="_blank" rel="external">lpsolve_5.5.2.5</a> 提供的文件列表中下载文件lp_solve_5.5.2.5_MATLAB_exe_win64.zip。或者下载文件lp_solve_5.5.2.5_source.tar.gz自行编译dll。</p>
+<p>注：在Matlab下运行示例报错：</p>
+<pre><code>Error <span class="keyword">using</span> mxlpsolve
+Failed <span class="keyword">to</span> initialise lpsolve <span class="keyword">library</span>.
+</code></pre><p>参考Using lpsolve from MATLAB: <a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a>给出的说明，需要将编译得到的mxlpsolve.dll拷贝到 WINDOWS\system32文件夹下。</p>
+<p>2.在MacOS下使用lpsolve</p>
+<p>参考<a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">Using lp_solve in Java with Mac OS X</a>的配置说明，下载源文件lp_solve_5.5.2.5_source.tar.gz，然后跳转到lp_solve_5.5/lpsolve55文件夹内，并执行ccc.osx：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/lpsolve55
+<span class="keyword">sh</span> ccc.osx
+</code></pre><p>生成的文件所在的文件夹：lpsolve55/bin/osx64/，将此文件夹内生成的两个文件liblpsolve55.dylib，liblpsolve55.a拷贝到/usr/local/lib文件夹内即可：</p>
+<pre><code>sudo cp liblpsolve55<span class="class">.a</span> liblpsolve55<span class="class">.dylib</span> /usr/local/lib
+</code></pre><p>测试demo：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/demo
+<span class="keyword">sh</span> ccc
+./demo
+</code></pre><p>3.在MacOS的Matlab中需要文件mxlpsolve.mexmaci64</p>
+<p>需要从lpsolve主页下载源文件lp_solve_5.5.2.5_MATLAB_source.tar.gz，解压缩后，在Matlab中执行文件Makefile.m，期间需要添加各种头文件：</p>
+<pre><code>lp_Hash<span class="class">.h</span>
+lp_lib<span class="class">.h</span>
+lp_matrix<span class="class">.h</span>
+lp_mipbb<span class="class">.h</span>
+lp_SOS<span class="class">.h</span>
+lp_types<span class="class">.h</span>
+lp_utils.h
+</code></pre><p>可下载lp_solve_5.5.2.5_dev_ux64.tar.gz并从中获取即可。</p>
+<p>4.举例</p>
+<p>mxlpsove.m是建模的核心函数，一个线性规划模型的所有配置和求解都是通过这个函数完成的。lp_maker.m和lp_solve.m是对mxlpsolve.m的高层包装，简化了模型建立和求解的过程。例如用lpsolve求解数学规划问题：</p>
+<p>$$ \max 4x_1+2x_2+x_3\\<br>s.t.~ 2x_1+x_2\le 1\\<br>x_1+2x_3\le 2\\<br>x_1+x_2+x_3=1\\<br>0\le x_1\le1\\<br>0\le x_2\le1\\<br>0\le x_3\le2$$</p>
+<p>相应的Matlab语句为：</p>
+<pre><code>f = [<span class="number">4</span> <span class="number">2</span> <span class="number">1</span>];
+A = [<span class="number">2</span> <span class="number">1</span> <span class="number">0</span>; <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>];
+b = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">1</span>];
+l = [ <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];
+u = [ <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>];
+lp=mxlpsolve<span class="comment">('make_lp', 1, 3)</span>;
+mxlpsolve<span class="comment">('set_verbose', lp, 3)</span>;
+mxlpsolve<span class="comment">('set_obj_fn', lp, f)</span>;
+mxlpsolve<span class="comment">('add_constraint', lp, A(1, :)</span>, <span class="number">1</span>, b<span class="comment">(1)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(2, :)</span>, <span class="number">1</span>, b<span class="comment">(2)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(3, :)</span>, <span class="number">0</span>, b<span class="comment">(3)</span>; 
+mxlpsolve<span class="comment">('set_lowbo', lp, l)</span>; 
+mxlpsolve<span class="comment">('set_upbo', lp, u)</span>; 
+mxlpsolve<span class="comment">('write_lp', lp, 'a.lp')</span>; 
+mxlpsolve<span class="comment">('get_mat', lp, 1, 2)</span> 
+mxlpsolve<span class="comment">('solve', lp)</span> 
+mxlpsolve<span class="comment">('get_objective', lp)</span> 
+mxlpsolve<span class="comment">('get_variables', lp)</span> 
+mxlpsolve<span class="comment">('get_constraints', lp)</span> 
+mxlpsolve<span class="comment">('delete_lp', lp)</span>
+</code></pre><p>重要函数说明：</p>
+<p><strong>lp_solve</strong></p>
+<pre><code>LP_SOLVE  Solves mixed <span class="built_in">integer</span> linear programming problems.
+
+SYNOPSIS: [obj,x,duals] = lp_solve(f,a,b,e,vlb,vub,xint,scalemode,keep)
+
+  solves the MILP problem
+
+          max v = f<span class="comment">'*x</span>
+            a*x &lt;&gt; b
+              vlb &lt;= x &lt;= vub
+              x(int) are <span class="built_in">integer</span>
+
+ARGUMENTS: The first four arguments are required:
+
+        f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+        a: m <span class="keyword">by</span> n matrix representing linear constraints.
+        b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+        e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                  e(i) = -<span class="number">1</span>  ==&gt; Less Than
+                  e(i) =  <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                  e(i) =  <span class="number">1</span>  ==&gt; Greater Than
+      vlb: n vector <span class="keyword">of</span> lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+           <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+      vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+     xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+scalemode: scale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     keep: Flag <span class="keyword">for</span> keeping the lp problem after it<span class="comment">'s been solved.</span>
+           <span class="keyword">If</span> omitted, the lp will be deleted <span class="keyword">when</span> solved.
+
+   OUTPUT: A nonempty output <span class="keyword">is</span> returned <span class="keyword">if</span> a solution <span class="keyword">is</span> found:
+
+      obj: Optimal value <span class="keyword">of</span> the objective <span class="keyword">function</span>.
+        x: Optimal value <span class="keyword">of</span> the decision variables.
+    duals: solution <span class="keyword">of</span> the dual problem.
+
+    Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create <span class="keyword">and</span> solve following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; [obj, x]=lp_solve([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+obj =
+
+         <span class="number">3</span>
+
+x =
+
+        <span class="number">1</span>
+         <span class="number">2</span>
+</code></pre><p><strong>lp_maker</strong>　　
+　　</p>
+<pre><code>LP_MAKER  Makes mixed <span class="built_in">integer</span> linear programming problems.
+SYNOPSIS: lp_handle = lp_maker(f,a,b,e,vlb,vub,xint,scalemode,setminim)
+      make the MILP problem
+        max v = f<span class="comment">'*x</span>
+          a*x &lt;&gt; b
+            vlb &lt;= x &lt;= vub
+            x(int) are <span class="built_in">integer</span>
+
+   ARGUMENTS: The first four arguments are required:
+            f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+            a: m <span class="keyword">by</span> n matrix representing linear constraints.
+            b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+            e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                      e(i) &lt; <span class="number">0</span>  ==&gt; Less Than
+                      e(i) = <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                      e(i) &gt; <span class="number">0</span>  ==&gt; Greater Than
+          vlb: n vector <span class="keyword">of</span> non-negative lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+               <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+          vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+         xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+    scalemode: Autoscale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     setminim: <span class="keyword">Set</span> maximum lp <span class="keyword">when</span> this flag <span class="keyword">equals</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+
+   OUTPUT: lp_handle <span class="keyword">is</span> an <span class="built_in">integer</span> handle <span class="keyword">to</span> the lp created.
+Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; lp=lp_maker([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+lp =
+
+     <span class="number">0</span>
+<span class="keyword">To</span> solve the model <span class="keyword">and</span> <span class="keyword">get</span> the solution:
+
+&gt;&gt; mxlpsolve(<span class="comment">'solve', lp)</span>
+
+ans =
+
+     <span class="number">0</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_objective', lp)</span>
+
+ans =
+
+     <span class="number">3</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_variables', lp)</span>
+
+ans =
+
+     <span class="number">1</span>
+     <span class="number">2</span>
+</code></pre><p>注意：Don’t forget to free the handle and its associated memory when you are done:</p>
+<pre><code><span class="prompt">&gt;&gt;</span> mxlpsolve(<span class="string">'delete_lp'</span>, lp);
+</code></pre><p>5.参考</p>
+<p><a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/</a></p>
+<p><a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a></p>
+<p><a href="http://www.cnblogs.com/kane1990/p/3428129.html" target="_blank" rel="external">http://www.cnblogs.com/kane1990/p/3428129.html</a></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2016/11/02/Clarifai API体验/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Clarifai API体验</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2016 Gang Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

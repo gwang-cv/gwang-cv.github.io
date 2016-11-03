@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a>
+						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,241 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-安装lpsolve库 for MATLAB" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/03/安装lpsolve库 for MATLAB/" class="article-date">
+  	<time datetime="2016-11-03T01:42:53.000Z" itemprop="datePublished">2016-11-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/安装lpsolve库 for MATLAB/">安装lpsolve库 for MATLAB</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>lpsolve是sourceforge下的一个开源项目，它的介绍如下： </p>
+<pre><code>Mixed <span class="built_in">Integer</span> Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) <span class="built_in">integer</span>/<span class="keyword">binary</span>, semi-cont <span class="keyword">and</span> special ordered sets (SOS) models.lp_solve <span class="keyword">is</span> written <span class="keyword">in</span> <span class="keyword">ANSI</span> C <span class="keyword">and</span> can be compiled <span class="keyword">on</span> many different platforms <span class="keyword">like</span> Linux <span class="keyword">and</span> WINDOWS 
+</code></pre><p>lpsolve是一个混合整数线性规划求解器，可以求解纯线性、（混合）整数/二值、半连续和特殊有序集模型。并且经过实际验证，有极高的求解效率。 </p>
+<p><a href="http://sourceforge.net/projects/lpsolve/?source=directory" target="_blank" rel="external">sourceforge主页</a></p>
+<p>1.在Windows x64和Matlab环境下使用lpsolve</p>
+<p>需要在网址<a href="https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.5/" target="_blank" rel="external">lpsolve_5.5.2.5</a> 提供的文件列表中下载文件lp_solve_5.5.2.5_MATLAB_exe_win64.zip。或者下载文件lp_solve_5.5.2.5_source.tar.gz自行编译dll。</p>
+<p>注：在Matlab下运行示例报错：</p>
+<pre><code>Error <span class="keyword">using</span> mxlpsolve
+Failed <span class="keyword">to</span> initialise lpsolve <span class="keyword">library</span>.
+</code></pre><p>参考Using lpsolve from MATLAB: <a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a>给出的说明，需要将编译得到的mxlpsolve.dll拷贝到 WINDOWS\system32文件夹下。</p>
+<p>2.在MacOS下使用lpsolve</p>
+<p>参考<a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">Using lp_solve in Java with Mac OS X</a>的配置说明，下载源文件lp_solve_5.5.2.5_source.tar.gz，然后跳转到lp_solve_5.5/lpsolve55文件夹内，并执行ccc.osx：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/lpsolve55
+<span class="keyword">sh</span> ccc.osx
+</code></pre><p>生成的文件所在的文件夹：lpsolve55/bin/osx64/，将此文件夹内生成的两个文件liblpsolve55.dylib，liblpsolve55.a拷贝到/usr/local/lib文件夹内即可：</p>
+<pre><code>sudo cp liblpsolve55<span class="class">.a</span> liblpsolve55<span class="class">.dylib</span> /usr/local/lib
+</code></pre><p>测试demo：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/demo
+<span class="keyword">sh</span> ccc
+./demo
+</code></pre><p>3.在MacOS的Matlab中需要文件mxlpsolve.mexmaci64</p>
+<p>需要从lpsolve主页下载源文件lp_solve_5.5.2.5_MATLAB_source.tar.gz，解压缩后，在Matlab中执行文件Makefile.m，期间需要添加各种头文件：</p>
+<pre><code>lp_Hash<span class="class">.h</span>
+lp_lib<span class="class">.h</span>
+lp_matrix<span class="class">.h</span>
+lp_mipbb<span class="class">.h</span>
+lp_SOS<span class="class">.h</span>
+lp_types<span class="class">.h</span>
+lp_utils.h
+</code></pre><p>可下载lp_solve_5.5.2.5_dev_ux64.tar.gz并从中获取即可。</p>
+<p>4.举例</p>
+<p>mxlpsove.m是建模的核心函数，一个线性规划模型的所有配置和求解都是通过这个函数完成的。lp_maker.m和lp_solve.m是对mxlpsolve.m的高层包装，简化了模型建立和求解的过程。例如用lpsolve求解数学规划问题：</p>
+<p>$$ \max 4x_1+2x_2+x_3\\<br>s.t.~ 2x_1+x_2\le 1\\<br>x_1+2x_3\le 2\\<br>x_1+x_2+x_3=1\\<br>0\le x_1\le1\\<br>0\le x_2\le1\\<br>0\le x_3\le2$$</p>
+<p>相应的Matlab语句为：</p>
+<pre><code>f = [<span class="number">4</span> <span class="number">2</span> <span class="number">1</span>];
+A = [<span class="number">2</span> <span class="number">1</span> <span class="number">0</span>; <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>];
+b = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">1</span>];
+l = [ <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];
+u = [ <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>];
+lp=mxlpsolve<span class="comment">('make_lp', 1, 3)</span>;
+mxlpsolve<span class="comment">('set_verbose', lp, 3)</span>;
+mxlpsolve<span class="comment">('set_obj_fn', lp, f)</span>;
+mxlpsolve<span class="comment">('add_constraint', lp, A(1, :)</span>, <span class="number">1</span>, b<span class="comment">(1)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(2, :)</span>, <span class="number">1</span>, b<span class="comment">(2)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(3, :)</span>, <span class="number">0</span>, b<span class="comment">(3)</span>; 
+mxlpsolve<span class="comment">('set_lowbo', lp, l)</span>; 
+mxlpsolve<span class="comment">('set_upbo', lp, u)</span>; 
+mxlpsolve<span class="comment">('write_lp', lp, 'a.lp')</span>; 
+mxlpsolve<span class="comment">('get_mat', lp, 1, 2)</span> 
+mxlpsolve<span class="comment">('solve', lp)</span> 
+mxlpsolve<span class="comment">('get_objective', lp)</span> 
+mxlpsolve<span class="comment">('get_variables', lp)</span> 
+mxlpsolve<span class="comment">('get_constraints', lp)</span> 
+mxlpsolve<span class="comment">('delete_lp', lp)</span>
+</code></pre><p>重要函数说明：</p>
+<p><strong>lp_solve</strong></p>
+<pre><code>LP_SOLVE  Solves mixed <span class="built_in">integer</span> linear programming problems.
+
+SYNOPSIS: [obj,x,duals] = lp_solve(f,a,b,e,vlb,vub,xint,scalemode,keep)
+
+  solves the MILP problem
+
+          max v = f<span class="comment">'*x</span>
+            a*x &lt;&gt; b
+              vlb &lt;= x &lt;= vub
+              x(int) are <span class="built_in">integer</span>
+
+ARGUMENTS: The first four arguments are required:
+
+        f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+        a: m <span class="keyword">by</span> n matrix representing linear constraints.
+        b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+        e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                  e(i) = -<span class="number">1</span>  ==&gt; Less Than
+                  e(i) =  <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                  e(i) =  <span class="number">1</span>  ==&gt; Greater Than
+      vlb: n vector <span class="keyword">of</span> lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+           <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+      vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+     xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+scalemode: scale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     keep: Flag <span class="keyword">for</span> keeping the lp problem after it<span class="comment">'s been solved.</span>
+           <span class="keyword">If</span> omitted, the lp will be deleted <span class="keyword">when</span> solved.
+
+   OUTPUT: A nonempty output <span class="keyword">is</span> returned <span class="keyword">if</span> a solution <span class="keyword">is</span> found:
+
+      obj: Optimal value <span class="keyword">of</span> the objective <span class="keyword">function</span>.
+        x: Optimal value <span class="keyword">of</span> the decision variables.
+    duals: solution <span class="keyword">of</span> the dual problem.
+
+    Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create <span class="keyword">and</span> solve following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; [obj, x]=lp_solve([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+obj =
+
+         <span class="number">3</span>
+
+x =
+
+        <span class="number">1</span>
+         <span class="number">2</span>
+</code></pre><p><strong>lp_maker</strong>　　
+　　</p>
+<pre><code>LP_MAKER  Makes mixed <span class="built_in">integer</span> linear programming problems.
+SYNOPSIS: lp_handle = lp_maker(f,a,b,e,vlb,vub,xint,scalemode,setminim)
+      make the MILP problem
+        max v = f<span class="comment">'*x</span>
+          a*x &lt;&gt; b
+            vlb &lt;= x &lt;= vub
+            x(int) are <span class="built_in">integer</span>
+
+   ARGUMENTS: The first four arguments are required:
+            f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+            a: m <span class="keyword">by</span> n matrix representing linear constraints.
+            b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+            e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                      e(i) &lt; <span class="number">0</span>  ==&gt; Less Than
+                      e(i) = <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                      e(i) &gt; <span class="number">0</span>  ==&gt; Greater Than
+          vlb: n vector <span class="keyword">of</span> non-negative lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+               <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+          vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+         xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+    scalemode: Autoscale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     setminim: <span class="keyword">Set</span> maximum lp <span class="keyword">when</span> this flag <span class="keyword">equals</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+
+   OUTPUT: lp_handle <span class="keyword">is</span> an <span class="built_in">integer</span> handle <span class="keyword">to</span> the lp created.
+Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; lp=lp_maker([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+lp =
+
+     <span class="number">0</span>
+<span class="keyword">To</span> solve the model <span class="keyword">and</span> <span class="keyword">get</span> the solution:
+
+&gt;&gt; mxlpsolve(<span class="comment">'solve', lp)</span>
+
+ans =
+
+     <span class="number">0</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_objective', lp)</span>
+
+ans =
+
+     <span class="number">3</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_variables', lp)</span>
+
+ans =
+
+     <span class="number">1</span>
+     <span class="number">2</span>
+</code></pre><p>注意：Don’t forget to free the handle and its associated memory when you are done:</p>
+<pre><code><span class="prompt">&gt;&gt;</span> mxlpsolve(<span class="string">'delete_lp'</span>, lp);
+</code></pre><p>5.参考</p>
+<p><a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/</a></p>
+<p><a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a></p>
+<p><a href="http://www.cnblogs.com/kane1990/p/3428129.html" target="_blank" rel="external">http://www.cnblogs.com/kane1990/p/3428129.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matlab/">Matlab</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Clarifai API体验" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1548,104 +1783,6 @@ folder = cons_date[<span class="number">0</span>].split(<span class="string">', 
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-深度学习开发包" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/31/深度学习开发包/" class="article-date">
-  	<time datetime="2016-03-31T13:27:56.000Z" itemprop="datePublished">2016-03-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/深度学习开发包/">Deep Learning Libraries by Language</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h4 id="Python"><strong>Python</strong></h4><ol>
-<li><p><a href="http://deeplearning.net/software/theano" target="_blank" rel="external">Theano</a>  is a python library for defining and evaluating mathematical expressions with numerical arrays. It makes it easy to write deep learning algorithms in python. On the top of the Theano many more libraries are built.<br> a. <a href="http://keras.io/" target="_blank" rel="external">Keras</a> is a minimalist, highly modular neural network library in the spirit of Torch, written in Python, that uses Theano under the hood for optimized tensor manipulation on GPU and CPU.<br> b. <a href="http://deeplearning.net/software/pylearn2/" target="_blank" rel="external">Pylearn2</a> is a library that wraps a lot of models and training algorithms such as Stochastic Gradient Descent that are commonly used in Deep Learning. Its functional libraries are built on top of Theano.<br> c. <a href="https://github.com/Lasagne/Lasagne" target="_blank" rel="external">Lasagne</a> is a lightweight library to build and train neural networks in Theano. It is governed by simplicity, transparency, modularity, pragmatism , focus and restraint principles.<br> d. <a href="https://github.com/mila-udem/blocks" target="_blank" rel="external">Blocks</a> a framework that helps you build neural network models on top of Theano.</p>
-</li>
-<li><p><a href="http://caffe.berkeleyvision.org/" target="_blank" rel="external">Caffe</a> is a deep learning framework made with expression, speed, and modularity in mind. It is developed by the Berkeley Vision and Learning Center (BVLC) and by community contributors. Google’s DeepDream is based on Caffe Framework. This framework is a BSD-licensed C++ library with Python Interface.</p>
-</li>
-<li><p><a href="https://github.com/dnouri/nolearn" target="_blank" rel="external">nolearn</a> contains a number of wrappers and abstractions around existing neural network libraries, most notably Lasagne, along with a few machine learning utility modules.</p>
-</li>
-<li><p><a href="http://radimrehurek.com/gensim/" target="_blank" rel="external">Gensim</a> is deep learning toolkit implemented in python programming language intended for handling large text collections, using efficient algorithms.</p>
-</li>
-<li><p><a href="http://chainer.org/" target="_blank" rel="external">Chainer</a> bridge the gap between algorithms and implementations of deep learning. Its powerful, flexible and intuitive and is considered as the flexible framework for Deep Learning.</p>
-</li>
-<li><p><a href="https://github.com/nitishsrivastava/deepnet" target="_blank" rel="external">deepnet</a> is a GPU-based python implementation of deep learning algorithms like Feed-forward Neural Nets, Restricted Boltzmann Machines, Deep Belief Nets, Autoencoders, Deep Boltzmann Machines and Convolutional Neural Nets.</p>
-</li>
-<li><p><a href="https://github.com/hannes-brt/hebel" target="_blank" rel="external">Hebel</a> is a library for deep learning with neural networks in Python using GPU acceleration with CUDA through PyCUDA. It implements the most important types of neural network models and offers a variety of different activation functions and training methods such as momentum, Nesterov momentum, dropout, and early stopping.</p>
-</li>
-<li><p><a href="https://github.com/dmlc/cxxnet" target="_blank" rel="external">CXXNET</a> is fast, concise, distributed deep learning framework based on MShadow. It is a lightweight and easy extensible C++/CUDA neural network toolkit with friendly Python/Matlab interface for training and prediction.</p>
-</li>
-<li><p><a href="https://github.com/andersbll/deeppy" target="_blank" rel="external">DeepPy</a> is a Pythonic deep learning framework built on top of NumPy.</p>
-</li>
-<li><p><a href="https://github.com/vishwa-raman/DeepLearning" target="_blank" rel="external">DeepLearning</a> is deep learning library, developed with C++ and python.</p>
-</li>
-<li><p><a href="https://github.com/NervanaSystems/neon" target="_blank" rel="external">Neon</a> is Nervana’s Python based Deep Learning framework.</p>
-</li>
-</ol>
-<h4 id="Matlab"><strong>Matlab</strong></h4><ol>
-<li><p><a href="https://github.com/sdemyanov/ConvNet" target="_blank" rel="external">ConvNet</a> Convolutional neural net is a type of deep learning classification algorithms, that can learn useful features from raw data by themselves and is performed by tuning its weighs.</p>
-</li>
-<li><p><a href="https://github.com/rasmusbergpalm/DeepLearnToolbox" target="_blank" rel="external">DeepLearnToolBox</a> is a matlab/octave toolbox for deep learning and includes Deep Belief Nets, Stacked Autoencoders, convolutional neural nets.</p>
-</li>
-<li><p><a href="https://code.google.com/p/cuda-convnet/" target="_blank" rel="external">cuda-convnet</a> is a fast C++/CUDA implementation of convolutional (or more generally, feed-forward) neural networks. It can model arbitrary layer connectivity and network depth. Any directed acyclic graph of layers will do. Training is done using the backpropagation algorithm.</p>
-</li>
-<li><p><a href="http://www.vlfeat.org/matconvnet/" target="_blank" rel="external">MatConvNet</a>  is a MATLAB toolbox implementing Convolutional Neural Networks (CNNs) for computer vision applications. It is simple, efficient, and can run and learn state-of-the-art CNNs</p>
-</li>
-</ol>
-<hr>
-<p><strong>More</strong>… <a href="http://www.teglor.com/b/deep-learning-libraries-language-cm569/" target="_blank" rel="external">http://www.teglor.com/b/deep-learning-libraries-language-cm569/</a></p>
-<hr>
-<p><strong>Author</strong>: <a href="http://www.teglor.com/b/deep-learning-libraries-language-cm569/" target="_blank" rel="external">teglor</a> </p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
 	</div>
 
 
