@@ -168,6 +168,92 @@
 
       <div class="body-wrap">
   
+    <article id="post-MacOS安装torch7" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/07/MacOS安装torch7/" class="article-date">
+  	<time datetime="2016-04-07T08:07:25.000Z" itemprop="datePublished">2016-04-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/07/MacOS安装torch7/">MacOS安装torch7</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>手动安装：</p>
+<pre><code>$ # <span class="keyword">in</span> a terminal, run the commands
+$ git clone <span class="string">https:</span><span class="comment">//github.com/torch/distro.git ~/torch --recursive</span>
+$ cd ~/torch; bash install-deps;
+$ ./install.sh
+
+－－－－－－－－－－－－－－－－－－－－－－－－－
+
+$ source <span class="regexp">~/torch/</span>install<span class="regexp">/bin/</span>torch-activate
+
+－－－－－－－－－－－－－－－－－－－－－－－－－
+$ th
+
+   ______             __   |  Torch7                                         
+ <span class="regexp">/_  __/</span>__  ________<span class="regexp">/ /</span>   |  Scientific computing <span class="keyword">for</span> Lua. 
+   <span class="regexp">/ /</span> <span class="regexp">/ _ \/</span> __<span class="regexp">/ __/</span> _ \  |  Type ? for help                                
+ /_/  \___/_/  \__/_//_/  |  https:<span class="comment">//github.com/torch         </span>
+                         |  <span class="string">http:</span><span class="comment">//torch.ch                  </span>
+
+th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>}
+ <span class="number">5</span>
+<span class="number">6</span>
+ <span class="number">7</span>
+[torch.DoubleTensor of size <span class="number">3</span>]
+</code></pre><p>退出 th&gt;</p>
+<pre><code>os.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-MacOS安装caffe" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1077,76 +1163,6 @@ f.<span class="function"><span class="title">close</span><span class="params">()
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Math/">Math</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/Homebrew设置PATH/" class="article-date">
-  	<time datetime="2016-03-30T14:37:51.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/Homebrew设置PATH/">Homebrew设置PATH路径</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
-<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
-<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
-</code></pre><p>无法找到brew命令。</p>
-<p>卸载Homebrew重装后，终端提示：</p>
-<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
-</code></pre><p><strong>解决</strong>：</p>
-<p>用vim打开，在profile文件最后添加如下语句：</p>
-<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
-</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
