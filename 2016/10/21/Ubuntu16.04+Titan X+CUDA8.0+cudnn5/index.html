@@ -16,7 +16,7 @@
 <meta property="og:description" content="1.安装Ubuntu16.04 LTS x64
 利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso)，因为已有Win7系统，此处选择“Install Ubuntu alongside Windows Boot Manager”，分区采用默认选择，语言选择English，安装完毕。
 注：此时显示器VGA接口接到主板集成显卡接口上。">
-<meta property="og:updated_time" content="2016-12-26T10:27:38.000Z">
+<meta property="og:updated_time" content="2016-12-26T11:24:41.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu16.04+Titan X+CUDA8.0+cudnn5.1+Caffe">
 <meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
@@ -486,17 +486,21 @@ sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/
 sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/libcudnn*
 </code></pre><p><strong>8.安装MATLAB 2014a</strong></p>
 <p>需要注意的是Ubuntu16.04 LTS的gcc版本为5.4，而Matlab2014a支持的是gcc4.7。</p>
-<p>用Crack文件中的install替换matlab2014安装目录下/java/jar/下的install文件，然后执行install程序。</p>
-<p>注意：选择“不联网安装”；当出现密钥时，随意输入20个数字12345-67890-12345-67890即可；需要激活时选择不要联网激活，用Crack目录下的“license_405329_R2014a.lic”文件激活。</p>
-<p>安装完成之后，将Crack/linux目录下的libmwservices.so文件拷贝到/usr/local/MATLAB/R2014a/bin/glnxa64。</p>
-<pre><code>$ sudo cp libmwservices.so <span class="regexp">/usr/</span>local<span class="regexp">/MATLAB/</span>R2014a<span class="regexp">/bin/g</span>lnxa64
+<p>用Crack文件中的install替换matlab2014安装目录下/java/jar/下的install文件，然后执行install程序</p>
+<pre><code><span class="built_in">cd</span> <span class="string">"MatlabFolder"</span>
+sudo ./install
+</code></pre><p>注意：选择“不联网安装”；当出现密钥时，随意输入20个数字12345-67890-12345-67890即可；需要激活时选择不要联网激活，用Crack目录下的“license_405329_R2014a.lic”文件激活。</p>
+<p>安装完成之后，将Crack/Linux目录下的libmwservices.so文件拷贝到/usr/local/MATLAB/R2014a/bin/glnxa64。</p>
+<pre><code>cd ..
+cd Crack<span class="regexp">/Linux/</span>
+sudo cp libmwservices.so <span class="regexp">/usr/</span>local<span class="regexp">/MATLAB/</span>R2014a<span class="regexp">/bin/g</span>lnxa64
 </code></pre><p>打开Matlab并激活：</p>
 <pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/MATLAB/R2014a/bin
 sudo ./matlab <span class="comment"># sudo不可缺少，否则选择激活文件后报错</span>
 </code></pre><p><strong>9.Python</strong></p>
 <p>选用Ubuntu16.04默认的安装和配置，python版本2.7.12.</p>
 <p><strong>10.BLAS安装与配置</strong></p>
-<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的序列号。</p>
+<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的序列号(<em>2HWS-34Z7S69B</em>)。</p>
 <pre><code>tar zxvf parallel_studio_xe_2017.tgz   <span class="comment">#解压下载文件</span>
  chmod <span class="number">777</span> parallel_studio_xe_2017 -R   <span class="comment">#获取文件权限</span>
 <span class="built_in">cd</span> parallel_studio_xe_2017/
@@ -520,8 +524,10 @@ sudo apt-<span class="built_in">get</span> install --no-install-recommends libbo
 </code></pre><p>Python接口依赖：</p>
 <pre><code>sudo apt-<span class="built_in">get</span> install  the <span class="keyword">python</span>-dev
 sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-pip
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-devsudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy # (Python <span class="number">2.7</span> development <span class="keyword">files</span>)
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-devsudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy # (Python <span class="number">3.5</span> development <span class="keyword">files</span>)
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy # (Python <span class="number">2.7</span> development <span class="keyword">files</span>)
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy # (Python <span class="number">3.5</span> development <span class="keyword">files</span>)
 </code></pre><p>在python文件夹内，使用root执行依赖项的检查与安装：</p>
 <pre><code>sudo <span class="keyword">su</span>
 <span class="keyword">cd</span> caffe-master/python
@@ -651,6 +657,7 @@ sudo ln -s libhdf5_serial.<span class="keyword">so</span>.10.1.0 libhdf5.<span c
 sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<span class="keyword">so</span>
 </code></pre><p>编译：</p>
 <pre><code><span class="keyword">cd</span> ~/caffe-master
+<span class="keyword">make</span> clean
 <span class="keyword">make</span> <span class="keyword">all</span> -j4
 <span class="keyword">make</span> test -j4
 <span class="keyword">make</span> runtest -j4
