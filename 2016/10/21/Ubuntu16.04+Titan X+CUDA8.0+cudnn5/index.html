@@ -16,7 +16,7 @@
 <meta property="og:description" content="1.安装Ubuntu16.04 LTS x64
 利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso)，因为已有Win7系统，此处选择“Install Ubuntu alongside Windows Boot Manager”，分区采用默认选择，语言选择English，安装完毕。
 注：此时显示器VGA接口接到主板集成显卡接口上。">
-<meta property="og:updated_time" content="2016-10-21T07:49:55.000Z">
+<meta property="og:updated_time" content="2016-12-26T10:27:38.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu16.04+Titan X+CUDA8.0+cudnn5.1+Caffe">
 <meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
@@ -77,7 +77,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -240,8 +240,11 @@ deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.ed
 sudo apt-<span class="built_in">get</span> upgrade
 </code></pre><p><strong>3.安装NVIDIA显卡驱动</strong></p>
 <p>采用ppa安装方式，没选择最新的nvidia-370，我选择了nvidia-367。</p>
-<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:graphics-drivers/ppa
-sudo apt-get update
+<p>Ctrl+Alt+F1进入tty命令控制台，停止lightdm，然后开始安装驱动。</p>
+<pre><code>sudo services lightdm stop
+
+sudo<span class="instruction"> add-apt-repository </span>ppa:graphics-drivers/ppa
+sudo apt-get updates
 sudo apt-get install nvidia-367
 sudo apt-get install mesa-common-dev
 sudo apt-get install freeglut3-dev
@@ -253,6 +256,25 @@ sudo reboot
 修改如下：
 HorizSync <span class="number">31.0</span> - <span class="number">84.0</span>
 VertRefresh <span class="number">56.0</span>-<span class="number">77.0</span>
+</code></pre><p>即最终的xorg.conf文件为：</p>
+<pre><code><span class="title">Section "Device"    </span>
+    Identifier <span class="string">"Configured Video Device"</span>
+EndSection
+
+<span class="title">Section "Monitor"</span>
+    Identifier <span class="string">"Configured Monitor"</span>
+    Horizsync 30-84
+    Vertrefresh 56-77
+EndSection
+
+<span class="title">Section "Screen"</span>
+Identifier <span class="string">"Default Screen"</span>
+Monitor <span class="string">"Configured Monitor"</span>
+Device <span class="string">"Configured Video Device"</span>
+    SubSection <span class="string">"Display"</span>
+        Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
+    EndSubSection
+EndSection        
 </code></pre><p>注销系统再次登录后，选择适合的桌面分辨率即可。</p>
 <p><strong>5.安装CUDA8.0</strong></p>
 <p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.44_linux.run</a>，复制到根目录下。</p>
@@ -408,32 +430,32 @@ sudo ldconfig
 <span class="built_in">cd</span> DisplayImage 
 gedit DisplayImage.cpp 
 </code></pre><p>添加代码：</p>
-<pre><code><span class="built_in">#</span><span class="preprocessor"><span class="keyword">include</span> &lt;stdio.h&gt;</span>  
-<span class="built_in">#</span><span class="preprocessor"><span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;</span>  
-using namespace cv;  
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;  </span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;  </span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> cv;  
 
-int main<span class="params">(int argc, char** argv)</span>  
-{  
-     <span class="keyword">if</span><span class="params">(argc!= <span class="number">2</span>)</span>  
+<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  
+</span>{  
+     <span class="keyword">if</span>(argc!= <span class="number">2</span>)  
      {  
-               printf<span class="params">(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>)</span>;  
-               return -<span class="number">1</span>;  
+               <span class="built_in">printf</span>(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
      }  
 
      Mat image;  
-     image= imread<span class="params">(argv[<span class="number">1</span>], <span class="number">1</span>)</span>;  
+     image= imread(argv[<span class="number">1</span>], <span class="number">1</span>);  
 
-&lt;span style=<span class="string">"white-space:pre"</span>&gt;    &lt;/span&gt;<span class="keyword">if</span><span class="params">(!image.data)</span>  
-&lt;span style=<span class="string">"white-space:pre"</span>&gt;    &lt;/span&gt;{  
-               printf<span class="params">(<span class="string">"Noimage data\n"</span>)</span>;  
-               return -<span class="number">1</span>;  
+    <span class="keyword">if</span>(!image.data)  
+    {  
+               <span class="built_in">printf</span>(<span class="string">"Noimage data\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
      }  
 
-     namedWindow<span class="params">(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE)</span>;  
-     imshow<span class="params">(<span class="string">"DisplayImage"</span>,image)</span>;  
+     namedWindow(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE);  
+     imshow(<span class="string">"DisplayImage"</span>,image);  
 
-     waitKey<span class="params">(<span class="number">0</span>)</span>;  
-     return <span class="number">0</span>;  
+     waitKey(<span class="number">0</span>);  
+     <span class="keyword">return</span> <span class="number">0</span>;  
 }  
 </code></pre><p>创建CMake文件：</p>
 <pre><code>gedit CMakeLists<span class="class">.txt</span>  
