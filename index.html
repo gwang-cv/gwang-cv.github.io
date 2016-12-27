@@ -1758,7 +1758,35 @@ I<span class="number">1019 21:48</span>:<span class="number">49.479605</span> 20
 I<span class="number">1019 21:48</span>:<span class="number">49.479625</span> 20063 solver.cpp:404] Test net output #1: loss = <span class="number">0.0284448</span> (* 1 = <span class="number">0.0284448</span> loss)
 I<span class="number">1019 21:48</span>:<span class="number">49.479629</span> 20063 solver.cpp:322] Optimization Done.
 I<span class="number">1019 21:48</span>:<span class="number">49.479632</span> 20063 caffe.cpp:254] Optimization Done.
-</code></pre><p><strong>参考：</strong></p>
+</code></pre><p><strong>12.Caffe下Matlab接口Demo测试</strong></p>
+<p>在使用Matlab运行caffe库时，即运行文件”caffe-master/matlab/demo/classification_demo.m”。遇到的错误信息如下：</p>
+<pre><code>Invalid MEX-<span class="built_in">file</span> <span class="string">'caffe-master/matlab/+caffe/private/caffe_.mexa64'</span>: libcudart.so.8.0: cannot <span class="built_in">open</span> shared object <span class="built_in">file</span>: No such <span class="built_in">file</span> <span class="operator">or</span> <span class="built_in">directory</span>
+</code></pre><p>错误原因是由于Matlab找不到caffe<em>.mexa64所依赖的所有库文件的路径，此时可以使用ldd命令来查看caffe\</em>.mexa64内库文件的地址：</p>
+<p>//1. 在Ubuntu系统的命令终端</p>
+<pre><code><span class="keyword">ldd</span> *caffe_.mexa64
+</code></pre><p>结果输出的是库文件对应的地址，与下文相对的缺失的库文件的地址可在此找到：</p>
+<pre><code>libcudart<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcudart<span class="class">.so</span>.<span class="number">8.0</span>
+libcublas<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcublas<span class="class">.so</span>.<span class="number">8.0</span>
+libcurand<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcurand<span class="class">.so</span>.<span class="number">8.0</span>
+libcudnn<span class="class">.so</span>.<span class="number">5</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
+</code></pre><p>//2. 在Matlab命令窗口输入</p>
+<pre><code>!<span class="keyword">ldd</span> *caffe_.mexa64
+</code></pre><p>结果在Matlab窗口的输出信息中发现：</p>
+<pre><code>libcudart<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found
+libcublas<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found
+libcurand<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found 
+libcudnn<span class="class">.so</span>.<span class="number">5</span> =&gt; not found
+</code></pre><p>解决方法：通过如下命令将默认路径链接到真实路径下：</p>
+<pre><code>sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcudart.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcudart.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcublas.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcublas.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcurand.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcurand.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcudnn.so.5 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcudnn.so.5
+</code></pre><p>重新启动Matlab使之生效。</p>
+<p>另外，运行此例需要下载CaffeNet模型（Please download CaffeNet from Model Zoo before you run this demo.）<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo" target="_blank" rel="external">https://github.com/BVLC/caffe/wiki/Model-Zoo</a>, <a href="https://gist.github.com/jimgoo/0179e52305ca768a601f" target="_blank" rel="external">https://gist.github.com/jimgoo/0179e52305ca768a601f</a></p>
+<p>|| <em>name: CaffeNet fine-tuned on the Oxford 102 category flower dataset</em></p>
+<p>|| <em>caffemodel: oxford102.caffemodel</em></p>
+<p>|| <em>caffemodel_url: <a href="https://s3.amazonaws.com/jgoode/oxford102.caffemodel" target="_blank" rel="external">https://s3.amazonaws.com/jgoode/oxford102.caffemodel</a></em></p>
+<p><strong>参考：</strong></p>
 <p><a href="http://www.2cto.com/os/201607/528798.html" target="_blank" rel="external">ubuntu14.04+cuda8.0（GTX1080）+caffe安装</a></p>
 <p><a href="http://www.52nlp.cn/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-ubuntu-16-04-nvidia-gtx-1080-cuda-8" target="_blank" rel="external">深度学习主机环境配置: Ubuntu16.04+Nvidia GTX 1080+CUDA8.0</a></p>
 <p><a href="http://www.jianshu.com/p/74e9c8697372" target="_blank" rel="external">深度学习框架torch/caffe/tensor/mxnet安装</a></p>
