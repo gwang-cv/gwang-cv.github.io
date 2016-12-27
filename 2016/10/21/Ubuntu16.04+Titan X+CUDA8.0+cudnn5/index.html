@@ -16,7 +16,7 @@
 <meta property="og:description" content="1.安装Ubuntu16.04 LTS x64
 利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso)，因为已有Win7系统，此处选择“Install Ubuntu alongside Windows Boot Manager”，分区采用默认选择，语言选择English，安装完毕。
 注：此时显示器VGA接口接到主板集成显卡接口上。">
-<meta property="og:updated_time" content="2016-12-27T02:12:47.000Z">
+<meta property="og:updated_time" content="2016-12-27T02:26:31.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu16.04+Titan X+CUDA8.0+cudnn5.1+Caffe">
 <meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
@@ -77,7 +77,7 @@
 						<li>Tags</li>
 						
 						
-						<li>About</li>
+						<li>Über</li>
 						
 					</ul>
 				</div>
@@ -712,10 +712,12 @@ sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/
 sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcurand.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcurand.so.8.0
 sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcudnn.so.5 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcudnn.so.5
 </code></pre><p>重新启动Matlab使之生效。</p>
-<p>另外，运行此例需要下载CaffeNet模型（Please download CaffeNet from Model Zoo before you run this demo.）<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo" target="_blank" rel="external">https://github.com/BVLC/caffe/wiki/Model-Zoo</a>, <a href="https://gist.github.com/jimgoo/0179e52305ca768a601f" target="_blank" rel="external">https://gist.github.com/jimgoo/0179e52305ca768a601f</a></p>
-<p>|| <em>name: CaffeNet fine-tuned on the Oxford 102 category flower dataset</em></p>
-<p>|| <em>caffemodel: oxford102.caffemodel</em></p>
-<p>|| <em>caffemodel_url: <a href="https://s3.amazonaws.com/jgoode/oxford102.caffemodel" target="_blank" rel="external">https://s3.amazonaws.com/jgoode/oxford102.caffemodel</a></em></p>
+<p>另外，运行此例需要下载CaffeNet模型（Please download CaffeNet from Model Zoo before you run this demo.）<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo" target="_blank" rel="external">https://github.com/BVLC/caffe/wiki/Model-Zoo</a> </p>
+<p>|| <em>name: BVLC CaffeNet Model</em></p>
+<p>|| <em>caffemodel: bvlc_reference_caffenet.caffemodel</em></p>
+<p>|| <em>caffemodel_url: <a href="https://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" target="_blank" rel="external">download</a></em></p>
+<p>|| <em>license: unrestricted</em></p>
+<p>详细说明可参见”caffe-master/models/bvlc_reference_caffenet”…</p>
 <p><strong>参考：</strong></p>
 <p><a href="http://www.2cto.com/os/201607/528798.html" target="_blank" rel="external">ubuntu14.04+cuda8.0（GTX1080）+caffe安装</a></p>
 <p><a href="http://www.52nlp.cn/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-ubuntu-16-04-nvidia-gtx-1080-cuda-8" target="_blank" rel="external">深度学习主机环境配置: Ubuntu16.04+Nvidia GTX 1080+CUDA8.0</a></p>
