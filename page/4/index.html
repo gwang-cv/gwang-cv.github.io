@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a>
+						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,81 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Mac Link Github" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/23/Mac Link Github/" class="article-date">
+  	<time datetime="2016-01-23T12:35:51.000Z" itemprop="datePublished">2016-01-23</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/23/Mac Link Github/">Mac连接Github</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>出现问题：<em>permission denied</em></p>
+<p>解决方法：</p>
+<p><strong>Step 1</strong>: Check for SSH keys</p>
+<pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
+</code></pre><p><strong>Step 2</strong>: Generate a new SSH key</p>
+<pre><code>$ ssh-keygen -t rsa -<span class="tag">b</span> <span class="number">4096</span> -C <span class="string">"your_email@example.com"</span>
+</code></pre><p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
+<pre><code><span class="variable">$ </span>eval <span class="string">"$(ssh-agent -s)"</span>
+
+<span class="variable">$ </span>ssh-add ~<span class="regexp">/.ssh/id</span>_rsa
+</code></pre><p><strong>Step 4</strong>: Add your SSH key to your account</p>
+<pre><code><span class="variable">$ </span>pbcopy &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub
+</code></pre><p>Add the copied key to GitHub: 登录github网站完成。</p>
+<p><strong>Step 5</strong>: Test the connection</p>
+<pre><code><span class="variable">$ </span>ssh -<span class="constant">T </span>git<span class="variable">@github</span>.com
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-数学体系解读（by MIT Lin Dahua）" class="article article-type-post" itemscope itemprop="blogPost">
   

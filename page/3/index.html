@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a>
+						<a href="/tags/DeepLearning/" style="font-size: 16.67px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 20px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -168,11 +168,11 @@
 
       <div class="body-wrap">
   
-    <article id="post-MacOS安装torch7" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Python爬取微博关注" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/27/MacOS安装torch7/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.548Z" itemprop="datePublished">2016-12-27</time>
+      <a href="/2016/03/31/Python爬取微博关注/" class="article-date">
+  	<time datetime="2016-03-31T08:13:17.000Z" itemprop="datePublished">2016-03-31</time>
 </a>
     </div>
   
@@ -185,7 +185,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/MacOS安装torch7/">MacOS安装torch7</a>
+      <a class="article-title" href="/2016/03/31/Python爬取微博关注/">Python爬取微博关注</a>
     </h1>
   
 
@@ -194,32 +194,68 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>手动安装：</p>
-<pre><code>$ # <span class="keyword">in</span> a terminal, run the commands
-$ git clone <span class="string">https:</span><span class="comment">//github.com/torch/distro.git ~/torch --recursive</span>
-$ cd ~/torch; bash install-deps;
-$ ./install.sh
+        <p>爬取微博（weibo.cn）指定用户的关注者，最多200条记录（20页，每页10条记录）。</p>
+<pre><code><span class="comment"># -*- coding: utf-8 -*-</span>
 
-－－－－－－－－－－－－－－－－－－－－－－－－－
+<span class="keyword">import</span> requests
+<span class="keyword">import</span> urllib2
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+<span class="keyword">import</span> os
+<span class="keyword">import</span> time
+<span class="keyword">import</span> codecs
+<span class="keyword">import</span> re
+<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span>  Pool
+<span class="comment"># import sys</span>
+<span class="comment"># reload(sys)</span>
+<span class="comment"># sys.setdefaultencoding('utf-8')</span>
 
-$ source <span class="regexp">~/torch/</span>install<span class="regexp">/bin/</span>torch-activate
+<span class="comment"># write text to .txt</span>
+<span class="function"><span class="keyword">def</span> <span class="title">tosave</span><span class="params">(texta)</span>:</span>
+    fn = <span class="string">'following'</span>
+    pa = os.path.dirname(__file__) + <span class="string">'/'</span> + username
+    <span class="comment"># check and create folder</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pa):
+        os.mkdir(pa)
+    fl = pa + <span class="string">'/%s.txt'</span> % fn
+    f = codecs.open(fl, <span class="string">'a'</span>, <span class="string">'utf-8'</span>)
+    f.write(texta + <span class="string">'\n'</span>)
+    f.close()
 
-－－－－－－－－－－－－－－－－－－－－－－－－－
-$ th
+<span class="function"><span class="keyword">def</span> <span class="title">getHtml</span><span class="params">(url, cook)</span>:</span>
+    html = requests.get(url, cookies=cook).content
+    selector = etree.HTML(html)
+    <span class="keyword">return</span> selector
 
-   ______             __   |  Torch7                                         
- <span class="regexp">/_  __/</span>__  ________<span class="regexp">/ /</span>   |  Scientific computing <span class="keyword">for</span> Lua. 
-   <span class="regexp">/ /</span> <span class="regexp">/ _ \/</span> __<span class="regexp">/ __/</span> _ \  |  Type ? for help                                
- /_/  \___/_/  \__/_//_/  |  https:<span class="comment">//github.com/torch         </span>
-                         |  <span class="string">http:</span><span class="comment">//torch.ch                  </span>
 
-th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>}
- <span class="number">5</span>
-<span class="number">6</span>
- <span class="number">7</span>
-[torch.DoubleTensor of size <span class="number">3</span>]
-</code></pre><p>退出 th&gt;</p>
-<pre><code>os.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(htm, xpathStr)</span>:</span>
+    selector = htm
+    content = selector.xpath(xpathStr)  <span class="comment"># copy from chrome # print content</span>
+    <span class="keyword">return</span> content
+
+<span class="function"><span class="keyword">def</span> <span class="title">getPageNum</span><span class="params">(htm)</span>:</span>
+    xps=<span class="string">'//*[@id="pagelist"]/form/div/input[1]//@value'</span>
+    pnum = getContent(htm, xps)
+    <span class="keyword">print</span> pnum[<span class="number">0</span>]
+    <span class="keyword">return</span> int(pnum[<span class="number">0</span>])
+
+cook = {<span class="string">"Cookie"</span>: <span class="string">"XXXXXX"</span>}
+username = <span class="string">'XXXXX'</span> 
+url0=<span class="string">'http://weibo.cn/%s/follow'</span> % username
+<span class="keyword">print</span> url0
+htm = getHtml(url0, cook)
+pagenum=getPageNum(htm)
+<span class="keyword">for</span> pn <span class="keyword">in</span> range(<span class="number">1</span>, pagenum):
+    urls = url0 + <span class="string">'?page=%s'</span> % pn
+    <span class="keyword">print</span> urls
+    htms = getHtml(urls, cook)
+    xptxt = <span class="string">'//td[2]//a[1]'</span>  <span class="comment"># homepage contains many tables</span>
+    xphref=<span class="string">'//td[2]//a[1]//@href'</span> <span class="comment"># href</span>
+    consTxt = getContent(htms, xptxt)
+    consHref=getContent(htms,xphref)
+    <span class="keyword">for</span> indx <span class="keyword">in</span> range(<span class="number">1</span>,len(consTxt)):
+        followTxt=consTxt[indx].text + <span class="string">'     '</span> + consHref[indx]
+        <span class="keyword">print</span> followTxt
+        tosave(followTxt)
 </code></pre>
       
     </div>
@@ -228,12 +264,12 @@ th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
@@ -254,11 +290,11 @@ th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,
 
 
   
-    <article id="post-MacOS安装caffe" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Markdown插入公式" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/27/MacOS安装caffe/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.547Z" itemprop="datePublished">2016-12-27</time>
+      <a href="/2016/03/31/Markdown插入公式/" class="article-date">
+  	<time datetime="2016-03-31T05:16:50.000Z" itemprop="datePublished">2016-03-31</time>
 </a>
     </div>
   
@@ -271,7 +307,7 @@ th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/MacOS安装caffe/">MacOS安装caffe</a>
+      <a class="article-title" href="/2016/03/31/Markdown插入公式/">Markdown插入公式</a>
     </h1>
   
 
@@ -280,96 +316,97 @@ th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>1.需要安装CUDA，不管有没有N卡<br>2.安装OpenBLAS，并在caffe设置文件中设置为：</p>
-<pre><code><span class="preprocessor"># BLAS choice:</span>
-<span class="preprocessor"># atlas for ATLAS (default)</span>
-<span class="preprocessor"># mkl for MKL</span>
-<span class="preprocessor"># open for OpenBlas</span>
-BLAS := open
-<span class="preprocessor"># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.</span>
-<span class="preprocessor"># Leave commented to accept the defaults for your choice of BLAS</span>
-<span class="preprocessor"># (which should work)!</span>
-BLAS_INCLUDE := /opt/OpenBLAS/include
-BLAS_LIB := /opt/OpenBLAS/lib
-</code></pre><p>3.安装依赖库，可用<code>brew list</code>检查安装是否完全<br>4.添加路径：</p>
-<pre><code>export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local/lib  
+        <p>在Markdown中插入数学公式可以采用如下几种方式：</p>
+<p><strong>解决方法1:</strong><br>使用Google Chart的服务器</p>
+<pre><code>&lt;img src="http://chart.googleapis.com/chart?cht=tx<span class="special">&amp;</span>chl= <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>" style="border:none;"&gt;
+</code></pre><p><img src="http://chart.googleapis.com/chart?cht=tx&chl= \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}" style="border:none;"></p>
+<p><strong>解决方法2:</strong><br>使用CodeCogs网站的latex服务接口</p>
+<pre><code>&lt;img src="http://latex.codecogs.com/svg.latex? <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>" style="border:none;"&gt;
+</code></pre><p><img src="http://latex.codecogs.com/svg.latex? \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}" style="border:none;"></p>
+<p><strong>解决方法3:</strong><br>使用forkosh服务器</p>
+<pre><code>&lt;img src="http://www.forkosh.com/mathtex.cgi? <span class="command">\frac</span><span class="special">{</span>1<span class="special">}</span><span class="special">{</span><span class="command">\pi</span><span class="special">}</span>=<span class="command">\frac</span><span class="special">{</span>2<span class="command">\sqrt</span><span class="special">{</span>2<span class="special">}</span><span class="special">}</span><span class="special">{</span>9801<span class="special">}</span><span class="command">\sum</span>_<span class="special">{</span>k=0<span class="special">}</span>^<span class="command">\infty</span><span class="command">\frac</span><span class="special">{</span>(4k)!(1103+26390k)<span class="special">}</span><span class="special">{</span>(k!)^4396^<span class="special">{</span>4k<span class="special">}</span><span class="special">}</span>"&gt;
+</code></pre><p><img src="http://www.forkosh.com/mathtex.cgi? \frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}"></p>
+<p><strong>解决方法4:</strong><br>使用MathJax引擎</p>
+<pre><code>&lt;script type=<span class="string">"text/javascript"</span> src=<span class="string">"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"</span>&gt;&lt;/script&gt;
 
-export DYLD_FALLBACK_LIBRARY_PATH=<span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span><span class="string">lib:</span>$HOME<span class="regexp">/anaconda/</span><span class="string">lib:</span><span class="regexp">/usr/</span>local<span class="regexp">/lib:/</span>usr<span class="regexp">/lib:/</span>opt<span class="regexp">/OpenBLAS/</span><span class="string">lib:</span><span class="regexp">/opt/</span>OpenBLAS
-</code></pre><p>5.下载caffe源文件，编译：<code>make all</code>时报错：</p>
-<pre><code>    PROTOC src/caffe/proto/caffe.proto  
-    make: protoc: No such <span class="built_in">file</span> <span class="operator">or</span> <span class="built_in">directory</span> 
+$$\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span class="list">{2\sqrt{2}</span>}<span class="list">{9801}</span>\sum_<span class="list">{k=0}</span>^\infty\frac<span class="list">{(4k)!(1103+26390k)}</span><span class="list">{(k!)^4396^{4k}</span>}$$ 行间
 
-解决： 
+\\(\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span class="list">{2\sqrt{2}</span>}<span class="list">{9801}</span>\sum_<span class="list">{k=0}</span>^\infty\frac<span class="list">{(4k)!(1103+26390k)}</span><span class="list">{(k!)^4396^{4k}</span>}\\) 行内
+</code></pre><script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
 
-    sudo chown yourname /usr/<span class="built_in">local</span>  
+<p>$$\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}$$</p>
+<p>\(\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}\)</p>
 
-    brew link yourlibpackage
-</code></pre><p>6.Build: 继续编译：<code>make test</code>， <code>make runtest</code></p>
-<pre><code>添加路径：
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
 
-    <span class="built_in">export</span> DYLD_LIBRARY_PATH=/usr/<span class="built_in">local</span>/cuda/lib
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
 
-    <span class="comment">#python</span>
-    <span class="keyword">for</span> req <span class="keyword">in</span> $(cat python/requirements.txt); <span class="keyword">do</span> pip install <span class="variable">$req</span>; <span class="keyword">done</span>
-    make pycaffe
-    <span class="built_in">export</span> PYTHONPATH=~/technologies/caffe/python/:<span class="variable">$PYTHONPATH</span>
-    <span class="built_in">cd</span> ..
-</code></pre><p>make runtest的结果：</p>
-<pre><code>[----------] <span class="number">10</span> tests from PowerLayerTest/<span class="number">0</span>, where TypeParam = N5caffe9CPUDeviceIfEE
-[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span>
-[       OK ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPower</span> (<span class="number">2</span> ms)
-[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerZeroGradient</span>
-[       OK ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerZeroGradient</span> (<span class="number">1</span> ms)
-[ RUN      ] PowerLayerTest/<span class="number">0</span><span class="class">.TestPowerTwoGradient</span>
-...
-[----------] <span class="number">10</span> tests from PowerLayerTest/<span class="number">0</span> (<span class="number">16</span> ms total)
-</code></pre><p>Bugs:</p>
-<pre><code>    <span class="keyword">library</span> <span class="keyword">not</span> found <span class="keyword">for</span> -lboost_python
 
-解决： 
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
 
-    brew install boost-python
-</code></pre><hr>
-<h3 id="测试">测试</h3><p>MNIST</p>
-<p>下载mnist数据，如下代码，报错，需安装<code>brew install wget</code></p>
-<pre><code>./<span class="typedef"><span class="keyword">data</span>/mnist/get_mnist.sh </span>
-</code></pre><p>转数据：</p>
-<pre><code>./examples/mnist/create_mnist.sh
-<span class="variable">Creating</span> lmdb...
-<span class="variable">Done</span>.
 
-./examples/mnist/train_lenet.sh
-</code></pre><p>问题：</p>
-<pre><code>Cannot use GPU in CPU-only Caffe:<span class="instruction"> check </span>mode.
-</code></pre><p>解决： 修改lenet_solver.prototxt 最后一行的GPU改为CPU，继续执行<code>./examples/mnist/train_lenet.sh</code></p>
-<pre><code>I<span class="number">0407 00:51</span>:<span class="number">59.023721</span> <span class="number">2035871744</span> caffe.cpp:178] Use CPU.
-I<span class="number">0407 00:51</span>:<span class="number">59.024705</span> <span class="number">2035871744</span> solver.cpp:48] Initializing solver from parameters: 
-test_iter: 100
-test_interval: 500
-base_lr: 0.01
-display: 100
-max_iter: 10000
-lr_policy: "inv"
-gamma: 0.0001
-power: 0.75
-momentum: 0.9
-weight_decay: 0.0005
-snapshot: 5000
-snapshot_prefix: "examples/mnist/lenet"
-solver_mode: CPU
-net: "examples/mnist/lenet_train_test.prototxt"
-I<span class="number">0407 00:51</span>:<span class="number">59.024927</span> <span class="number">2035871744</span> solver.cpp:91] Creating training net from net file: examples/mnist/lenet_train_test.prototxt
-I<span class="number">0407 00:51</span>:<span class="number">59.026877</span> <span class="number">2035871744</span> net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer mnist
-I<span class="number">0407 00:51</span>:<span class="number">59.026897</span> <span class="number">2035871744</span> net.cpp:313] The NetState phase (0) differed from the phase (1) specified by a rule in layer accuracy
 
-...结果...
 
-I<span class="number">0407 00:57</span>:<span class="number">52.664399</span> <span class="number">2035871744</span> solver.cpp:317] Iteration 10000, loss = <span class="number">0.0032766</span>
-I<span class="number">0407 00:57</span>:<span class="number">52.664429</span> <span class="number">2035871744</span> solver.cpp:337] Iteration 10000, Testing net (#0)
-I<span class="number">0407 00:57</span>:<span class="number">54.761032</span> <span class="number">2035871744</span> solver.cpp:404]     Test net output #0: accuracy = 0.9901
-I<span class="number">0407 00:57</span>:<span class="number">54.761072</span> <span class="number">2035871744</span> solver.cpp:404]     Test net output #1: loss = <span class="number">0.0290336</span> (* 1 = <span class="number">0.0290336</span> loss)
-I<span class="number">0407 00:57</span>:<span class="number">54.761081</span> <span class="number">2035871744</span> solver.cpp:322] Optimization Done.
-I<span class="number">0407 00:57</span>:<span class="number">54.761087</span> <span class="number">2035871744</span> caffe.cpp:222] Optimization Done.
+
+
+
+
+
+  
+    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/python中文编码错误/" class="article-date">
+  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
+</code></pre><p>解决方案1：</p>
+<pre><code>import sys
+<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
+sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
+</code></pre><p>解决方案2:</p>
+<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
+<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
+f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
+f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
 </code></pre>
       
     </div>
@@ -378,12 +415,146 @@ I<span class="number">0407 00:57</span>:<span class="number">54.761087</span> <s
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/机器学习数学基础/" class="article-date">
+  	<time datetime="2016-03-30T14:38:23.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/机器学习数学基础/">机器学习之数学基础</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code><span class="built_in">Math</span> <span class="keyword">for</span> Machine Learning
+</code></pre><p>author：Hal Daume III</p>
+<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
+<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Math/">Math</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/Homebrew设置PATH/" class="article-date">
+  	<time datetime="2016-03-30T14:37:51.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/Homebrew设置PATH/">Homebrew设置PATH路径</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
+<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
+<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
+</code></pre><p>无法找到brew命令。</p>
+<p>卸载Homebrew重装后，终端提示：</p>
+<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
+</code></pre><p><strong>解决</strong>：</p>
+<p>用vim打开，在profile文件最后添加如下语句：</p>
+<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
+</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
@@ -407,8 +578,8 @@ I<span class="number">0407 00:57</span>:<span class="number">54.761087</span> <s
     <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/27/install nose numpy scipy/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.546Z" itemprop="datePublished">2016-12-27</time>
+      <a href="/2016/03/30/install nose numpy scipy/" class="article-date">
+  	<time datetime="2016-03-30T14:37:44.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -421,7 +592,7 @@ I<span class="number">0407 00:57</span>:<span class="number">54.761087</span> <s
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/install nose numpy scipy/">Mac安装Nose pip</a>
+      <a class="article-title" href="/2016/03/30/install nose numpy scipy/">Mac安装Nose pip</a>
     </h1>
   
 
@@ -501,11 +672,11 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
 
 
   
-    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/27/Homebrew设置PATH/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.545Z" itemprop="datePublished">2016-12-27</time>
+      <a href="/2016/03/30/Mac终端安装lxml失败/" class="article-date">
+  	<time datetime="2016-03-30T14:37:23.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -518,7 +689,7 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/Homebrew设置PATH/">Homebrew设置PATH路径</a>
+      <a class="article-title" href="/2016/03/30/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
     </h1>
   
 
@@ -527,16 +698,23 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
-<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
-<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
-</code></pre><p>无法找到brew命令。</p>
-<p>卸载Homebrew重装后，终端提示：</p>
-<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
-</code></pre><p><strong>解决</strong>：</p>
-<p>用vim打开，在profile文件最后添加如下语句：</p>
-<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
-</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
+        <p><strong>安装lxml，出现错误</strong></p>
+<pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
+Collecting lxml
+Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
+<span class="number">100</span>% |████████████████████████████████| <span class="number">3.7</span>MB <span class="number">157</span>kB/s 
+Installing collected packages: lxml
+Running setup.py <span class="keyword">install</span> <span class="keyword">for</span> lxml ... error</span>
+</code></pre><hr>
+<p><strong><strong> 解决方法</strong></strong></p>
+<pre><code>sudo C_INCLUDE_PATH=<span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span><span class="string">libxml2:</span><span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span>libxml2<span class="regexp">/libxml:/</span>Applications<span class="regexp">/Xcode.app/</span>Contents<span class="regexp">/Developer/</span>Platforms<span class="regexp">/MacOSX.platform/</span>Developer<span class="regexp">/SDKs/</span>MacOSX10.11.sdk<span class="regexp">/usr/</span>include
+
+pip install lxml
+
+Installing collected <span class="string">packages:</span> lxml
+Running setup.py install <span class="keyword">for</span> lxml ... done
+Successfully installed lxml-<span class="number">3.6</span>.0`
+</code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
 
       
     </div>
@@ -571,11 +749,11 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
 
 
   
-    <article id="post-DL学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/12/27/DL学习笔记/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.545Z" itemprop="datePublished">2016-12-27</time>
+      <a href="/2016/03/30/xcode安装command_line_tools/" class="article-date">
+  	<time datetime="2016-03-30T14:37:17.000Z" itemprop="datePublished">2016-03-30</time>
 </a>
     </div>
   
@@ -588,7 +766,7 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/DL学习笔记/">DL学习笔记</a>
+      <a class="article-title" href="/2016/03/30/xcode安装command_line_tools/">Xcode安装command line tools</a>
     </h1>
   
 
@@ -597,282 +775,9 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
     
     <div class="article-entry" itemprop="articleBody">
       
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-<h3 id="（一）DeepLearning_(DL)概述">（一）DeepLearning (DL)概述</h3><h4 id="1-_什么是DL？">1. 什么是DL？</h4><p>机器学习ML的框架：</p>
-<p>(1)数据：\({(x_i,y_i)}, 1\le i \le m\)</p>
-<p>(2)模型：\(\mathcal{F}={f(x;\theta)}, \theta\in\Theta\)</p>
-<p>i. 线性： \(y=f(x)=w^Tx+b\) 【x——&gt;y】</p>
-<p>ii. 广义线性：\(y=f(x)=w^T\phi(x)+b\)  【x——&gt;[\(\bar{x}=\phi(x)\)]——&gt;y，其中的\(\phi\)为模式识别中的特征Feature，这一步也称为特征学习。】</p>
-<p>iii. 非线性：人工神经网络（ANN）</p>
-<p>(3)准则：损失函数\(L(y,f(x))\)</p>
-<p>经验风险：\(R(\theta)=\frac{1}{m}\sum_{i=1}^m{L(y,f(x_i,\theta))}\)</p>
-<p>正则化项：\(|w|_2^2\)</p>
-<p>Minimizing： \(R(\theta)+\lambda|w|_2^2\)，或稀疏正则项L1.</p>
-<p>因此转化为一个最优化问题。</p>
-<p>神经网络ANN中 \(y=\sigma(\sum_i{w_i x_i+b})\) 相当于从P维到Q维的一个映射函数。则DL就是解决这个深度前馈神经网络的算法。</p>
-<h4 id="2-_存在的困难及挑战">2. 存在的困难及挑战</h4><p>可训练的<strong>参数太多</strong>；【参数过多带来的问题具体包括：计算资源要大，数据要多(否则出现过拟合)，算法效率要高】</p>
-<p>多层网络以后的优化问题变为<strong>非凸优化</strong>问题；</p>
-<p><strong>梯度弥散</strong>问题，即从网络层由上往下的参数调节变得非常困难；</p>
-<p>解释困难(可通过一些可视化的方法一定程度上来进行解释)；</p>
-<h4 id="3-算法历史">3.算法历史</h4><p>1958年，感知机Perception：一个神经细胞的处理能力较差，与或运算无法实现。</p>
-<p>1986年，神经网络的概念出现：BP算法，对浅层网络做了很多的工作。一方面受限于当时的硬件和软件问题。</p>
-<p>1998年，CNN卷积神经网络，在手写体识别中取得了成功。—LeCun</p>
-<p>2006年，DBN深度置信网络，—Hinton</p>
-<h4 id="4-为什么学习DL">4.为什么学习DL</h4><p>有效！【语音识别，目标识别，NLP，CV….】</p>
-<h4 id="5-领域概述">5.领域概述</h4><p>学术机构：</p>
-<p>TorontoU，Hinton，1975年EdinburghU’s PHD;<br>NewYorkU，LeCun，1987年PHD;<br>MentrealU，Bengio，1991年McGillU’s PHD;<br>StanfordU, Ng，2003年UCBerkeley’s PHD;</p>
-<p>学术会议：<br>NIPS，ICML，ICRL，…</p>
-<p>参考: <a href="http://v.youku.com/v_show/id_XNjU1MzU4NDIw.html?f=21508721&amp;o=1" target="_blank" rel="external">深度学习课程-概述</a></p>
-<h3 id="（二）FNN_&amp;_BP">（二）FNN &amp; BP</h3><h4 id="一-前馈神经网络FNN">一.前馈神经网络FNN</h4><h5 id="1-神经元、神经层、神经网">1.神经元、神经层、神经网</h5><p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/SingleNeuron.png" alt=""></p>
-<pre><code>神经元
-x_1 -w_1-\
-..  -w_i<span class="comment">--〇z---&gt;a</span>
-x_p -w_p-/
-</code></pre><p>一个神经元的输出是一个线性函数与一个非线性函数的复合：\([z=\sum w_ix_i+b,~a=f(z)]=&gt;a=f(\sum w_ix_i+b)\). </p>
-<p>其中激活函数包括：sigmod: \(\sigma(x)=\frac{1}{1+e^x};~\tan(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}};~|x|;~\)等</p>
-<pre><code><span class="comment">神经层</span>
-<span class="comment">x_1</span> <span class="literal">-</span><span class="comment">w_1</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">\</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">a_1</span> 
-              <span class="comment">X</span>
-<span class="string">.</span><span class="string">.</span>  <span class="literal">-</span><span class="comment">w_i</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">X</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="string">.</span><span class="string">.</span><span class="string">.</span>
-              <span class="comment">X</span>
-<span class="comment">x_p</span> <span class="literal">-</span><span class="comment">w_p</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">/</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">a_p</span>
-</code></pre><p>神经层上的每个神经元的输入时相同的，但权值是不同的。我们用 \( a^{(l)}_i \)表示第 \( l \)层第 \( i \)单元的激活值（输出值）。</p>
-<p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network331.png" alt=""></p>
-<pre><code>神经网
--<span class="ruby">〇-\    -〇-\
-</span>-<span class="ruby">〇--〇-<span class="regexp">/-〇--〇-...
-</span></span>-<span class="ruby">〇--〇-\-〇--〇-...
-</span>-<span class="ruby">〇-<span class="regexp">/    -〇-/</span>
-</span>n_1  n_2  n_3   ...   n_L
-</code></pre><h5 id="2-记号">2.记号</h5><p>超参数(并不是学习出来的，而是认为根据需要设定的参数，也称元参数)：层数L，第l层的神经元个数\(n^{(l)}\)，神经元非线性函数\(f_l()\).</p>
-<p>要学习的参数：连接权weight参数\(w_i^{(1)},w_i^{(2)},..w_i^{(L)}\)，两层之间的连接权。 偏bias参数\(b^{(1)},b^{(2)},..b^{(L)}\).</p>
-<p>第l层神经元的状态\(z^{(l)},1\le l\le L\)；第l层神经元的激活activation：\(a^{(l)}\)</p>
-<h5 id="3-前馈计算">3.前馈计算</h5><p>(1)基本公式</p>
-<p>\(z^{(l+1)}=w^l a^l+b^l  \)</p>
-<p>\(a^l=f_l(z^l) \) </p>
-<p>\(h_{w,b}(x)=a^{(l+1)}=f(z^{(l+1)})\)</p>
-<p>(2)前馈计算(\(W=(w^1,…,w^l),b=(b^1,..,b^l)\))</p>
-<p>\(l=1, a^l=x\) </p>
-<p>计算步骤：\(a^1-&gt;z^2-&gt;a^2-&gt;…-&gt;z^L-&gt;a^L\) </p>
-<p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network3322.png" alt=""></p>
-<p>“目前为止，我们讨论了一种神经网络，我们也可以构建另一种结构的神经网络（这里结构指的是神经元之间的联接模式），也就是包含多个隐藏层的神经网络。最常见的一个例子是\(n<em>l\)层的神经网络，第1层是输入层，第 \(n_l\)层是输出层，中间的每个层 \(l\)与层 \(l+1\)紧密相联。这种模式下，要计算神经网络的输出结果，我们可以按照之前描述的等式，按部就班，进行前向传播，逐一计算第 \(L_2\)层的所有激活值，然后是第 \(L_3\)层的激活值，以此类推，直到第 \(L</em>{n_l}\)层。这是一个前馈神经网络的例子，因为这种联接图没有闭环或回路。”——<a href="http://ufldl.stanford.edu/wiki/index.php/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C" target="_blank" rel="external">UFLDL</a></p>
-<h5 id="4-应用于ML">4.应用于ML</h5><p>数据D：\((x_i,y_i),1\le i\le N\)</p>
-<p>模型M：\(y=h(x|w,b)\)</p>
-<p>准则C: \(\sum_i|y_i-a^l(x|w,b)|^2+\lambda|w|_F^2) \)=min</p>
-<p>其中，第二项是一个规则化项（也叫权重衰减项），其目的是减小权重的幅度，防止过度拟合: \(||w||<em>F^2=\sum_i\sum_jw</em>{ij}^2\)</p>
-<p>权重衰减参数 \( \lambda \)用于控制公式中两项的相对重要性。</p>
-<p>使用梯度下降法进行求解这个优化问题。</p>
-<p>将上式写为：\(\sum_i J(x_i,y_i;w,b)+\lambda|w|_F^2\)=min</p>
-<p>目标函数关于待求参数的导数：</p>
-<p>其中：$$\frac{\partial|w|_F^2}{\partial w}=2w$$</p>
-<p>然后重点求:$$\frac{\partial \sum J(.)}{\partial w};~~\frac{\partial \sum J(.)}{\partial b}$$</p>
-<p>迭代公式：<br>$$w^{t+1}=w^t-\alpha \frac{\partial \sum J(.)}{\partial w}$$<br>$$b^{t+1}=b^t-\alpha \frac{\partial \sum J(.)}{\partial b}$$<br>其中\(\alpha\)是学习速率。</p>
-<h4 id="二-BP算法">二.BP算法</h4><p>“我们的目标是针对参数 \( W \)和 \( b \)来求其函数 \( J(W,b) \)的最小值。为了求解神经网络，我们需要将每一个参数 \( W^{(l)}<em>{ij} \)和 \( b^{(l)}_i \)初始化为一个很小的、接近零的随机值（比如说，使用正态分布 \( {Normal}(0,\epsilon^2) \)生成的随机值，其中 \( \epsilon \)设置为 \( 0.01 \) ），之后对目标函数使用诸如批量梯度下降法的最优化算法。因为 \( J(W, b) \)是一个非凸函数，梯度下降法很可能会收敛到局部最优解；但是在实际应用中，梯度下降法通常能得到令人满意的结果。最后，需要再次强调的是，要将参数进行随机初始化，而不是全部置为  0。如果所有参数都用相同的值作为初始值，那么所有隐藏层单元最终会得到与输入值有关的、相同的函数（也就是说，对于所有 \( i\)，\( W^{(1)}</em>{ij}\)都会取相同的值，那么对于任何输入 \( x \)都会有：\( a^{(2)}_1 = a^{(2)}_2 = a^{(2)}_3 = \ldots \)）。随机初始化的目的是使对称失效。”——<a href="http://ufldl.stanford.edu/wiki/index.php/%E5%8F%8D%E5%90%91%E4%BC%A0%E5%AF%BC%E7%AE%97%E6%B3%95" target="_blank" rel="external">UFLDL</a></p>
-<h5 id="1-多元函数的偏导数">1.多元函数的偏导数</h5><p>(1)<br>$$X=[x_1,…,x_p]^T\in R^p,~ y=f(X)=f(x_1,…,x_p)$$<br>$$\nabla_x f(x)=\nabla_x y=\frac{\partial y}{\partial x}=[\frac{\partial f(x_1)}{\partial x},…,\frac{\partial f(x_p)}{\partial x}]^T\in R^p$$<br>(2)<br>$$x\in R^p, y=[..]^T\in R^q$$<br>$$y=[f_1(x),..,f_q(x)]^T$$<br>$$\nabla_xy=\nabla_x f(x)=\frac{\partial y}{\partial x}=[\frac{\partial f(x)}{\partial x_i}]^T\in R^{p\times q}$$<br>(3) 导数法则：链式法则</p>
-<h5 id="2-BP算法">2.BP算法</h5><p>BP思路：给定一个样例 \( (x,y)\)，我们首先进行“前向传导”运算，计算出网络中所有的激活值，包括 \( h_{W,b}(x) \)的输出值。之后，针对第 \( l \)层的每一个节点 \( i\)，我们计算出其“残差” \( \delta^{(l)}_i\)，该残差表明了该节点对最终输出值的残差产生了多少影响。对于最终的输出节点，我们可以直接算出网络产生的激活值与实际值之间的差距，我们将这个差距定义为 \( \delta^{(n_l)}_i \)（第 \( n_l \)层表示输出层）。对于隐藏单元我们如何处理呢？我们将基于节点（第 \( l+1 \)层节点）残差的加权平均值计算 \( \delta^{(l)}_i\)，这些节点以 \( a^{(l)}_i \)作为输入。</p>
-<p>BP算法步骤：</p>
-<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots \) 直到输出层 \( L</em>{n_l} \)的激活值。</p>
-<p>(ii)对于第 \( n_l \)层（输出层）的每个输出单元 \( i\)，我们根据以下公式计算残差：</p>
-<p>$$\delta_i^{(n_l)}= \frac{\partial J}{\partial z_i^{n_l}}=-(y_i-a_i^{(n_l)})\cdot f’(z_i^{(n_l)})$$</p>
-<p>(iii)令\(\delta^l=\frac{\partial J}{\partial z^l}\)，则对 \(  l = n_l-1, n_l-2, n_l-3, \ldots, 2 \)的各个层，第 \(  l \)层的第 \(  i \)个节点的残差计算方法如下：（矩阵向量形式）</p>
-<p>$$\begin{equation}\begin{split}\delta^{l}&amp;=\frac{\partial J}{\partial z^{l}}=\frac{\partial a^l}{\partial z^l}\frac{\partial z^{l+1}}{\partial a^l}\frac{\partial J}{\partial z^{l+1}}\\<br>&amp;=diag(f’(z^l))\cdot((w^l)^T\cdot\delta^{l+1})\\<br>&amp;=(f’_l(z^l))\odot((w^l)^T\cdot\delta^{l+1})\\<br>&amp;=((w^l)^T\cdot\delta^{l+1})\odot(f’_l(z^l))<br>\end{split}\end{equation}$$<br>以上逐次从后向前求导的过程即为“反向传导（BP）”的本意所在.</p>
-<p>(iv)计算所需的偏导数：<br>$$\frac{\partial J}{\partial w^l}=\delta^{l+1}\cdot(a^l)^T$$<br>$$\frac{\partial J}{\partial b^l}=\delta^{l+1}$$</p>
-<p>其中，假设 \( f(z) \)是sigmoid函数，并且我们已经在前向传导运算中得到了 \( a^{(l)}_i\)。那么，使用我们早先推导出的 \( f’(z)\)表达式，就可以计算得到 \( f’(z^{(l)}_i) = a^{(l)}_i (1- a^{(l)}_i)\)。</p>
-<h5 id="3-梯度下降法求解过程">3.梯度下降法求解过程</h5><p>(1) 对所有 \(  l\)，令 \(  \Delta W^{(l)} := 0 \),  \(  \Delta b^{(l)} := 0 \)（设置为全零矩阵或全零向量）</p>
-<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算: </p>
-<p>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \nabla_{b^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \Delta W^{(l)} := \Delta W^{(l)} + \nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \Delta b^{(l)} := \Delta b^{(l)} + \nabla_{b^{(l)}} J(W,b;x,y) \)</p>
-<p>(3) 更新参数：<br>$$ \begin{align}<br>W^{(l)} &amp;= W^{(l)} - \alpha \left[ \left(\frac{1}{m} \Delta W^{(l)} \right) + \lambda W^{(l)}\right] \\<br>b^{(l)} &amp;= b^{(l)} - \alpha \left[\frac{1}{m} \Delta b^{(l)}\right]<br>\end{align}$$</p>
-<p>重复梯度下降法的迭代步骤来减小代价函数 \( J(W,b)\) ，以训练我们的神经网络。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Clarifai" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/27/Clarifai/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.544Z" itemprop="datePublished">2016-12-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/Clarifai/">Clarifai图像自动化标签</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Clarifai 公司：www.clarifai.com</p>
-<p>Clarifai创始人Matt Zeiler是New York University (NYU) Rob Fergus教授门下的学生。从上个世纪开始，NYU就一直是neural computation的重镇。现在Deep net的前身ConvNet，就是出自 NYU 的 Yann LeCun教授组.</p>
-<p>ImageNet Large Scale Visual Recognition Competition 2013 (ILSVRC2013)</p>
-<p>其中Matt Zeiler (<a href="http://Clarifai.com" target="_blank" rel="external">http://Clarifai.com</a>) 的算法排名第一，在不用额外训练数据的情况下，跑到了error rate 0.1174这样的成绩。</p>
-<p>这个成绩是这样解读的：任选一张图片，扔给算法，算法返回5个结果。如果5个结果中，有一个猜对了物体类别，就算正确。换言之，如果允许猜5次，Clarifai已经有接近90%的准确率了。这里的物体类别包括了英语中两万多个名词，几乎涵盖了各大类别。</p>
-<p><a href="https://developer.clarifai.com/guide/" target="_blank" rel="external">Clarifai API</a></p>
-<p>参考</p>
-<p><a href="https://zhuanlan.zhihu.com/p/19821292" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/19821292</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Clarifai API体验" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/27/Clarifai API体验/" class="article-date">
-  	<time datetime="2016-12-27T05:56:58.543Z" itemprop="datePublished">2016-12-27</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/12/27/Clarifai API体验/">Clarifai API体验</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
-<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
-<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
-<pre><code>pip install clarifai==<span class="number">2.0</span>.10
-clarifai config
-<span class="label">CLARIFAI_APP_ID:</span>
-<span class="label">CLARIFAI_APP_SECRET:</span>
-</code></pre><p>在python中实现测试：</p>
-<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
-app = ClarifaiApp()
-model = app.models.get(<span class="string">'general-v1.3'</span>)
-<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
-<span class="comment"># or local image</span>
-<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
-</code></pre><p>一、打开MAC终端，输入Request命令：</p>
-<ol>
-<li><p>测试在线图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试本地图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试多幅图像</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-</ol>
-<p>二、读取Response结果</p>
-<p>在python中使用json来解析文本结果：</p>
-<pre><code># -*- coding: utf-<span class="number">8</span> -*-
-<span class="keyword">import</span> json
-<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
-    <span class="built_in">print</span> <span class="built_in">line</span>
-<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
-results=<span class="built_in">str</span>[<span class="string">'results'</span>]
-strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
-<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
-    <span class="built_in">print</span> ind
-    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
-</code></pre><p>输出解析结果（图像的tag类别）：</p>
-<pre><code><span class="number">0</span>
-[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
-<span class="number">1</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
-<span class="number">2</span>
-[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
-<span class="number">3</span>
-[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
-<span class="number">4</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
+        <p>command line tools</p>
+<p>打开命令行，输入：</p>
+<pre><code>xcode-<span class="built_in">select</span> <span class="comment">--install</span>
 </code></pre>
       
     </div>
@@ -881,12 +786,12 @@ strNum=len(<span class="built_in">str</span>[<span class="string">'results'</spa
       
       
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
 	</div>
 
       
 	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
@@ -1035,81 +940,6 @@ sudo make install
 </code></pre><hr>
 <p>MAC 修改host文件 </p>
 <pre><code>sudo vi <span class="regexp">/etc/</span>hosts
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mac Link Github" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/01/23/Mac Link Github/" class="article-date">
-  	<time datetime="2016-01-23T12:35:51.000Z" itemprop="datePublished">2016-01-23</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/23/Mac Link Github/">Mac连接Github</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>出现问题：<em>permission denied</em></p>
-<p>解决方法：</p>
-<p><strong>Step 1</strong>: Check for SSH keys</p>
-<pre><code>$ <span class="keyword">ls</span> -<span class="keyword">al</span> ~/.ssh
-</code></pre><p><strong>Step 2</strong>: Generate a new SSH key</p>
-<pre><code>$ ssh-keygen -t rsa -<span class="tag">b</span> <span class="number">4096</span> -C <span class="string">"your_email@example.com"</span>
-</code></pre><p><strong>Step 3</strong>: Add your key to the ssh-agent</p>
-<pre><code><span class="variable">$ </span>eval <span class="string">"$(ssh-agent -s)"</span>
-
-<span class="variable">$ </span>ssh-add ~<span class="regexp">/.ssh/id</span>_rsa
-</code></pre><p><strong>Step 4</strong>: Add your SSH key to your account</p>
-<pre><code><span class="variable">$ </span>pbcopy &lt; ~<span class="regexp">/.ssh/id</span>_rsa.pub
-</code></pre><p>Add the copied key to GitHub: 登录github网站完成。</p>
-<p><strong>Step 5</strong>: Test the connection</p>
-<pre><code><span class="variable">$ </span>ssh -<span class="constant">T </span>git<span class="variable">@github</span>.com
 </code></pre>
       
     </div>

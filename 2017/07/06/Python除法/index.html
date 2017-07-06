@@ -4,39 +4,30 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Python中文编码错误(UnicodeEncodeError) | Hello World</title>
+  <title>Python除法 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
-解决方案1：
-import sys
-reload(sys)
-sys.setdefaultencoding(&apos;utf-8&apos;)
-解决方案2:
-不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f = codecs.open(‘XX.txt’, ‘a’, ‘u">
+  <meta name="description" content="python 2.x版本中存在两种除法运算:
+即所谓的true除法和floor除法。
+当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
+如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
+另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python中文编码错误(UnicodeEncodeError)">
-<meta property="og:url" content="http://gwang-cv.github.io/2016/03/30/python中文编码错误/index.html">
+<meta property="og:title" content="Python除法">
+<meta property="og:url" content="http://gwang-cv.github.io/2017/07/06/Python除法/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
-解决方案1：
-import sys
-reload(sys)
-sys.setdefaultencoding(&apos;utf-8&apos;)
-解决方案2:
-不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f = codecs.open(‘XX.txt’, ‘a’, ‘u">
-<meta property="og:updated_time" content="2016-03-30T14:40:33.000Z">
+<meta property="og:description" content="python 2.x版本中存在两种除法运算:
+即所谓的true除法和floor除法。
+当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
+如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
+另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
+<meta property="og:updated_time" content="2017-07-06T12:02:31.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python中文编码错误(UnicodeEncodeError)">
-<meta name="twitter:description" content="UnicodeEncodeError: ‘ascii’ codec can’t encode
-解决方案1：
-import sys
-reload(sys)
-sys.setdefaultencoding(&apos;utf-8&apos;)
-解决方案2:
-不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：
-f = codecs.open(‘XX.txt’, ‘a’, ‘u">
+<meta name="twitter:title" content="Python除法">
+<meta name="twitter:description" content="python 2.x版本中存在两种除法运算:
+即所谓的true除法和floor除法。
+当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
+如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
+另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
   
   
     <link rel="icon" href="/favicon.png">
@@ -191,11 +182,11 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘u">
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
+      <a href="/2017/07/06/Python除法/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
 </a>
     </div>
   
@@ -208,7 +199,7 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘u">
         
   
     <h1 class="article-title" itemprop="name">
-      Python中文编码错误(UnicodeEncodeError)
+      Python除法
     </h1>
   
 
@@ -217,7 +208,7 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘u">
       <div class="article-info article-info-post">
         
 	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 	</div>
 
         
@@ -232,18 +223,20 @@ f = codecs.open(‘XX.txt’, ‘a’, ‘u">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
-</code></pre><p>解决方案1：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p>解决方案2:</p>
-<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
-f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
-f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
-</code></pre>
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
       
     </div>
     
@@ -252,18 +245,9 @@ f.<span class="function"><span class="title">close</span><span class="params">()
     
 <nav id="article-nav">
   
-    <a href="/2016/03/31/Markdown插入公式/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Markdown插入公式
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/03/30/机器学习数学基础/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">机器学习之数学基础</div>
+    <a href="/2017/07/06/Git配置出错Permission Denied/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Git配置出现Permission denied问题</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
