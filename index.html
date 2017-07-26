@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -168,161 +168,11 @@
 
       <div class="body-wrap">
   
-    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Python除法/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Git配置出错Permission Denied/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Git配置出错Permission Denied/">Git配置出现Permission denied问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MacOS github后台配置ssh key之后本地无法git clone的问题 </p>
-<pre><code><span class="variable">Permission</span> denied (publickey).
-</code></pre><p>当你在github后台添加了ssh keys之后，在本地这么测试一下：</p>
-<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
-</code></pre><p>如果返回是：</p>
-<pre><code><span class="variable">Permission</span> denied (publickey).
-</code></pre><p>那么你可能要在本地ssh-add一下，当然在这之前你可以使用 ssh -vT git@github.com 查看一下到底是因为什么原因导致的失败。</p>
-<pre><code><span class="label">ssh</span>-<span class="keyword">add </span>~/.ssh/id_rsa (maybe: ssh-<span class="keyword">add </span>~/id_rsa)
-</code></pre><p>然后会返回如下：</p>
-<pre><code>Enter passphrase <span class="keyword">for</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span><span class="string">id_rsa:</span>
-Identity <span class="string">added:</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>id_rsa (<span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>youraccount_rsa)
-</code></pre><p>之后再使用 </p>
-<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
-</code></pre><p>会返回成功：</p>
-<pre><code>Hi youraccount! You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.
-</code></pre><p>说明你目前本地的ssh已经切换到了id_rsa这个账号，</p>
-<p>之后便可以进行git clone到本地的操作了！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
     <article id="post-Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/07/06/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+      <a href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" class="article-date">
+  	<time datetime="2017-07-26T03:36:45.000Z" itemprop="datePublished">2017-07-26</time>
 </a>
     </div>
   
@@ -335,7 +185,7 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/">Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0</a>
+      <a class="article-title" href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/">Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0</a>
     </h1>
   
 
@@ -722,6 +572,156 @@ objs = cls_objs
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Git配置出错Permission Denied/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Git配置出错Permission Denied/">Git配置出现Permission denied问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>MacOS github后台配置ssh key之后本地无法git clone的问题 </p>
+<pre><code><span class="variable">Permission</span> denied (publickey).
+</code></pre><p>当你在github后台添加了ssh keys之后，在本地这么测试一下：</p>
+<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
+</code></pre><p>如果返回是：</p>
+<pre><code><span class="variable">Permission</span> denied (publickey).
+</code></pre><p>那么你可能要在本地ssh-add一下，当然在这之前你可以使用 ssh -vT git@github.com 查看一下到底是因为什么原因导致的失败。</p>
+<pre><code><span class="label">ssh</span>-<span class="keyword">add </span>~/.ssh/id_rsa (maybe: ssh-<span class="keyword">add </span>~/id_rsa)
+</code></pre><p>然后会返回如下：</p>
+<pre><code>Enter passphrase <span class="keyword">for</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span><span class="string">id_rsa:</span>
+Identity <span class="string">added:</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>id_rsa (<span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>youraccount_rsa)
+</code></pre><p>之后再使用 </p>
+<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
+</code></pre><p>会返回成功：</p>
+<pre><code>Hi youraccount! You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.
+</code></pre><p>说明你目前本地的ssh已经切换到了id_rsa这个账号，</p>
+<p>之后便可以进行git clone到本地的操作了！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Python除法/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
 	</div>
 
 
