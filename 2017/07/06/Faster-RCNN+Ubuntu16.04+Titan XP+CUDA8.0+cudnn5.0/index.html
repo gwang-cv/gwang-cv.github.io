@@ -20,7 +20,7 @@ c">
 语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。
 2.更新源
 c">
-<meta property="og:updated_time" content="2017-07-26T03:07:21.000Z">
+<meta property="og:updated_time" content="2017-07-26T03:14:24.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0">
 <meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
@@ -565,7 +565,8 @@ sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<
 </code></pre><p><strong>faster-rcnn测试pascal_voc目标检测</strong></p>
 <pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
 ./tools/demo.<span class="keyword">py</span>
-</code></pre><p>常见的报错Debug：</p>
+</code></pre><hr>
+<p>常见的报错Debug：</p>
 <hr>
 <p><em>AttributeError: ‘module’ object has no attribute ‘text_format’</em></p>
 <p>需要在py-faster-rcnn/lib/fast_rcnn/train.py中添加：</p>
@@ -595,18 +596,9 @@ objs = cls_objs
     
 <nav id="article-nav">
   
-    <a href="/2017/07/06/Git配置出错Permission Denied/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Git配置出现Permission denied问题
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/06/Python除法/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Python除法</div>
+    <a href="/2017/07/06/Git配置出错Permission Denied/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Git配置出现Permission denied问题</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
