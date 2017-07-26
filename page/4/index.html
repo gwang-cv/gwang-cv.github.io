@@ -168,6 +168,90 @@
 
       <div class="body-wrap">
   
+    <article id="post-Mac设置环境变量" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/01/25/Mac设置环境变量/" class="article-date">
+  	<time datetime="2016-01-25T12:35:51.000Z" itemprop="datePublished">2016-01-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/01/25/Mac设置环境变量/">Mac设置环境变量</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
+<pre><code><span class="built_in">echo</span> <span class="variable">$SHELL</span>
+</code></pre><p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
+<p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
+<p>Mac OS X 10.2之前默认的是C Shell。</p>
+<p>Mac OS X 10.3之后默认的是Bourne Shell。</p>
+<p>（2）如果是Bourne Shell。</p>
+<p>那么你可以把你要添加的环境变量添加到你主目录下面的.profile或者.bash_profile，如果存在没有关系添加进去即可，如果没有生成一个。</p>
+<pre><code><span class="number">1</span>. <span class="keyword">open</span>/<span class="keyword">vim</span>  /etc/<span class="keyword">profile</span>   （建议不修改这个文件 ）
+</code></pre><p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
+<pre><code><span class="number">2</span>. /etc/<span class="keyword">bashrc </span>   （一般在这个文件中添加系统级环境变量）
+</code></pre><p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
+<p> 我在这里加入mysqlstart、mysql和mysqladmin命令的别名，保证每一个用户都可以使用这3个命令。</p>
+<pre><code><span class="number">3</span>. ~/<span class="class">.bash_profile</span>  （一般在这个文件中添加用户级环境变量）
+</code></pre><p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
+<p> 若bash shell是以login方式执行时，才会读取此文件。该文件仅仅执行一次!默认情况下,他设置一些环境变量</p>
+<p> 我在这里：设置终端配色、</p>
+<p> 我在这里：设置命令别名     </p>
+<pre><code><span class="built_in">alias</span> ll=<span class="string">'ls -la'</span>
+</code></pre><p> 我在这里：设置环境变量：</p>
+<pre><code><span class="built_in">export</span> PATH=/opt/<span class="built_in">local</span>/bin:/opt/<span class="built_in">local</span>/sbin:<span class="variable">$PATH</span>
+</code></pre><hr>
+<p>MAC 修改host文件 </p>
+<pre><code>sudo vi <span class="regexp">/etc/</span>hosts
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Mac Link Github" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
