@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>About</li>
+						<li>Über</li>
 						
 					</ul>
 				</div>
@@ -243,6 +243,427 @@ Can't parse message <span class="keyword">of</span> type <span class="string">"c
 because it <span class="keyword">is</span> missing required fields: 
 layer<span class="comment">[494]</span>.psroi_pooling_param.output_dim, 
 layer<span class="comment">[494]</span>.psroi_pooling_param.group_size
+</code></pre><p>可能的解决方法：    </p>
+<pre><code>zhanghaoinf commented <span class="function_start"><span class="keyword">on</span></span> Apr <span class="number">12</span> • edited
+Hi, @liu09114 , I checked <span class="keyword">before</span> when I used <span class="keyword">the</span> detection model published
+ <span class="keyword">by</span> msra (models store <span class="keyword">in</span> onedrive), <span class="keyword">the</span> problem will occur. If you 
+ initialize <span class="keyword">and</span> train your own model <span class="keyword">with</span> resnet-<span class="number">101</span> (classification model 
+ pre-trained <span class="function_start"><span class="keyword">on</span></span> ImageNet-<span class="number">1000</span>), <span class="keyword">the</span> problem will disappear. By <span class="keyword">the</span> way, you 
+ need <span class="keyword">the</span> coco branch <span class="keyword">to</span> train your own model.
+
+I think <span class="keyword">the</span> sentence <span class="string">"If you want to use/train this model, 
+please use the coco branch of this repository. "</span> <span class="keyword">in</span> <span class="keyword">the</span> readme <span class="keyword">is</span> important. :)    
+</code></pre><hr>
+<h2 id="训练自己的模型">训练自己的模型</h2><p>1.数据集</p>
+<p>数据集拷贝到$RFCN_ROOT/data下，此处只有VOC2007的数据：</p>
+<pre><code>VOCdevkit2007  <span class="comment">#link</span>
+VOCdevkit0712  <span class="comment">#link                     </span>
+VOCdevkit<span class="regexp">/VOC2007/</span>                  
+VOCdevkit<span class="regexp">/VOC0712/</span>   <span class="comment">#作者是用VOC2007和VOC2012训练的，所以文件夹名字带0712                </span>
+</code></pre><p>2.准备预训练模型</p>
+<p>deep-residual-networks: <a href="https://github.com/KaimingHe/deep-residual-networks" target="_blank" rel="external">https://github.com/KaimingHe/deep-residual-networks</a></p>
+<p>OneDrive download: <a href="https://onedrive.live.com/?authkey=%21AAFW2-FVoxeVRck&amp;id=4006CBB8476FF777%2117887&amp;cid=4006CBB8476FF777" target="_blank" rel="external">https://onedrive.live.com/?authkey=%21AAFW2-FVoxeVRck&amp;id=4006CBB8476FF777%2117887&amp;cid=4006CBB8476FF777</a></p>
+<p>然后将caffemodel放在<code>./data/imagenet_models</code>文件夹下。</p>
+<p>3.修改网络</p>
+<p>打开<code>./models/pascal_voc/ResNet-50/rfcn_end2end</code>  (以end2end为例)</p>
+<p>PS：下面的cls_num指的是你数据集的类别数+1（背景）。比如我有15类，+1类背景，cls_num=16.</p>
+<p><1>修改class-aware/train_ohem.prototxt</1></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+  name: <span class="symbol">'roi</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  bottom: <span class="symbol">'rpn_rois'</span>  
+  bottom: <span class="symbol">'gt_boxes'</span>  
+  top: <span class="symbol">'rois'</span>  
+  top: <span class="symbol">'labels'</span>  
+  top: <span class="symbol">'bbox_targets'</span>  
+  top: <span class="symbol">'bbox_inside_weights'</span>  
+  top: <span class="symbol">'bbox_outside_weights'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'rpn</span>.proposal_target_layer'  
+    layer: <span class="symbol">'ProposalTargetLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_bbox"</span>  
+    name: <span class="string">"rfcn_bbox"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">3136</span> #<span class="number">4</span>*cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_bbox"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_loc_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_loc_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">64</span> <span class="comment">#4*cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><2>修改class-aware/test.prototxt</2></p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_bbox"</span>  
+    name: <span class="string">"rfcn_bbox"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">3136</span> #<span class="number">4</span>*cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_bbox"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_loc_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_loc_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">64</span>  <span class="comment">#4*cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"cls_prob_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"cls_prob_pre"</span>  
+    top: <span class="string">"cls_prob"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        }  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"bbox_pred_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"bbox_pred_pre"</span>  
+    top: <span class="string">"bbox_pred"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">64</span>  <span class="comment">#4*cls_num  </span>
+        }  
+    }  
+}  
+</code></pre><p><3>修改train_agnostic.prototxt</3></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span>  #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)   ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><4>修改train_agnostic_ohem.prototxt</4></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num ###  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)   ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><5>修改test_agnostic.prototxt</5></p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>) ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"cls_prob_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"cls_prob_pre"</span>  
+    top: <span class="string">"cls_prob"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        }  
+    }  
+}  
+</code></pre><p>4.修改代码</p>
+<p><1>修改./lib/datasets/pascal_voc.py</1></p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">pascal_voc</span>(<span class="title">imdb</span>):  </span>
+    <span class="function"><span class="keyword">def</span> </span>__init_<span class="number">_</span>(<span class="keyword">self</span>, image_set, year, devkit_path=<span class="constant">None</span>)<span class="symbol">:</span>  
+        imdb.__init_<span class="number">_</span>(<span class="keyword">self</span>, <span class="string">'voc_'</span> + year + <span class="string">'_'</span> + image_set)  
+        <span class="keyword">self</span>._year = year  
+        <span class="keyword">self</span>._image_set = image_set  
+        <span class="keyword">self</span>._devkit_path = <span class="keyword">self</span>._get_default_path() <span class="keyword">if</span> devkit_path is <span class="constant">None</span> \  
+                            <span class="keyword">else</span> devkit_path  
+        <span class="keyword">self</span>._data_path = os.path.join(<span class="keyword">self</span>._devkit_path, <span class="string">'VOC'</span> + <span class="keyword">self</span>._year)  
+        <span class="keyword">self</span>._classes = (<span class="string">'__background__'</span>, <span class="comment"># always index 0  </span>
+                         <span class="string">'你的标签1'</span>,<span class="string">'你的标签2'</span>,你的标签<span class="number">3</span><span class="string">','</span>你的标签<span class="number">4</span><span class="string">'  
+                      )  </span>
+</code></pre><p><2>修改./lib/datasets/imdb.py</2></p>
+<p>在语句<code>assert (boxes[:, 2] &gt;= boxes[:, 0]).all()</code>前面添加：</p>
+<pre><code><span class="keyword">for</span> <span class="tag">b</span> <span class="keyword">in</span> <span class="function"><span class="title">range</span><span class="params">(len(boxes)</span></span>):
+    <span class="keyword">if</span> boxes[b][<span class="number">2</span>]&lt; boxes[b][<span class="number">0</span>]:
+        boxes[b][<span class="number">0</span>] = <span class="number">0</span>
+</code></pre><p>以避免出现AssertionError.</p>
+<p><3>修改./lib/fast_rcnn/train.py和train_multi_gpu.py </3></p>
+<p>在开头添加：<code>import google.protobuf.text_format</code>，以避免因protobuf版本问题出现的<code>AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;</code>.</p>
+<p>5.开始训练</p>
+<p>Multi-GPU Training R-FCN</p>
+<pre><code>cd py-R-FCN-multiGPU-coco
+
+python ./tools/train_net_multi_gpu<span class="class">.py</span> --gpu <span class="number">0</span>,<span class="number">1</span> ...
+--solver models/pascal_voc/ResNet-<span class="number">50</span>/rfcn_end2end/solver_ohem<span class="class">.prototxt</span> ...
+--weights data/imagenet_models/ResNet-<span class="number">50</span>-model<span class="class">.caffemodel</span> ...
+--iters <span class="number">110000</span> --cfg experiments/cfgs/rfcn_end2end_ohem.yml
 </code></pre>
       
     </div>
@@ -701,79 +1122,6 @@ objs = cls_objs
 
 
   
-    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Python除法/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
     <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -826,6 +1174,79 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Python除法/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
 	</div>
 
       
