@@ -4,30 +4,27 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>TextBoxes文本检测 | Hello World</title>
+  <title>Ubuntu下查看显卡型号及NVIDIA驱动版本 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="安装环境：Ubuntu16.04, Nvidia Titan x, cuda 8.0, cudnn 5.0, protobuf 2.6, python 2.7, OpenCV 3.2
-下载TextBoxes：https://github.com/MhLiao/TextBoxes
-# 修改Makefile.config文件：use cuda，use opencv, mkl
-
-git clone ht">
+  <meta name="description" content="查看GPU型号
+lspci | grep -i nvidia
+查看NVIDIA驱动版本
+sudo dpkg --list | grep nvidia-*">
 <meta property="og:type" content="article">
-<meta property="og:title" content="TextBoxes文本检测">
-<meta property="og:url" content="http://gwang-cv.github.io/2017/08/02/TextBoxes文本检测/index.html">
+<meta property="og:title" content="Ubuntu下查看显卡型号及NVIDIA驱动版本">
+<meta property="og:url" content="http://gwang-cv.github.io/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="安装环境：Ubuntu16.04, Nvidia Titan x, cuda 8.0, cudnn 5.0, protobuf 2.6, python 2.7, OpenCV 3.2
-下载TextBoxes：https://github.com/MhLiao/TextBoxes
-# 修改Makefile.config文件：use cuda，use opencv, mkl
-
-git clone ht">
-<meta property="og:updated_time" content="2017-08-02T08:13:10.000Z">
+<meta property="og:description" content="查看GPU型号
+lspci | grep -i nvidia
+查看NVIDIA驱动版本
+sudo dpkg --list | grep nvidia-*">
+<meta property="og:updated_time" content="2017-08-07T07:32:22.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="TextBoxes文本检测">
-<meta name="twitter:description" content="安装环境：Ubuntu16.04, Nvidia Titan x, cuda 8.0, cudnn 5.0, protobuf 2.6, python 2.7, OpenCV 3.2
-下载TextBoxes：https://github.com/MhLiao/TextBoxes
-# 修改Makefile.config文件：use cuda，use opencv, mkl
-
-git clone ht">
+<meta name="twitter:title" content="Ubuntu下查看显卡型号及NVIDIA驱动版本">
+<meta name="twitter:description" content="查看GPU型号
+lspci | grep -i nvidia
+查看NVIDIA驱动版本
+sudo dpkg --list | grep nvidia-*">
   
   
     <link rel="icon" href="/favicon.png">
@@ -182,11 +179,11 @@ git clone ht">
 	</div>
 </nav>
 
-      <div class="body-wrap"><article id="post-TextBoxes文本检测" class="article article-type-post" itemscope itemprop="blogPost">
+      <div class="body-wrap"><article id="post-Ubuntu下查看显卡型号及NVIDIA驱动版本" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
-      <a href="/2017/08/02/TextBoxes文本检测/" class="article-date">
-  	<time datetime="2017-08-02T08:03:20.000Z" itemprop="datePublished">2017-08-02</time>
+      <a href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/" class="article-date">
+  	<time datetime="2017-08-07T07:32:22.000Z" itemprop="datePublished">2017-08-07</time>
 </a>
     </div>
   
@@ -199,7 +196,7 @@ git clone ht">
         
   
     <h1 class="article-title" itemprop="name">
-      TextBoxes文本检测
+      Ubuntu下查看显卡型号及NVIDIA驱动版本
     </h1>
   
 
@@ -223,27 +220,10 @@ git clone ht">
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>安装环境：Ubuntu16.04, Nvidia Titan x, cuda 8.0, cudnn 5.0, protobuf 2.6, python 2.7, OpenCV 3.2</p>
-<p>下载TextBoxes：<a href="https://github.com/MhLiao/TextBoxes" target="_blank" rel="external">https://github.com/MhLiao/TextBoxes</a></p>
-<pre><code># 修改Makefile.config文件：use cuda，use opencv, mkl
-
-git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/MhLiao/TextBoxes.git
-
-<span class="keyword">cd</span> TextBoxes
-
-<span class="keyword">make</span> -j64
-
-<span class="keyword">make</span> <span class="keyword">py</span>
-</code></pre><p>测试demo</p>
-<p>下载训练好的模型<a href="http://pan.baidu.com/s/1qY73XHq" target="_blank" rel="external">Models trained on ICDAR 2013</a>，拷贝到文件夹examples/TextBoxes/下。</p>
-<pre><code><span class="comment"># 测试demo.jpg的文本区域检测</span>
-
-<span class="title">python</span> examples/TextBoxes/demo.py
-</code></pre><hr>
-<p>报错1：<code>No module named shapely</code><br>安装shapely：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-shapely
-</code></pre><p>报错2：<code>Could not find lib geos_c or load any of its variants</code><br>安装shapely的依赖库GEOS：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install libgeos-<span class="built_in">dev</span>
+        <p>查看GPU型号</p>
+<pre><code>lspci <span class="string">| grep -i nvidia</span>
+</code></pre><p>查看NVIDIA驱动版本</p>
+<pre><code>sudo dpkg --<span class="keyword">list</span> | <span class="keyword">grep</span> nvidia-*
 </code></pre>
       
     </div>
@@ -253,18 +233,9 @@ git clone http<span class="variable">s:</span>//github.<span class="keyword">com
     
 <nav id="article-nav">
   
-    <a href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption"><</strong>
-      <div class="article-nav-title">
-        
-          Ubuntu下查看显卡型号及NVIDIA驱动版本
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/29/py-R-FCN-MultiGPU安装/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">py-R-FCN-MultiGPU安装</div>
+    <a href="/2017/08/02/TextBoxes文本检测/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">TextBoxes文本检测</div>
       <strong class="article-nav-caption">></strong>
     </a>
   
