@@ -24,7 +24,7 @@ coco branch
 git clone --recursive https://github.com/bharatsingh430/py-R-FCN-multiGPU/
 编译Cython模块
 cd py-R-FCN-">
-<meta property="og:updated_time" content="2017-07-31T09:52:58.000Z">
+<meta property="og:updated_time" content="2017-08-07T04:09:12.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="py-R-FCN-MultiGPU安装">
 <meta name="twitter:description" content="下载R-FCN
@@ -699,7 +699,14 @@ python ./tools/train_net_multi_gpu<span class="class">.py</span> --gpu <span cla
 --solver models/pascal_voc/ResNet-<span class="number">50</span>/rfcn_end2end/solver_ohem<span class="class">.prototxt</span> ...
 --weights data/imagenet_models/ResNet-<span class="number">50</span>-model<span class="class">.caffemodel</span> ...
 --iters <span class="number">110000</span> --cfg experiments/cfgs/rfcn_end2end_ohem.yml
-</code></pre>
+</code></pre><p>6.测试训练好的模型</p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-R-FCN-multiGPU-coco
+./tools/demo_rfcn.<span class="keyword">py</span>
+</code></pre><p>此时如果<strong>报错</strong>：</p>
+<pre><code>IndexError: <span class="keyword">index</span> <span class="number">4</span> <span class="keyword">is</span> <span class="keyword">out</span> <span class="keyword">of</span> bounds <span class="keyword">for</span> axis <span class="number">1</span> <span class="keyword">with</span> size <span class="number">4</span>
+</code></pre><p>说明在demo_rfcn.py执行矩形框操作时出了问题，先找到语句<code>cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]</code>，将其修改为<code>cls_boxes = boxes[:, 4:8]</code>即可。</p>
+<hr>
+
       
     </div>
     
