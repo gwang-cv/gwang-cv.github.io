@@ -20,7 +20,7 @@ c">
 语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。
 2.更新源
 c">
-<meta property="og:updated_time" content="2017-07-26T03:36:45.000Z">
+<meta property="og:updated_time" content="2017-08-08T09:26:07.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0">
 <meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
@@ -359,7 +359,21 @@ Device <span class="string">"Configured Video Device"</span>
     SubSection <span class="string">"Display"</span>
         Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
     EndSubSection
-EndSection        
+EndSection    
+</code></pre><p>或者采用cvt xrand方法修改分辨率：</p>
+<pre><code>cvt <span class="number">1920 1080</span>
+
+# <span class="number">1920x1080</span> 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz<span class="comment">; 173.00 MHZ</span>
+# Modeline "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
+
+xrandr --newmode "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
+
+xrandr -q #查看VGA
+# Sceen 0: minimum 320 x 200 .....
+# VGA-1 connected ....
+
+xrandr --addmode VGA-1 "<span class="number">1920x1080</span>_60.00"
+xrandr --output VGA-1 --mode "<span class="number">1920x1080</span>_60.00"
 </code></pre><p><strong>6.安装CUDA8.0</strong></p>
 <p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.61_linux.run</a>，复制到根目录下。</p>
 <pre><code>sudo sh cuda_8.0.61_linux.<span class="command">run</span> <span class="comment">--tmpdir=/tmp/</span>
