@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,103 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/install nose numpy scipy/" class="article-date">
+  	<time datetime="2016-03-30T14:37:44.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/install nose numpy scipy/">Mac安装Nose pip</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>ImportError: Need nose</strong></p>
+<pre><code>import numpy;numpy.<span class="keyword">test</span>()
+
+Running unit tests <span class="keyword">for</span> numpy
+
+Traceback (most recent call last):
+
+<span class="keyword">File</span> <span class="string">""</span>, <span class="keyword">line</span> 1, <span class="keyword">in</span> 
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 326, <span class="keyword">in</span> <span class="keyword">test</span>
+self._show_system_info()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 187, <span class="keyword">in</span> _show_system_info
+
+nose = import_nose()
+
+<span class="keyword">File</span> <span class="string">"/usr/lib/python2.7/site-packages/numpy/testing/nosetester.py"</span>, <span class="keyword">line</span> 69, <span class="keyword">in</span> import_nose
+raise ImportError(msg)
+
+ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see http:<span class="comment">//somethingaboutorange.com/mrl/projects/nose</span>
+</code></pre><hr>
+<p><strong>安装 pip</strong> </p>
+<p>mac默认是不带pip的：</p>
+<pre><code><span class="title">sudo</span> easy_install pip    
+</code></pre><hr>
+<p><strong>安装nose</strong></p>
+<p>最好用easy_install：</p>
+<pre><code><span class="title">sudo</span> easy_install nose    
+</code></pre><p>别用pip，我用pip装出各种问题</p>
+<hr>
+<p>terminal退出phthon命令：</p>
+<pre><code><span class="function"><span class="title">quit</span><span class="params">()</span></span>    
+</code></pre><p>or</p>
+<pre><code><span class="keyword">Control</span> + <span class="keyword">D</span>    
+</code></pre><hr>
+<p><strong>安装matplotlib</strong></p>
+<pre><code>sudo pip <span class="keyword">install</span> matplotlib    
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
   

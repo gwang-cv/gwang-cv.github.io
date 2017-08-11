@@ -4,14 +4,30 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Archives: 2016/1 | Hello World</title>
+  <title>Ubuntu下载工具 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://gwang-cv.github.io/archives/2016/01/index.html">
+  <meta name="description" content="Ubuntu下也有类似的下载工具，那就是aira2。aira2是一个命令行下载工具，可以配合其他图形界面的下载软件使用。即使用uget+aria2。uget本身是一个小巧实用的多线程下载工具，加上aria2作为插件，下载速度有明显提高。
+安装
+使用ppa方式进行安装较新的版本。
+1.uget的安装：
+sudo add-apt-repository ppa:plushuang-tw/uget-sta">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Ubuntu下载工具">
+<meta property="og:url" content="http://gwang-cv.github.io/2017/08/11/Ubuntu下载工具/index.html">
 <meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="Ubuntu下也有类似的下载工具，那就是aira2。aira2是一个命令行下载工具，可以配合其他图形界面的下载软件使用。即使用uget+aria2。uget本身是一个小巧实用的多线程下载工具，加上aria2作为插件，下载速度有明显提高。
+安装
+使用ppa方式进行安装较新的版本。
+1.uget的安装：
+sudo add-apt-repository ppa:plushuang-tw/uget-sta">
+<meta property="og:updated_time" content="2017-08-11T02:16:07.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
+<meta name="twitter:title" content="Ubuntu下载工具">
+<meta name="twitter:description" content="Ubuntu下也有类似的下载工具，那就是aira2。aira2是一个命令行下载工具，可以配合其他图形界面的下载软件使用。即使用uget+aria2。uget本身是一个小巧实用的多线程下载工具，加上aria2作为插件，下载速度有明显提高。
+安装
+使用ppa方式进行安装较新的版本。
+1.uget的安装：
+sudo add-apt-repository ppa:plushuang-tw/uget-sta">
   
   
     <link rel="icon" href="/favicon.png">
@@ -166,127 +182,107 @@
 	</div>
 </nav>
 
-      <div class="body-wrap">
+      <div class="body-wrap"><article id="post-Ubuntu下载工具" class="article article-type-post" itemscope itemprop="blogPost">
   
+    <div class="article-meta">
+      <a href="/2017/08/11/Ubuntu下载工具/" class="article-date">
+  	<time datetime="2017-08-11T02:12:02.000Z" itemprop="datePublished">2017-08-11</time>
+</a>
+    </div>
   
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Ubuntu下载工具
+    </h1>
+  
+
+      </header>
       
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
     
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/26/Mac安装OpenCV/" class="archive-article-date">
-  	<time datetime="2016-01-26T12:35:51.000Z" itemprop="datePublished">Jan 26</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/26/Mac安装OpenCV/">Mac安装OpenCV</a>
-    </h1>
-  
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu下也有类似的下载工具，那就是aira2。<br>aira2是一个命令行下载工具，可以配合其他图形界面的下载软件使用。即使用uget+aria2。uget本身是一个小巧实用的多线程下载工具，加上aria2作为插件，下载速度有明显提高。</p>
+<p><strong>安装</strong></p>
+<p>使用ppa方式进行安装较新的版本。</p>
+<p>1.uget的安装：</p>
+<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:plushuang-tw/uget-stable 
+sudo apt-get update 
+sudo apt-get install uget
+</code></pre><p>2.aria2的安装：</p>
+<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:t-tujikawa/ppa 
+sudo apt-get update 
+sudo apt-get install aria2
+</code></pre><p>安装完aria2后，可以在终端中运行<code>aria2c -v</code>，查看版本和支持的特性。需要1.10以上的版本才能支持资源搜索。</p>
+<p>最后打开uget可视化界面，依次在菜单<code>Edit</code> -&gt; <code>Settings</code> -&gt; <code>uGet - Settings</code>-&gt; <code>Plug-in</code> -&gt; <code>Plug-in matching order: aria2</code> -&gt; <code>Arguments: --enable-rpc=true -D -disable-ipv6 --check-certificate=false</code>.</p>
+<p>然后在主界面左侧的<code>All Category</code>右键选择<code>Properties</code>，在第二个选项页下设置下载文件夹以及最大连接数<code>Max Connections: 16</code>.</p>
+<p>```<br>下载对比： Chrome浏览器下载百度盘内的资料，网速为80k/s左右； 使用uGet下载网速可达1.2M/s。</p>
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
+      
+    </div>
+    
   </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ubuntu下查看显卡型号及NVIDIA驱动版本</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
 </article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/25/Mac设置环境变量/" class="archive-article-date">
-  	<time datetime="2016-01-25T12:35:51.000Z" itemprop="datePublished">Jan 25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/25/Mac设置环境变量/">Mac设置环境变量</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
 	</div>
-
-          
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/01/23/Mac Link Github/" class="archive-article-date">
-  	<time datetime="2016-01-23T12:35:51.000Z" itemprop="datePublished">Jan 23</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/01/23/Mac Link Github/">Mac连接Github</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
 
-    
+
+
 
 </div>
       <footer id="footer">
@@ -312,8 +308,8 @@
 		mathjax: true,
 		animate: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false
