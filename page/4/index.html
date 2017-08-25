@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 12.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,211 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/python中文编码错误/" class="article-date">
+  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <hr>
+<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
+</code></pre><p>解决方案1：</p>
+<pre><code>import sys
+<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
+sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
+</code></pre><p>解决方案2:</p>
+<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
+<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
+f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
+f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/机器学习数学基础/" class="article-date">
+  	<time datetime="2016-03-30T14:38:23.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/机器学习数学基础/">机器学习之数学基础</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <pre><code><span class="built_in">Math</span> <span class="keyword">for</span> Machine Learning
+</code></pre><p>author：Hal Daume III</p>
+<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
+<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Math/">Math</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/03/30/Homebrew设置PATH/" class="article-date">
+  	<time datetime="2016-03-30T14:37:51.000Z" itemprop="datePublished">2016-03-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/30/Homebrew设置PATH/">Homebrew设置PATH路径</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
+<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
+<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
+</code></pre><p>无法找到brew命令。</p>
+<p>卸载Homebrew重装后，终端提示：</p>
+<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
+</code></pre><p><strong>解决</strong>：</p>
+<p>用vim打开，在profile文件最后添加如下语句：</p>
+<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
+</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-install nose numpy scipy" class="article article-type-post" itemscope itemprop="blogPost">
   

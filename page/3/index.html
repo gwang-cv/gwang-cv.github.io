@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 10px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 12.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,240 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Clarifai" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/21/Clarifai/" class="article-date">
+  	<time datetime="2016-10-21T13:40:07.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/21/Clarifai/">Clarifai图像自动化标签</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Clarifai 公司：www.clarifai.com</p>
+<p>Clarifai创始人Matt Zeiler是New York University (NYU) Rob Fergus教授门下的学生。从上个世纪开始，NYU就一直是neural computation的重镇。现在Deep net的前身ConvNet，就是出自 NYU 的 Yann LeCun教授组.</p>
+<p>ImageNet Large Scale Visual Recognition Competition 2013 (ILSVRC2013)</p>
+<p>其中Matt Zeiler (<a href="http://Clarifai.com" target="_blank" rel="external">http://Clarifai.com</a>) 的算法排名第一，在不用额外训练数据的情况下，跑到了error rate 0.1174这样的成绩。</p>
+<p>这个成绩是这样解读的：任选一张图片，扔给算法，算法返回5个结果。如果5个结果中，有一个猜对了物体类别，就算正确。换言之，如果允许猜5次，Clarifai已经有接近90%的准确率了。这里的物体类别包括了英语中两万多个名词，几乎涵盖了各大类别。</p>
+<p><a href="https://developer.clarifai.com/guide/" target="_blank" rel="external">Clarifai API</a></p>
+<p>参考</p>
+<p><a href="https://zhuanlan.zhihu.com/p/19821292" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/19821292</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-深度学习硬件配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/21/深度学习硬件配置/" class="article-date">
+  	<time datetime="2016-10-21T04:03:58.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/21/深度学习硬件配置/">深度学习硬件配置</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.收到NVIDIA资助的显卡GeForce Titan X (12GB)</p>
+<p>2.其他硬件设备：</p>
+<pre><code>CPU： Intel i<span class="number">7</span>-<span class="number">6700</span>
+主板：华硕B150M-PLUS (LGA<span class="number">1151</span>)
+内存：<span class="number">4</span>GB x <span class="number">2</span>
+硬盘：希捷<span class="number">1</span><span class="keyword">TB</span>
+电源：鑫谷Segotep GP700G（金牌认证、宽幅） 额定<span class="number">600</span><span class="keyword">W</span> 
+机箱：Tt小板机箱
+显卡接口转换器：DVI-&gt;VGI
+</code></pre><p>3.备注</p>
+<pre><code>深度学习对CPU的要求并不是特别高，根据实际情况选择。
+主板建议还是选择一个好的品牌，预算充足，可以考虑<span class="keyword">X</span><span class="number">99</span>平台。
+显卡GTX<span class="number">1080</span>比老Titan <span class="keyword">X</span>的性价比要高。
+内存建议<span class="number">32</span>G(<span class="number">16</span>x<span class="number">2</span>)，近期内存价格暴涨。
+硬盘，最好配SSD，用来存放软件和数据集，提升IO效率。
+电源根据显卡和整机功率需求选择(TitanX+CPU等差不多<span class="number">350</span><span class="keyword">W</span>)。
+机箱可扩展，散热好即可。
+</code></pre><p>4.组装<br>    主板安装CPU及散热器，将主板安装到机箱内(面板接口要仔细)，然后按照电源、硬盘，最后将电源线依次插入相应供电接口位置。</p>
+<p>5.参考</p>
+<p><a href="http://www.jianshu.com/p/0198ad851b16" target="_blank" rel="external">个人深度学习环境搭建：主机配置与组装</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-MacOS安装torch7" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/07/MacOS安装torch7/" class="article-date">
+  	<time datetime="2016-04-07T08:07:25.000Z" itemprop="datePublished">2016-04-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/07/MacOS安装torch7/">MacOS安装torch7</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>手动安装：</p>
+<pre><code>$ # <span class="keyword">in</span> a terminal, run the commands
+$ git clone <span class="string">https:</span><span class="comment">//github.com/torch/distro.git ~/torch --recursive</span>
+$ cd ~/torch; bash install-deps;
+$ ./install.sh
+
+－－－－－－－－－－－－－－－－－－－－－－－－－
+
+$ source <span class="regexp">~/torch/</span>install<span class="regexp">/bin/</span>torch-activate
+
+－－－－－－－－－－－－－－－－－－－－－－－－－
+$ th
+
+   ______             __   |  Torch7                                         
+ <span class="regexp">/_  __/</span>__  ________<span class="regexp">/ /</span>   |  Scientific computing <span class="keyword">for</span> Lua. 
+   <span class="regexp">/ /</span> <span class="regexp">/ _ \/</span> __<span class="regexp">/ __/</span> _ \  |  Type ? for help                                
+ /_/  \___/_/  \__/_//_/  |  https:<span class="comment">//github.com/torch         </span>
+                         |  <span class="string">http:</span><span class="comment">//torch.ch                  </span>
+
+th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>}
+ <span class="number">5</span>
+<span class="number">6</span>
+ <span class="number">7</span>
+[torch.DoubleTensor of size <span class="number">3</span>]
+</code></pre><p>退出 th&gt;</p>
+<pre><code>os.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-MacOS安装caffe" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -928,211 +1162,6 @@ $$\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span c
 
 <p>$$\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}$$</p>
 <p>\(\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}\)</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
-</code></pre><p>解决方案1：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p>解决方案2:</p>
-<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
-f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
-f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/机器学习数学基础/" class="article-date">
-  	<time datetime="2016-03-30T14:38:23.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/机器学习数学基础/">机器学习之数学基础</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <pre><code><span class="built_in">Math</span> <span class="keyword">for</span> Machine Learning
-</code></pre><p>author：Hal Daume III</p>
-<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
-<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Math/">Math</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Homebrew设置PATH" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/Homebrew设置PATH/" class="article-date">
-  	<time datetime="2016-03-30T14:37:51.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/Homebrew设置PATH/">Homebrew设置PATH路径</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><em>Homebrew安装时”-bash:brew:command not found”的问题</em></p>
-<p>按照[Homebrew]官网上的安装教程安装，安装成功后，运行brew时，终端提示：</p>
-<pre><code>-<span class="string">bash:</span><span class="string">brew:</span>command not found    
-</code></pre><p>无法找到brew命令。</p>
-<p>卸载Homebrew重装后，终端提示：</p>
-<pre><code>/usr/<span class="keyword">local</span>/bin不在PATH中    
-</code></pre><p><strong>解决</strong>：</p>
-<p>用vim打开，在profile文件最后添加如下语句：</p>
-<pre><code><span class="constant">PATH=</span>“.;<span class="variable">$PATH</span><span class="symbol">:/usr/local/bin</span>”    
-</code></pre><p>注意，若以前修改过该文件，或者PATH中已有多个路径，只需在后面添加即可，使用<code>：</code>隔开。</p>
 
       
     </div>
