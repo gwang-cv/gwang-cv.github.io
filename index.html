@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,131 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Tesseract4.0+jTessBoxEditor训练(ubuntu下)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/" class="article-date">
+  	<time datetime="2017-08-25T07:48:57.000Z" itemprop="datePublished">2017-08-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/">Tesseract4.0+jTessBoxEditor训练(ubuntu下)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>下载jTessBoxEditor</strong></p>
+<p><a href="https://sourceforge.net/projects/vietocr/files/" target="_blank" rel="external">https://sourceforge.net/projects/vietocr/files/</a></p>
+<pre><code>unzip jTessBoxEditor-<span class="number">2.0</span>-Beta<span class="class">.zip</span>
+cd jTessBoxEditor
+java -Xms128m -Xmx1024m -jar jTessBoxEditor<span class="class">.jar</span>  #打开可视化界面
+</code></pre><p>—- <strong>训练</strong> —-</p>
+<p><strong>预处理</strong></p>
+<p>把所有待训练的图像转换为tiff格式（可使用ubuntu下的imageMagick的convert命令或mogrify命令批量处理）</p>
+<pre><code>mogrify -<span class="built_in">path</span> ./TIFF/ -<span class="built_in">format</span> tiff *.jpg
+</code></pre><p>然后采用jTessBoxEditor中的<code>tools/Merge Tiff</code>功能，将待训练的tiff图像合并为一个tiff文件，在可视化界面中先选中所有tiff文件，然后点击OK，然后在再次弹出的窗口中输入要合并的tiff文件的名称，例如chi.wang.exp0.tif，chi表示中文，wang表示字体。</p>
+<p><strong>生成.box 文件</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> batch<span class="class">.nochop</span> makebox
+</code></pre><p>or</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">tesseract</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span> <span class="tag">-l</span> <span class="tag">chi_smi</span> <span class="tag">-psm</span> 7 <span class="tag">digits</span> <span class="tag">batch</span><span class="class">.nochop</span> <span class="tag">makebox</span> # 数字
+</code></pre><p>会生成一个名为chi.wang.exp0.box文件</p>
+<p><strong>使用jTessBoxEditor校正字符</strong></p>
+<p>在可视化界面中，在<code>Box Editor</code>面板中点击open按钮打开合并的tiff文件，然后每一页每一页的去矫正矩形框的位置以及正确的识别字符，亦可以同时修改chi.wang.exp0.box文件来添加一下empty pages的识别框！</p>
+<p><strong>生成自制语言库</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> nobatch box<span class="class">.train</span> #生成字符特征文件
+
+sudo unicharset_extractor chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.box</span>  #产生字符集
+
+vim font_properties
+wang <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> #向新生成的文件font_properties中录入此内容，普通字体，不加粗，不倾斜
+
+sudo shapeclustering -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成shapetable
+
+sudo mftraining -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span> #聚集字符特征
+
+sudo cntraining chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成字符形状正常变化特征文件normproto
+</code></pre><p><strong>重命名如下文件</strong>：</p>
+<pre><code><span class="title">inttemp</span>
+├──
+normproto
+├──
+pffmtable
+├──
+shapetable
+└──
+unicharset
+</code></pre><p>为</p>
+<pre><code>wang<span class="class">.inttemp</span>
+├──
+wang<span class="class">.normproto</span>
+├──
+wang<span class="class">.pffmtable</span>
+├──
+wang<span class="class">.shapetable</span>
+└──
+wang.unicharset
+</code></pre><p><strong>生成语言库</strong></p>
+<p>sudo combine_tessdata wang.</p>
+<p>此时得到了训练好的wang.traineddata</p>
+<pre><code>sudo cp wang<span class="class">.traineddata</span> /usr/share/tesseract-ocr/tessdata/wang<span class="class">.traineddata</span>  #复制到安装目录
+</code></pre><p><strong>测试</strong></p>
+<pre><code>tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span> -l wang 
+</code></pre><hr>
+<p>上述命令可能会出错，得到如下输出：<br>F<br>AIL!<br>APPLY_BOXES: boxfile line 22/园 ((1108,4637),(1150,4686)): FAILURE! Couldn’t find a matching blob<br>FAIL!<br>APPLY_BOXES: boxfile line 25/园 ((1258,4641),(1300,4689)): FAILURE! Couldn’t find a matching blob<br>APPLY_BOXES:<br>   Boxes read from boxfile:      40<br>   Boxes failed resegmentation:       2<br>   Found 38 good blobs.<br>Generated training data for 4 words<br>Warning in pixReadMemTiff: tiff page 1 not found</p>
+<p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
+<p>如果tif/box文件对是通过jTessBoxEditor可视化工具得到的，那么生成文件时选定<code>Anti-Aliasing</code>可消除上述错误。</p>
+<hr>
+<p>参考link：</p>
+<p><a href="http://qianjiye.de/2015/08/tesseract-ocr" target="_blank" rel="external">http://qianjiye.de/2015/08/tesseract-ocr</a></p>
+<p><a href="http://lib.csdn.net/article/deeplearning/50598" target="_blank" rel="external">http://lib.csdn.net/article/deeplearning/50598</a></p>
+<p><a href="http://www.jianshu.com/p/31afd7fc5813" target="_blank" rel="external">http://www.jianshu.com/p/31afd7fc5813</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-ubuntu16.04+python2.7中文编码" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1782,82 +1907,9 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
 
 
   
-    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Python除法/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
