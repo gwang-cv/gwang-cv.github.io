@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 12.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 13.33px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,124 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Clarifai API体验" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/02/Clarifai API体验/" class="article-date">
+  	<time datetime="2016-11-02T07:37:27.000Z" itemprop="datePublished">2016-11-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
+<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
+<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
+<pre><code>pip install clarifai==<span class="number">2.0</span>.10
+clarifai config
+<span class="label">CLARIFAI_APP_ID:</span>
+<span class="label">CLARIFAI_APP_SECRET:</span>
+</code></pre><p>在python中实现测试：</p>
+<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
+app = ClarifaiApp()
+model = app.models.get(<span class="string">'general-v1.3'</span>)
+<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
+<span class="comment"># or local image</span>
+<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
+</code></pre><p>一、打开MAC终端，输入Request命令：</p>
+<ol>
+<li><p>测试在线图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试本地图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试多幅图像</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+</ol>
+<p>二、读取Response结果</p>
+<p>在python中使用json来解析文本结果：</p>
+<pre><code># -*- coding: utf-<span class="number">8</span> -*-
+<span class="keyword">import</span> json
+<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
+    <span class="built_in">print</span> <span class="built_in">line</span>
+<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
+results=<span class="built_in">str</span>[<span class="string">'results'</span>]
+strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
+<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
+    <span class="built_in">print</span> ind
+    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
+</code></pre><p>输出解析结果（图像的tag类别）：</p>
+<pre><code><span class="number">0</span>
+[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
+<span class="number">1</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
+<span class="number">2</span>
+[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
+<span class="number">3</span>
+[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
+<span class="number">4</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-DL学习笔记" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1110,128 +1228,6 @@ content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <
    <span class="keyword">print</span> url
    cons = getContent(url, cook)
    getDownImg(cons, page)
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Python爬取微博关注" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/31/Python爬取微博关注/" class="article-date">
-  	<time datetime="2016-03-31T08:13:17.000Z" itemprop="datePublished">2016-03-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/31/Python爬取微博关注/">Python爬取微博关注</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>爬取微博（weibo.cn）指定用户的关注者，最多200条记录（20页，每页10条记录）。</p>
-<pre><code><span class="comment"># -*- coding: utf-8 -*-</span>
-
-<span class="keyword">import</span> requests
-<span class="keyword">import</span> urllib2
-<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
-<span class="keyword">import</span> os
-<span class="keyword">import</span> time
-<span class="keyword">import</span> codecs
-<span class="keyword">import</span> re
-<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span>  Pool
-<span class="comment"># import sys</span>
-<span class="comment"># reload(sys)</span>
-<span class="comment"># sys.setdefaultencoding('utf-8')</span>
-
-<span class="comment"># write text to .txt</span>
-<span class="function"><span class="keyword">def</span> <span class="title">tosave</span><span class="params">(texta)</span>:</span>
-    fn = <span class="string">'following'</span>
-    pa = os.path.dirname(__file__) + <span class="string">'/'</span> + username
-    <span class="comment"># check and create folder</span>
-    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pa):
-        os.mkdir(pa)
-    fl = pa + <span class="string">'/%s.txt'</span> % fn
-    f = codecs.open(fl, <span class="string">'a'</span>, <span class="string">'utf-8'</span>)
-    f.write(texta + <span class="string">'\n'</span>)
-    f.close()
-
-<span class="function"><span class="keyword">def</span> <span class="title">getHtml</span><span class="params">(url, cook)</span>:</span>
-    html = requests.get(url, cookies=cook).content
-    selector = etree.HTML(html)
-    <span class="keyword">return</span> selector
-
-
-<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(htm, xpathStr)</span>:</span>
-    selector = htm
-    content = selector.xpath(xpathStr)  <span class="comment"># copy from chrome # print content</span>
-    <span class="keyword">return</span> content
-
-<span class="function"><span class="keyword">def</span> <span class="title">getPageNum</span><span class="params">(htm)</span>:</span>
-    xps=<span class="string">'//*[@id="pagelist"]/form/div/input[1]//@value'</span>
-    pnum = getContent(htm, xps)
-    <span class="keyword">print</span> pnum[<span class="number">0</span>]
-    <span class="keyword">return</span> int(pnum[<span class="number">0</span>])
-
-cook = {<span class="string">"Cookie"</span>: <span class="string">"XXXXXX"</span>}
-username = <span class="string">'XXXXX'</span> 
-url0=<span class="string">'http://weibo.cn/%s/follow'</span> % username
-<span class="keyword">print</span> url0
-htm = getHtml(url0, cook)
-pagenum=getPageNum(htm)
-<span class="keyword">for</span> pn <span class="keyword">in</span> range(<span class="number">1</span>, pagenum):
-    urls = url0 + <span class="string">'?page=%s'</span> % pn
-    <span class="keyword">print</span> urls
-    htms = getHtml(urls, cook)
-    xptxt = <span class="string">'//td[2]//a[1]'</span>  <span class="comment"># homepage contains many tables</span>
-    xphref=<span class="string">'//td[2]//a[1]//@href'</span> <span class="comment"># href</span>
-    consTxt = getContent(htms, xptxt)
-    consHref=getContent(htms,xphref)
-    <span class="keyword">for</span> indx <span class="keyword">in</span> range(<span class="number">1</span>,len(consTxt)):
-        followTxt=consTxt[indx].text + <span class="string">'     '</span> + consHref[indx]
-        <span class="keyword">print</span> followTxt
-        tosave(followTxt)
 </code></pre>
       
     </div>

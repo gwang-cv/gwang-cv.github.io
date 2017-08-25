@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 12.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 15px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 13.33px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,79 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Python除法/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1789,124 +1862,6 @@ ans =
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Matlab/">Matlab</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Clarifai API体验" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/11/02/Clarifai API体验/" class="article-date">
-  	<time datetime="2016-11-02T07:37:27.000Z" itemprop="datePublished">2016-11-02</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
-<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
-<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
-<pre><code>pip install clarifai==<span class="number">2.0</span>.10
-clarifai config
-<span class="label">CLARIFAI_APP_ID:</span>
-<span class="label">CLARIFAI_APP_SECRET:</span>
-</code></pre><p>在python中实现测试：</p>
-<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
-app = ClarifaiApp()
-model = app.models.get(<span class="string">'general-v1.3'</span>)
-<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
-<span class="comment"># or local image</span>
-<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
-</code></pre><p>一、打开MAC终端，输入Request命令：</p>
-<ol>
-<li><p>测试在线图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试本地图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试多幅图像</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-</ol>
-<p>二、读取Response结果</p>
-<p>在python中使用json来解析文本结果：</p>
-<pre><code># -*- coding: utf-<span class="number">8</span> -*-
-<span class="keyword">import</span> json
-<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
-    <span class="built_in">print</span> <span class="built_in">line</span>
-<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
-results=<span class="built_in">str</span>[<span class="string">'results'</span>]
-strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
-<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
-    <span class="built_in">print</span> ind
-    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
-</code></pre><p>输出解析结果（图像的tag类别）：</p>
-<pre><code><span class="number">0</span>
-[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
-<span class="number">1</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
-<span class="number">2</span>
-[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
-<span class="number">3</span>
-[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
-<span class="number">4</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
 	</div>
 
       
