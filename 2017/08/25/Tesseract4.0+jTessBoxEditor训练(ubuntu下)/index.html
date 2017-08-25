@@ -26,7 +26,7 @@ java -Xms128m -Xmx1024m -jar jTessBoxEditor.jar  #打开可视化界面
 —- 训练 —-
 预处理
 把所有待训练的图像转换为">
-<meta property="og:updated_time" content="2017-08-25T08:03:40.000Z">
+<meta property="og:updated_time" content="2017-08-25T08:07:35.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Tesseract4.0+jTessBoxEditor训练(ubuntu下)">
 <meta name="twitter:description" content="下载jTessBoxEditor
@@ -283,14 +283,24 @@ wang<span class="class">.shapetable</span>
 └──
 wang.unicharset
 </code></pre><p><strong>生成语言库</strong></p>
-<p>sudo combine_tessdata wang.</p>
-<p>此时得到了训练好的wang.traineddata</p>
+<pre><code>sudo <span class="keyword">combine_t</span>essdata wang.
+</code></pre><p>此时得到了训练好的wang.traineddata</p>
 <pre><code>sudo cp wang<span class="class">.traineddata</span> /usr/share/tesseract-ocr/tessdata/wang<span class="class">.traineddata</span>  #复制到安装目录
 </code></pre><p><strong>测试</strong></p>
 <pre><code>tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span> -l wang 
 </code></pre><hr>
-<p>上述命令可能会出错，得到如下输出：<br>F<br>AIL!<br>APPLY_BOXES: boxfile line 22/园 ((1108,4637),(1150,4686)): FAILURE! Couldn’t find a matching blob<br>FAIL!<br>APPLY_BOXES: boxfile line 25/园 ((1258,4641),(1300,4689)): FAILURE! Couldn’t find a matching blob<br>APPLY_BOXES:<br>   Boxes read from boxfile:      40<br>   Boxes failed resegmentation:       2<br>   Found 38 good blobs.<br>Generated training data for 4 words<br>Warning in pixReadMemTiff: tiff page 1 not found</p>
-<p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
+<p>上述命令可能会出错，得到如下输出：</p>
+<pre><code>FAIL!
+APPLY_BOXES: boxfile line <span class="number">22</span>/园 ((<span class="number">1108</span>,<span class="number">4637</span>),(<span class="number">1150</span>,<span class="number">4686</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+FAIL!
+APPLY_BOXES: boxfile line <span class="number">25</span>/园 ((<span class="number">1258</span>,<span class="number">4641</span>),(<span class="number">1300</span>,<span class="number">4689</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+APPLY_BOXES:
+   Boxes read <span class="keyword">from</span> boxfile:      <span class="number">40</span>
+   Boxes failed resegmentation:       <span class="number">2</span>
+   Found <span class="number">38</span> good blobs.
+Generated training data <span class="keyword">for</span> <span class="number">4</span> words
+Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="number">1</span> <span class="keyword">not</span> found
+</code></pre><p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
 <p>如果tif/box文件对是通过jTessBoxEditor可视化工具得到的，那么生成文件时选定<code>Anti-Aliasing</code>可消除上述错误。</p>
 <hr>
 <p>参考link：</p>
