@@ -18,7 +18,7 @@
 按照官方https://github.com/BVLC/caffe说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。
 2.整理自己的数据
 图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.tx">
-<meta property="og:updated_time" content="2017-08-31T07:39:48.000Z">
+<meta property="og:updated_time" content="2017-08-31T07:42:11.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Caffe训练分类模型">
 <meta name="twitter:description" content="1.安装Caffe
@@ -283,8 +283,8 @@ GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</sp
 <span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
 <span class="attribute">batch_size</span>: <span class="number">32</span>
 <span class="attribute">backend</span>: LMDB
-</code></pre><p>  }</p>
-<p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
+  }
+</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
 <pre><code>layer {
   name: <span class="string">"data"</span>
   <span class="keyword">type</span>: <span class="string">"Data"</span>
