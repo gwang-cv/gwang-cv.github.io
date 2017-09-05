@@ -892,6 +892,11 @@ sudo ln -s <span class="regexp">/usr/</span>share<span class="regexp">/tesseract
 </code></pre><p>比如识别中文及数字: </p>
 <pre><code>tessdata_dir_config=<span class="string">'-psm 7 digits'</span>
 ss = pytesseract.<span class="function"><span class="title">image_to_string</span><span class="params">(image, lang=<span class="string">'chi_sim'</span>, config=tessdata_dir_config)</span></span>
+</code></pre><p><strong>修改配置文件</strong></p>
+<p>当使用命令参数 digits来识别数字时，有考虑识别字母和数字，即可在系统tesseract所在位置修改配置文件：<code>usr/share/tesseract-orc/tessdata/configs/digits</code></p>
+<pre><code>tessedit_chaar_whitelist <span class="number">0123456789</span>-. <span class="hexcolor">#def</span>ault
+
+tessedit_chaar_whitelist ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.
 </code></pre><hr>
 <p>PS：图片太大时识别不好，缩放到指甲盖大小反而识别会好些。。。</p>
 <hr>
