@@ -238,8 +238,11 @@ $ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="
     }  
 }  
 </code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
-<p>开始编译ab<br>    $ make apr-skeleton<br>    $ sudo make ab<br>    sudo cp ab apr-skeleton /usr/local/bin/</p>
-<hr>
+<p>开始编译ab</p>
+<pre><code>$ <span class="keyword">make</span> apr-skeleton
+$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
+$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
+</code></pre><hr>
 <p><strong>3.注意</strong></p>
 <p>连接库文件问题：</p>
 <p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>

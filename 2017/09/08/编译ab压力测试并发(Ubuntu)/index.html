@@ -14,7 +14,7 @@
 <meta property="og:site_name" content="Hello World">
 <meta property="og:description" content="Abstract
 用深度学习框架caffe做的project，需要对其进行并发数请求数的压力测试，找到了apachebench(ab)简单的压力测试工具，但在Ubuntu下通过apt-get安装的ab，在处理请求数高于200,300左右的时候就会报错终止apr_socket_recv: Connection reset by peer，查阅资料显示需要对ab进行重新修改并编译后方可破除这个问题（无">
-<meta property="og:updated_time" content="2017-09-08T08:02:05.000Z">
+<meta property="og:updated_time" content="2017-09-08T08:06:42.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="编译ab压力测试并发(Ubuntu)">
 <meta name="twitter:description" content="Abstract
@@ -258,8 +258,11 @@ $ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="
     }  
 }  
 </code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
-<p>开始编译ab<br>    $ make apr-skeleton<br>    $ sudo make ab<br>    sudo cp ab apr-skeleton /usr/local/bin/</p>
-<hr>
+<p>开始编译ab</p>
+<pre><code>$ <span class="keyword">make</span> apr-skeleton
+$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
+$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
+</code></pre><hr>
 <p><strong>3.注意</strong></p>
 <p>连接库文件问题：</p>
 <p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>
