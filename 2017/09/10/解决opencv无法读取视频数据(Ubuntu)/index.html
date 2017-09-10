@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>解决opencv无法读取视频数据(Ubuntu) | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="错误描述：
+OpenCV Error: Unspecified error (The function is not implemented. Rebuild
+ the library with Windows, GTK+ 2.x or Carbon support. If you are on Ubuntu
+  or Debian, install libgtk2.0-dev and pkg-c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="解决opencv无法读取视频数据(Ubuntu)">
+<meta property="og:url" content="http://gwang-cv.github.io/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="错误描述：
+OpenCV Error: Unspecified error (The function is not implemented. Rebuild
+ the library with Windows, GTK+ 2.x or Carbon support. If you are on Ubuntu
+  or Debian, install libgtk2.0-dev and pkg-c">
+<meta property="og:updated_time" content="2017-09-10T09:37:00.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="解决opencv无法读取视频数据(Ubuntu)">
+<meta name="twitter:description" content="错误描述：
+OpenCV Error: Unspecified error (The function is not implemented. Rebuild
+ the library with Windows, GTK+ 2.x or Carbon support. If you are on Ubuntu
+  or Debian, install libgtk2.0-dev and pkg-c">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gang Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researchGO</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						
+						<li>About</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">Home</a></li>
+				        
+							<li><a href="/archives">Archives</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Debug/" style="font-size: 15px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">Hello, I&#39;m Gang Wang. This is my blog, enjoy it.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gang Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gang Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researchGO</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Archives</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-解决opencv无法读取视频数据(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/" class="article-date">
+  	<time datetime="2017-09-10T09:25:51.000Z" itemprop="datePublished">2017-09-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      解决opencv无法读取视频数据(Ubuntu)
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>错误描述：</strong></p>
+<pre><code>OpenCV <span class="keyword">Error</span>: Unspecified <span class="keyword">error</span> (The <span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild
+ the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span> Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu
+  <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> 
+  configure script) <span class="keyword">in</span> cvNamedWindow, file /io/opencv/modules/highgui/src/window.cpp, line <span class="number">565</span>
+Traceback (most recent <span class="keyword">call</span> last):
+  File <span class="string">"video_tools/demo.py"</span>, line <span class="number">103</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;
+    cv2.namedWindow(<span class="comment">'ret',0)</span>
+cv2.<span class="keyword">error</span>: /io/opencv/modules/highgui/src/window.cpp:<span class="number">565</span>: <span class="keyword">error</span>: (-<span class="number">2</span>) The 
+<span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span>
+ Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> 
+ pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> configure script <span class="keyword">in</span> <span class="keyword">function</span> cvNamedWindow
+</code></pre><p><strong>分析：</strong></p>
+<p>在Ubuntu16.04下安装OpenCV3.2之前，确实已经提前安装了各种依赖包，特别是libgtk2.0-dev and pkg-config已经确认安装，通过在python下使用<code>cv2.getBuildInformation()</code>查看：</p>
+<pre><code>GUI: 
+    QT:                          <span class="keyword">NO</span>
+    GTK+:                        <span class="keyword">NO</span>
+    GThread :                    YES (ver 2.12.3)
+    GtkGlExt:                    <span class="keyword">NO</span>
+    OpenGL support:              <span class="keyword">NO</span>
+    VTK support:                 <span class="keyword">NO</span>
+
+  Media I/O: 
+    ZLib:                        zlib (ver 1.2.8)
+    JPEG:                        libjpeg (ver 90)
+    WEBP:                        build (ver 0.3.1)
+    PNG:                         build (ver 1.6.24)
+    TIFF:                        build (ver 42 - 4.0.2)
+    JPEG 2000:                   build (ver 1.900.1)
+    OpenEXR:                     build (ver 1.7.1)
+    GDAL:                        <span class="keyword">NO</span>
+    GDCM:                        <span class="keyword">NO</span>
+
+  Video I/O:
+    DC1394 1.x:                  <span class="keyword">NO</span>
+    DC1394 2.x:                  <span class="keyword">NO</span>
+    FFMPEG:                      <span class="keyword">NO</span>
+      avcodec:                   <span class="keyword">NO</span>
+      avformat:                  <span class="keyword">NO</span>
+      avutil:                    <span class="keyword">NO</span>
+      swscale:                   <span class="keyword">NO</span>
+      avresample:                <span class="keyword">NO</span>
+    GStreamer:                   <span class="keyword">NO</span>
+    OpenNI:                      <span class="keyword">NO</span>
+    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
+    OpenNI2:                     <span class="keyword">NO</span>
+    PvAPI:                       <span class="keyword">NO</span>
+    GigEVisionSDK:               <span class="keyword">NO</span>
+    Aravis SDK:                  <span class="keyword">NO</span>
+    UniCap:                      <span class="keyword">NO</span>
+    UniCap ucil:                 <span class="keyword">NO</span>
+    V4L/V4L2:                    <span class="keyword">NO</span>/<span class="keyword">NO</span>
+    XIMEA:                       <span class="keyword">NO</span>
+    Xine:                        <span class="keyword">NO</span>
+    gPhoto2:                     <span class="keyword">NO</span>
+
+  Parallel framework:            pthreads
+
+  Other third-party libraries:
+    <span class="keyword">Use</span> IPP:                     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
+    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Lapack:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Cuda:                    <span class="keyword">NO</span>
+    <span class="keyword">Use</span> OpenCL:                  YES
+    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
+
+  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
+    <span class="keyword">Include</span> path:                /io/opencv/3rdparty/<span class="keyword">include</span>/opencl/1.2
+    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
+
+  Python 2:
+    Interpreter:                 python (ver 2.7.13)
+    Libraries:                   
+    numpy:                       /opt/python/cp27-cp27mu/lib/python2.7/site-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.1)
+    packages path:               /opt/python/cp27-cp27mu/lib/python2.7/site-packages
+
+  Python 3:
+    Interpreter:                 <span class="keyword">NO</span>
+
+  Python (<span class="keyword">for</span> build):            python
+
+  Java:
+    ant:                         <span class="keyword">NO</span>
+    JNI:                         <span class="keyword">NO</span>
+    Java wrappers:               <span class="keyword">NO</span>
+    Java tests:                  <span class="keyword">NO</span>
+
+  Matlab:                        Matlab not found or implicitly disabled
+
+  Tests and samples:
+    Tests:                       <span class="keyword">NO</span>
+    Performance tests:           <span class="keyword">NO</span>
+    C/C++ Examples:              <span class="keyword">NO</span>
+
+  Install path:                  /usr/<span class="keyword">local</span>
+
+  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /io/opencv/build
+-----------------------------------------------------------------
+</code></pre><p>安装官方给出的建议，重新编译，特别注意一些开关要设置下：</p>
+<pre><code>sudo apt-get -y install libopencv-dev build-essential checkinstall cmake pkg-config yasm  libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev  libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libtiff5-dev libjpeg62-dev ffmpeg libatlas-base-dev gfortran
+
+cmake 
+-<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_BUILD_TYPE</span>=<span class="constant">RELEASE</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_INSTALL_PREFIX</span>=<span class="regexp">/usr/local</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">FORCE_VTK</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_NEW_PYTHON_SUPPORT</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_C_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_PYTHON_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_TBB</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_V4L</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_QT</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_OPENGL</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_CUBLAS</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CUDA_NVCC_FLAGS</span>=<span class="string">"-D_FORCE_INLINES"</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_GDAL</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_XINE</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_FFMPEG</span>=<span class="constant">ON</span> ..</span>
+</code></pre><p>   make -j32<br>   make install</p>
+<p>但是我发现，在重新编译后安装后的<code>cv2.so</code>，引入到python后得到的信息如下：</p>
+<pre><code>GUI: 
+    QT 4.x:                      YES (ver 4.8.7 EDITION = OpenSource)
+    QT OpenGL support:           YES (/usr/lib/x86_64-linux-gnu/libQtOpenGL.<span class="keyword">so</span>)
+    OpenGL support:              YES (/usr/lib/x86_64-linux-gnu/libGLU.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libGL.<span class="keyword">so</span>)
+    VTK support:                 <span class="keyword">NO</span>
+
+  Media I/O: 
+    ZLib:                        /usr/lib/x86_64-linux-gnu/libz.<span class="keyword">so</span> (ver 1.2.8)
+    JPEG:                        /usr/lib/x86_64-linux-gnu/libjpeg.<span class="keyword">so</span> (ver )
+    WEBP:                        build (ver 0.3.1)
+    PNG:                         /usr/lib/x86_64-linux-gnu/libpng.<span class="keyword">so</span> (ver 1.2.54)
+    TIFF:                        /usr/lib/x86_64-linux-gnu/libtiff.<span class="keyword">so</span> (ver 42 - 4.0.6)
+    JPEG 2000:                   /usr/lib/x86_64-linux-gnu/libjasper.<span class="keyword">so</span> (ver 1.900.1)
+    OpenEXR:                     /usr/lib/x86_64-linux-gnu/libImath.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmImf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIex.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libHalf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmThread.<span class="keyword">so</span> (ver 2.2.0)
+    GDAL:                        <span class="keyword">NO</span>
+    GDCM:                        <span class="keyword">NO</span>
+
+  Video I/O:
+    DC1394 1.x:                  <span class="keyword">NO</span>
+    DC1394 2.x:                  YES (ver 2.2.4)
+    FFMPEG:                      YES
+      avcodec:                   YES (ver 56.60.100)
+      avformat:                  YES (ver 56.40.101)
+      avutil:                    YES (ver 54.31.100)
+      swscale:                   YES (ver 3.1.101)
+      avresample:                <span class="keyword">NO</span>
+    GStreamer:                   
+      base:                      YES (ver 0.10.36)
+      video:                     YES (ver 0.10.36)
+      <span class="keyword">app</span>:                       YES (ver 0.10.36)
+      riff:                      YES (ver 0.10.36)
+      pbutils:                   YES (ver 0.10.36)
+    OpenNI:                      <span class="keyword">NO</span>
+    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
+    OpenNI2:                     <span class="keyword">NO</span>
+    PvAPI:                       <span class="keyword">NO</span>
+    GigEVisionSDK:               <span class="keyword">NO</span>
+    Aravis SDK:                  <span class="keyword">NO</span>
+    UniCap:                      <span class="keyword">NO</span>
+    UniCap ucil:                 <span class="keyword">NO</span>
+    V4L/V4L2:                    <span class="keyword">NO</span>/YES
+    XIMEA:                       <span class="keyword">NO</span>
+    Xine:                        <span class="keyword">NO</span>
+    gPhoto2:                     <span class="keyword">NO</span>
+
+  Parallel framework:            TBB (ver 4.4 interface 9002)
+
+  Other third-party libraries:
+    <span class="keyword">Use</span> IPP:                     9.0.1 [9.0.1]
+         at:                     /home/gwang/opencv-3.2.0/build/3rdparty/ippicv/ippicv_lnx
+    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
+    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Lapack:                  YES (/opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> -lpthread -lm -ldl)
+    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Cuda:                    YES (ver 8.0)
+    <span class="keyword">Use</span> OpenCL:                  YES
+    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
+
+  NVIDIA CUDA
+    <span class="keyword">Use</span> CUFFT:                   YES
+    <span class="keyword">Use</span> CUBLAS:                  YES
+    <span class="keyword">USE</span> NVCUVID:                 <span class="keyword">NO</span>
+    NVIDIA GPU <span class="keyword">arch</span>:             20 30 35 37 50 52 60 61
+    NVIDIA PTX archs:
+    <span class="keyword">Use</span> fast math:               <span class="keyword">NO</span>
+
+  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
+    <span class="keyword">Include</span> path:                /home/gwang/opencv-3.2.0/3rdparty/<span class="keyword">include</span>/opencl/1.2
+    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
+
+  Python 2:
+    Interpreter:                 /usr/bin/python2.7 (ver 2.7.12)
+    Libraries:                   /usr/lib/x86_64-linux-gnu/libpython2.7.<span class="keyword">so</span> (ver 2.7.12)
+    numpy:                       /usr/<span class="keyword">local</span>/lib/python2.7/dist-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.0)
+    packages path:               lib/python2.7/dist-packages
+
+  Python 3:
+    Interpreter:                 /usr/bin/python3 (ver 3.5.2)
+
+  Python (<span class="keyword">for</span> build):            /usr/bin/python2.7
+
+  Java:
+    ant:                         <span class="keyword">NO</span>
+    JNI:                         /usr/lib/jvm/default-java/<span class="keyword">include</span> /usr/lib/jvm/default-java/<span class="keyword">include</span>/linux /usr/lib/jvm/default-java/<span class="keyword">include</span>
+    Java wrappers:               <span class="keyword">NO</span>
+    Java tests:                  <span class="keyword">NO</span>
+
+  Matlab:
+    mex:                         /usr/<span class="keyword">local</span>/MATLAB/R2014a/bin/mex
+    Compiler/generator:          Not working (bindings will not be generated)
+
+  Documentation:
+    Doxygen:                     <span class="keyword">NO</span>
+
+  Tests and samples:
+    Tests:                       YES
+    Performance tests:           YES
+    C/C++ Examples:              YES
+
+  Install path:                  /usr/<span class="keyword">local</span>
+
+  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /home/gwang/opencv-3.2.0/build
+-----------------------------------------------------------------
+</code></pre><p>同样在终端内python控制台得到的information和.py文件内得到information居然不一样，仔细分析发现这两个不是一个东西，想想是不是通过其他方式安装了opencv，通过尝试如下命令发现了这个bug：</p>
+<pre><code>sudo pip uninstall opencv-python
+
+The directory '/home/xxx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
+Uninstalling opencv-python-<span class="number">3.2</span>.0.7:
+  /home/xxx/.<span class="keyword">local</span>/LICENSE-<span class="number">3</span>RD-PARTY.txt
+  /home/xxx/.<span class="keyword">local</span>/LICENSE.txt
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.py
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.pyc
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/cv2.so
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/DESCRIPTION.rst
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/INSTALLER
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/METADATA
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/RECORD
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/WHEEL
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/metadata.json
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/top_level.txt
+Proceed (y/n)? 
+y
+  Successfully uninstalled opencv-python-<span class="number">3.2</span>.0.7
+The directory '/home/xx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
+</code></pre><p>卸载后，到终端python命令行内进行测试：</p>
+<pre><code><span class="prompt">&gt;&gt;</span>&gt;python
+<span class="prompt">&gt;&gt;</span>&gt;import cv2
+<span class="prompt">&gt;&gt;</span>&gt;<span class="constant">Traceback</span> (most recent call last)<span class="symbol">:</span>
+  <span class="constant">File</span> <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;<span class="class"><span class="keyword">module</span>&gt;</span>
+<span class="constant">ImportError</span><span class="symbol">:</span> <span class="constant">No</span> <span class="class"><span class="keyword">module</span> <span class="title">named</span> <span class="title">cv2</span></span>
+</code></pre><p>没有找到cv2，那么要把编译安装后的cv2.so重新链接下：</p>
+<pre><code>cd <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7/dist-packages
+sudo ln -s <span class="regexp">/home/</span>xxx<span class="regexp">/opencv3.2/</span>build<span class="regexp">/lib/</span>cv2.so cv2.so
+</code></pre><p>至此，终于搞定这个问题！！</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/09/08/编译ab压力测试并发(Ubuntu)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">编译ab压力测试并发(Ubuntu)</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Gang Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

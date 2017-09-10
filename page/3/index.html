@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,175 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-文本挖掘" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/11/22/文本挖掘/" class="article-date">
+  	<time datetime="2016-11-22T13:04:33.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="文本挖掘">文本挖掘</h4><hr>
+<p><strong>1.背景</strong></p>
+<p>随着互联网的大规模普及和企业信息化程度的提高,文本信息的快速积累使公司、政府和科研机构在信息处理和使用中面临前所未有的挑战。一方面,互联网和企业信息系统每天都不断产生大量文本数据,这些文本资源中蕴含着许多有价值的信息;而另一方面因为技术手段的落后,从大量数据资源中获取需要的信息十分困难。人们迫切需要研究出方便有效的工具去从大规模文本信息资源中提取符合需要的简洁、精炼、可理解的知识,文本挖掘就是为解决这个问题而产生的研究方向。</p>
+<p>传统的自然语言理解是对文本进行较低层次的理解,主要进行基于词、语法和语义信息的分析,并通过词在句子中出现的次序发现有意义的信息。在这一层次遇到的问题多与句法和语义歧义性相关。对文本较高层次的理解主要集中在研究如何从各种形式的文本和文本集中抽取隐含的模式和知识。文本高层次理解的对象可以是仅包含简单句子的单个文本也可以是多个文本组成的文本集,但是现有的技术手段虽然基本上解决了单个句子的分析问题,但是还很难覆盖所有的语言现象,特别是对整个段落<br>或篇章的理解还无从下手。</p>
+<p>在19世纪早期发展起来的以统计技术为基础的数据挖掘技术已经发展的较为成熟,并在大规模结构化关系数据库上应用取得成功。将数据挖掘的成果用于分析以自然语言描述的文本,这种方法被称为文本挖掘(Text Mining, TM)或文本知识发现(Knowledge Discovery in Text, KDT)。与传统自然语言处理(Natural Lnaguage Proeessing, NLP)关注词语和句子的理解不同,文本挖掘的主要目标是在大规模文本集中发现隐藏的有意义的知识,即对文本集的理解和文本间关系的理解。因此,文本挖掘是自然语言处理和数据挖掘技术发展到一定阶段的产物。</p>
+<p>在现实世界中,可获取的大部信息是以文本形式存储在文本数据库中的,由来自各种数据源的大量文档组成,如新闻文档、研究论文、书籍、数字图书馆、电子邮件和Web页面。由于电子形式的文本信息飞速增涨,文本挖掘已经成为信息领域的研究热点。</p>
+<p><strong>2.定义</strong></p>
+<p>文本数据库中存储的数据可能是高度非结构化的,如Web网页;也可能是半结构化的,如Email消息和一些XML网页;而其它的则可能是良结构化的。良结构化文本数据的典型代表是图书馆数据库中的文档,这些文档可能包含结构字段,如标题、作者、出版日期、长度、分类等等,也可能包含大量非结构化文本成分,如摘要和内容。通常,具有较好结构的文本数据库可以使用关系数据库系统实现,而对非结构化的文本成分需要采用特殊的处理方法对其进行转化。</p>
+<p>文本挖掘是一个交叉的研究领域,它涉及到数据挖掘、信息检索、自然语言处理、机器学习等多个领域的内容,不同的研究者从各自的研究领域出发,对文本挖掘的含义有不同的理解,不同应用目的文本挖掘项目也各有其侧重点。因此,对文本挖掘的定义也有多种,其中被普遍认可的文本挖掘定义如下:</p>
+<p>定义: 文本挖掘是指从大量文本数据中抽取事先未知的、可理解的、最终可用的知识的过程,同时运用这些知识更好地组织信息以便将来参考。</p>
+<p>直观的说,当数据挖掘的对象完全由文本这种数据类型组成时,这个过程就称为文本挖掘。</p>
+<p>文本挖掘也称为文本数据挖掘[Hearst97]或文本知识发现[Fedlmna95],文本挖掘的主要目的是从非结构化文本文档中提取有趣的、重要的模式和知识。可以看成是基于数据库的数据挖掘或知识发现的扩展F[ayyda96,Simoudis96]。</p>
+<p>文本挖掘是从数据挖掘发展而来,因此其定义与我们熟知的数据挖掘定义相类似。但与传统的数据挖掘相比,文本挖掘有其独特之处,主要表现在:<strong>文档本身是半结构化或非结构化的,无确定形式并且缺乏机器可理解的语义</strong>;而数据挖掘的对象以数据库中的结构化数据为主,并利用关系表等存储结构来发现知识。因此,<strong>有些数据挖掘技术并不适用于文本挖掘,即使可用,也需要建立在对文本集预处理的基础之上。</strong></p>
+<p><strong>3.文本挖掘过程</strong></p>
+<p>文本知识发现主要由以下步骤组成：</p>
+<pre><code><span class="comment">文档集合</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="title">[</span><span class="comment">文本预处理</span><span class="title">]</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">文档中间形式</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="title">[</span><span class="comment">文本挖掘</span><span class="title">]</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">模式</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="title">[</span><span class="comment">评估与表示</span><span class="title">]</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">知识</span>
+</code></pre><p>1)文本预处理:</p>
+<p>选取任务相关的文本并将其转化成文本挖掘工具可以处理的中间形式。</p>
+<pre><code><span class="comment">文本集</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">特征抽取</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">特征选择</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">文本特征矩阵</span>
+</code></pre><p>通常包括两个主要步骤:</p>
+<p>(a)特征抽取:建立文档集的特征表示,将文本转化成一种类似关系数据且能表现文本内容的结构化形式,如信息检索领域经常采用的向量空间模型就是这样一种结构化模型。</p>
+<p>(b)特征选择:一般说来结构化文本的特征空间维数较高,需要对其进行缩减,只保留对表达文本内容作用较大的一些特征。</p>
+<p>2)文本挖掘:</p>
+<p>在完成文本预处理后,可以利用机器学习、数据挖掘以及模式识别等方法提取面向特定应用目标的知识或模式。</p>
+<p>3)模式评估与表示<br>最后一个环节是利用已经定义好的评估指标对获取的知识或模式进行评价。如果评价结果符合要求,就存储该模式以备用户使用;否则返回到前面的某个环节重新调整和改进,然后再进行新一轮的发现。</p>
+<p><strong>4.研究现状</strong></p>
+<p>在文本挖掘过程中,文本的特征表示是整个挖掘过程的基础;而<strong>关联分析、文本分类、文本聚类</strong>是三种最主要也是最基本的功能。</p>
+<p><strong>4.1文本特征表示</strong></p>
+<p>传统数据挖掘所处理的数据是结构化的,其特征通常不超过几百个;而非结构化或半结构化的文本数据转换成特征向量后,特征数可能高达几万甚至几十万。所以,文本挖掘面临的首要问题是如何在计算机中合理的表示文本。这种表示法既要包含足够的信息以反映文本的特征,又不至于太过庞大使学习算法无法处理。这就涉及到文本特征的抽取和选择。</p>
+<p>文本特征指的是关于文本的元数据,可以分为描述性特征,如文本的名称、日期、大小、类型以及语义性特征,如文本的作者、标题、机构、内容。描述性特征易于获得,而语义特征较难获得。在文本特征表示方面,内容特征是被研究得最多的问题。</p>
+<p>当文本内容被简单地看成由它所包含的基本语言单位(字、词、词组或短语等)组成的集合时,这些基本的语言单位被称为<strong>项(Term)</strong>。如果用出现在文本中的<br>项表示文本,那么这些项就是文本的特征。</p>
+<p>对文本内容的特征表示主要有布尔模型、向量空间模型、概率模型和基于知识的表示模型。因为<strong>布尔模型和向量空间模型</strong>易于理解且计算复杂度较低,所以成为文本表示的主要工具。</p>
+<p><strong>(1)特征抽取</strong></p>
+<p>中文文档中的词与词之间不像英文文档那样具有分隔符,因此中、英文文档内容特征的提取步骤略有不同。</p>
+<pre><code><span class="comment">英文文档集合</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">消除停词</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">词干抽取</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">特征词集合</span>
+<span class="comment">中文文档集合</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">消除停词</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">词语切分</span><span class="literal">-</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">特征词集合</span>
+</code></pre><p><strong>消除停词</strong>:<br>文本集有时包含一些没有意义但使用频率极高的词。这些词在所有文本中的频率分布相近,从而增加了文本之间的相似程度,给文本挖掘带来一定困难。解决这个问题的方法是用这些词构造一个停词表或禁用词表(stop word list)[Ricardo1991],在特征抽取过程中删去停词表中出现的特征词。</p>
+<p>常用的停词包括虚词和实词两种,如</p>
+<p>(i)虚词:英文中的”a,the,of,for,with,in,at,…”<br>中文中的”的,地,得,把,被,就…”</p>
+<p>(ii)实词:数据库会议上的论文中的“数据库”一词,可视为停词。</p>
+<p><strong>词干抽取</strong>:</p>
+<p>定义: 令V(s)是由彼此互为语法变形的词组成的非空词集,V(s)的规范形式称为词干(stem)。</p>
+<p>例如,如果V(s)={connected,connecting,connection,connections},那么s=connect 是V(s)的词干。</p>
+<p><strong>词干抽取(stemming)有四种不同的策略:词缀排除(affix rermoval)、词干表查询(table lookup)、后继变化(successor variety)和n-gram</strong>。其中词缀排除最直观、简单且易于实现。多数词的变形是因添加后缀引起的,所以在基于词缀排除策略的抽取算法中后缀排除最为重要,Porter算法[Porter80]是后缀排除算法中最常用的一种。</p>
+<p>词干抽取将具有不同词缀的词合并成一个词,降低文本挖掘系统中特征词的总数,从而提高了挖掘系统的性能。</p>
+<p>当然,也有两点需要注意:</p>
+<p>(1)词干抽取对文本挖掘性能的提高仅在基于统计原理的各种分析和挖掘技术下有效。在进行涉及语义和语法的自然语言处理时,不适宜采用词干抽取技术。</p>
+<p>(2)词干抽取对文本挖掘或信息检索准确性的影响至今没有令人信服的结论,因此许多搜索引擎和文本挖掘系统不使用任何词干抽取算法。</p>
+<p><strong>汉语切分</strong>:</p>
+<p>汉语的分词问题己经基本解决,并出现了多种分词方法。这些分词方法可以分为两类:一类是理解式分词法,即利用汉语的语法知识、语义知识及心理学知识进行分词;另一类是机械式分词法,一般以分词词典为依据,通过文本中的汉字串和词表中的词逐一匹配完成词语切分。第一类分词方法算法复杂,实际应用中经常采用的是第二类分词方法。机械式分词法主要有正向最大匹配法,逆向最<br>大匹配法,逐词遍历法。</p>
+<p>由于词典的容量有限,在大规模真实文本处理中,会遇到许多词典中未出现的词,即未登录词。未登录现象是影响分词准确率的重要原因。为解决这个问题,人们提出利用N-gram语言模型进行词项划分[周01a,01b],从而摆脱基于词典的分词方法对词典的依赖。与基于词典的分词方法不同,基于N-gram技术得到的词项不一定具有实际意义。</p>
+<p>例如:“文本挖掘”的所有N-gram项为:</p>
+<pre><code><span class="number">1</span>-<span class="string">gram:</span>文,本,挖,掘
+<span class="number">2</span>-<span class="string">gram:</span>文本,本挖,挖掘
+<span class="number">3</span>-<span class="string">gram:</span>文本挖,本挖掘
+<span class="number">4</span>-<span class="string">gram:</span>文本挖掘
+</code></pre><p>其中除1-gram是单字外,2-gram中的“本挖”,3-gram中的“文本挖”,“本挖掘”都不具有实际意义。</p>
+<p><strong>(2)特征选择</strong></p>
+<p>特征选择也称特征子集选择或特征集缩减。经过特征抽取获得的特征词数量很多,有时达数万个特征。如此多的特征对许多文本挖掘方法,如文本分类、聚类、文本关联分析来说未必都是有意义的;而过大的特征空间还会严重影响文本挖掘的效率,因此选择适当的特征子集十分必要。</p>
+<p>通常采用机器学习的方法进行文本特征选择。虽然机器学习中有许多选取特征子集的算法,但有些算法复杂且效率低下,不适于处理庞大的文本特征集。</p>
+<p>国外对特征选择的研究较多[Mladenic99,Mladenic03,Lewis92,Liu96],特别是已有专门针对文本分类特征选择方法的比较研究[Yang97]。国内对这一问题的研究以跟踪研究为主,集中在将国外现有特征评估函数用于中文文本特征选择[周<br>02]及对其进行改进[李99]。</p>
+<p><strong>4.2基于关键字的关联分析</strong></p>
+<p>文本数据一旦被转化成结构化中间形式后,这种中间形式就作为文本挖掘过程的基础。</p>
+<p>与关系数据库中关联规则的挖掘方法类似,基于关键词的关联规则产生过程包括两个阶段:</p>
+<p><em>关联挖掘阶段</em>:<br>这一阶段产生所有的支持度大等于最小支持度闭值的关键词集,即频繁项集。</p>
+<p><em>规则生成阶段</em>:<br>利用前一阶段产生的频繁项集构造满足最小置信度约束的关联规则。</p>
+<p>Feldman等人实现了基于上述思想的文本知识发现系统KDT[Feldman96]、FACT[Feldman97],KDT系统在Reuter22173语料集中发现的关联规则示例:</p>
+<pre><code>[<span class="constant">Iran,Nicaragua,Usa]</span>-&gt;<span class="constant">Reagan </span><span class="number">6</span>/<span class="number">1.00</span>
+[gold,copper]-&gt;<span class="constant">Canada </span><span class="number">5</span>/<span class="number">0</span>.<span class="number">556</span>
+[gold,silver]-&gt;<span class="constant">USA </span><span class="number">19</span>/<span class="number">0</span>.<span class="number">692</span>
+</code></pre><p>根据不同的挖掘需要,可以利用不同的挖掘方法,如关联挖掘、最大模式挖掘或层次关联挖掘,完成相应的文本分析任务。</p>
+<p><strong>4.3文本分类</strong></p>
+<p>文本分类是文本挖掘中一项非常重要的任务,也是国内外研究较多的一种挖掘技术。在机器学习中分类称作有监督学习或有教师归纳,其目的是提出一个分类函数或分类模型(也称作分类器),该模型能把数据库中的数据项映射到给定类别中的一个。</p>
+<p>一般来讲,文本分类需要四个步骤:</p>
+<p>(1)获取训练文本集:训练文本集由一组经过预处理的文本特征向量组成,每个训练文本(或称训练样本)有一个类别标号;</p>
+<p>(2)选择分类方法并训练分类模型:文本分类方法有统计方法、机器学习方法、神经网络方法等等。在对待分类样本进行分类前,要根据所选择的分类方法,利用训练集进行训练并得出分类模型;</p>
+<p>(3)用导出的分类模型对其它待分类文本进行分类;</p>
+<p>(4)根据分类结果评估分类模型。</p>
+<p>另外需要注意的是,文本分类的效果一般和数据集本身的特点有关。有的数据集包含噪声,有的存在缺失值,有的分布稀疏,有的字段或属性间相关性强。目前,普遍认为不存在某种方法能适合于各种特点的数据[Yang99a,Yang99b]。</p>
+<p>随着nIetmet技术的发展和普及,在线文本信息迅速增加,文本分类成为处理和组织大量文本数据的关键技术。而近二十多年来计算机软、硬件技术的发展和自然语言处理、人工智能等领域的研究进展为文本自动分类提供了技术条件和理论基础。迄今为止,文本分类研究已经取得了很大的进展,提出了一系列有效的方法,其中分类质量较好的有k最近邻(k-Nearest Neighbor,KNN),[Iwayama95,Yang97,Yang99a]、支持向量机(Support Vector Machine,SVM)[Joachims98]、朴素贝叶斯(Naive Bayes,NB)[Lewis94,Chakra97,Lewis98]。1998年文献[Liu98]提出了基于关联规则的分类方法CBA,此后陆续有人进行这方面的研究,如CAEP[Dong99]、JEP[Li00a,Li00c]、DeEPs[Li0Ob]、CMAR[Li01]和用于文本分类的ARC[Zaiane02]。</p>
+<p>国内对中文文本自动分类的研究起步较晚,尽管己有一些研究成果[李04,姚03,邹99,周01a],但由于尚没有通用的标准语料和评价方法,很难对这些成果进行比较。而对基于关联规则的文本分类的研究在国内还未见到。</p>
+<p><strong>4.4文本聚类</strong></p>
+<p>文本聚类是根据文本数据的不同特征,将其划分为不同数据类的过程。其目的是要使同一类别的文本间的距离尽可能小,而不同类别的文本间的距离尽可能的大。主要的聚类方法有统计方法、机器学习方法、神经网络方法和面向数据库的方法。在统计方法中,聚类也称聚类分析,主要研究基于几何距离的聚类。在机器学习中聚类称作无监督学习或无教师归纳。聚类学习和分类学习的不同主要在于:分类学习的训练文本或对象具有类标号,而用于聚类的文本没有类标号,由聚类学习算法自动确定。</p>
+<p>传统的聚类方法在处理高维和海量文本数据时的效率不很理想,原因是:<br>(1)传统的聚类方法对样本空间的搜索具有一定的盲目性;<br>(2)在高维很难找到适宜的相似度度量标准。</p>
+<p>虽然,文本聚类用于海量文本数据时存在不足。但与文本分类相比,文本聚类可以直接用于不带类标号的文本集,避免了为获得训练文本的类标号所花费的代价。根据聚类算法无需带有类标号样本这一优势,Nigam等人提出从带有和不带有类标号的混合文本中学习分类模型的方法[Ngiam98]。其思想是利用聚类技术减少分类方法对有标号训练样本的需求,减轻手工标记样本类别所需的工作<br>量,这种方法也称为半监督学习。</p>
+<p>文本聚类包括以下四个步骤:</p>
+<p>(1)获取结构化的文本集。</p>
+<p>结构化的文本集由一组经过预处理的文本特征向量组成。从文本集中选取的特征好坏直接影响到聚类的质量。如果选取的特征与聚类目标无关,那么就难以得到良好的聚类结果。对于聚类任务,合理的特征选择策略应是使同类文本在特征空间中相距较近,异类文本相距较远。</p>
+<p>(2)执行聚类算法,获得聚类谱系图。聚类算法的目的是获取能够反映特征空间样本点之间的“抱团”性质。</p>
+<p>(3)选取合适的聚类阈值。在得到聚类谱系图后,领域专家凭借经验,并结合具体的应用场合确定阈值。阈值确定后,就可以直接从谱系图中得到聚类结果。</p>
+<p>目前,常见的聚类算法可以分成以下几类[Han01]:</p>
+<p>(1)平面划分法:对包含n个样本的样本集构造样本集的k个划分,每个划分表示一个聚簇。常见的划分聚类算法有k-均值算法,k-中心点算法,CLARANS算法。</p>
+<p>(2)层次聚类法:层次聚类法对给定的样本集进行层次分解。根据层次分解方向的不同可分为凝聚层次聚类和分裂层次聚类。凝聚法也称为自底向上的方法,如AGNES;分裂法也称自顶向下的方法,如DIANA、CURE、BIRCH、Chameleon。</p>
+<p>(3)基于密度的方法:多数平面划分法使用距离度量样本间的相似程度,因此只能发现球状簇,难以发现任意形状簇。基于密度的聚类法根据样本点临近区域的密度进行聚类,使在给定区域内至少包含一定数据的样本点。DBSCAN就是一个具有代表性的基于密度的聚类算法。</p>
+<p>(4)基于网格的方法:采用多分辨率的网格数据结构,将样本空间量化为数量有限的网格单元,所有聚类操作都在网格上进行,如STING算法。</p>
+<p>(5)基于模型的方法:为每个簇假定一个模型,然后通过寻找样本对给定模型的最佳拟合进行聚类。</p>
+<p>有些聚类算法集成多种算法的思想,因此难以将其划归到上述类别中的一类,如CLIQUE综合了密度和网格两种聚类方法。</p>
+<p>文本聚类有着广泛的应用,比如可以用来:</p>
+<p>(1)改进信息检索系统的查全率和查准率[Ricardo99];</p>
+<p>(2)用于文本集浏览[Cutting92];</p>
+<p>(3)搜索引擎返回的相关文本的组织[Zamir97];</p>
+<p>(4)自动产生文本集的类层次结构[Koller97]。在带有类标号的文本集上发现自然聚类[Aggarwal99],然后利用自然聚类改进文本分类器。</p>
+<p><strong>5.文本挖掘与相近领域的关系</strong></p>
+<p><strong>5.1自然语言处理与文本挖掘的区别</strong></p>
+<p>文本挖掘与自然语言处理有着千丝万缕的联系,但也存在明显的不同:</p>
+<p>(1)<strong>文本挖掘通过归纳推理</strong>发现知识,而传统的自然语言处理多采用<strong>演绎推理</strong>的方法,很少使用归纳推理方法。</p>
+<p>(2)文本挖掘在大规模文本集而不是少数文本中发现知识,其目的不在于改善对文本的理解而是发现文本中的关系。虽然自然语言处理的两个新兴领域:信息检索(Information Retrieval,IR)和信息提取(Information Extraction,IE)也是以大规模文本集为对象,但只要使用严格的演绎推理,那么就不能称作文本挖掘。主要原因是它们没有发现任何知识,只是发现符合某种约束条件的文本而不是知识本身。</p>
+<pre><code>[<span class="link_label">比较</span>][<span class="link_reference">方法不同</span>][<span class="link_label">目标不同</span>][<span class="link_reference">对象范围不同</span>]
+自然语言处理：[<span class="link_label">演绎推理方法</span>][<span class="link_reference">更好的理解文本</span>][<span class="link_label">以一篇或少数文本为研究对象，发现表示文本特点的关系</span>]
+文本挖掘：[<span class="link_label">归纳推理方法</span>][<span class="link_reference">更好的使用文本</span>][<span class="link_label">以大量文本组成的文本集为研究对象，在文本集中发现文本间或文本集中词与词之间的关系</span>]
+</code></pre><p>1)信息检索与文本挖掘</p>
+<p>信息检索是与数据库技术并行发展多年的领域,其中以文本为对象的文本信息检索以非结构或半结构化数据为处理对象,研究大量文本的信息组织和检索问题。</p>
+<p>文本信息检索主要发现与用户检索要求(如关键词)相关的文本。例如,基于关键词的文本检索使用相关度量计算文本与用户查询间的相关性并按相关程度高低排序获得的文档。</p>
+<p>近年来,基于自然语言处理技术发展起来的智能检索技术包含了对歧义信息的检索处理,如“苹果”,究竟是指水果还是电脑品牌;“华人”与“中华人民共和国”的区分,这类检索通过歧义知识描述库、全文索引、上下文分析以及用户相关反馈等技术实现文本信息检索的智能化。与文本挖掘不同,智能信息检索仍然只是关注从文本集中更有效地识别和提取相关文档,而不发现任何新的信息或知识。</p>
+<p>2)信息提取与文本挖掘</p>
+<p>信息提取(IE)是指提取文本集中预定义的事件或任务信息的过程,例如关于恐怖事件信息的提取,可以包括事件时间,地点,恐怖分子,受害者,恐怖分子采用的手段等等。其目的在于发现文本中的结构模式。主要过程是先根据需要确定结构模式,然后从文本中提取相应的知识填进该结构模式。文本挖掘任务则与之正好相反,它需要自动发现那些IE中给定的模式。</p>
+<p><strong>5.2文本挖掘与相关领域的交叉</strong></p>
+<p>虽然以上介绍的研究领域与文本挖掘存在明显的不同,但它们在某种程度上也存在交叉。最典型的交叉就是通过技术和方法的互相借鉴为各自领域提供新的有效的方法,如许多文本挖掘系统中采用的预处理方法就是最先在信息检索领域中提出并使用的。除此之外,还有其它的例子,如:</p>
+<p>(1)基于文本挖掘的汉语词性自动标注</p>
+<p>利用文本挖掘研究词及词性的序列模式对词性的影响是非常有新意的研究,这与人在根据上下文对词性进行判断的方法是一致的,不但根据上下文的词、词性,而且可以根据二者的组合来判断某个词的词性。</p>
+<p>国内从数据挖掘的角度对汉语文本词性标注规则的获取进行了研究[李01]。其方法是在统计语料规模较大的情况下,利用关联规则发现算法发现词性标注规则。只要规则的置信度足够高,获得的规则就可以用来处理兼类词的情况。该过程完全是自动的,而获取的规则在表达上是明确的,同时又是隐含在数据中、用户不易发现的。</p>
+<p>(2)基于信息抽取的文本挖掘</p>
+<p>为将非结构化的自然语言文档表示成结构化形式以便直接利用传统的数据挖掘技术来进行文本挖掘。已有多种结构化方法被提出,如前面提到的文本特征表示方法就是最典型的一种。此外,随着信息抽取技术的不断发展[Freitag98,Clifton99],它在文本挖掘领域扮演着日益重要的角色。信息抽取的主要任务是从自然语言文本集中查找特别的数据段,然后将非结构化文档转化为结构化的数据库,以便更容易地理解文本。基于信息抽取<br>的文本挖掘系统框架[Nahm01]:</p>
+<pre><code>Text-&gt;{Information Extraction-&gt;DB-&gt;KDD}-&gt;<span class="keyword">Rule</span> Base
+</code></pre><p>在这个系统中,IE模块负责在原始文本中捕获特别的数据段,并生成数据库提供给知识发现模块进一步挖掘。</p>
+<p><strong>5.3文本挖掘技术在Email处理方面的应用</strong></p>
+<p>由于Email文档和普通文档之间有许多相似之处,所以可以将挖掘普通文档涉及的技术和方法用于Email信息挖掘。目前,有许多关于利用文本挖掘技术有效地组织和分析Email信息的研究。例如,通过分析Email的语言和作者性别群进行计算机取证[Rajman97];将Email信息的结构特征和语言学特征与SVM结合进行作者身份鉴别。</p>
+<p>文本挖掘技术除了用于组织Email信息外,还可以用于对Email消息进行分类。如:利用朴素贝叶斯算法[Rennie00]、Rocchio算法、SVM方法和Bayesian方法[sahami98,Andr00,Sakkis01]对Email信息进行分类和过滤。此外,文献[Cohen96]和[Lewis94]则提出两个基于规则的系统,这两个系统都是利用文本挖掘技术来分类Email信息。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-天下第一铭[汤晓鸥]" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1236,118 +1405,6 @@ x=<span class="number">0</span>
         getFlv(con,  <span class="string">'%s'</span> % x, title)
         <span class="comment"># urllib.urlretrieve(con, getPath('%s' % x, title))# , callbackfunc)</span>
         x+=<span class="number">1</span>
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Python爬取arxiv的paper" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/01/Python爬取arxiv的paper/" class="article-date">
-  	<time datetime="2016-04-01T07:21:47.000Z" itemprop="datePublished">2016-04-01</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/01/Python爬取arxiv的paper/">Python爬取arxiv的paper</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>每天都要去arxiv上关注最新一天的论文（computer vision）更新，而且每次下载的论文的名称都是arxiv的代号，需要花时间去整理，于是用python写一个非常简单的爬虫，自己使用，足够节省时间了。</p>
-<pre><code><span class="keyword">import</span> requests
-<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
-<span class="keyword">import</span> os
-<span class="keyword">import</span> time
-<span class="keyword">import</span> re
-<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool
-
-<span class="function"><span class="keyword">def</span> <span class="title">getHtml</span><span class="params">(url)</span>:</span>
-    html = requests.get(url).content
-    selector = etree.HTML(html)
-    <span class="keyword">return</span> selector
-
-<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(htm, xpathStr)</span>:</span>
-    selector = htm
-    content = selector.xpath(xpathStr)  
-    <span class="keyword">return</span> content
-
-<span class="function"><span class="keyword">def</span> <span class="title">getDownPdf</span><span class="params">(cons, title, folder)</span>:</span>
-    fn = <span class="string">'%s'</span> % title
-    pa = os.path.dirname(__file__) + <span class="string">'/'</span> + <span class="string">'arxiv'</span> + <span class="string">'/%s'</span> % folder
-    <span class="comment"># check and create folder</span>
-    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pa):
-        os.mkdir(pa)
-    fl = pa + <span class="string">'/%s.pdf'</span> % fn
-    r = requests.get(cons)
-    <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
-        code.write(r.content)
-
-<span class="comment">#### main ###</span>
-url0 = <span class="string">'http://arxiv.org/list/cs.CV/recent'</span>
-<span class="keyword">print</span> url0
-<span class="comment"># xpath of each page</span>
-xp1 = <span class="string">'//dl[1]//*[@class="list-identifier"]//a[2]//@href'</span>  <span class="comment"># pdf href list</span>
-xp2 = <span class="string">'//dl[1]//*[@class="list-title"]/text()'</span>  <span class="comment"># Title</span>
-xp_date = <span class="string">'//*[@id="dlpage"]/h3[1]/text()'</span>  <span class="comment"># date-&gt;folder</span>
-
-htm0 = getHtml(url0)
-cons1 = getContent(htm0, xp1)  <span class="comment"># get pdfs' href</span>
-cons2 = getContent(htm0, xp2)  <span class="comment"># get papers' title</span>
-cons_date = getContent(htm0, xp_date) <span class="comment"># get date</span>
-
-folder = cons_date[<span class="number">0</span>].split(<span class="string">', '</span>) <span class="comment"># get date string</span>
-
-<span class="keyword">print</span> folder[<span class="number">1</span>] + <span class="string">': having %s'</span> % len(cons1) + <span class="string">'  files'</span>
-<span class="keyword">print</span> <span class="string">'pdfs are downloading...'</span>
-
-<span class="keyword">for</span> indx <span class="keyword">in</span> range(<span class="number">0</span>, len(cons1)):
-    href = <span class="string">'http://arxiv.org'</span> + cons1[indx]
-    title = cons2[<span class="number">2</span> * indx + <span class="number">1</span>]
-    <span class="keyword">print</span> <span class="string">'%s.'</span> % (<span class="number">1</span> + indx) + <span class="string">' '</span> + href + <span class="string">' '</span> + title
-    getDownPdf(href, title, folder[<span class="number">1</span>])
 </code></pre>
       
     </div>

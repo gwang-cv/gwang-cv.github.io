@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,118 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Python爬取arxiv的paper" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/01/Python爬取arxiv的paper/" class="article-date">
+  	<time datetime="2016-04-01T07:21:47.000Z" itemprop="datePublished">2016-04-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/01/Python爬取arxiv的paper/">Python爬取arxiv的paper</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>每天都要去arxiv上关注最新一天的论文（computer vision）更新，而且每次下载的论文的名称都是arxiv的代号，需要花时间去整理，于是用python写一个非常简单的爬虫，自己使用，足够节省时间了。</p>
+<pre><code><span class="keyword">import</span> requests
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+<span class="keyword">import</span> os
+<span class="keyword">import</span> time
+<span class="keyword">import</span> re
+<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool
+
+<span class="function"><span class="keyword">def</span> <span class="title">getHtml</span><span class="params">(url)</span>:</span>
+    html = requests.get(url).content
+    selector = etree.HTML(html)
+    <span class="keyword">return</span> selector
+
+<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(htm, xpathStr)</span>:</span>
+    selector = htm
+    content = selector.xpath(xpathStr)  
+    <span class="keyword">return</span> content
+
+<span class="function"><span class="keyword">def</span> <span class="title">getDownPdf</span><span class="params">(cons, title, folder)</span>:</span>
+    fn = <span class="string">'%s'</span> % title
+    pa = os.path.dirname(__file__) + <span class="string">'/'</span> + <span class="string">'arxiv'</span> + <span class="string">'/%s'</span> % folder
+    <span class="comment"># check and create folder</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pa):
+        os.mkdir(pa)
+    fl = pa + <span class="string">'/%s.pdf'</span> % fn
+    r = requests.get(cons)
+    <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
+        code.write(r.content)
+
+<span class="comment">#### main ###</span>
+url0 = <span class="string">'http://arxiv.org/list/cs.CV/recent'</span>
+<span class="keyword">print</span> url0
+<span class="comment"># xpath of each page</span>
+xp1 = <span class="string">'//dl[1]//*[@class="list-identifier"]//a[2]//@href'</span>  <span class="comment"># pdf href list</span>
+xp2 = <span class="string">'//dl[1]//*[@class="list-title"]/text()'</span>  <span class="comment"># Title</span>
+xp_date = <span class="string">'//*[@id="dlpage"]/h3[1]/text()'</span>  <span class="comment"># date-&gt;folder</span>
+
+htm0 = getHtml(url0)
+cons1 = getContent(htm0, xp1)  <span class="comment"># get pdfs' href</span>
+cons2 = getContent(htm0, xp2)  <span class="comment"># get papers' title</span>
+cons_date = getContent(htm0, xp_date) <span class="comment"># get date</span>
+
+folder = cons_date[<span class="number">0</span>].split(<span class="string">', '</span>) <span class="comment"># get date string</span>
+
+<span class="keyword">print</span> folder[<span class="number">1</span>] + <span class="string">': having %s'</span> % len(cons1) + <span class="string">'  files'</span>
+<span class="keyword">print</span> <span class="string">'pdfs are downloading...'</span>
+
+<span class="keyword">for</span> indx <span class="keyword">in</span> range(<span class="number">0</span>, len(cons1)):
+    href = <span class="string">'http://arxiv.org'</span> + cons1[indx]
+    title = cons2[<span class="number">2</span> * indx + <span class="number">1</span>]
+    <span class="keyword">print</span> <span class="string">'%s.'</span> % (<span class="number">1</span> + indx) + <span class="string">' '</span> + href + <span class="string">' '</span> + title
+    getDownPdf(href, title, folder[<span class="number">1</span>])
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-深度学习开发包" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -916,69 +1028,6 @@ Running setup.py install <span class="keyword">for</span> lxml ... done
 Successfully installed lxml-<span class="number">3.6</span>.0`
 </code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-xcode安装command_line_tools" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/xcode安装command_line_tools/" class="article-date">
-  	<time datetime="2016-03-30T14:37:17.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/xcode安装command_line_tools/">Xcode安装command line tools</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>command line tools</p>
-<p>打开命令行，输入：</p>
-<pre><code>xcode-<span class="built_in">select</span> <span class="comment">--install</span>
-</code></pre>
       
     </div>
     
