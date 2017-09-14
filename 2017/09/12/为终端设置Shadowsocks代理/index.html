@@ -4,30 +4,24 @@
   <meta charset="utf-8">
   
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
-  <title>Hello World</title>
+  <title>为终端设置Shadowsocks代理 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="为终端设置Shadowsocks代理
-
-PS：为解决python tweepy连接twitter api超时的问题。
+  <meta name="description" content="PS：为解决python tweepy连接twitter api超时的问题。
 tweepy.api(auth,proxy=&quot;localhost:1080&quot;)
-做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks">
+做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks是我们常用的代理工具，它使用socks5">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
+<meta property="og:title" content="为终端设置Shadowsocks代理">
 <meta property="og:url" content="http://gwang-cv.github.io/2017/09/12/为终端设置Shadowsocks代理/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="为终端设置Shadowsocks代理
-
-PS：为解决python tweepy连接twitter api超时的问题。
+<meta property="og:description" content="PS：为解决python tweepy连接twitter api超时的问题。
 tweepy.api(auth,proxy=&quot;localhost:1080&quot;)
-做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks">
-<meta property="og:updated_time" content="2017-09-12T09:59:09.000Z">
+做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks是我们常用的代理工具，它使用socks5">
+<meta property="og:updated_time" content="2017-09-14T13:46:20.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="为终端设置Shadowsocks代理
-
-PS：为解决python tweepy连接twitter api超时的问题。
+<meta name="twitter:title" content="为终端设置Shadowsocks代理">
+<meta name="twitter:description" content="PS：为解决python tweepy连接twitter api超时的问题。
 tweepy.api(auth,proxy=&quot;localhost:1080&quot;)
-做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks">
+做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。Shadowsocks是我们常用的代理工具，它使用socks5">
   
   
     <link rel="icon" href="/favicon.png">
@@ -83,7 +77,7 @@ tweepy.api(auth,proxy=&quot;localhost:1080&quot;)
 						<li>Tags</li>
 						
 						
-						<li>About</li>
+						<li>Über</li>
 						
 					</ul>
 				</div>
@@ -195,11 +189,35 @@ tweepy.api(auth,proxy=&quot;localhost:1080&quot;)
       <input type="hidden" class="isFancy" />
     
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      为终端设置Shadowsocks代理
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
     <div class="article-entry" itemprop="articleBody">
       
-        <p>为终端设置Shadowsocks代理</p>
-<hr>
-<p>PS：为解决python tweepy连接twitter api超时的问题。</p>
+        <p>PS：为解决python tweepy连接twitter api超时的问题。</p>
 <pre><code>tweepy.<span class="function"><span class="title">api</span><span class="params">(auth,proxy=<span class="string">"localhost:1080"</span>)</span></span>
 </code></pre><p>做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。<br>Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。<br>想要进行转换，需要借助工具，这里我们采用比较知名的polipo来实现。polipo是一个轻量级的缓存web代理程序。</p>
 <p><strong>准备工作</strong></p>
@@ -324,7 +342,7 @@ Resolving <span class="string">deltas:</span> <span class="number">100</span>% (
       <strong class="article-nav-caption"><</strong>
       <div class="article-nav-title">
         
-          (no title)
+          Caffe训练出错
         
       </div>
     </a>
