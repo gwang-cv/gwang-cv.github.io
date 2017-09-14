@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,51 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Caffe训练出错" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/14/Caffe训练出错/" class="article-date">
+  	<time datetime="2017-09-14T13:42:31.000Z" itemprop="datePublished">2017-09-14</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Caffe训练出错">Caffe训练出错</h2><p>Caffe训练出错</p>
+<pre><code><span class="tag">F0204</span> 17<span class="pseudo">:40</span><span class="pseudo">:38</span><span class="class">.201807</span> 10866 <span class="rule"><span class="attribute">db_lmdb.hpp</span>:<span class="value"><span class="number">15</span>] Check failed: mdb_status == <span class="number">0</span> (<span class="number">2</span> vs. <span class="number">0</span>) No such file or directory</span></span>
+</code></pre><p>You have not set your paths to the LMDB directories correctly.<br>LMDB目录错误,修改prototxt文件的LMDB文件路径</p>
+<p>写相对路径不行，写成绝对路径就通过了。。。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-为终端设置Shadowsocks代理" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1681,82 +1726,6 @@ ssh-keygen -t rsa -C <span class="string">"your_email<span class="variable">@you
 <p>测试是否生效: <code>ssh -T git@github.com</code></p>
 <p>若出现Permission denied (publickey).</p>
 <p>执行一句<code>ssh-add github/id-rsa</code> 即可。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Ubuntu下载工具" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/11/Ubuntu下载工具/" class="article-date">
-  	<time datetime="2017-08-11T02:12:02.000Z" itemprop="datePublished">2017-08-11</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/11/Ubuntu下载工具/">Ubuntu下载工具</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Ubuntu下也有类似的下载工具，那就是aira2。<br>aira2是一个命令行下载工具，可以配合其他图形界面的下载软件使用。即使用uget+aria2。uget本身是一个小巧实用的多线程下载工具，加上aria2作为插件，下载速度有明显提高。</p>
-<p><strong>安装</strong></p>
-<p>使用ppa方式进行安装较新的版本。</p>
-<p>1.uget的安装：</p>
-<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:plushuang-tw/uget-stable 
-sudo apt-get update 
-sudo apt-get install uget
-</code></pre><p>2.aria2的安装：</p>
-<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:t-tujikawa/ppa 
-sudo apt-get update 
-sudo apt-get install aria2
-</code></pre><p>安装完aria2后，可以在终端中运行<code>aria2c -v</code>，查看版本和支持的特性。需要1.10以上的版本才能支持资源搜索。</p>
-<p>最后打开uget可视化界面，依次在菜单<code>Edit</code> -&gt; <code>Settings</code> -&gt; <code>uGet - Settings</code>-&gt; <code>Plug-in</code> -&gt; <code>Plug-in matching order: aria2</code> -&gt; <code>Arguments: --enable-rpc=true -D -disable-ipv6 --check-certificate=false</code>.</p>
-<p>然后在主界面左侧的<code>All Category</code>右键选择<code>Properties</code>，在第二个选项页下设置下载文件夹以及最大连接数<code>Max Connections: 16</code>.</p>
-<hr>
-<p>下载对比： Chrome浏览器下载百度盘内的资料，网速为80k/s左右； 使用uGet下载网速可达1.2M/s。</p>
 
       
     </div>
