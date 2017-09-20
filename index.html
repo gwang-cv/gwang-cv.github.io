@@ -168,6 +168,81 @@
 
       <div class="body-wrap">
   
+    <article id="post-Windows下安装labelImg" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/21/Windows下安装labelImg/" class="article-date">
+  	<time datetime="2017-09-20T17:53:21.000Z" itemprop="datePublished">2017-09-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/21/Windows下安装labelImg/">Windows下安装labelImg</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.安装必备的Visual Studio 2015，以提供nmake工具</p>
+<p>2.在开始菜单中找到Visual Studio Tools &gt; VS2015 x64本机工具命令提示符</p>
+<p>3.到pyqt4官方下载sip的源文件</p>
+<p>4.编译安装sip</p>
+<pre><code>cd C:\sip-<span class="number">4.19</span>.<span class="number">3</span> 
+python configure<span class="class">.py</span>
+nmake
+nmake install
+</code></pre><p>5.安装pyqt4，在Windows下不要采用编译安装方法，会掉到坑里。我们使用非官方的安装包，下载地址：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="external">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>，下载对应的PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl</p>
+<pre><code><span class="tag">pip</span> <span class="tag">install</span> <span class="tag">PyQt4</span>‑4<span class="class">.11</span><span class="class">.4</span>‑<span class="tag">cp27</span>‑<span class="tag">cp27m</span>‑<span class="tag">win_amd64</span><span class="class">.whl</span>
+</code></pre><p>安装完成之后，将C:\Python27\Lib\site-packages\PyQt4添加到系统路径中</p>
+<p>6.安装labelImg，这里编译安装</p>
+<pre><code>pyrcc4 -o resources<span class="class">.py</span> resources<span class="class">.qrc</span>
+python labelImg.py
+</code></pre><p>完成！！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Caffe训练出错" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1656,121 +1731,6 @@ tessedit_chaar_whitelist ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-安装Hexo的问题" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/25/安装Hexo的问题/" class="article-date">
-  	<time datetime="2017-08-25T06:48:15.000Z" itemprop="datePublished">2017-08-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/安装Hexo的问题/">安装Hexo的问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>安装Hexo时，执行<code>npm install -g hexo-cli</code>出现错误：</p>
-<pre><code>npm <span class="keyword">ERR</span>! tar.unpack untar <span class="keyword">error</span> /Users/Macx/.npm/hexo-<span class="keyword">cli</span>/0.1.8/package.tgz
-npm <span class="keyword">ERR</span>! Darwin 14.4.0
-npm <span class="keyword">ERR</span>! argv <span class="string">"/usr/local/bin/node"</span> <span class="string">"/usr/local/bin/npm"</span> <span class="string">"install"</span> <span class="string">"hexo-cli"</span> <span class="string">"-g"</span>
-npm <span class="keyword">ERR</span>! node v4.2.1
-npm <span class="keyword">ERR</span>! npm v2.14.7
-npm <span class="keyword">ERR</span>! path /usr/<span class="keyword">local</span>/lib/node_modules/hexo-<span class="keyword">cli</span>
-npm <span class="keyword">ERR</span>! code EACCES
-npm <span class="keyword">ERR</span>! errno -13
-npm <span class="keyword">ERR</span>! syscall <span class="keyword">mkdir</span>
-npm <span class="keyword">ERR</span>! <span class="keyword">Error</span>: EACCES: permission denied, <span class="keyword">mkdir</span> '/usr/<span class="keyword">local</span>/lib/node_modules/hexo-<span class="keyword">cli</span>'
-npm <span class="keyword">ERR</span>! at <span class="keyword">Error</span> (native)
-npm <span class="keyword">ERR</span>! { [<span class="keyword">Error</span>: EACCES: permission denied, <span class="keyword">mkdir</span> '/usr/<span class="keyword">local</span>/lib/node_modules/hexo-<span class="keyword">cli</span>']
-npm <span class="keyword">ERR</span>! errno: -13,
-npm <span class="keyword">ERR</span>! code: 'EACCES',
-npm <span class="keyword">ERR</span>! syscall: '<span class="keyword">mkdir</span>',
-npm <span class="keyword">ERR</span>! path: '/usr/<span class="keyword">local</span>/lib/node_modules/hexo-<span class="keyword">cli</span>',
-npm <span class="keyword">ERR</span>! fstream_type: 'Directory',
-npm <span class="keyword">ERR</span>! fstream_path: '/usr/<span class="keyword">local</span>/lib/node_modules/hexo-<span class="keyword">cli</span>',
-npm <span class="keyword">ERR</span>! fstream_class: 'DirWriter',
-npm <span class="keyword">ERR</span>! fstream_stack: 
-npm <span class="keyword">ERR</span>! [ '/usr/<span class="keyword">local</span>/lib/node_modules/npm/node_modules/fstream/lib/<span class="keyword">dir</span>-writer.js:35:25',
-npm <span class="keyword">ERR</span>! '/usr/<span class="keyword">local</span>/lib/node_modules/npm/node_modules/mkdirp/index.js:47:53',
-npm <span class="keyword">ERR</span>! 'FSReqWrap.oncomplete (fs.js:82:15)' ] }
-npm <span class="keyword">ERR</span>! 
-npm <span class="keyword">ERR</span>! Please try running this command again <span class="keyword">as</span> root/Administrator.
-npm <span class="keyword">ERR</span>! Please <span class="keyword">include</span> the following <span class="keyword">file</span> with any support request:
-npm <span class="keyword">ERR</span>! /Users/Macx/Desktop/GitHub/npm-debug.<span class="literal">log</span>
-</code></pre><p>分析下错误，异常可能因为权限问题，所以我们执行一些安装命令是需要申请root执行权限。<br>执行以下代码解决:</p>
-<pre><code><span class="comment">sudo</span> <span class="comment">npm</span> <span class="comment">install</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">unsafe</span><span class="literal">-</span><span class="comment">perm</span> <span class="literal">-</span><span class="literal">-</span><span class="comment">verbose</span> <span class="literal">-</span><span class="comment">g</span> <span class="comment">hexo</span>    
-</code></pre><p>成功解决！</p>
-<pre><code>pm WARN optional Skipping failed optional dependency <span class="regexp">/hexo/</span>chokidar/<span class="string">fsevents:</span>
-npm WARN notsup Not compatible with your operating system or <span class="string">architecture:</span> fsevents@<span class="number">1.1</span>.2
-npm verb exit [ <span class="number">0</span>, <span class="literal">true</span> ]
-npm info ok 
-
-$ hexo  --version
-hexo-<span class="string">cli:</span> <span class="number">1.0</span>.3
-<span class="string">os:</span> Linux <span class="number">4.4</span>.0-<span class="number">92</span>-generic linux x64
-<span class="string">http_parser:</span> <span class="number">2.5</span>.0
-<span class="string">node:</span> <span class="number">4.2</span>.6
-<span class="string">v8:</span> <span class="number">4.5</span>.103.35
-<span class="string">uv:</span> <span class="number">1.8</span>.0
-<span class="string">zlib:</span> <span class="number">1.2</span>.8
-<span class="string">ares:</span> <span class="number">1.10</span>.1-DEV
-<span class="string">icu:</span> <span class="number">55.1</span>
-<span class="string">modules:</span> <span class="number">46</span>
-<span class="string">openssl:</span> <span class="number">1.0</span>.2g-fips
-</code></pre><p>生成github ssh公钥</p>
-<pre><code><span class="title">cd</span> github
-ssh-keygen -t rsa -C <span class="string">"your_email<span class="variable">@youremail</span>.com"</span> 
-</code></pre><p>将github/id_rsa.pub的公钥添加到github </p>
-<p>测试是否生效: <code>ssh -T git@github.com</code></p>
-<p>若出现Permission denied (publickey).</p>
-<p>执行一句<code>ssh-add github/id-rsa</code> 即可。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
 	</div>
 
       

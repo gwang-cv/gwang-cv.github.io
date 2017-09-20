@@ -168,6 +168,86 @@
 
       <div class="body-wrap">
   
+    <article id="post-Ubuntu backup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/28/Ubuntu backup/" class="article-date">
+  	<time datetime="2016-12-28T12:41:49.000Z" itemprop="datePublished">2016-12-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu Backup</p>
+<ol>
+<li>backup</li>
+</ol>
+<p>然后打开终端，输入以下命令：</p>
+<pre><code>sudo su
+<span class="built_in">cd</span> /  <span class="comment">##转到根目录</span>
+</code></pre><p>然後，下面就是我用来备份我的系统的完整的命令：</p>
+<pre><code>tar -cvpzf /media/gwang/<span class="type">Work</span>/backup.tgz --exclude=/<span class="keyword">proc</span> --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/media --exclude=/tmp /
+</code></pre><p>PS:</p>
+<p>tar 是用来备份的程序</p>
+<p>c - 新建一个备份文档</p>
+<p>v - 详细模式， tar程序将在屏幕上实时输出所有信息。</p>
+<p>p - 保存权限，并应用到所有文件。</p>
+<p>z - 采用‘gzip’压缩备份文件，以减小备份文件体积。</p>
+<p>f - 说明备份文件存放的路径， /media/sda7/backup.tgz 是本例子中备份文件名。这个备份文件备份的位置是其它分区，也就是原来的WIN分区中。因为我的根目录的空间不足，所以只有备份在其它的地方了。</p>
+<p>—excloude - 排除指定目录,使其不被备份</p>
+<ol>
+<li><p>Linux 中美妙的事情之一就是在系统正在运行的情况下可以进行还原操作，而不需要启动光盘或者其他任何乱七八糟的东西。当然，如果您的系统已经崩溃，那您必须选择使用live CD，但是结果还是一样。</p>
+<p> tar -xvpzf /media/gwang/Work/backup.tgz -C /</p>
+</li>
+</ol>
+<p>如果您使用的是bz2压缩的：</p>
+<pre><code>tar -xvpjf /media/gwang/Work/backup<span class="class">.tar</span><span class="class">.bz2</span> -C /
+</code></pre><p>如果系统已经崩溃可以使用Live usb登录，然后</p>
+<pre><code>mkdir <span class="regexp">/tmp/</span>root
+mount <span class="regexp">/dev/</span>sdaX <span class="regexp">/tmp/</span>root
+
+tar -xvpjf <span class="regexp">/media/g</span>wang<span class="regexp">/Work/</span>backup.tar.bz2 -C <span class="regexp">/tmp/</span>root
+</code></pre><p>当然，恢复前可以先</p>
+<pre><code>rm -rf <span class="regexp">/tmp/root/</span>* 
+</code></pre><p>这样就删除根目录下的所有文件.</p>
+<p>这个只是在本机上还原，如果是还原到别的机子上记得修改fstab文件。（可能还需要安装grub）</p>
+<p>恢复命令结束时，别忘了重新创建那些在备份时被排除在外的目录：</p>
+<pre><code><span class="preprocessor"># mkdir proc</span>
+<span class="preprocessor"># mkdir lost+found</span>
+<span class="preprocessor"># mkdir mnt</span>
+<span class="preprocessor"># mkdir sys</span>
+<span class="preprocessor"># mkdir media</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-数据挖掘界领军人物谢邦昌" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1308,92 +1388,6 @@ x_p -w_p-/
 <p>5.参考</p>
 <p><a href="http://www.jianshu.com/p/0198ad851b16" target="_blank" rel="external">个人深度学习环境搭建：主机配置与组装</a></p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-MacOS安装torch7" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/04/07/MacOS安装torch7/" class="article-date">
-  	<time datetime="2016-04-07T08:07:25.000Z" itemprop="datePublished">2016-04-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/04/07/MacOS安装torch7/">MacOS安装torch7</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>手动安装：</p>
-<pre><code>$ # <span class="keyword">in</span> a terminal, run the commands
-$ git clone <span class="string">https:</span><span class="comment">//github.com/torch/distro.git ~/torch --recursive</span>
-$ cd ~/torch; bash install-deps;
-$ ./install.sh
-
-－－－－－－－－－－－－－－－－－－－－－－－－－
-
-$ source <span class="regexp">~/torch/</span>install<span class="regexp">/bin/</span>torch-activate
-
-－－－－－－－－－－－－－－－－－－－－－－－－－
-$ th
-
-   ______             __   |  Torch7                                         
- <span class="regexp">/_  __/</span>__  ________<span class="regexp">/ /</span>   |  Scientific computing <span class="keyword">for</span> Lua. 
-   <span class="regexp">/ /</span> <span class="regexp">/ _ \/</span> __<span class="regexp">/ __/</span> _ \  |  Type ? for help                                
- /_/  \___/_/  \__/_//_/  |  https:<span class="comment">//github.com/torch         </span>
-                         |  <span class="string">http:</span><span class="comment">//torch.ch                  </span>
-
-th&gt; torch.Tensor{<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>}
- <span class="number">5</span>
-<span class="number">6</span>
- <span class="number">7</span>
-[torch.DoubleTensor of size <span class="number">3</span>]
-</code></pre><p>退出 th&gt;</p>
-<pre><code>os.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
-</code></pre>
       
     </div>
     
