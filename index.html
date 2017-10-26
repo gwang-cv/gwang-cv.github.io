@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 15px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -168,6 +168,77 @@
 
       <div class="body-wrap">
   
+    <article id="post-MacOSX+XXNet3.7.5+IPV6" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/10/26/MacOSX+XXNet3.7.5+IPV6/" class="article-date">
+  	<time datetime="2017-10-26T15:51:01.000Z" itemprop="datePublished">2017-10-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/10/26/MacOSX+XXNet3.7.5+IPV6/">MacOSX+XXNet3.7.5+IPV6</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装XX-Net</strong></p>
+<p><a href="https://github.com/XX-net/XX-Net/releases" target="_blank" rel="external">https://github.com/XX-net/XX-Net/releases</a></p>
+<p><strong>2.MacOS设置IPV6</strong></p>
+<p>安装merido </p>
+<p><a href="http://www.deepdarc.com/miredo-osx/" target="_blank" rel="external">http://www.deepdarc.com/miredo-osx/</a></p>
+<p>安装TunTap(pkg安装包 不安装的话 Miredo会一直链接不成功,设置界面显示红灯)</p>
+<p><a href="https://sourceforge.net/projects/tuntaposx/?source=typ_redirect" target="_blank" rel="external">https://sourceforge.net/projects/tuntaposx/?source=typ_redirect</a></p>
+<p>在系统设置界面，打开merido，其中选择client，然后填入teredo.remlab.net，然后apply即可看到上面的黄灯变为绿色，并且在下方出现IPV6地址。</p>
+<p><strong>3.XX-Net运行检查所有IP</strong></p>
+<p>XX-Net启用IPV6</p>
+<p>能得到上千个有效IP数，连接成功！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Windows下安装labelImg" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -202,7 +273,7 @@
 python configure<span class="class">.py</span>
 nmake
 nmake install
-</code></pre><p>5.安装pyqt4，在Windows下不要采用编译安装方法，会掉到坑里。我们使用非官方的安装包，下载地址：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="external">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>，下载对应的PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl</p>
+</code></pre><p>5.安装pyqt4，在Windows下不要采用编译安装方法，会掉到坑里。我们使用非官方的安装包，下载地址：<a href="http://www.lfd.uci.edu/~gohlke/pythonlibs/" target="_blank" rel="external">http://www.lfd.uci.edu/~gohlke/pythonlibs/</a>，下载对应的PyQt4‑4.11.4‑cp27‑cp27m‑win_amd64.whl【注意python的版本号，此处是基于python2.7（cp27）】</p>
 <pre><code><span class="tag">pip</span> <span class="tag">install</span> <span class="tag">PyQt4</span>‑4<span class="class">.11</span><span class="class">.4</span>‑<span class="tag">cp27</span>‑<span class="tag">cp27m</span>‑<span class="tag">win_amd64</span><span class="class">.whl</span>
 </code></pre><p>安装完成之后，将C:\Python27\Lib\site-packages\PyQt4添加到系统路径中</p>
 <p>6.安装labelImg，这里编译安装</p>
@@ -1591,150 +1662,6 @@ plt.<span class="function"><span class="title">title</span><span class="params">
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu16.04+Tesseract4.0" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/25/ubuntu16.04+Tesseract4.0/" class="article-date">
-  	<time datetime="2017-08-25T07:06:09.000Z" itemprop="datePublished">2017-08-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/ubuntu16.04+Tesseract4.0/">ubuntu16.04+Tesseract4.0</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>The build instructions for Linux also apply to other UNIX like operating systems.</p>
-<p><strong>安装依赖Dependencies</strong></p>
-<p>A compiler for C and C++: GCC or Clang<br>GNU Autotools: autoconf, automake, libtool<br>autoconf-archive<br>pkg-config<br>Leptonica<br>libpng, libjpeg, libtiff</p>
-<p><strong>Ubuntu</strong></p>
-<p>If they are not already installed, you need the following libraries (Ubuntu 16.04/14.04):</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> g++ # <span class="keyword">or</span> clang++ (presumably)
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> autoconf automake libtool
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> autoconf-archive
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> pkg-config
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libpng12-dev
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libjpeg8-dev
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libtiff5-dev
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> zlib1g-dev</span>
-</code></pre><p>if you plan to install the training tools, you also need the following libraries:</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install libicu-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> install libpango1.0-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> install libcairo2-<span class="built_in">dev</span>
-</code></pre><p><strong>Leptonica</strong></p>
-<p>You also need to install Leptonica. Ensure that the development headers for Leptonica are installed before compiling Tesseract.</p>
-<p>Tesseract versions and the minimum version of Leptonica required:</p>
-<p>Tesseract    Leptonica    Ubuntu<br>4.00    1.74.2    Must build from source<br>3.05    1.74.0    Must build from source<br>3.04    1.71    Ubuntu 16.04<br>3.03    1.70    Ubuntu 14.04<br>3.02    1.69    Ubuntu 12.04<br>3.01    1.67    </p>
-<p>One option is to install the distro’s Leptonica package:</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install libleptonica-<span class="built_in">dev</span>
-</code></pre><p>but if you are using an oldish version of Linux, the Leptonica version may be too old, so you will need to build from source.</p>
-<p>The sources are at<a href="https://github.com/DanBloomberg/leptonica" target="_blank" rel="external"> https://github.com/DanBloomberg/leptonica</a> . The instructions for building are given in Leptonica README.</p>
-<p><strong>Leptonica 1.74.4</strong></p>
-<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/DanBloomberg/leptonica
-<span class="keyword">cd</span> leptonica
-
-./autobuild
-./configure
-./<span class="keyword">make</span>-<span class="keyword">for</span>-auto
-
-sudo <span class="keyword">make</span>
-sudo <span class="keyword">make</span> install
-</code></pre><p><strong>Tesseract 4.0</strong> </p>
-<pre><code>git clone --depth <span class="number">1</span>  http<span class="variable">s:</span>//github.<span class="keyword">com</span>/tesseract-ocr/tesseract.git tesseract
-<span class="keyword">cd</span> tesseract
-./autogen.<span class="keyword">sh</span>
-./configure --enable-<span class="keyword">debug</span>
-LDFLAGS=<span class="string">"-L/usr/local/lib"</span> CFLAGS=<span class="string">"-I/usr/local/include"</span> <span class="keyword">make</span>
-sudo <span class="keyword">make</span> install
-sudo ldconfig 
-</code></pre><p>build training tools if you like: </p>
-<pre><code><span class="built_in">make</span> training
-sudo <span class="built_in">make</span> training-install 
-</code></pre><p><strong>test Tesseract </strong></p>
-<pre><code>$ tesseract imagename outputbase [-l lang] [--psm pagesegmode] [configfiles...]
-$ tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span><span class="class">.txt</span> -l chi_sim
-</code></pre><hr>
-<p><strong>Error:</strong></p>
-<pre><code><span class="keyword">Error</span> opening data file /usr/local/share/eng.traineddata
-Please make sure the TESSDATA_PREFIX environment variable <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">to</span> your <span class="string">"tessdata"</span> directory.
-Failed loading language <span class="comment">'eng'</span>
-Tesseract couldn<span class="comment">'t load any languages!</span>
-Could <span class="keyword">not</span> initialize tesseract.
-</code></pre><p><strong>办法：下载语言包</strong></p>
-<p><a href="https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata" target="_blank" rel="external">https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata</a></p>
-<p><a href="https://github.com/tesseract-ocr/tessdata" target="_blank" rel="external">https://github.com/tesseract-ocr/tessdata</a>  #These language data files only work with Tesseract 4.0</p>
-<pre><code>sudo mv eng.traineddata <span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata
-
-export TESSDATA_PREFIX=<span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata
-</code></pre><p>or</p>
-<pre><code>sudo mv <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>tessdata <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>tessdata.bak
-sudo ln -s <span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>
-</code></pre><p><strong>安装python接口</strong></p>
-<pre><code>sudo pip <span class="keyword">install</span> pytesseract
-</code></pre><p>比如识别中文及数字: </p>
-<pre><code>tessdata_dir_config=<span class="string">'-psm 7 digits'</span>
-ss = pytesseract.<span class="function"><span class="title">image_to_string</span><span class="params">(image, lang=<span class="string">'chi_sim'</span>, config=tessdata_dir_config)</span></span>
-</code></pre><p><strong>修改配置文件</strong></p>
-<p>当使用命令参数 digits来识别数字时，有考虑识别字母和数字，即可在系统tesseract所在位置修改配置文件：<code>usr/share/tesseract-orc/tessdata/configs/digits</code></p>
-<pre><code>tessedit_chaar_whitelist <span class="number">0123456789</span>-. <span class="hexcolor">#def</span>ault
-
-tessedit_chaar_whitelist ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.
-</code></pre><hr>
-<p>PS：图片太大时识别不好，缩放到指甲盖大小反而识别会好些。。。</p>
-<hr>
-<p><strong>link</strong>: </p>
-<p><a href="https://www.youtube.com/watch?v=vOdnt2h1U8U" target="_blank" rel="external">https://www.youtube.com/watch?v=vOdnt2h1U8U</a></p>
-<p><a href="https://lengerrong.blogspot.com/2017/03/how-to-build-latest-tesseract-leptonica.html" target="_blank" rel="external">https://lengerrong.blogspot.com/2017/03/how-to-build-latest-tesseract-leptonica.html</a></p>
-<p><a href="https://github.com/tesseract-ocr/tesseract/wiki/Compiling-%E2%80%93-GitInstallation" target="_blank" rel="external">https://github.com/tesseract-ocr/tesseract/wiki/Compiling-%E2%80%93-GitInstallation</a></p>
-<p><a href="https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux" target="_blank" rel="external">https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux</a></p>
-<p><a href="https://lucacerone.net/2017/install-tesseract-3-0-5-in-ubuntu-16-04/" target="_blank" rel="external">https://lucacerone.net/2017/install-tesseract-3-0-5-in-ubuntu-16-04/</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
 	</div>
 
       

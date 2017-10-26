@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 15px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,112 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/30/Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo/" class="article-date">
+  	<time datetime="2016-12-30T01:59:46.000Z" itemprop="datePublished">2016-12-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu 配置——Chrome，XX-Net，Sogou，Nodejs，Hexo</p>
+<p>1.安装Chrome</p>
+<pre><code>sudo wget https://repo.fdzh<span class="preprocessor">.org</span>/chrome/google-chrome<span class="preprocessor">.list</span> -P /etc/apt/sources<span class="preprocessor">.list</span>.d/
+</code></pre><p>然后导入谷歌软件的公钥，用于下面步骤中对下载软件进行验证。命令将返回“OK”。</p>
+<pre><code>wget -<span class="keyword">q</span> -O - http<span class="variable">s:</span>//<span class="keyword">dl</span>.google.<span class="keyword">com</span>/linux/linux_signing_key.pub  | sudo apt-key <span class="built_in">add</span> -
+</code></pre><p>然后执行如下命令：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
+sudo apt-<span class="built_in">get</span> install google-chrome-stable
+</code></pre><p>2.配置XX-Net</p>
+<p>按照<a href="https://github.com/XX-net/XX-Net/wiki/%E4%BD%BF%E7%94%A8Chrome%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank" rel="external">说明文档</a>进行下载配置.</p>
+<p>3.搜狗输入法</p>
+<p>下载地址：<a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a></p>
+<p>安装：</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
+</code></pre><p>若出现问题安装错误时，或是由于缺少依赖，因此可执行如下语句：</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install -f
+</code></pre><p>然后再次执行安装命令即可：</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
+</code></pre><p>4.搭建hexo</p>
+<p>4.1安装nodejs</p>
+<p>一个是通过ubuntu自带的包管理进行安装。不过它自带的版本可能过低，所以需要添加源：</p>
+<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+</code></pre><p>创建一个nodejs到node的软链接:</p>
+<pre><code>sudo ln -s <span class="regexp">/usr/</span>bin<span class="regexp">/nodejs /u</span>sr<span class="regexp">/bin/</span>node
+</code></pre><p>4.2安装Git</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install git
+</code></pre><p>4.3安装hexo</p>
+<pre><code><span class="preprocessor"># 创建目录</span>
+mkdir hexo
+<span class="preprocessor"># 切换目录</span>
+cd hexo
+<span class="preprocessor"># 全局安装 Hexo，需要最高权限，记得输入root密码</span>
+sudo apt-<span class="keyword">get</span> install npm
+sudo npm install -g hexo-cli
+<span class="preprocessor"># 初始化 Hexo</span>
+hexo init
+</code></pre><p>安装插件</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-generator-<span class="keyword">index</span> <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-archive <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-category <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-tag <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-<span class="keyword">server</span> <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-heroku <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-rsync <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-openshift <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-feed <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-sitemap <span class="comment">--save</span></span>
+</code></pre><p>测试安装成功</p>
+<pre><code>hexo <span class="keyword">server</span>
+</code></pre><p>4.4配置本机全局git环境<br>首先请使用邮箱注册github账号，否则会影响下面操作，记住你注册的邮箱。</p>
+<pre><code>git config --global user<span class="class">.email</span> <span class="string">"you@example.com"</span>
+git config --global user<span class="class">.name</span> <span class="string">"Your Name"</span>
+</code></pre><p>生成SSH秘钥</p>
+<pre><code><span class="comment"># -C后面跟住你在github的用户名邮箱，这样公钥才会被github认可</span>
+ ssh-keygen -t rsa -C you<span class="property">@example</span>.com
+ <span class="comment"># 回车后，输入一个文件夹名字，存储新的SSH 秘钥</span>
+<span class="regexp">/home/username/</span>.ssh/id_rsa
+<span class="comment"># 查看 公钥内容 稍后加入Github 账户的 sshkey中</span>
+ less ~/.ssh/id_rsa.pub
+</code></pre><p>将id_rsa.pub中的文本拷贝到github设置SSh。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Ubuntu backup" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1307,86 +1413,6 @@ x_p -w_p-/
 <p><a href="https://developer.clarifai.com/guide/" target="_blank" rel="external">Clarifai API</a></p>
 <p>参考</p>
 <p><a href="https://zhuanlan.zhihu.com/p/19821292" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/19821292</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-深度学习硬件配置" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/10/21/深度学习硬件配置/" class="article-date">
-  	<time datetime="2016-10-21T04:03:58.000Z" itemprop="datePublished">2016-10-21</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/21/深度学习硬件配置/">深度学习硬件配置</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>1.收到NVIDIA资助的显卡GeForce Titan X (12GB)</p>
-<p>2.其他硬件设备：</p>
-<pre><code>CPU： Intel i<span class="number">7</span>-<span class="number">6700</span>
-主板：华硕B150M-PLUS (LGA<span class="number">1151</span>)
-内存：<span class="number">4</span>GB x <span class="number">2</span>
-硬盘：希捷<span class="number">1</span><span class="keyword">TB</span>
-电源：鑫谷Segotep GP700G（金牌认证、宽幅） 额定<span class="number">600</span><span class="keyword">W</span> 
-机箱：Tt小板机箱
-显卡接口转换器：DVI-&gt;VGI
-</code></pre><p>3.备注</p>
-<pre><code>深度学习对CPU的要求并不是特别高，根据实际情况选择。
-主板建议还是选择一个好的品牌，预算充足，可以考虑<span class="keyword">X</span><span class="number">99</span>平台。
-显卡GTX<span class="number">1080</span>比老Titan <span class="keyword">X</span>的性价比要高。
-内存建议<span class="number">32</span>G(<span class="number">16</span>x<span class="number">2</span>)，近期内存价格暴涨。
-硬盘，最好配SSD，用来存放软件和数据集，提升IO效率。
-电源根据显卡和整机功率需求选择(TitanX+CPU等差不多<span class="number">350</span><span class="keyword">W</span>)。
-机箱可扩展，散热好即可。
-</code></pre><p>4.组装<br>    主板安装CPU及散热器，将主板安装到机箱内(面板接口要仔细)，然后按照电源、硬盘，最后将电源线依次插入相应供电接口位置。</p>
-<p>5.参考</p>
-<p><a href="http://www.jianshu.com/p/0198ad851b16" target="_blank" rel="external">个人深度学习环境搭建：主机配置与组装</a></p>
 
       
     </div>

@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 15px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,150 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-ubuntu16.04+Tesseract4.0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/25/ubuntu16.04+Tesseract4.0/" class="article-date">
+  	<time datetime="2017-08-25T07:06:09.000Z" itemprop="datePublished">2017-08-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/ubuntu16.04+Tesseract4.0/">ubuntu16.04+Tesseract4.0</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>The build instructions for Linux also apply to other UNIX like operating systems.</p>
+<p><strong>安装依赖Dependencies</strong></p>
+<p>A compiler for C and C++: GCC or Clang<br>GNU Autotools: autoconf, automake, libtool<br>autoconf-archive<br>pkg-config<br>Leptonica<br>libpng, libjpeg, libtiff</p>
+<p><strong>Ubuntu</strong></p>
+<p>If they are not already installed, you need the following libraries (Ubuntu 16.04/14.04):</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> g++ # <span class="keyword">or</span> clang++ (presumably)
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> autoconf automake libtool
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> autoconf-archive
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> pkg-config
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libpng12-dev
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libjpeg8-dev
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> libtiff5-dev
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> zlib1g-dev</span>
+</code></pre><p>if you plan to install the training tools, you also need the following libraries:</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install libicu-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> install libpango1.0-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> install libcairo2-<span class="built_in">dev</span>
+</code></pre><p><strong>Leptonica</strong></p>
+<p>You also need to install Leptonica. Ensure that the development headers for Leptonica are installed before compiling Tesseract.</p>
+<p>Tesseract versions and the minimum version of Leptonica required:</p>
+<p>Tesseract    Leptonica    Ubuntu<br>4.00    1.74.2    Must build from source<br>3.05    1.74.0    Must build from source<br>3.04    1.71    Ubuntu 16.04<br>3.03    1.70    Ubuntu 14.04<br>3.02    1.69    Ubuntu 12.04<br>3.01    1.67    </p>
+<p>One option is to install the distro’s Leptonica package:</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install libleptonica-<span class="built_in">dev</span>
+</code></pre><p>but if you are using an oldish version of Linux, the Leptonica version may be too old, so you will need to build from source.</p>
+<p>The sources are at<a href="https://github.com/DanBloomberg/leptonica" target="_blank" rel="external"> https://github.com/DanBloomberg/leptonica</a> . The instructions for building are given in Leptonica README.</p>
+<p><strong>Leptonica 1.74.4</strong></p>
+<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/DanBloomberg/leptonica
+<span class="keyword">cd</span> leptonica
+
+./autobuild
+./configure
+./<span class="keyword">make</span>-<span class="keyword">for</span>-auto
+
+sudo <span class="keyword">make</span>
+sudo <span class="keyword">make</span> install
+</code></pre><p><strong>Tesseract 4.0</strong> </p>
+<pre><code>git clone --depth <span class="number">1</span>  http<span class="variable">s:</span>//github.<span class="keyword">com</span>/tesseract-ocr/tesseract.git tesseract
+<span class="keyword">cd</span> tesseract
+./autogen.<span class="keyword">sh</span>
+./configure --enable-<span class="keyword">debug</span>
+LDFLAGS=<span class="string">"-L/usr/local/lib"</span> CFLAGS=<span class="string">"-I/usr/local/include"</span> <span class="keyword">make</span>
+sudo <span class="keyword">make</span> install
+sudo ldconfig 
+</code></pre><p>build training tools if you like: </p>
+<pre><code><span class="built_in">make</span> training
+sudo <span class="built_in">make</span> training-install 
+</code></pre><p><strong>test Tesseract </strong></p>
+<pre><code>$ tesseract imagename outputbase [-l lang] [--psm pagesegmode] [configfiles...]
+$ tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span><span class="class">.txt</span> -l chi_sim
+</code></pre><hr>
+<p><strong>Error:</strong></p>
+<pre><code><span class="keyword">Error</span> opening data file /usr/local/share/eng.traineddata
+Please make sure the TESSDATA_PREFIX environment variable <span class="keyword">is</span> <span class="keyword">set</span> <span class="keyword">to</span> your <span class="string">"tessdata"</span> directory.
+Failed loading language <span class="comment">'eng'</span>
+Tesseract couldn<span class="comment">'t load any languages!</span>
+Could <span class="keyword">not</span> initialize tesseract.
+</code></pre><p><strong>办法：下载语言包</strong></p>
+<p><a href="https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata" target="_blank" rel="external">https://github.com/tesseract-ocr/tessdata/blob/master/eng.traineddata</a></p>
+<p><a href="https://github.com/tesseract-ocr/tessdata" target="_blank" rel="external">https://github.com/tesseract-ocr/tessdata</a>  #These language data files only work with Tesseract 4.0</p>
+<pre><code>sudo mv eng.traineddata <span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata
+
+export TESSDATA_PREFIX=<span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata
+</code></pre><p>or</p>
+<pre><code>sudo mv <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>tessdata <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>tessdata.bak
+sudo ln -s <span class="regexp">/usr/</span>share<span class="regexp">/tesseract-ocr/</span>tessdata <span class="regexp">/usr/</span>local<span class="regexp">/share/</span>
+</code></pre><p><strong>安装python接口</strong></p>
+<pre><code>sudo pip <span class="keyword">install</span> pytesseract
+</code></pre><p>比如识别中文及数字: </p>
+<pre><code>tessdata_dir_config=<span class="string">'-psm 7 digits'</span>
+ss = pytesseract.<span class="function"><span class="title">image_to_string</span><span class="params">(image, lang=<span class="string">'chi_sim'</span>, config=tessdata_dir_config)</span></span>
+</code></pre><p><strong>修改配置文件</strong></p>
+<p>当使用命令参数 digits来识别数字时，有考虑识别字母和数字，即可在系统tesseract所在位置修改配置文件：<code>usr/share/tesseract-orc/tessdata/configs/digits</code></p>
+<pre><code>tessedit_chaar_whitelist <span class="number">0123456789</span>-. <span class="hexcolor">#def</span>ault
+
+tessedit_chaar_whitelist ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-.
+</code></pre><hr>
+<p>PS：图片太大时识别不好，缩放到指甲盖大小反而识别会好些。。。</p>
+<hr>
+<p><strong>link</strong>: </p>
+<p><a href="https://www.youtube.com/watch?v=vOdnt2h1U8U" target="_blank" rel="external">https://www.youtube.com/watch?v=vOdnt2h1U8U</a></p>
+<p><a href="https://lengerrong.blogspot.com/2017/03/how-to-build-latest-tesseract-leptonica.html" target="_blank" rel="external">https://lengerrong.blogspot.com/2017/03/how-to-build-latest-tesseract-leptonica.html</a></p>
+<p><a href="https://github.com/tesseract-ocr/tesseract/wiki/Compiling-%E2%80%93-GitInstallation" target="_blank" rel="external">https://github.com/tesseract-ocr/tesseract/wiki/Compiling-%E2%80%93-GitInstallation</a></p>
+<p><a href="https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux" target="_blank" rel="external">https://github.com/tesseract-ocr/tesseract/wiki/Compiling#linux</a></p>
+<p><a href="https://lucacerone.net/2017/install-tesseract-3-0-5-in-ubuntu-16-04/" target="_blank" rel="external">https://lucacerone.net/2017/install-tesseract-3-0-5-in-ubuntu-16-04/</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-安装Hexo的问题" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -2237,112 +2381,6 @@ sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/
 	<a class="article-category-link" href="/categories/Research/">Research</a>
 	</div>
 
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/12/30/Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo/" class="article-date">
-  	<time datetime="2016-12-30T01:59:46.000Z" itemprop="datePublished">2016-12-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Ubuntu 配置——Chrome，XX-Net，Sogou，Nodejs，Hexo</p>
-<p>1.安装Chrome</p>
-<pre><code>sudo wget https://repo.fdzh<span class="preprocessor">.org</span>/chrome/google-chrome<span class="preprocessor">.list</span> -P /etc/apt/sources<span class="preprocessor">.list</span>.d/
-</code></pre><p>然后导入谷歌软件的公钥，用于下面步骤中对下载软件进行验证。命令将返回“OK”。</p>
-<pre><code>wget -<span class="keyword">q</span> -O - http<span class="variable">s:</span>//<span class="keyword">dl</span>.google.<span class="keyword">com</span>/linux/linux_signing_key.pub  | sudo apt-key <span class="built_in">add</span> -
-</code></pre><p>然后执行如下命令：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
-sudo apt-<span class="built_in">get</span> install google-chrome-stable
-</code></pre><p>2.配置XX-Net</p>
-<p>按照<a href="https://github.com/XX-net/XX-Net/wiki/%E4%BD%BF%E7%94%A8Chrome%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank" rel="external">说明文档</a>进行下载配置.</p>
-<p>3.搜狗输入法</p>
-<p>下载地址：<a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a></p>
-<p>安装：</p>
-<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
-</code></pre><p>若出现问题安装错误时，或是由于缺少依赖，因此可执行如下语句：</p>
-<pre><code>sudo apt-<span class="keyword">get</span> install -f
-</code></pre><p>然后再次执行安装命令即可：</p>
-<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
-</code></pre><p>4.搭建hexo</p>
-<p>4.1安装nodejs</p>
-<p>一个是通过ubuntu自带的包管理进行安装。不过它自带的版本可能过低，所以需要添加源：</p>
-<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:chris-lea/node.js
-sudo apt-get update
-sudo apt-get install nodejs
-</code></pre><p>创建一个nodejs到node的软链接:</p>
-<pre><code>sudo ln -s <span class="regexp">/usr/</span>bin<span class="regexp">/nodejs /u</span>sr<span class="regexp">/bin/</span>node
-</code></pre><p>4.2安装Git</p>
-<pre><code>sudo apt-<span class="keyword">get</span> install git
-</code></pre><p>4.3安装hexo</p>
-<pre><code><span class="preprocessor"># 创建目录</span>
-mkdir hexo
-<span class="preprocessor"># 切换目录</span>
-cd hexo
-<span class="preprocessor"># 全局安装 Hexo，需要最高权限，记得输入root密码</span>
-sudo apt-<span class="keyword">get</span> install npm
-sudo npm install -g hexo-cli
-<span class="preprocessor"># 初始化 Hexo</span>
-hexo init
-</code></pre><p>安装插件</p>
-<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-generator-<span class="keyword">index</span> <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-generator-archive <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-generator-category <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-generator-tag <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-<span class="keyword">server</span> <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-deployer-heroku <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-deployer-rsync <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-deployer-openshift <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-generator-feed <span class="comment">--save</span>
-npm <span class="keyword">install</span> hexo-generator-sitemap <span class="comment">--save</span></span>
-</code></pre><p>测试安装成功</p>
-<pre><code>hexo <span class="keyword">server</span>
-</code></pre><p>4.4配置本机全局git环境<br>首先请使用邮箱注册github账号，否则会影响下面操作，记住你注册的邮箱。</p>
-<pre><code>git config --global user<span class="class">.email</span> <span class="string">"you@example.com"</span>
-git config --global user<span class="class">.name</span> <span class="string">"Your Name"</span>
-</code></pre><p>生成SSH秘钥</p>
-<pre><code><span class="comment"># -C后面跟住你在github的用户名邮箱，这样公钥才会被github认可</span>
- ssh-keygen -t rsa -C you<span class="property">@example</span>.com
- <span class="comment"># 回车后，输入一个文件夹名字，存储新的SSH 秘钥</span>
-<span class="regexp">/home/username/</span>.ssh/id_rsa
-<span class="comment"># 查看 公钥内容 稍后加入Github 账户的 sshkey中</span>
- less ~/.ssh/id_rsa.pub
-</code></pre><p>将id_rsa.pub中的文本拷贝到github设置SSh。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-      
 
       
       <div class="clearfix"></div>

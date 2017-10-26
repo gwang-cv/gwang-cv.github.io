@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 15px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 17.5px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,86 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-深度学习硬件配置" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/21/深度学习硬件配置/" class="article-date">
+  	<time datetime="2016-10-21T04:03:58.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/21/深度学习硬件配置/">深度学习硬件配置</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.收到NVIDIA资助的显卡GeForce Titan X (12GB)</p>
+<p>2.其他硬件设备：</p>
+<pre><code>CPU： Intel i<span class="number">7</span>-<span class="number">6700</span>
+主板：华硕B150M-PLUS (LGA<span class="number">1151</span>)
+内存：<span class="number">4</span>GB x <span class="number">2</span>
+硬盘：希捷<span class="number">1</span><span class="keyword">TB</span>
+电源：鑫谷Segotep GP700G（金牌认证、宽幅） 额定<span class="number">600</span><span class="keyword">W</span> 
+机箱：Tt小板机箱
+显卡接口转换器：DVI-&gt;VGI
+</code></pre><p>3.备注</p>
+<pre><code>深度学习对CPU的要求并不是特别高，根据实际情况选择。
+主板建议还是选择一个好的品牌，预算充足，可以考虑<span class="keyword">X</span><span class="number">99</span>平台。
+显卡GTX<span class="number">1080</span>比老Titan <span class="keyword">X</span>的性价比要高。
+内存建议<span class="number">32</span>G(<span class="number">16</span>x<span class="number">2</span>)，近期内存价格暴涨。
+硬盘，最好配SSD，用来存放软件和数据集，提升IO效率。
+电源根据显卡和整机功率需求选择(TitanX+CPU等差不多<span class="number">350</span><span class="keyword">W</span>)。
+机箱可扩展，散热好即可。
+</code></pre><p>4.组装<br>    主板安装CPU及散热器，将主板安装到机箱内(面板接口要仔细)，然后按照电源、硬盘，最后将电源线依次插入相应供电接口位置。</p>
+<p>5.参考</p>
+<p><a href="http://www.jianshu.com/p/0198ad851b16" target="_blank" rel="external">个人深度学习环境搭建：主机配置与组装</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-MacOS安装torch7" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1099,70 +1179,6 @@ f.<span class="function"><span class="title">close</span><span class="params">()
       
 	<div class="article-category tagcloud">
 	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-机器学习数学基础" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/机器学习数学基础/" class="article-date">
-  	<time datetime="2016-03-30T14:38:23.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/机器学习数学基础/">机器学习之数学基础</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <pre><code><span class="built_in">Math</span> <span class="keyword">for</span> Machine Learning
-</code></pre><p>author：Hal Daume III</p>
-<p>The  goal  of  this  document  is  to  provide  a  “refresher”  on  continuous  mathematics  for  computer  science students.  It is by no means a rigorous course on these topics.  The presentation,  motivation,  etc.,  are all from a machine learning perspective.  The hope, however, is that it’s useful in other contexts.  The two majortopics covered are linear algebra and calculus (probability is currently left off).</p>
-<p><a href="http://www.umiacs.umd.edu/~hal/courses/2013S_ML/math4ml.pdf" target="_blank" rel="external">PDF</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/ML/">ML</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Math/">Math</a>
 	</div>
 
 
