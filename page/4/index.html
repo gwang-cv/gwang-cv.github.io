@@ -168,6 +168,74 @@
 
       <div class="body-wrap">
   
+    <article id="post-Clarifai" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/10/21/Clarifai/" class="article-date">
+  	<time datetime="2016-10-21T13:40:07.000Z" itemprop="datePublished">2016-10-21</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/10/21/Clarifai/">Clarifai图像自动化标签</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Clarifai 公司：www.clarifai.com</p>
+<p>Clarifai创始人Matt Zeiler是New York University (NYU) Rob Fergus教授门下的学生。从上个世纪开始，NYU就一直是neural computation的重镇。现在Deep net的前身ConvNet，就是出自 NYU 的 Yann LeCun教授组.</p>
+<p>ImageNet Large Scale Visual Recognition Competition 2013 (ILSVRC2013)</p>
+<p>其中Matt Zeiler (<a href="http://Clarifai.com" target="_blank" rel="external">http://Clarifai.com</a>) 的算法排名第一，在不用额外训练数据的情况下，跑到了error rate 0.1174这样的成绩。</p>
+<p>这个成绩是这样解读的：任选一张图片，扔给算法，算法返回5个结果。如果5个结果中，有一个猜对了物体类别，就算正确。换言之，如果允许猜5次，Clarifai已经有接近90%的准确率了。这里的物体类别包括了英语中两万多个名词，几乎涵盖了各大类别。</p>
+<p><a href="https://developer.clarifai.com/guide/" target="_blank" rel="external">Clarifai API</a></p>
+<p>参考</p>
+<p><a href="https://zhuanlan.zhihu.com/p/19821292" target="_blank" rel="external">https://zhuanlan.zhihu.com/p/19821292</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-深度学习硬件配置" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1095,77 +1163,6 @@ $$\frac<span class="list">{1}</span><span class="list">{\pi}</span>=\frac<span c
 <p>$$\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}$$</p>
 <p>\(\frac{1}{\pi}=\frac{2\sqrt{2}}{9801}\sum_{k=0}^\infty\frac{(4k)!(1103+26390k)}{(k!)^4396^{4k}}\)</p>
 
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-python中文编码错误" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/python中文编码错误/" class="article-date">
-  	<time datetime="2016-03-30T14:40:33.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/python中文编码错误/">Python中文编码错误(UnicodeEncodeError)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <hr>
-<pre><code><span class="attribute">UnicodeEncodeError</span>: <span class="string">‘ascii’ codec can’t encode</span>
-</code></pre><p>解决方案1：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span>
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p>解决方案2:</p>
-<p>不使用open打开文件，而使用codecs.open(), 在输出中文文本时，采用UTF-8编码：</p>
-<pre><code>f = codecs.<span class="function"><span class="title">open</span><span class="params">(‘XX.txt’, ‘a’, ‘utf-<span class="number">8</span>’)</span></span>
-f.<span class="function"><span class="title">write</span><span class="params">(txts)</span></span>
-f.<span class="function"><span class="title">close</span><span class="params">()</span></span>
-</code></pre>
       
     </div>
     

@@ -168,6 +168,114 @@
 
       <div class="body-wrap">
   
+    <article id="post-Faster-rcnn detect small or tiny objects" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/01/Faster-rcnn detect small or tiny objects/" class="article-date">
+  	<time datetime="2017-12-01T11:26:03.000Z" itemprop="datePublished">2017-12-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/01/Faster-rcnn detect small or tiny objects/">Faster-rcnn detect small or tiny objects</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/161" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/161</a></p>
+<p>R-CNN for Small Object Detection:  <a href="https://www.merl.com/publications/docs/TR2016-144.pdf" target="_blank" rel="external">https://www.merl.com/publications/docs/TR2016-144.pdf</a></p>
+<p>Perceptual Generative Adversarial Networks for Small Object Detection   <a href="https://arxiv.org/pdf/1706.05274v1.pdf" target="_blank" rel="external">https://arxiv.org/pdf/1706.05274v1.pdf</a></p>
+<p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/86" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/86</a></p>
+<p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/433" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/433</a></p>
+<hr>
+<p>Hi, I had the same problem and those are my conclusion at this point :</p>
+<p>To me, the best answer was to cut the images in smaller patches, at least for the training phase. According to hardware requirement, you need :</p>
+<p>3GB GPU memory for ZF net<br>8GB GPU memory for VGG-16 net<br>That’s taking into account the 600x1000 original scaling, so to make it simple you need 8GB for 600 000 pixels assuming that you use VGG.<br>I have 12GB on my GPU so if this is linear, i can go up to (600 000x12)/8 = 900 000 pixels maximum.<br>I couldn’t resize my images because my objects are small and I couldn’t afford losing resolution.<br>I chose to cut my 3000x4000 images in 750x1000 patches, which is the simplest division to go under 900 000 pixels.</p>
+<pre><code><span class="attribute">SCALES</span>: <span class="string">[750]</span>
+<span class="attribute">MAX_SIZE</span>: <span class="string">1000</span>
+</code></pre><p>However, the good thing is that you only need to cut the images for the training phase. Then you can apply the trained network on full images thanks the the separate test parameters :</p>
+<pre><code><span class="label">TEST:</span>
+<span class="label">SCALES:</span> [<span class="number">3000</span>]
+<span class="label">MAX_SIZE:</span> <span class="number">4000</span>
+</code></pre><p>At least that’s what I did and now I have a network working on 3000x4000 images to detect 100x100 objects, in full c++ thanks to the c++ version.</p>
+<hr>
+<p>Hi guys,<br>I already changed the code in lib/rpn/generate_anchors.py and nub_output like this:<br>ratios and num_output like this<br><img src="https://cloud.githubusercontent.com/assets/13639445/14880213/323ebd54-0d60-11e6-93c7-39c8812ce487.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/13639445/14880235/4f81b65a-0d60-11e6-95f2-fb58a5b8425c.png" alt=""></p>
+<p>However, I got the following error.<br><img src="https://cloud.githubusercontent.com/assets/13639445/14880520/c9cf8a26-0d61-11e6-88d7-71421805514f.png" alt=""></p>
+<p>==============</p>
+<pre><code>layer {
+<span class="string">name:</span> <span class="string">'rpn_cls_prob_reshape'</span>
+<span class="string">type:</span> <span class="string">'Reshape'</span>
+<span class="string">bottom:</span> <span class="string">'rpn_cls_prob'</span>
+<span class="string">top:</span> <span class="string">'rpn_cls_prob_reshape'</span>
+reshape_param { shape { <span class="string">dim:</span> <span class="number">0</span> <span class="string">dim:</span> <span class="number">18</span> <span class="string">dim:</span> -<span class="number">1</span> <span class="string">dim:</span> <span class="number">0</span> } }
+}
+</code></pre><p>You should change this 18 to 24</p>
+<hr>
+<p>JayMarx </p>
+<p>Hello! Do you solve the problem? I changed aspect ratios and followed catsdogone’s method, it’s works, but when I changed scales just like you, it didn’t work.Do you have any idea how to fix it?<br>These are my changes:<br><img src="https://cloud.githubusercontent.com/assets/22469594/20100179/4b2c0864-a5f7-11e6-960c-ed3e178a3ade.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/22469594/20100187/5728788c-a5f7-11e6-9f9d-33791afcff72.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/22469594/20100189/5a2352e6-a5f7-11e6-96c2-61b18130f561.png" alt=""><br>As you see, I just changed “dim: 18” to “dim: 140” and I don’t know whether it’s right or not!<br>The error goes like this:<br><img src="https://cloud.githubusercontent.com/assets/22469594/20100325/f7ccde54-a5f7-11e6-8672-7d86dcbbf5aa.png" alt=""></p>
+<p>-&gt;&gt;&gt;<br>liuhyCV</p>
+<p>@JayMarx I have meet the same error with you. I have found the solutions as follows:<br>at function “ def generate_anchors(base_size=16, ratios=[0.3, 0.5, 1, 1.5, 2], scales=2**np.arange(1, 6)): “,<br>but at anchor_target_layer.py:</p>
+<pre><code>def <span class="function"><span class="title">setup</span><span class="params">(self,bottom,top)</span></span>
+layer_params = yaml.<span class="function"><span class="title">load</span><span class="params">(self.param_str_)</span></span>
+anchor_scales =layer_params.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'scales'</span>, (<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>)</span></span>)
+self._anchors = <span class="function"><span class="title">generate_anchors</span><span class="params">(scales=np.array(anchor_scales)</span></span>)
+</code></pre><p>we should change this code by:</p>
+<pre><code>layer_params = yaml.<span class="function"><span class="title">load</span><span class="params">(self.param_str_)</span></span>
+anchor_scales =layer_params.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'scales'</span>, (<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>)</span></span>)
+self._anchors = <span class="function"><span class="title">generate_anchors</span><span class="params">()</span></span>
+</code></pre><p>at last the generate_anchors() can use the scales that we defintion</p>
+<hr>
+<p>@harjatinsingh So far I havent being able to successfully make it work for smaller images as I wanted. However, it seems changing the values of the ratios in generate_anchors.py does make the algorithm to recognize smaller objects, but the bounding box looses precision. For instance, what I have done is changing the code below from this:</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">generate_anchors</span><span class="params">(base_size=<span class="number">16</span>, ratios=[<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>], scales=<span class="number">2</span>**np.arange<span class="params">(<span class="number">3</span>, <span class="number">6</span>)</span>)</span>:</span>
+</code></pre><p>to this:</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">generate_anchors</span><span class="params">(base_size=<span class="number">16</span>, ratios=[<span class="number">0.3</span>, <span class="number">0.75</span>, <span class="number">1</span>], scales=<span class="number">2</span>**np.arange<span class="params">(<span class="number">3</span>, <span class="number">6</span>)</span>)</span>:</span>
+</code></pre><p>Also, it seems that changing the values of anchors does work as noted in #<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/161" target="_blank" rel="external">161</a> but I couldnt make it work for me. So my question (in both issues) is still pending.</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/DeepLearning/">DeepLearning</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-MacOSX+XXNet3.7.5+IPV6" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1575,93 +1683,6 @@ Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="n
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-ubuntu16.04+python2.7中文编码" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/25/ubuntu16.04+python2.7中文编码/" class="article-date">
-  	<time datetime="2017-08-25T07:11:31.000Z" itemprop="datePublished">2017-08-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/ubuntu16.04+python2.7中文编码/">ubuntu16.04+python2.7中文编码</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>文件头添加</strong>：</p>
-<pre><code><span class="shebang">#!/usr/bin/python</span>
-# -*- coding: UTF-<span class="number">8</span> -*-
-</code></pre><p><strong>代码中添加</strong>：</p>
-<pre><code>import sys
-<span class="function"><span class="title">reload</span><span class="params">(sys)</span></span> 
-sys.<span class="function"><span class="title">setdefaultencoding</span><span class="params">(<span class="string">'utf-8'</span>)</span></span>
-</code></pre><p><strong>执行代码即可</strong>：</p>
-<pre><code><span class="keyword">if</span> <span class="function"><span class="title">isinstance</span><span class="params">(ss, unicode)</span></span>: 
-   #<span class="function"><span class="title">unicode</span><span class="params">(<span class="string">"中文字符"</span>)</span></span>.<span class="function"><span class="title">encode</span><span class="params">(<span class="string">"utf-8"</span>)</span></span>
-   ss =  <span class="function"><span class="title">unicode</span><span class="params">(ss)</span></span>.<span class="function"><span class="title">encode</span><span class="params">(<span class="string">"utf-8"</span>)</span></span>
-   print ss
-</code></pre><hr>
-<p><strong>matplotlib绘图中中文乱码情况解决</strong></p>
-<p><strong>查看ubuntu中文字体</strong></p>
-<pre><code><span class="variable">$ </span>fc-list <span class="symbol">:lang=zh-cn</span>
-</code></pre><p><strong>安装中文字体</strong></p>
-<pre><code><span class="title">sudo</span> apt-get install -y --force-<span class="built_in">yes</span> --<span class="built_in">no</span>-install-recommends fonts-wqy-microhei
-</code></pre><p>再次查看<code>fc-list :lang=zh-cn</code></p>
-<p><strong>其中输出</strong>：</p>
-<pre><code><span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype<span class="regexp">/wqy/</span>wqy-microhei.<span class="string">ttc:</span> WenQuanYi Micro Hei,文泉驛微米黑,文泉驿微米黑:style=Regular
-</code></pre><p><strong>复制ttc文件地址</strong></p>
-<pre><code><span class="regexp">/usr/</span>share<span class="regexp">/fonts/</span>truetype<span class="regexp">/wqy/</span>wqy-microhei.ttc
-</code></pre><p><strong>在python代码中</strong>：</p>
-<pre><code>zhfont = matplotlib<span class="class">.font_manager</span><span class="class">.FontProperties</span>(fname=<span class="string">'/usr/share/fonts/truetype/wqy/wqy-microhei.ttc'</span>)
-plt.<span class="function"><span class="title">title</span><span class="params">(unicode(ss)</span></span>.<span class="function"><span class="title">encode</span><span class="params">(<span class="string">"utf-8"</span>)</span></span>, <span class="attribute">color</span>=<span class="string">'white'</span>, fontproperties= zhfont)
-</code></pre><p>即可解决！！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
 	</div>
 
       

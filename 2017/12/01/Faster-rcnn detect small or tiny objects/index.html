@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Faster-rcnn detect small or tiny objects | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="https://github.com/rbgirshick/py-faster-rcnn/issues/161
+R-CNN for Small Object Detection:  https://www.merl.com/publications/docs/TR2016-144.pdf
+Perceptual Generative Adversarial Networks for Small Ob">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Faster-rcnn detect small or tiny objects">
+<meta property="og:url" content="http://gwang-cv.github.io/2017/12/01/Faster-rcnn detect small or tiny objects/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="https://github.com/rbgirshick/py-faster-rcnn/issues/161
+R-CNN for Small Object Detection:  https://www.merl.com/publications/docs/TR2016-144.pdf
+Perceptual Generative Adversarial Networks for Small Ob">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/13639445/14880213/323ebd54-0d60-11e6-93c7-39c8812ce487.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/13639445/14880235/4f81b65a-0d60-11e6-95f2-fb58a5b8425c.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/13639445/14880520/c9cf8a26-0d61-11e6-88d7-71421805514f.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/22469594/20100179/4b2c0864-a5f7-11e6-960c-ed3e178a3ade.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/22469594/20100187/5728788c-a5f7-11e6-9f9d-33791afcff72.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/22469594/20100189/5a2352e6-a5f7-11e6-96c2-61b18130f561.png">
+<meta property="og:image" content="https://cloud.githubusercontent.com/assets/22469594/20100325/f7ccde54-a5f7-11e6-8672-7d86dcbbf5aa.png">
+<meta property="og:updated_time" content="2017-12-03T04:04:18.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Faster-rcnn detect small or tiny objects">
+<meta name="twitter:description" content="https://github.com/rbgirshick/py-faster-rcnn/issues/161
+R-CNN for Small Object Detection:  https://www.merl.com/publications/docs/TR2016-144.pdf
+Perceptual Generative Adversarial Networks for Small Ob">
+<meta name="twitter:image" content="https://cloud.githubusercontent.com/assets/13639445/14880213/323ebd54-0d60-11e6-93c7-39c8812ce487.png">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gang Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researchGO</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">Home</a></li>
+				        
+							<li><a href="/archives">Archives</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">Hello, I&#39;m Gang Wang. This is my blog, enjoy it.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gang Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gang Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researchGO</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Archives</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Faster-rcnn detect small or tiny objects" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/01/Faster-rcnn detect small or tiny objects/" class="article-date">
+  	<time datetime="2017-12-01T11:26:03.000Z" itemprop="datePublished">2017-12-01</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Faster-rcnn detect small or tiny objects
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/DeepLearning/">DeepLearning</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/161" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/161</a></p>
+<p>R-CNN for Small Object Detection:  <a href="https://www.merl.com/publications/docs/TR2016-144.pdf" target="_blank" rel="external">https://www.merl.com/publications/docs/TR2016-144.pdf</a></p>
+<p>Perceptual Generative Adversarial Networks for Small Object Detection   <a href="https://arxiv.org/pdf/1706.05274v1.pdf" target="_blank" rel="external">https://arxiv.org/pdf/1706.05274v1.pdf</a></p>
+<p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/86" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/86</a></p>
+<p><a href="https://github.com/rbgirshick/py-faster-rcnn/issues/433" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/433</a></p>
+<hr>
+<p>Hi, I had the same problem and those are my conclusion at this point :</p>
+<p>To me, the best answer was to cut the images in smaller patches, at least for the training phase. According to hardware requirement, you need :</p>
+<p>3GB GPU memory for ZF net<br>8GB GPU memory for VGG-16 net<br>That’s taking into account the 600x1000 original scaling, so to make it simple you need 8GB for 600 000 pixels assuming that you use VGG.<br>I have 12GB on my GPU so if this is linear, i can go up to (600 000x12)/8 = 900 000 pixels maximum.<br>I couldn’t resize my images because my objects are small and I couldn’t afford losing resolution.<br>I chose to cut my 3000x4000 images in 750x1000 patches, which is the simplest division to go under 900 000 pixels.</p>
+<pre><code><span class="attribute">SCALES</span>: <span class="string">[750]</span>
+<span class="attribute">MAX_SIZE</span>: <span class="string">1000</span>
+</code></pre><p>However, the good thing is that you only need to cut the images for the training phase. Then you can apply the trained network on full images thanks the the separate test parameters :</p>
+<pre><code><span class="label">TEST:</span>
+<span class="label">SCALES:</span> [<span class="number">3000</span>]
+<span class="label">MAX_SIZE:</span> <span class="number">4000</span>
+</code></pre><p>At least that’s what I did and now I have a network working on 3000x4000 images to detect 100x100 objects, in full c++ thanks to the c++ version.</p>
+<hr>
+<p>Hi guys,<br>I already changed the code in lib/rpn/generate_anchors.py and nub_output like this:<br>ratios and num_output like this<br><img src="https://cloud.githubusercontent.com/assets/13639445/14880213/323ebd54-0d60-11e6-93c7-39c8812ce487.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/13639445/14880235/4f81b65a-0d60-11e6-95f2-fb58a5b8425c.png" alt=""></p>
+<p>However, I got the following error.<br><img src="https://cloud.githubusercontent.com/assets/13639445/14880520/c9cf8a26-0d61-11e6-88d7-71421805514f.png" alt=""></p>
+<p>==============</p>
+<pre><code>layer {
+<span class="string">name:</span> <span class="string">'rpn_cls_prob_reshape'</span>
+<span class="string">type:</span> <span class="string">'Reshape'</span>
+<span class="string">bottom:</span> <span class="string">'rpn_cls_prob'</span>
+<span class="string">top:</span> <span class="string">'rpn_cls_prob_reshape'</span>
+reshape_param { shape { <span class="string">dim:</span> <span class="number">0</span> <span class="string">dim:</span> <span class="number">18</span> <span class="string">dim:</span> -<span class="number">1</span> <span class="string">dim:</span> <span class="number">0</span> } }
+}
+</code></pre><p>You should change this 18 to 24</p>
+<hr>
+<p>JayMarx </p>
+<p>Hello! Do you solve the problem? I changed aspect ratios and followed catsdogone’s method, it’s works, but when I changed scales just like you, it didn’t work.Do you have any idea how to fix it?<br>These are my changes:<br><img src="https://cloud.githubusercontent.com/assets/22469594/20100179/4b2c0864-a5f7-11e6-960c-ed3e178a3ade.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/22469594/20100187/5728788c-a5f7-11e6-9f9d-33791afcff72.png" alt=""><br><img src="https://cloud.githubusercontent.com/assets/22469594/20100189/5a2352e6-a5f7-11e6-96c2-61b18130f561.png" alt=""><br>As you see, I just changed “dim: 18” to “dim: 140” and I don’t know whether it’s right or not!<br>The error goes like this:<br><img src="https://cloud.githubusercontent.com/assets/22469594/20100325/f7ccde54-a5f7-11e6-8672-7d86dcbbf5aa.png" alt=""></p>
+<p>-&gt;&gt;&gt;<br>liuhyCV</p>
+<p>@JayMarx I have meet the same error with you. I have found the solutions as follows:<br>at function “ def generate_anchors(base_size=16, ratios=[0.3, 0.5, 1, 1.5, 2], scales=2**np.arange(1, 6)): “,<br>but at anchor_target_layer.py:</p>
+<pre><code>def <span class="function"><span class="title">setup</span><span class="params">(self,bottom,top)</span></span>
+layer_params = yaml.<span class="function"><span class="title">load</span><span class="params">(self.param_str_)</span></span>
+anchor_scales =layer_params.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'scales'</span>, (<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>)</span></span>)
+self._anchors = <span class="function"><span class="title">generate_anchors</span><span class="params">(scales=np.array(anchor_scales)</span></span>)
+</code></pre><p>we should change this code by:</p>
+<pre><code>layer_params = yaml.<span class="function"><span class="title">load</span><span class="params">(self.param_str_)</span></span>
+anchor_scales =layer_params.<span class="function"><span class="title">get</span><span class="params">(<span class="string">'scales'</span>, (<span class="number">8</span>, <span class="number">16</span>, <span class="number">32</span>)</span></span>)
+self._anchors = <span class="function"><span class="title">generate_anchors</span><span class="params">()</span></span>
+</code></pre><p>at last the generate_anchors() can use the scales that we defintion</p>
+<hr>
+<p>@harjatinsingh So far I havent being able to successfully make it work for smaller images as I wanted. However, it seems changing the values of the ratios in generate_anchors.py does make the algorithm to recognize smaller objects, but the bounding box looses precision. For instance, what I have done is changing the code below from this:</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">generate_anchors</span><span class="params">(base_size=<span class="number">16</span>, ratios=[<span class="number">0.5</span>, <span class="number">1</span>, <span class="number">2</span>], scales=<span class="number">2</span>**np.arange<span class="params">(<span class="number">3</span>, <span class="number">6</span>)</span>)</span>:</span>
+</code></pre><p>to this:</p>
+<pre><code><span class="function"><span class="keyword">def</span> <span class="title">generate_anchors</span><span class="params">(base_size=<span class="number">16</span>, ratios=[<span class="number">0.3</span>, <span class="number">0.75</span>, <span class="number">1</span>], scales=<span class="number">2</span>**np.arange<span class="params">(<span class="number">3</span>, <span class="number">6</span>)</span>)</span>:</span>
+</code></pre><p>Also, it seems that changing the values of anchors does work as noted in #<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/161" target="_blank" rel="external">161</a> but I couldnt make it work for me. So my question (in both issues) is still pending.</p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/10/26/MacOSX+XXNet3.7.5+IPV6/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MacOSX+XXNet3.7.5+IPV6</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2017 Gang Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
