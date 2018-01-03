@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 17.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,305 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-python+opencv图像二值化" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/25/python+opencv图像二值化/" class="article-date">
+  	<time datetime="2017-08-25T08:20:01.000Z" itemprop="datePublished">2017-08-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/python+opencv图像二值化/">python+opencv图像二值化</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Goal</strong></p>
+<p>In this tutorial, you will learn Simple thresholding, Adaptive thresholding, Otsu’s thresholding etc.<br>You will learn these functions : cv2.threshold, cv2.adaptiveThreshold etc.</p>
+<p><strong>Simple Thresholding</strong></p>
+<p>Here, the matter is straight forward. If pixel value is greater than a threshold value, it is assigned one value (may be white), else it is assigned another value (may be black). The function used is cv2.threshold. First argument is the source image, which should be a grayscale image. Second argument is the threshold value which is used to classify the pixel values. Third argument is the maxVal which represents the value to be given if pixel value is more than (sometimes less than) the threshold value. OpenCV provides different styles of thresholding and it is decided by the fourth parameter of the function. Different types are:</p>
+<pre><code>cv2<span class="class">.THRESH_BINARY</span>
+cv2<span class="class">.THRESH_BINARY_INV</span>
+cv2<span class="class">.THRESH_TRUNC</span>
+cv2<span class="class">.THRESH_TOZERO</span>
+cv2.THRESH_TOZERO_INV
+</code></pre><p>Documentation clearly explain what each type is meant for. Please check out the documentation.</p>
+<p>Two outputs are obtained. First one is a retval which will be explained later. Second output is our thresholded image.</p>
+<p><strong>code:</strong></p>
+<pre><code><span class="comment">#!/usr/bin/python</span>
+<span class="comment"># -*- coding: UTF-8 -*-</span>
+<span class="keyword">import</span> cv2
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> PIL <span class="keyword">import</span> Image 
+<span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> matplotlib
+<span class="keyword">import</span> os
+<span class="keyword">import</span> sys
+reload(sys) 
+sys.setdefaultencoding(<span class="string">'utf-8'</span>) 
+
+fln=<span class="string">'76.jpg'</span>
+img = cv2.imread(fln,<span class="number">0</span>)
+ret,thresh1 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)
+ret,thresh2 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY_INV)
+ret,thresh3 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TRUNC)
+ret,thresh4 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO)
+ret,thresh5 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO_INV)
+titles = [<span class="string">'Original_Image'</span>,<span class="string">'BINARY'</span>,<span class="string">'BINARY_INV'</span>,<span class="string">'TRUNC'</span>,<span class="string">'TOZERO'</span>,<span class="string">'TOZERO_INV'</span>]
+images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
+<span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">6</span>):
+    cv2.imwrite(<span class="string">'0_'</span>+titles[i]+<span class="string">'.jpg'</span>,images[i])
+    plt.subplot(<span class="number">2</span>,<span class="number">3</span>,i+<span class="number">1</span>),plt.imshow(images[i],<span class="string">'gray'</span>)
+
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+
+plt.savefig(<span class="string">'res_'</span>+fln)
+plt.show()
+</code></pre><h2 id=""><img src="http://docs.opencv.org/master/threshold.jpg" alt="http://docs.opencv.org/master/threshold.jpg"></h2><p><strong>Adaptive Thresholding</strong></p>
+<p>In the previous section, we used a global value as threshold value. But it may not be good in all the conditions where image has different lighting conditions in different areas. In that case, we go for adaptive thresholding. In this, the algorithm calculate the threshold for a small regions of the image. So we get different thresholds for different regions of the same image and it gives us better results for images with varying illumination.</p>
+<p>It has three ‘special’ input params and only one output argument.</p>
+<p>Adaptive Method - It decides how thresholding value is calculated.</p>
+<pre><code>cv2.ADAPTIVE_THRESH_MEAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> mean <span class="operator">of</span> neighbourhood area.
+cv2.ADAPTIVE_THRESH_GAUSSIAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> weighted <span class="built_in">sum</span> <span class="operator">of</span> neighbourhood values where weights are <span class="operator">a</span> gaussian window.
+Block Size - It decides <span class="operator">the</span> size <span class="operator">of</span> neighbourhood area.
+</code></pre><p>C - It is just a constant which is subtracted from the mean or weighted mean calculated.</p>
+<p>Below piece of code compares global thresholding and adaptive thresholding for an image with varying illumination:</p>
+<pre><code>import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+<span class="tag">img</span> = cv2.<span class="function"><span class="title">imread</span><span class="params">(<span class="string">'sudoku.png'</span>,<span class="number">0</span>)</span></span>
+<span class="tag">img</span> = cv2.<span class="function"><span class="title">medianBlur</span><span class="params">(img,<span class="number">5</span>)</span></span>
+ret,th1 = cv2.<span class="function"><span class="title">threshold</span><span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span></span>
+th2 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_MEAN_C</span>,\
+            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
+th3 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_GAUSSIAN_C</span>,\
+            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
+titles = [<span class="string">'Original Image'</span>, <span class="string">'Global Thresholding (v = 127)'</span>,
+            <span class="string">'Adaptive Mean Thresholding'</span>, <span class="string">'Adaptive Gaussian Thresholding'</span>]
+images = [<span class="tag">img</span>, th1, th2, th3]
+<span class="keyword">for</span> <span class="tag">i</span> <span class="keyword">in</span> <span class="function"><span class="title">xrange</span><span class="params">(<span class="number">4</span>)</span></span>:
+    plt.<span class="function"><span class="title">subplot</span><span class="params">(<span class="number">2</span>,<span class="number">2</span>,i+<span class="number">1</span>)</span></span>,plt.<span class="function"><span class="title">imshow</span><span class="params">(images[i],<span class="string">'gray'</span>)</span></span>
+    plt.<span class="function"><span class="title">title</span><span class="params">(titles[i])</span></span>
+    plt.<span class="function"><span class="title">xticks</span><span class="params">([])</span></span>,plt.<span class="function"><span class="title">yticks</span><span class="params">([])</span></span>
+plt.<span class="function"><span class="title">show</span><span class="params">()</span></span>    
+</code></pre><p><img src="http://docs.opencv.org/master/ada_threshold.jpg" alt="result"></p>
+<hr>
+<p><strong>Otsu’s Binarization</strong></p>
+<p>In the first section, I told you there is a second parameter retVal. Its use comes when we go for Otsu’s Binarization. So what is it?</p>
+<p>In global thresholding, we used an arbitrary value for threshold value, right? So, how can we know a value we selected is good or not? Answer is, trial and error method. But consider a bimodal image (In simple words, bimodal image is an image whose histogram has two peaks). For that image, we can approximately take a value in the middle of those peaks as threshold value, right ? That is what Otsu binarization does. So in simple words, it automatically calculates a threshold value from image histogram for a bimodal image. (For images which are not bimodal, binarization won’t be accurate.)</p>
+<p>For this, our cv2.threshold() function is used, but pass an extra flag, cv2.THRESH_OTSU. For threshold value, simply pass zero. Then the algorithm finds the optimal threshold value and returns you as the second output, retVal. If Otsu thresholding is not used, retVal is same as the threshold value you used.</p>
+<p>Check out below example. Input image is a noisy image. In first case, I applied global thresholding for a value of 127. In second case, I applied Otsu’s thresholding directly. In third case, I filtered image with a 5x5 gaussian kernel to remove the noise, then applied Otsu thresholding. See how noise filtering improves the result.</p>
+<pre><code><span class="built_in">import</span> cv2
+<span class="built_in">import</span> numpy as np
+from matplotlib <span class="built_in">import</span> pyplot as plt
+img = cv2.imread<span class="params">('noisy2.png',<span class="number">0</span>)</span>
+<span class="built_in">#</span> global thresholding
+ret1,th1 = cv2.threshold<span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span>
+<span class="built_in">#</span> Otsu's thresholding
+ret2,th2 = cv2.threshold<span class="params">(img,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
+<span class="built_in">#</span> Otsu's thresholding after Gaussian filtering
+blur = cv2.GaussianBlur<span class="params">(img,<span class="params">(<span class="number">5</span>,<span class="number">5</span>)</span>,<span class="number">0</span>)</span>
+ret3,th3 = cv2.threshold<span class="params">(blur,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
+<span class="built_in">#</span> plot all the images and their histograms
+images = [img, <span class="number">0</span>, th1,
+          img, <span class="number">0</span>, th2,
+          blur, <span class="number">0</span>, th3]
+titles = ['Original Noisy Image','Histogram','Global Thresholding <span class="params">(v=<span class="number">127</span>)</span>',
+          'Original Noisy Image','Histogram',<span class="string">"Otsu's Thresholding"</span>,
+          'Gaussian filtered Image','Histogram',<span class="string">"Otsu's Thresholding"</span>]
+<span class="keyword">for</span> i in xrange<span class="params">(<span class="number">3</span>)</span>:
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">1</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>],'gray')</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">2</span>)</span>,plt.hist<span class="params">(images[i*<span class="number">3</span>].ravel<span class="params">()</span>,<span class="number">256</span>)</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">1</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">3</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>+<span class="number">2</span>],'gray')</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">2</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+plt.show<span class="params">()</span>
+</code></pre><h2 id="-1"><img src="http://docs.opencv.org/master/otsu.jpg" alt="http://docs.opencv.org/master/otsu.jpg"></h2><p>Link:</p>
+<p><a href="http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html" target="_blank" rel="external">http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Tesseract4.0+jTessBoxEditor训练(ubuntu下)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/" class="article-date">
+  	<time datetime="2017-08-25T07:48:57.000Z" itemprop="datePublished">2017-08-25</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/">Tesseract4.0+jTessBoxEditor训练(ubuntu下)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>下载jTessBoxEditor</strong></p>
+<p><a href="https://sourceforge.net/projects/vietocr/files/" target="_blank" rel="external">https://sourceforge.net/projects/vietocr/files/</a></p>
+<pre><code>unzip jTessBoxEditor-<span class="number">2.0</span>-Beta<span class="class">.zip</span>
+cd jTessBoxEditor
+java -Xms128m -Xmx1024m -jar jTessBoxEditor<span class="class">.jar</span>  #打开可视化界面
+</code></pre><p>—- <strong>训练</strong> —-</p>
+<p><strong>预处理</strong></p>
+<p>把所有待训练的图像转换为tiff格式（可使用ubuntu下的imageMagick的convert命令或mogrify命令批量处理）</p>
+<pre><code>mogrify -<span class="built_in">path</span> ./TIFF/ -<span class="built_in">format</span> tiff *.jpg
+</code></pre><p>然后采用jTessBoxEditor中的<code>tools/Merge Tiff</code>功能，将待训练的tiff图像合并为一个tiff文件，在可视化界面中先选中所有tiff文件，然后点击OK，然后在再次弹出的窗口中输入要合并的tiff文件的名称，例如chi.wang.exp0.tif，chi表示中文，wang表示字体。</p>
+<p><strong>生成.box 文件</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> batch<span class="class">.nochop</span> makebox
+</code></pre><p>or</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">tesseract</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span> <span class="tag">-l</span> <span class="tag">chi_smi</span> <span class="tag">-psm</span> 7 <span class="tag">digits</span> <span class="tag">batch</span><span class="class">.nochop</span> <span class="tag">makebox</span> # 数字
+</code></pre><p>会生成一个名为chi.wang.exp0.box文件</p>
+<p><strong>使用jTessBoxEditor校正字符</strong></p>
+<p>在可视化界面中，在<code>Box Editor</code>面板中点击open按钮打开合并的tiff文件，然后每一页每一页的去矫正矩形框的位置以及正确的识别字符，亦可以同时修改chi.wang.exp0.box文件来添加一下empty pages的识别框！</p>
+<p><strong>生成自制语言库</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> nobatch box<span class="class">.train</span> #生成字符特征文件
+
+sudo unicharset_extractor chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.box</span>  #产生字符集
+
+vim font_properties
+wang <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> #向新生成的文件font_properties中录入此内容，普通字体，不加粗，不倾斜
+
+sudo shapeclustering -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成shapetable
+
+sudo mftraining -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span> #聚集字符特征
+
+sudo cntraining chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成字符形状正常变化特征文件normproto
+</code></pre><p><strong>重命名如下文件</strong>：</p>
+<pre><code><span class="title">inttemp</span>
+├──
+normproto
+├──
+pffmtable
+├──
+shapetable
+└──
+unicharset
+</code></pre><p>为</p>
+<pre><code>wang<span class="class">.inttemp</span>
+├──
+wang<span class="class">.normproto</span>
+├──
+wang<span class="class">.pffmtable</span>
+├──
+wang<span class="class">.shapetable</span>
+└──
+wang.unicharset
+</code></pre><p><strong>生成语言库</strong></p>
+<pre><code>sudo <span class="keyword">combine_t</span>essdata wang.
+</code></pre><p>此时得到了训练好的wang.traineddata</p>
+<pre><code>sudo cp wang<span class="class">.traineddata</span> /usr/share/tesseract-ocr/tessdata/wang<span class="class">.traineddata</span>  #复制到安装目录
+</code></pre><p><strong>测试</strong></p>
+<pre><code>tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span> -l wang 
+</code></pre><hr>
+<p>上述命令可能会出错，得到如下输出：</p>
+<pre><code>FAIL!
+APPLY_BOXES: boxfile line <span class="number">22</span>/园 ((<span class="number">1108</span>,<span class="number">4637</span>),(<span class="number">1150</span>,<span class="number">4686</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+FAIL!
+APPLY_BOXES: boxfile line <span class="number">25</span>/园 ((<span class="number">1258</span>,<span class="number">4641</span>),(<span class="number">1300</span>,<span class="number">4689</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+APPLY_BOXES:
+   Boxes read <span class="keyword">from</span> boxfile:      <span class="number">40</span>
+   Boxes failed resegmentation:       <span class="number">2</span>
+   Found <span class="number">38</span> good blobs.
+Generated training data <span class="keyword">for</span> <span class="number">4</span> words
+Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="number">1</span> <span class="keyword">not</span> found
+</code></pre><p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
+<p>如果tif/box文件对是通过jTessBoxEditor可视化工具得到的，那么生成文件时选定<code>Anti-Aliasing</code>可消除上述错误。</p>
+<hr>
+<p>参考link：</p>
+<p><a href="http://qianjiye.de/2015/08/tesseract-ocr" target="_blank" rel="external">http://qianjiye.de/2015/08/tesseract-ocr</a></p>
+<p><a href="http://lib.csdn.net/article/deeplearning/50598" target="_blank" rel="external">http://lib.csdn.net/article/deeplearning/50598</a></p>
+<p><a href="http://www.jianshu.com/p/31afd7fc5813" target="_blank" rel="external">http://www.jianshu.com/p/31afd7fc5813</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-ubuntu16.04+python2.7中文编码" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1710,159 +2009,9 @@ objs = cls_objs
 
 
   
-    <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Git配置出错Permission Denied/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Git配置出错Permission Denied/">Git配置出现Permission denied问题</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>MacOS github后台配置ssh key之后本地无法git clone的问题 </p>
-<pre><code><span class="variable">Permission</span> denied (publickey).
-</code></pre><p>当你在github后台添加了ssh keys之后，在本地这么测试一下：</p>
-<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
-</code></pre><p>如果返回是：</p>
-<pre><code><span class="variable">Permission</span> denied (publickey).
-</code></pre><p>那么你可能要在本地ssh-add一下，当然在这之前你可以使用 ssh -vT git@github.com 查看一下到底是因为什么原因导致的失败。</p>
-<pre><code><span class="label">ssh</span>-<span class="keyword">add </span>~/.ssh/id_rsa (maybe: ssh-<span class="keyword">add </span>~/id_rsa)
-</code></pre><p>然后会返回如下：</p>
-<pre><code>Enter passphrase <span class="keyword">for</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span><span class="string">id_rsa:</span>
-Identity <span class="string">added:</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>id_rsa (<span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>youraccount_rsa)
-</code></pre><p>之后再使用 </p>
-<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
-</code></pre><p>会返回成功：</p>
-<pre><code>Hi youraccount! You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.
-</code></pre><p>说明你目前本地的ssh已经切换到了id_rsa这个账号，</p>
-<p>之后便可以进行git clone到本地的操作了！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/06/Python除法/" class="article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>
@@ -1870,7 +2019,7 @@ a=<span class="number">2</span>/<span class="number">3</span>
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 Gang Wang
+    		&copy; 2018 Gang Wang
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten

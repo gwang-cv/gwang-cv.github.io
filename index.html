@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>Über</li>
+						<li>About</li>
 						
 					</ul>
 				</div>
@@ -102,7 +102,7 @@
 				
 				<section class="switch-part switch-part2">
 					<div class="widget tagcloud" id="js-tagcloud">
-						<a href="/tags/Debug/" style="font-size: 16.67px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 16.67px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 13.33px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+						<a href="/tags/Debug/" style="font-size: 17.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
 					</div>
 				</section>
 				
@@ -167,6 +167,249 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-py-Faster-rcnn for MacOS" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/01/03/py-Faster-rcnn for MacOS/" class="article-date">
+  	<time datetime="2018-01-03T09:13:36.000Z" itemprop="datePublished">2018-01-03</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/01/03/py-Faster-rcnn for MacOS/">py-Faster-rcnn for CPU_only MacOS</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1. 准备</strong></p>
+<p>需要安装OpenCV3.x版本，以及OpenBLAS，参考：<a href="http://gwang-cv.github.io/2016/01/26/Mac%E5%AE%89%E8%A3%85OpenCV/">Mac安装OpenCV</a>, <a href="http://gwang-cv.github.io/2016/04/07/MacOS%E5%AE%89%E8%A3%85caffe/">MacOS安装caffe</a></p>
+<p>确认安装brew Cython easydict protobuf</p>
+<p>下载py-faster-rcnn源码：</p>
+<pre><code>git clone –recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rbgirshick/<span class="keyword">py</span>-faster-rcnn.git
+</code></pre><p><strong>2. 编译caffe</strong></p>
+<p>修改<code>makefile.config</code></p>
+<pre><code># <span class="string">USE_CUDNN :</span>= <span class="number">1</span>
+<span class="string">CPU_ONLY :</span>= <span class="number">1</span>
+<span class="string">USE_OPENCV :</span>= <span class="number">1</span>
+<span class="string">OPENCV_VERSION :</span>= <span class="number">3</span>
+<span class="string">CUDA_DIR :</span>= <span class="regexp">/usr/</span>local/cuda
+<span class="string">BLAS :</span>= open
+<span class="string">BLAS_INCLUDE :</span>= <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>openblas<span class="regexp">/0.2.20/</span>include
+<span class="string">BLAS_LIB :</span>= <span class="regexp">/usr/</span>local<span class="regexp">/Cellar/</span>openblas<span class="regexp">/0.2.20/</span>lib
+<span class="string">PYTHON_INCLUDE :</span>= <span class="regexp">/usr/</span>include/python2.7 \
+        <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7<span class="regexp">/site-packages/</span>numpy<span class="regexp">/core/</span>include    <span class="string">PYTHON_LIB :</span>= <span class="regexp">/usr/</span>lib
+<span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>
+<span class="string">INCLUDE_DIRS :</span>= $(PYTHON_INCLUDE) <span class="regexp">/usr/</span>local<span class="regexp">/include  /</span>usr<span class="regexp">/local/</span>Cellar<span class="regexp">/hdf5 /</span>usr<span class="regexp">/local/</span>Cellar<span class="regexp">/opencv/</span><span class="number">3.2</span>.0/include
+<span class="string">LIBRARY_DIRS :</span>= $(PYTHON_LIB) <span class="regexp">/usr/</span>local<span class="regexp">/lib /</span>usr<span class="regexp">/lib  /</span>usr<span class="regexp">/local/</span>Cellar<span class="regexp">/opencv/</span><span class="number">3.2</span>.0/lib        
+<span class="string">BUILD_DIR :</span>= build
+<span class="string">DISTRIBUTE_DIR :</span>= distribute
+<span class="string">TEST_GPUID :</span>= <span class="number">0</span>
+</code></pre><p>执行编译：</p>
+<pre><code><span class="built_in">make</span> -j32 &amp;&amp; <span class="built_in">make</span> pycaffe
+</code></pre><p><strong>3. 编译faster-rcnn</strong></p>
+<p>修改文件，替换或删除关于gpu的代码行：</p>
+<p>修改<code>./lib/setup.py</code></p>
+<pre><code>...
+<span class="preprocessor">#CUDA = locate_cuda()</span>
+...
+...
+<span class="preprocessor">#self.set_executable('compiler_so', CUDA['nvcc'])</span>
+...
+...
+<span class="preprocessor">#Extension('nms.gpu_nms',</span>
+<span class="preprocessor">#[‘nms/nms_kernel.cu', 'nms/gpu_nms.pyx'],</span>
+<span class="preprocessor">#library_dirs=[CUDA['lib64']],</span>
+<span class="preprocessor">#libraries=['cudart'],</span>
+<span class="preprocessor">#language='c++',</span>
+<span class="preprocessor">#runtime_library_dirs=[CUDA['lib64']],</span>
+<span class="preprocessor">## this syntax is specific to this build system</span>
+<span class="preprocessor">## we're only going to use certain compiler args with nvcc and not with</span>
+<span class="preprocessor">## gcc the implementation of this trick is in customize_compiler() below</span>
+<span class="preprocessor">#extra_compile_args={'gcc': ["-Wno-unused-function"],</span>
+<span class="preprocessor">#’nvcc': ['-arch=sm_35',</span>
+<span class="preprocessor">#’—ptxas-options=-v',</span>
+<span class="preprocessor">#’-c’,</span>
+<span class="preprocessor">#’—compiler-options',</span>
+<span class="preprocessor">#”’-fPIC'"]},</span>
+<span class="preprocessor">#include_dirs = [numpy_include, CUDA['include']]</span>
+<span class="preprocessor">#)</span>
+</code></pre><p>执行编译：</p>
+<pre><code><span class="keyword">cd</span> ./lib
+<span class="keyword">make</span>
+</code></pre><p><strong>4. 运行demo</strong></p>
+<p>运行demo前需要修改几个文件，替换或删除关于gpu的代码行：</p>
+<p>(1) 修改<code>~/py-faster-rcnn/lib/fast_rcnn/config.py</code></p>
+<pre><code># Use GPU <span class="keyword">implementation</span> <span class="keyword">of</span> non-maximum suppression
+# __C.USE_GPU_NMS = <span class="keyword">True</span>
+__C.USE_GPU_NMS = <span class="keyword">False</span>
+</code></pre><p>(2) 修改<code>~/py-faster-rcnn/tools/test_net.py和 ~/py-faster-rcnn/tools/train_net.py</code></p>
+<pre><code><span class="hexcolor">#caf</span>fe.<span class="function"><span class="title">set_mode_gpu</span><span class="params">()</span></span>
+caffe.<span class="function"><span class="title">set_mode_cpu</span><span class="params">()</span></span>
+</code></pre><p>(3) 将<code>~/py-faster-rcnn/lib/setup.py</code>中，含有<code>nms.gpu_nms</code>的部分去掉</p>
+<p>(4) 修改<code>./lib/fast-rcnn/nms_wrapper.py</code>，修改如下：</p>
+<pre><code><span class="keyword">from</span> fast_rcnn.config <span class="keyword">import</span> cfg
+<span class="comment">#from nms.gpu_nms import gpu_nms</span>
+<span class="keyword">from</span> nms.cpu_nms <span class="keyword">import</span> cpu_nms
+
+<span class="function"><span class="keyword">def</span> <span class="title">nms</span><span class="params">(dets, thresh, force_cpu=False)</span>:</span>
+    <span class="string">"""Dispatch to either CPU or GPU NMS implementations."""</span>
+
+    <span class="keyword">if</span> dets.shape[<span class="number">0</span>] == <span class="number">0</span>:
+        <span class="keyword">return</span> []
+    <span class="keyword">if</span> cfg.USE_GPU_NMS <span class="keyword">and</span> <span class="keyword">not</span> force_cpu:
+        <span class="keyword">print</span> <span class="string">"nms_wrapper GPU ..."</span>
+        <span class="comment">#return gpu_nms(dets, thresh, device_id=cfg.GPU_ID)</span>
+    <span class="keyword">else</span>:
+        <span class="keyword">return</span> cpu_nms(dets, thresh)
+</code></pre><p>接下来运行demo即可。</p>
+<p><strong>5. 问题</strong></p>
+<p>(1) import caffe错误，或者报错fatal error: numpy/arrayobject.h没有那个文件或目录</p>
+<p>修改Makefile.config找到PYTHON_INCLUDE：</p>
+<pre><code>PYTHON_INCLUDE := <span class="regexp">/usr/i</span>nclude<span class="regexp">/python2.7 \
+        /u</span>sr<span class="regexp">/lib/</span>python2.<span class="number">7</span><span class="regexp">/dist-packages/</span>numpy<span class="regexp">/core/i</span>nclude
+</code></pre><p>要加一个local，变成： </p>
+<pre><code><span class="string">PYTHON_INCLUDE :</span>= <span class="regexp">/usr/</span>include/python2.7 \
+        <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7<span class="regexp">/dist-packages/</span>numpy<span class="regexp">/core/</span>include
+</code></pre><p>(2) 报错<code>AttributeError: &#39;DataFrame&#39; object has no attribute &#39;sort_values&#39;</code></p>
+<pre><code><span class="comment"># sort_values is new in version 0.17.0, so check your version of pandas. In the previous versions you should use sort</span>
+
+pip install -<span class="constant">U</span> pandas
+
+<span class="comment"># 查看pandas版本</span>
+<span class="prompt">&gt;&gt;</span>&gt; import pandas as pd
+<span class="prompt">&gt;&gt;</span>&gt; pd.show_versions()
+<span class="prompt">&gt;&gt;</span>&gt; pd.__version_<span class="number">_</span>
+</code></pre><p>(3) 找不到目录，在<code>_init_paths.py</code>中定义的路径修改：</p>
+<pre><code><span class="built_in">#</span> 将 this_dir = osp.dirname<span class="params">(__file__)</span> 改为：
+this_dir = osp.dirname<span class="params">(osp.abspath<span class="params">(__file__)</span>)</span>
+</code></pre><hr>
+<p>参考：</p>
+<p><a href="https://www.cnblogs.com/justinzhang/p/5386837.html" target="_blank" rel="external">Faster R-CNN CPU环境搭建</a></p>
+<p><a href="http://blog.csdn.net/handsome_sheng/article/details/76571658" target="_blank" rel="external">Mac下跑仅CPU模式下的py-faster-rcnn</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/DeepLearning/">DeepLearning</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-faster-rcnn errors" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/12/04/faster-rcnn errors/" class="article-date">
+  	<time datetime="2017-12-04T02:32:17.000Z" itemprop="datePublished">2017-12-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/12/04/faster-rcnn errors/">训练faster-rcnn报错</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>训练结束后测试时出现类似</p>
+<pre><code>File <span class="string">"/home/xxx/py-faster-rcnn/tools/../lib/datasets/voc_eval.py"</span>, line <span class="number">126</span>, <span class="keyword">in</span> voc_<span class="built_in">eval</span>
+    R = [obj <span class="keyword">for</span> obj <span class="keyword">in</span> recs[imagename] <span class="keyword">if</span> obj[<span class="string">'name'</span>] == classname]
+KeyError: <span class="string">'000002'</span>
+</code></pre><p>解决方法: 删除data/VOCdekit2007下的annotations_cache文件夹</p>
+<hr>
+<p>基于ResNet101训练py-faster-rcnn遇到错误：</p>
+<pre><code><span class="regexp">/faster-rcnn-py/</span>tools<span class="regexp">/../</span>lib<span class="regexp">/fast_rcnn/</span>bbox_transform.<span class="string">py:</span><span class="number">50</span>: <span class="string">RuntimeWarning:</span> overflow encountered <span class="keyword">in</span> exp
+pred_h = np.exp(dh) * heights[:, np.newaxis]
+faster-rcnn-py<span class="regexp">/tools/</span>..<span class="regexp">/lib/</span>rpn/proposal_layer.<span class="string">py:</span><span class="number">176</span>: <span class="string">RuntimeWarning:</span> invalid value encountered <span class="keyword">in</span> greater_equal
+keep = np.where((ws &gt;= min_size) &amp; (hs &gt;= min_size))[<span class="number">0</span>]
+</code></pre><p>类似解决方法：减小lr from 0.001 to 0.0001</p>
+<pre><code>A possible solution could be <span class="built_in">to</span> decrease <span class="operator">the</span> base learning rate <span class="operator">in</span> <span class="operator">the</span> solver.prototxt
+As <span class="keyword">it</span> is recommended here <span class="keyword">http</span>://caffe.berkeleyvision.org/tutorial/solver.html
+Just change <span class="operator">the</span> base_lr: <span class="number">0.001</span> <span class="built_in">to</span> <span class="number">0.0001</span>
+
+Note also that <span class="operator">the</span> above settings are merely guidelines, <span class="operator">and</span> they’re definitely <span class="operator">not</span> guaranteed <span class="built_in">to</span> be optimal (<span class="operator">or</span> even work <span class="keyword">at</span> all!) <span class="operator">in</span> every situation. If learning diverges (e.g., you <span class="built_in">start</span> <span class="built_in">to</span> see very large <span class="operator">or</span> NaN <span class="operator">or</span> inf loss values <span class="operator">or</span> outputs), <span class="keyword">try</span> dropping <span class="operator">the</span> base_lr (e.g., base_lr: <span class="number">0.001</span>) <span class="operator">and</span> re-training, repeating this <span class="keyword">until</span> you find <span class="operator">a</span> base_lr <span class="built_in">value</span> that works.
+I did <span class="keyword">try</span> <span class="built_in">to</span> change <span class="operator">the</span> base_lr <span class="built_in">value</span> <span class="operator">and</span> now <span class="operator">the</span> NAN <span class="built_in">value</span> disappeared.
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Faster-rcnn detect small or tiny objects" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1409,308 +1652,9 @@ Supported chart types:
 
 
   
-    <article id="post-python+opencv图像二值化" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/25/python+opencv图像二值化/" class="article-date">
-  	<time datetime="2017-08-25T08:20:01.000Z" itemprop="datePublished">2017-08-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/python+opencv图像二值化/">python+opencv图像二值化</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Goal</strong></p>
-<p>In this tutorial, you will learn Simple thresholding, Adaptive thresholding, Otsu’s thresholding etc.<br>You will learn these functions : cv2.threshold, cv2.adaptiveThreshold etc.</p>
-<p><strong>Simple Thresholding</strong></p>
-<p>Here, the matter is straight forward. If pixel value is greater than a threshold value, it is assigned one value (may be white), else it is assigned another value (may be black). The function used is cv2.threshold. First argument is the source image, which should be a grayscale image. Second argument is the threshold value which is used to classify the pixel values. Third argument is the maxVal which represents the value to be given if pixel value is more than (sometimes less than) the threshold value. OpenCV provides different styles of thresholding and it is decided by the fourth parameter of the function. Different types are:</p>
-<pre><code>cv2<span class="class">.THRESH_BINARY</span>
-cv2<span class="class">.THRESH_BINARY_INV</span>
-cv2<span class="class">.THRESH_TRUNC</span>
-cv2<span class="class">.THRESH_TOZERO</span>
-cv2.THRESH_TOZERO_INV
-</code></pre><p>Documentation clearly explain what each type is meant for. Please check out the documentation.</p>
-<p>Two outputs are obtained. First one is a retval which will be explained later. Second output is our thresholded image.</p>
-<p><strong>code:</strong></p>
-<pre><code><span class="comment">#!/usr/bin/python</span>
-<span class="comment"># -*- coding: UTF-8 -*-</span>
-<span class="keyword">import</span> cv2
-<span class="keyword">import</span> numpy <span class="keyword">as</span> np
-<span class="keyword">from</span> PIL <span class="keyword">import</span> Image 
-<span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt
-<span class="keyword">import</span> matplotlib
-<span class="keyword">import</span> os
-<span class="keyword">import</span> sys
-reload(sys) 
-sys.setdefaultencoding(<span class="string">'utf-8'</span>) 
-
-fln=<span class="string">'76.jpg'</span>
-img = cv2.imread(fln,<span class="number">0</span>)
-ret,thresh1 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)
-ret,thresh2 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY_INV)
-ret,thresh3 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TRUNC)
-ret,thresh4 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO)
-ret,thresh5 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO_INV)
-titles = [<span class="string">'Original_Image'</span>,<span class="string">'BINARY'</span>,<span class="string">'BINARY_INV'</span>,<span class="string">'TRUNC'</span>,<span class="string">'TOZERO'</span>,<span class="string">'TOZERO_INV'</span>]
-images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
-<span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">6</span>):
-    cv2.imwrite(<span class="string">'0_'</span>+titles[i]+<span class="string">'.jpg'</span>,images[i])
-    plt.subplot(<span class="number">2</span>,<span class="number">3</span>,i+<span class="number">1</span>),plt.imshow(images[i],<span class="string">'gray'</span>)
-
-    plt.title(titles[i])
-    plt.xticks([]), plt.yticks([])
-
-plt.savefig(<span class="string">'res_'</span>+fln)
-plt.show()
-</code></pre><h2 id=""><img src="http://docs.opencv.org/master/threshold.jpg" alt="http://docs.opencv.org/master/threshold.jpg"></h2><p><strong>Adaptive Thresholding</strong></p>
-<p>In the previous section, we used a global value as threshold value. But it may not be good in all the conditions where image has different lighting conditions in different areas. In that case, we go for adaptive thresholding. In this, the algorithm calculate the threshold for a small regions of the image. So we get different thresholds for different regions of the same image and it gives us better results for images with varying illumination.</p>
-<p>It has three ‘special’ input params and only one output argument.</p>
-<p>Adaptive Method - It decides how thresholding value is calculated.</p>
-<pre><code>cv2.ADAPTIVE_THRESH_MEAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> mean <span class="operator">of</span> neighbourhood area.
-cv2.ADAPTIVE_THRESH_GAUSSIAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> weighted <span class="built_in">sum</span> <span class="operator">of</span> neighbourhood values where weights are <span class="operator">a</span> gaussian window.
-Block Size - It decides <span class="operator">the</span> size <span class="operator">of</span> neighbourhood area.
-</code></pre><p>C - It is just a constant which is subtracted from the mean or weighted mean calculated.</p>
-<p>Below piece of code compares global thresholding and adaptive thresholding for an image with varying illumination:</p>
-<pre><code>import cv2
-import numpy as np
-from matplotlib import pyplot as plt
-<span class="tag">img</span> = cv2.<span class="function"><span class="title">imread</span><span class="params">(<span class="string">'sudoku.png'</span>,<span class="number">0</span>)</span></span>
-<span class="tag">img</span> = cv2.<span class="function"><span class="title">medianBlur</span><span class="params">(img,<span class="number">5</span>)</span></span>
-ret,th1 = cv2.<span class="function"><span class="title">threshold</span><span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span></span>
-th2 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_MEAN_C</span>,\
-            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
-th3 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_GAUSSIAN_C</span>,\
-            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
-titles = [<span class="string">'Original Image'</span>, <span class="string">'Global Thresholding (v = 127)'</span>,
-            <span class="string">'Adaptive Mean Thresholding'</span>, <span class="string">'Adaptive Gaussian Thresholding'</span>]
-images = [<span class="tag">img</span>, th1, th2, th3]
-<span class="keyword">for</span> <span class="tag">i</span> <span class="keyword">in</span> <span class="function"><span class="title">xrange</span><span class="params">(<span class="number">4</span>)</span></span>:
-    plt.<span class="function"><span class="title">subplot</span><span class="params">(<span class="number">2</span>,<span class="number">2</span>,i+<span class="number">1</span>)</span></span>,plt.<span class="function"><span class="title">imshow</span><span class="params">(images[i],<span class="string">'gray'</span>)</span></span>
-    plt.<span class="function"><span class="title">title</span><span class="params">(titles[i])</span></span>
-    plt.<span class="function"><span class="title">xticks</span><span class="params">([])</span></span>,plt.<span class="function"><span class="title">yticks</span><span class="params">([])</span></span>
-plt.<span class="function"><span class="title">show</span><span class="params">()</span></span>    
-</code></pre><p><img src="http://docs.opencv.org/master/ada_threshold.jpg" alt="result"></p>
-<hr>
-<p><strong>Otsu’s Binarization</strong></p>
-<p>In the first section, I told you there is a second parameter retVal. Its use comes when we go for Otsu’s Binarization. So what is it?</p>
-<p>In global thresholding, we used an arbitrary value for threshold value, right? So, how can we know a value we selected is good or not? Answer is, trial and error method. But consider a bimodal image (In simple words, bimodal image is an image whose histogram has two peaks). For that image, we can approximately take a value in the middle of those peaks as threshold value, right ? That is what Otsu binarization does. So in simple words, it automatically calculates a threshold value from image histogram for a bimodal image. (For images which are not bimodal, binarization won’t be accurate.)</p>
-<p>For this, our cv2.threshold() function is used, but pass an extra flag, cv2.THRESH_OTSU. For threshold value, simply pass zero. Then the algorithm finds the optimal threshold value and returns you as the second output, retVal. If Otsu thresholding is not used, retVal is same as the threshold value you used.</p>
-<p>Check out below example. Input image is a noisy image. In first case, I applied global thresholding for a value of 127. In second case, I applied Otsu’s thresholding directly. In third case, I filtered image with a 5x5 gaussian kernel to remove the noise, then applied Otsu thresholding. See how noise filtering improves the result.</p>
-<pre><code><span class="built_in">import</span> cv2
-<span class="built_in">import</span> numpy as np
-from matplotlib <span class="built_in">import</span> pyplot as plt
-img = cv2.imread<span class="params">('noisy2.png',<span class="number">0</span>)</span>
-<span class="built_in">#</span> global thresholding
-ret1,th1 = cv2.threshold<span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span>
-<span class="built_in">#</span> Otsu's thresholding
-ret2,th2 = cv2.threshold<span class="params">(img,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
-<span class="built_in">#</span> Otsu's thresholding after Gaussian filtering
-blur = cv2.GaussianBlur<span class="params">(img,<span class="params">(<span class="number">5</span>,<span class="number">5</span>)</span>,<span class="number">0</span>)</span>
-ret3,th3 = cv2.threshold<span class="params">(blur,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
-<span class="built_in">#</span> plot all the images and their histograms
-images = [img, <span class="number">0</span>, th1,
-          img, <span class="number">0</span>, th2,
-          blur, <span class="number">0</span>, th3]
-titles = ['Original Noisy Image','Histogram','Global Thresholding <span class="params">(v=<span class="number">127</span>)</span>',
-          'Original Noisy Image','Histogram',<span class="string">"Otsu's Thresholding"</span>,
-          'Gaussian filtered Image','Histogram',<span class="string">"Otsu's Thresholding"</span>]
-<span class="keyword">for</span> i in xrange<span class="params">(<span class="number">3</span>)</span>:
-    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">1</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>],'gray')</span>
-    plt.title<span class="params">(titles[i*<span class="number">3</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
-    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">2</span>)</span>,plt.hist<span class="params">(images[i*<span class="number">3</span>].ravel<span class="params">()</span>,<span class="number">256</span>)</span>
-    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">1</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
-    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">3</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>+<span class="number">2</span>],'gray')</span>
-    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">2</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
-plt.show<span class="params">()</span>
-</code></pre><h2 id="-1"><img src="http://docs.opencv.org/master/otsu.jpg" alt="http://docs.opencv.org/master/otsu.jpg"></h2><p>Link:</p>
-<p><a href="http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html" target="_blank" rel="external">http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Tesseract4.0+jTessBoxEditor训练(ubuntu下)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/" class="article-date">
-  	<time datetime="2017-08-25T07:48:57.000Z" itemprop="datePublished">2017-08-25</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/">Tesseract4.0+jTessBoxEditor训练(ubuntu下)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>下载jTessBoxEditor</strong></p>
-<p><a href="https://sourceforge.net/projects/vietocr/files/" target="_blank" rel="external">https://sourceforge.net/projects/vietocr/files/</a></p>
-<pre><code>unzip jTessBoxEditor-<span class="number">2.0</span>-Beta<span class="class">.zip</span>
-cd jTessBoxEditor
-java -Xms128m -Xmx1024m -jar jTessBoxEditor<span class="class">.jar</span>  #打开可视化界面
-</code></pre><p>—- <strong>训练</strong> —-</p>
-<p><strong>预处理</strong></p>
-<p>把所有待训练的图像转换为tiff格式（可使用ubuntu下的imageMagick的convert命令或mogrify命令批量处理）</p>
-<pre><code>mogrify -<span class="built_in">path</span> ./TIFF/ -<span class="built_in">format</span> tiff *.jpg
-</code></pre><p>然后采用jTessBoxEditor中的<code>tools/Merge Tiff</code>功能，将待训练的tiff图像合并为一个tiff文件，在可视化界面中先选中所有tiff文件，然后点击OK，然后在再次弹出的窗口中输入要合并的tiff文件的名称，例如chi.wang.exp0.tif，chi表示中文，wang表示字体。</p>
-<p><strong>生成.box 文件</strong></p>
-<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> batch<span class="class">.nochop</span> makebox
-</code></pre><p>or</p>
-<pre><code><span class="tag">sudo</span> <span class="tag">tesseract</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span> <span class="tag">-l</span> <span class="tag">chi_smi</span> <span class="tag">-psm</span> 7 <span class="tag">digits</span> <span class="tag">batch</span><span class="class">.nochop</span> <span class="tag">makebox</span> # 数字
-</code></pre><p>会生成一个名为chi.wang.exp0.box文件</p>
-<p><strong>使用jTessBoxEditor校正字符</strong></p>
-<p>在可视化界面中，在<code>Box Editor</code>面板中点击open按钮打开合并的tiff文件，然后每一页每一页的去矫正矩形框的位置以及正确的识别字符，亦可以同时修改chi.wang.exp0.box文件来添加一下empty pages的识别框！</p>
-<p><strong>生成自制语言库</strong></p>
-<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> nobatch box<span class="class">.train</span> #生成字符特征文件
-
-sudo unicharset_extractor chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.box</span>  #产生字符集
-
-vim font_properties
-wang <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> #向新生成的文件font_properties中录入此内容，普通字体，不加粗，不倾斜
-
-sudo shapeclustering -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成shapetable
-
-sudo mftraining -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span> #聚集字符特征
-
-sudo cntraining chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成字符形状正常变化特征文件normproto
-</code></pre><p><strong>重命名如下文件</strong>：</p>
-<pre><code><span class="title">inttemp</span>
-├──
-normproto
-├──
-pffmtable
-├──
-shapetable
-└──
-unicharset
-</code></pre><p>为</p>
-<pre><code>wang<span class="class">.inttemp</span>
-├──
-wang<span class="class">.normproto</span>
-├──
-wang<span class="class">.pffmtable</span>
-├──
-wang<span class="class">.shapetable</span>
-└──
-wang.unicharset
-</code></pre><p><strong>生成语言库</strong></p>
-<pre><code>sudo <span class="keyword">combine_t</span>essdata wang.
-</code></pre><p>此时得到了训练好的wang.traineddata</p>
-<pre><code>sudo cp wang<span class="class">.traineddata</span> /usr/share/tesseract-ocr/tessdata/wang<span class="class">.traineddata</span>  #复制到安装目录
-</code></pre><p><strong>测试</strong></p>
-<pre><code>tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span> -l wang 
-</code></pre><hr>
-<p>上述命令可能会出错，得到如下输出：</p>
-<pre><code>FAIL!
-APPLY_BOXES: boxfile line <span class="number">22</span>/园 ((<span class="number">1108</span>,<span class="number">4637</span>),(<span class="number">1150</span>,<span class="number">4686</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
-FAIL!
-APPLY_BOXES: boxfile line <span class="number">25</span>/园 ((<span class="number">1258</span>,<span class="number">4641</span>),(<span class="number">1300</span>,<span class="number">4689</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
-APPLY_BOXES:
-   Boxes read <span class="keyword">from</span> boxfile:      <span class="number">40</span>
-   Boxes failed resegmentation:       <span class="number">2</span>
-   Found <span class="number">38</span> good blobs.
-Generated training data <span class="keyword">for</span> <span class="number">4</span> words
-Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="number">1</span> <span class="keyword">not</span> found
-</code></pre><p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
-<p>如果tif/box文件对是通过jTessBoxEditor可视化工具得到的，那么生成文件时选定<code>Anti-Aliasing</code>可消除上述错误。</p>
-<hr>
-<p>参考link：</p>
-<p><a href="http://qianjiye.de/2015/08/tesseract-ocr" target="_blank" rel="external">http://qianjiye.de/2015/08/tesseract-ocr</a></p>
-<p><a href="http://lib.csdn.net/article/deeplearning/50598" target="_blank" rel="external">http://lib.csdn.net/article/deeplearning/50598</a></p>
-<p><a href="http://www.jianshu.com/p/31afd7fc5813" target="_blank" rel="external">http://www.jianshu.com/p/31afd7fc5813</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>
@@ -1718,7 +1662,7 @@ Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="n
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2017 Gang Wang
+    		&copy; 2018 Gang Wang
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
