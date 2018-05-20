@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>MacOs High Sierra using aria2 | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="说明
+ 配置 aria2，结合 Chrome，代替baidu网盘App下载文件。
+
+安装aria2
+ 12345678910brew install aria2==&amp;gt; Downloading https://homebrew.bintray.com/bottles/aria2-1.34.0.high_sierra.bottle.tar.gz#########################">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MacOs High Sierra using aria2">
+<meta property="og:url" content="http://gwang-cv.github.io/2018/05/20/MacOs High Sierra using aria2/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="说明
+ 配置 aria2，结合 Chrome，代替baidu网盘App下载文件。
+
+安装aria2
+ 12345678910brew install aria2==&amp;gt; Downloading https://homebrew.bintray.com/bottles/aria2-1.34.0.high_sierra.bottle.tar.gz#########################">
+<meta property="og:updated_time" content="2018-05-20T07:37:09.883Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MacOs High Sierra using aria2">
+<meta name="twitter:description" content="说明
+ 配置 aria2，结合 Chrome，代替baidu网盘App下载文件。
+
+安装aria2
+ 12345678910brew install aria2==&amp;gt; Downloading https://homebrew.bintray.com/bottles/aria2-1.34.0.high_sierra.bottle.tar.gz#########################">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gang Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researcher</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">Home</a></li>
+				        
+							<li><a href="/archives">Archives</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Debug/" style="font-size: 17.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">Hello, I&#39;m Gang Wang. This is my blog, enjoy it.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gang Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gang Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researcher</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Archives</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-MacOs High Sierra using aria2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/20/MacOs High Sierra using aria2/" class="article-date">
+  	<time datetime="2018-05-20T07:27:30.453Z" itemprop="datePublished">2018-05-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      MacOs High Sierra using aria2
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>说明</p>
+<p> 配置 aria2，结合 Chrome，代替baidu网盘App下载文件。</p>
+</li>
+<li><p>安装aria2</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">brew install aria2</div><div class="line"></div><div class="line">==&gt; Downloading https://homebrew.bintray.com/bottles/aria2-1.34.0.high_sierra.bottle.tar.gz</div><div class="line"><span class="comment">######################################################################## 100.0%</span></div><div class="line">==&gt; Pouring aria2-1.34.0.high_sierra.bottle.tar.gz</div><div class="line">==&gt; Caveats</div><div class="line">Bash completion has been installed to:</div><div class="line">  /usr/<span class="built_in">local</span>/etc/bash_completion.d</div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/<span class="built_in">local</span>/Cellar/aria2/1.34.0: 22 files, 4.0MB</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置aria2</p>
+<p> RPC模式配置：</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">mkdir .aria2</div><div class="line"><span class="built_in">cd</span> .aria2</div><div class="line">touch aria2.conf</div><div class="line">vim aria2.conf</div><div class="line"></div><div class="line"><span class="comment">#用户名</span></div><div class="line"><span class="comment">#rpc-user=user</span></div><div class="line"><span class="comment">#密码</span></div><div class="line"><span class="comment">#rpc-passwd=passwd</span></div><div class="line"><span class="comment">#上面的认证方式不建议使用,建议使用下面的token方式</span></div><div class="line"><span class="comment">#设置加密的密钥</span></div><div class="line"><span class="comment">#rpc-secret=token</span></div><div class="line"><span class="comment">#允许rpc</span></div><div class="line"><span class="built_in">enable</span>-rpc=<span class="literal">true</span></div><div class="line"><span class="comment">#允许所有来源, web界面跨域权限需要</span></div><div class="line">rpc-allow-origin-all=<span class="literal">true</span></div><div class="line"><span class="comment">#允许外部访问，false的话只监听本地端口</span></div><div class="line">rpc-listen-all=<span class="literal">true</span></div><div class="line"><span class="comment">#RPC端口, 仅当默认端口被占用时修改</span></div><div class="line"><span class="comment">#rpc-listen-port=6800</span></div><div class="line"><span class="comment">#最大同时下载数(任务数), 路由建议值: 3</span></div><div class="line">max-concurrent-downloads=5</div><div class="line"><span class="comment">#断点续传</span></div><div class="line"><span class="built_in">continue</span>=<span class="literal">true</span></div><div class="line"><span class="comment">#同服务器连接数</span></div><div class="line">max-connection-per-server=5</div><div class="line"><span class="comment">#最小文件分片大小, 下载线程数上限取决于能分出多少片, 对于小文件重要</span></div><div class="line">min-split-size=10M</div><div class="line"><span class="comment">#单文件最大线程数, 路由建议值: 5</span></div><div class="line">split=10</div><div class="line"><span class="comment">#下载速度限制</span></div><div class="line">max-overall-download-limit=0</div><div class="line"><span class="comment">#单文件速度限制</span></div><div class="line">max-download-limit=0</div><div class="line"><span class="comment">#上传速度限制</span></div><div class="line">max-overall-upload-limit=0</div><div class="line"><span class="comment">#单文件速度限制</span></div><div class="line">max-upload-limit=0</div><div class="line"><span class="comment">#断开速度过慢的连接</span></div><div class="line"><span class="comment">#lowest-speed-limit=0</span></div><div class="line"><span class="comment">#验证用，需要1.16.1之后的release版本</span></div><div class="line"><span class="comment">#referer=*</span></div><div class="line"><span class="comment">#文件保存路径, 默认为当前启动位置</span></div><div class="line">dir=/Users/xxx/Downloads</div><div class="line"><span class="comment">#文件缓存, 使用内置的文件缓存, 如果你不相信Linux内核文件缓存和磁盘内置缓存时使用, 需要1.16及以上版本</span></div><div class="line"><span class="comment">#disk-cache=0</span></div><div class="line"><span class="comment">#另一种Linux文件缓存方式, 使用前确保您使用的内核支持此选项, 需要1.15及以上版本(?)</span></div><div class="line"><span class="comment">#enable-mmap=true</span></div><div class="line"><span class="comment">#文件预分配, 能有效降低文件碎片, 提高磁盘性能. 缺点是预分配时间较长</span></div><div class="line"><span class="comment">#所需时间 none &lt; falloc ? trunc « prealloc, falloc和trunc需要文件系统和内核支持</span></div><div class="line">file-allocation=prealloc</div></pre></td></tr></table></figure>
+<p> 默认下载路径的「/Users/xxx/Downloads」可以改。xxx为Mac用户名，输入<code>:w</code>保存。</p>
+</li>
+<li><p>启动RPC模式</p>
+<p> 在终端输入<code>aria2c --conf-path=&quot;/Users/xx/.aria2/aria2.conf&quot; -D</code>，aria2 启动。</p>
+</li>
+<li><p>配置chrome</p>
+<p> 下载 Chrome 插件<a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="external">BaiduExporter.crx</a></p>
+<p> 将其拖拽至Chrome扩展程序处安装，在百度网盘页面会新增一个功能按钮来使用aria下载。</p>
+</li>
+<li><p>配置GUI</p>
+<p> 下载<a href="https://github.com/yangshun1029/aria2gui" target="_blank" rel="external">aria2gui</a>，解压后将其拷贝到应用程序中，打开会看到当前下载的文件列表。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/20/MacOSHighSierra安装labelImg/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MacOs High Sierra安装labelImg</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Gang Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>

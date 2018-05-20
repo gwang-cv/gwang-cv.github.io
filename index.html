@@ -168,6 +168,89 @@
 
       <div class="body-wrap">
   
+    <article id="post-MacOs High Sierra using aria2" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/05/20/MacOs High Sierra using aria2/" class="article-date">
+  	<time datetime="2018-05-20T07:27:30.453Z" itemprop="datePublished">2018-05-20</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/05/20/MacOs High Sierra using aria2/">MacOs High Sierra using aria2</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>说明</p>
+<p> 配置 aria2，结合 Chrome，代替baidu网盘App下载文件。</p>
+</li>
+<li><p>安装aria2</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">brew install aria2</div><div class="line"></div><div class="line">==&gt; Downloading https://homebrew.bintray.com/bottles/aria2-1.34.0.high_sierra.bottle.tar.gz</div><div class="line"><span class="comment">######################################################################## 100.0%</span></div><div class="line">==&gt; Pouring aria2-1.34.0.high_sierra.bottle.tar.gz</div><div class="line">==&gt; Caveats</div><div class="line">Bash completion has been installed to:</div><div class="line">  /usr/<span class="built_in">local</span>/etc/bash_completion.d</div><div class="line">==&gt; Summary</div><div class="line">🍺  /usr/<span class="built_in">local</span>/Cellar/aria2/1.34.0: 22 files, 4.0MB</div></pre></td></tr></table></figure>
+</li>
+<li><p>配置aria2</p>
+<p> RPC模式配置：</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> ~</div><div class="line">mkdir .aria2</div><div class="line"><span class="built_in">cd</span> .aria2</div><div class="line">touch aria2.conf</div><div class="line">vim aria2.conf</div><div class="line"></div><div class="line"><span class="comment">#用户名</span></div><div class="line"><span class="comment">#rpc-user=user</span></div><div class="line"><span class="comment">#密码</span></div><div class="line"><span class="comment">#rpc-passwd=passwd</span></div><div class="line"><span class="comment">#上面的认证方式不建议使用,建议使用下面的token方式</span></div><div class="line"><span class="comment">#设置加密的密钥</span></div><div class="line"><span class="comment">#rpc-secret=token</span></div><div class="line"><span class="comment">#允许rpc</span></div><div class="line"><span class="built_in">enable</span>-rpc=<span class="literal">true</span></div><div class="line"><span class="comment">#允许所有来源, web界面跨域权限需要</span></div><div class="line">rpc-allow-origin-all=<span class="literal">true</span></div><div class="line"><span class="comment">#允许外部访问，false的话只监听本地端口</span></div><div class="line">rpc-listen-all=<span class="literal">true</span></div><div class="line"><span class="comment">#RPC端口, 仅当默认端口被占用时修改</span></div><div class="line"><span class="comment">#rpc-listen-port=6800</span></div><div class="line"><span class="comment">#最大同时下载数(任务数), 路由建议值: 3</span></div><div class="line">max-concurrent-downloads=5</div><div class="line"><span class="comment">#断点续传</span></div><div class="line"><span class="built_in">continue</span>=<span class="literal">true</span></div><div class="line"><span class="comment">#同服务器连接数</span></div><div class="line">max-connection-per-server=5</div><div class="line"><span class="comment">#最小文件分片大小, 下载线程数上限取决于能分出多少片, 对于小文件重要</span></div><div class="line">min-split-size=10M</div><div class="line"><span class="comment">#单文件最大线程数, 路由建议值: 5</span></div><div class="line">split=10</div><div class="line"><span class="comment">#下载速度限制</span></div><div class="line">max-overall-download-limit=0</div><div class="line"><span class="comment">#单文件速度限制</span></div><div class="line">max-download-limit=0</div><div class="line"><span class="comment">#上传速度限制</span></div><div class="line">max-overall-upload-limit=0</div><div class="line"><span class="comment">#单文件速度限制</span></div><div class="line">max-upload-limit=0</div><div class="line"><span class="comment">#断开速度过慢的连接</span></div><div class="line"><span class="comment">#lowest-speed-limit=0</span></div><div class="line"><span class="comment">#验证用，需要1.16.1之后的release版本</span></div><div class="line"><span class="comment">#referer=*</span></div><div class="line"><span class="comment">#文件保存路径, 默认为当前启动位置</span></div><div class="line">dir=/Users/xxx/Downloads</div><div class="line"><span class="comment">#文件缓存, 使用内置的文件缓存, 如果你不相信Linux内核文件缓存和磁盘内置缓存时使用, 需要1.16及以上版本</span></div><div class="line"><span class="comment">#disk-cache=0</span></div><div class="line"><span class="comment">#另一种Linux文件缓存方式, 使用前确保您使用的内核支持此选项, 需要1.15及以上版本(?)</span></div><div class="line"><span class="comment">#enable-mmap=true</span></div><div class="line"><span class="comment">#文件预分配, 能有效降低文件碎片, 提高磁盘性能. 缺点是预分配时间较长</span></div><div class="line"><span class="comment">#所需时间 none &lt; falloc ? trunc « prealloc, falloc和trunc需要文件系统和内核支持</span></div><div class="line">file-allocation=prealloc</div></pre></td></tr></table></figure>
+<p> 默认下载路径的「/Users/xxx/Downloads」可以改。xxx为Mac用户名，输入<code>:w</code>保存。</p>
+</li>
+<li><p>启动RPC模式</p>
+<p> 在终端输入<code>aria2c --conf-path=&quot;/Users/xx/.aria2/aria2.conf&quot; -D</code>，aria2 启动。</p>
+</li>
+<li><p>配置chrome</p>
+<p> 下载 Chrome 插件<a href="https://github.com/acgotaku/BaiduExporter" target="_blank" rel="external">BaiduExporter.crx</a></p>
+<p> 将其拖拽至Chrome扩展程序处安装，在百度网盘页面会新增一个功能按钮来使用aria下载。</p>
+</li>
+<li><p>配置GUI</p>
+<p> 下载<a href="https://github.com/yangshun1029/aria2gui" target="_blank" rel="external">aria2gui</a>，解压后将其拷贝到应用程序中，打开会看到当前下载的文件列表。</p>
+</li>
+</ol>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-MacOSHighSierra安装labelImg" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1262,189 +1345,6 @@ The directory '/home/xx/.cache/pip/http' <span class="keyword">or</span> <span c
 <pre><code>cd <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7/dist-packages
 sudo ln -s <span class="regexp">/home/</span>xxx<span class="regexp">/opencv3.2/</span>build<span class="regexp">/lib/</span>cv2.so cv2.so
 </code></pre><p>至此，终于搞定这个问题！！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-编译ab压力测试并发(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/08/编译ab压力测试并发(Ubuntu)/" class="article-date">
-  	<time datetime="2017-09-08T07:50:31.000Z" itemprop="datePublished">2017-09-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">编译ab压力测试并发(Ubuntu)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Abstract</strong></p>
-<p>用深度学习框架caffe做的project，需要对其进行并发数请求数的压力测试，找到了apachebench(ab)简单的压力测试工具，但在Ubuntu下通过apt-get安装的ab，在处理请求数高于200,300左右的时候就会报错终止<code>apr_socket_recv: Connection reset by peer</code>，查阅资料显示需要对ab进行重新修改并编译后方可破除这个问题（无论是如何安装的，都要从头开始重新修改编译安装）。</p>
-<p><strong>1.下载所需要的源码</strong></p>
-<p>apr和apr-util下载：<a href="http://apr.apache.org/download.cgi" target="_blank" rel="external">http://apr.apache.org/download.cgi </a></p>
-<p>ab-standalone源码下载:<a href="https://code.google.com/p/apachebench-standalone/downloads/list" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/downloads/list</a></p>
-<p><strong>2.编译安装</strong></p>
-<p>分别解压三个压缩包：</p>
-<pre><code>ab-standalone-<span class="number">0.1</span><span class="class">.tar</span><span class="class">.bz2</span> 
-apr-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-apr-util-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-</code></pre><p><strong>a.编译apr</strong></p>
-<pre><code><span class="variable">$ </span>cd apr
-<span class="variable">$ </span>./configure  
-<span class="variable">$ </span>make  
-<span class="variable">$ </span>sudo make install  
-</code></pre><p><strong>b.编译apr-util</strong></p>
-<pre><code><span class="char">$ </span>cd apr-util 
-<span class="char">$ </span>./configure --with-apr=/usr/local/apr  
-<span class="char">$ </span>make  
-<span class="char">$ </span>sudo make install  
-</code></pre><p><strong>c.编译ab</strong></p>
-<p>修改ab-standalone/ab.c文件</p>
-<pre><code>$ <span class="keyword">cd</span> <span class="keyword">ab</span>/<span class="keyword">ab</span>-standalone  
-$ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="keyword">c</span>  
-</code></pre><p>到1380行修改成如下:</p>
-<pre><code><span class="comment">/* catch legitimate fatal apr_socket_recv errors */</span>  
-<span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(status != APR_SUCCESS)</span> {  
-    err_recv++;  
-    <span class="keyword">if</span> <span class="params">(recverrok)</span> {  
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        <span class="keyword">if</span> <span class="params">(verbosity &gt;= <span class="number">1</span>)</span> {  
-            char buf[<span class="number">120</span>];  
-            fprintf<span class="params">(stderr,<span class="string">"%s: %s (%d)\n"</span>, <span class="string">"apr_socket_recv"</span>, apr_strerror<span class="params">(status, buf, sizeof buf)</span>, status)</span>;  
-        }  
-        return;  
-    } <span class="keyword">else</span> {  
-        <span class="comment">//apr_err("apr_socket_recv", status);   // begin </span>
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        return;      <span class="comment">// end </span>
-    }  
-}  
-</code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
-<p>开始编译ab</p>
-<pre><code>$ <span class="keyword">make</span> apr-skeleton
-$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
-$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
-</code></pre><hr>
-<p><strong>3.注意</strong></p>
-<p>连接库文件问题：</p>
-<p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>
-<p>或者从编译后的usr/local/apr/lib下面将几个文件拷贝到/usr/lib/x86_64-linux-gnu下做链接：</p>
-<pre><code>sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.a /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/liaprutil-1.so /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.so.0.6.0 /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.la /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-cd <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>
-sudo ln -s libaprutil-<span class="number">1.</span>so.0.6.0 libaprutil-<span class="number">1.</span>so.0
-sudo ldconfig
-</code></pre><p>同理，不选择apt-get安装，而如此设置libapr1.so.0即可。</p>
-<hr>
-<p><strong>4.测试</strong></p>
-<p>查看版本：</p>
-<pre><code><span class="variable">$ </span>ab -<span class="constant">V</span>
-<span class="constant">This </span>is <span class="constant">ApacheBench,</span> <span class="constant">Version </span><span class="number">2.3</span> &lt;<span class="variable">$Revision</span><span class="variable">$&gt;</span>
-<span class="constant">Copyright </span><span class="number">1996</span> <span class="constant">Adam Twiss,</span> <span class="constant">Zeus Technology Ltd,</span> <span class="symbol">http:</span>/<span class="regexp">/www.zeustech.net/</span>
-<span class="constant">Licensed </span>to <span class="constant">The Apache Software Foundation,</span> <span class="symbol">http:</span>/<span class="regexp">/www.apache.org/</span>
-</code></pre><p>测试并发数：</p>
-<pre><code>ab -n <span class="number">500</span> -c <span class="number">500</span> <span class="number">127.0</span>.0.1  # -n请求数，-c并发数，-n&gt;=-c
-
-This is ApacheBench, Version <span class="number">2.3</span> &lt;$Revision$&gt;
-Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, <span class="string">http:</span><span class="comment">//www.zeustech.net/</span>
-Licensed to The Apache Software Foundation, <span class="string">http:</span><span class="comment">//www.apache.org/</span>
-
-Benchmarking <span class="number">127.0</span>.0.1 (be patient)
-Completed <span class="number">100</span> requests
-Completed <span class="number">200</span> requests
-Completed <span class="number">300</span> requests
-Completed <span class="number">400</span> requests
-Completed <span class="number">500</span> requests
-Finished <span class="number">500</span> requests
-
-
-Server <span class="string">Software:</span>        TornadoServer/<span class="number">4.5</span>.2
-Server <span class="string">Hostname:</span>        <span class="number">127.0</span>.0.1
-Server <span class="string">Port:</span>            <span class="number">1000</span>
-
-Document <span class="string">Path:</span>          /
-Document <span class="string">Length:</span>        <span class="number">221727</span> bytes
-
-Concurrency <span class="string">Level:</span>      <span class="number">500</span>
-Time taken <span class="keyword">for</span> <span class="string">tests:</span>   <span class="number">215.661</span> seconds
-Complete <span class="string">requests:</span>      <span class="number">500</span>
-Failed <span class="string">requests:</span>        <span class="number">1023</span>
-   (<span class="string">Connect:</span> <span class="number">0</span>, <span class="string">Receive:</span> <span class="number">341</span>, <span class="string">Length:</span> <span class="number">341</span>, <span class="string">Exceptions:</span> <span class="number">341</span>)
-Write <span class="string">errors:</span>           <span class="number">0</span>
-Total <span class="string">transferred:</span>      <span class="number">35272401</span> bytes
-HTML <span class="string">transferred:</span>       <span class="number">35254593</span> bytes
-Requests per <span class="string">second:</span>    <span class="number">2.32</span> [#/sec] (mean)
-Time per <span class="string">request:</span>       <span class="number">215661.110</span> [ms] (mean)
-Time per <span class="string">request:</span>       <span class="number">431.322</span> [ms] (mean, across all concurrent requests)
-Transfer <span class="string">rate:</span>          <span class="number">159.72</span> [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-<span class="string">Connect:</span>        <span class="number">0</span>  <span class="number">355</span> <span class="number">3586.5</span>      <span class="number">0</span>   <span class="number">63141</span>
-<span class="string">Processing:</span>  <span class="number">1557</span> <span class="number">119576</span> <span class="number">33974.7</span> <span class="number">127335</span>  <span class="number">182963</span>
-<span class="string">Waiting:</span>        <span class="number">0</span> <span class="number">33466</span> <span class="number">58718.9</span>      <span class="number">0</span>  <span class="number">182963</span>
-<span class="string">Total:</span>       <span class="number">1566</span> <span class="number">119931</span> <span class="number">34207.2</span> <span class="number">127335</span>  <span class="number">210234</span>
-
-Percentage of the requests served within a certain time (ms)
-  <span class="number">50</span>%  <span class="number">127335</span>
-  <span class="number">66</span>%  <span class="number">127336</span>
-  <span class="number">75</span>%  <span class="number">127337</span>
-  <span class="number">80</span>%  <span class="number">127337</span>
-  <span class="number">90</span>%  <span class="number">151213</span>
-  <span class="number">95</span>%  <span class="number">175948</span>
-  <span class="number">98</span>%  <span class="number">176152</span>
-  <span class="number">99</span>%  <span class="number">177742</span>
- <span class="number">100</span>%  <span class="number">210234</span> (longest request)
-</code></pre><p><strong>参考</strong></p>
-<p><a href="http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/" target="_blank" rel="external">http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/</a><br><a href="http://blog.csdn.net/kimsung/article/details/9422991" target="_blank" rel="external">http://blog.csdn.net/kimsung/article/details/9422991</a><br><a href="https://code.google.com/p/apachebench-standalone/wiki/HowToBuild" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/wiki/HowToBuild</a></p>
 
       
     </div>
