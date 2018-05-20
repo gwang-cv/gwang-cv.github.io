@@ -67,7 +67,7 @@
 						<li>Tags</li>
 						
 						
-						<li>About</li>
+						<li>Über</li>
 						
 					</ul>
 				</div>
@@ -167,6 +167,248 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Caffe训练分类模型" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Caffe训练分类模型/" class="article-date">
+  	<time datetime="2017-08-31T06:27:54.000Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Caffe训练分类模型/">Caffe训练分类模型</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装Caffe</strong></p>
+<p>按照官方<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">https://github.com/BVLC/caffe</a>说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。</p>
+<p><strong>2.整理自己的数据</strong></p>
+<p>图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.txt，一起放到caffe/data/mydata文件夹下。</p>
+<pre><code>path/to/image/<span class="number">001</span><span class="class">.jpg</span> <span class="number">0</span>
+path/to/image/<span class="number">002</span><span class="class">.jpg</span> <span class="number">1</span>
+path/to/image/<span class="number">003</span><span class="class">.jpg</span> <span class="number">2</span>
+</code></pre><p>在caffe/examples/imagenet中，将创建lmdb文件和mean文件的的几个sh文件拷贝到自己的examples/mytask中，然后修改这两个文件中的几个地址和名称：</p>
+<p><strong>修改create_imagenet.sh</strong></p>
+<pre><code><span class="comment">//当前路径</span>
+EXAMPLE=/home/xxx/caffe/examples/mytask
+<span class="comment">//存放train.txt和val.txt的路径，就是data/mydata</span>
+DATA=/home/xxx/caffe/data/mydata
+<span class="comment">//不变</span>
+TOOLS=/home/xxx/caffe/build/tools
+
+<span class="comment">//存放train和val图片文件夹的主目录（这里与txt文件中的目录合起来才是图片目录）</span>
+TRAIN_DATA_ROOT=/home/xxx/project-data/
+VAL_DATA_ROOT=/home/xxx/project-data/
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$TRAIN_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/train<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/train_lmdb  ##修改名称，与prototxt中的对应
+
+echo <span class="string">"Creating val lmdb..."</span>
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$VAL_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/val<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/val_lmdb  ##修改名称
+</code></pre><p>同理，修改make_imagenet_mean.sh。</p>
+<p>分别执行这两个命令，创建文件lmdb数据库和均值mean文件。</p>
+<p><strong>3.设置模型</strong></p>
+<p>在caffe/models下有很多预制的模型可供使用，模型文件一共可包括至少三个文件：deploy.prototxt；solver.prototxt；train_val.prototxt，有时需要finetune已训练好的模型，还需要一些比如在imagenet上预训练的caffemodel文件。</p>
+<p>sovler里面包含超参数和一些信息：</p>
+<pre><code><span class="attribute">net</span>: <span class="string">"models/bvlc_googlenet/train_val.prototxt"</span>
+<span class="attribute">test_iter</span>: <span class="string">1000</span>
+<span class="attribute">test_interval</span>: <span class="string">4000</span>
+<span class="attribute">test_initialization</span>: <span class="string">false</span>
+<span class="attribute">display</span>: <span class="string">40</span>
+<span class="attribute">average_loss</span>: <span class="string">40</span>
+<span class="attribute">base_lr</span>: <span class="string">0.01</span>
+<span class="attribute">lr_policy</span>: <span class="string">"step"</span>
+<span class="attribute">stepsize</span>: <span class="string">320000</span>
+<span class="attribute">gamma</span>: <span class="string">0.96</span>
+<span class="attribute">max_iter</span>: <span class="string">10000000</span>
+<span class="attribute">momentum</span>: <span class="string">0.9</span>
+<span class="attribute">weight_decay</span>: <span class="string">0.0002</span>
+<span class="attribute">snapshot</span>: <span class="string">40000</span>
+<span class="attribute">snapshot_prefix</span>: <span class="string">"models/bvlc_googlenet/bvlc_googlenet"</span>
+<span class="attribute">solver_mode</span>: <span class="string">GPU</span>
+</code></pre><p>train_val里面的主要修改的地方是batch_size，它与sovler里面的test_iter相乘的结果对应训练图像的总数；修改train和val的sorce文件地址：train_lmdb,val_lmdb. </p>
+<pre><code><span class="tag">data_param</span> {
+<span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
+<span class="attribute">batch_size</span>: <span class="number">32</span>
+<span class="attribute">backend</span>: LMDB
+  }
+</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
+<pre><code>layer {
+  name: <span class="string">"data"</span>
+  <span class="keyword">type</span>: <span class="string">"Data"</span>
+  top: <span class="string">"data"</span>
+  top: <span class="string">"label"</span>
+  <span class="keyword">include</span> {
+    phase: <span class="type">TRAIN</span>
+  }
+</code></pre><p>PS: 在finetune残差网络resnet时，网络结构文件中BatchNorm层的参数要注意： </p>
+<pre><code><span class="attribute">1.在训练时所有BN层要设置use_global_stats</span>: <span class="string">false（也可以不写，caffe默认是false） </span>
+<span class="attribute">2.在测试时所有BN层要设置use_global_stats</span>: <span class="string">true</span>
+
+<span class="cal"><span class="string">#1</span>.训练如果不设为<span class="literal">false</span>，会导致模型不收敛 
+<span class="string">#2</span>.测试如果不设置为<span class="literal">true</span>，会导致准确率极低 </span>
+</code></pre><p><strong>4.开始训练</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+PRETRAINED_MODEL=./models/resnet50/ResNet-<span class="number">50</span>-model.caffemodel
+t=$(date +%Y-%m-%d_%H:%M:%S) 
+LOG=./<span class="built_in">log</span>/train_res50_<span class="variable">$t</span>.log
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe train \
+    --solver=./models/resnet50/solver.prototxt \
+    --weights=<span class="variable">$PRETRAINED_MODEL</span> \
+    --gpu=<span class="number">0</span>,<span class="number">1</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> | tee <span class="variable">$LOG</span>
+</code></pre><p>训练时若出现内存不足停止，要减小train_val.prototxt中batchsize的大小。<br>若出现waiting for data，可能是硬盘读写速度慢，那就waiting吧。。。</p>
+<p><strong>5.测试</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe <span class="built_in">test</span> \
+    --model=./models/resnet50/ResNet-<span class="number">50</span>-train-val.prototxt \
+    --weights=./models/resnet50/output_iter_100000.caffemodel \
+    --gpu=<span class="number">1</span> \
+    --iterations=<span class="number">2000</span>
+</code></pre><p><strong>6.分类demo</strong></p>
+<p>在caffe/python下的classify.py文件可以用来对图像进行分类，但是没有输出可见的分类结果，需要改写些内容。开始之前需要把mean均值文件转换为.npy格式，代码如下：</p>
+<pre><code>import caffe
+import numpy as np
+import sys
+
+<span class="keyword">if</span> <span class="function"><span class="title">len</span><span class="params">(sys.argv)</span></span> != <span class="number">3</span>:
+    print <span class="string">"Usage: python convert_protomean.py proto.mean out.npy"</span>
+    sys.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+
+blob = caffe<span class="class">.proto</span><span class="class">.caffe_pb2</span><span class="class">.BlobProto</span>()
+data = <span class="function"><span class="title">open</span><span class="params">( sys.argv[<span class="number">1</span>] , <span class="string">'rb'</span> )</span></span>.<span class="function"><span class="title">read</span><span class="params">()</span></span>
+blob.<span class="function"><span class="title">ParseFromString</span><span class="params">(data)</span></span>
+arr = np.<span class="function"><span class="title">array</span><span class="params">( caffe.io.blobproto_to_array(blob)</span></span> )
+out = arr[<span class="number">0</span>]
+np.<span class="function"><span class="title">save</span><span class="params">( sys.argv[<span class="number">2</span>] , out )</span></span>
+</code></pre><p><strong>自己改写的classify-demo.py</strong></p>
+<pre><code><span class="built_in">import</span> numpy as np
+<span class="built_in">import</span> sys
+<span class="built_in">import</span> os
+<span class="built_in">import</span> caffe
+<span class="built_in">import</span> io
+<span class="built_in">#</span>from sys <span class="built_in">import</span> argv
+<span class="built_in">#</span>input filefolder you want to test
+<span class="built_in">#</span>tools,filefolder=argv
+
+caffe.set_device<span class="params">(<span class="number">0</span>)</span> 
+caffe.set_mode_gpu<span class="params">()</span>
+MODEL_FILE =<span class="string">"../models/googlenet/deploy.prototxt"</span>
+PRETRAINED = <span class="string">"../models/googlenet/output/bvlc_googlenet_iter_200000.caffemodel"</span>
+MEAN = <span class="string">"mean.npy"</span>
+
+net = caffe.Classifier<span class="params">(MODEL_FILE, PRETRAINED, mean = np.load<span class="params">(MEAN)</span>.mean<span class="params">(<span class="number">1</span>)</span>.mean<span class="params">(<span class="number">1</span>)</span>,
+channel_swap=<span class="params">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>)</span>,
+raw_scale=<span class="number">255</span>,
+image_dims=<span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span>)</span>
+
+filewriter = open<span class="params">(<span class="string">"../data/mydata/result.txt"</span>,<span class="string">"w+"</span>)</span>
+labels_file = '../data/mydata/synset_words.txt'
+labels = np.loadtxt<span class="params">(labels_file, str, delimiter='\t')</span>
+<span class="built_in">#</span>load groundtruth txt to dictionary
+groundtruth_file = '../data/mydata/groundtruth/abc.txt'
+dict_data = {}
+with open<span class="params">(groundtruth_file, 'r')</span> as df:
+    <span class="keyword">for</span> kv in [d.strip<span class="params">()</span>.split<span class="params">(' ')</span> <span class="keyword">for</span> d in df]:
+    dict_data[kv[<span class="number">0</span>]] = kv[<span class="number">1</span>]
+
+<span class="keyword">for</span> root,dirs,files in os.walk<span class="params">(<span class="string">"/home/xxx/project_data/mydata/abc/"</span>)</span>: <span class="built_in">#</span> all the images are in test folder
+
+    <span class="keyword">for</span> file in files:
+    IMAGE_FILE = os.path.join<span class="params">(root,file)</span>.decode<span class="params">('gbk')</span>.encode<span class="params">('utf8')</span>
+    <span class="built_in">#</span>print IMAGE_FILE
+    input_image = caffe.io.load_image<span class="params">(IMAGE_FILE)</span>
+    prediction = net.predict<span class="params">([input_image])</span>
+    string = os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>+<span class="string">"\n"</span>
+    filewriter.write<span class="params">(string)</span>
+    <span class="built_in">#</span>print os.path.basename<span class="params">(IMAGE_FILE)</span>, prediction[<span class="number">0</span>].argmax<span class="params">()</span>
+    <span class="built_in">#</span> load ImageNet labels
+
+    label_true=dict_data[os.path.basename<span class="params">(IMAGE_FILE)</span>]
+    <span class="keyword">if</span> label_true==<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'v'
+    <span class="keyword">else</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'x'
+
+filewriter.close<span class="params">()</span>
+</code></pre><p><strong>7.plot训练测试曲线</strong></p>
+<p>caffe/tools/extra下包含几个有用的工具，其中包括将日志文件.log绘制出训练阶段的loss变化和测试阶段accuracy的变化情况，具体：</p>
+<pre><code>./parse_log.<span class="keyword">sh</span> xxxx.<span class="keyword">log</span> #解析日志，划分为train <span class="keyword">test</span>两个文件
+
+./plot_training_log.py.example 0~7 <span class="keyword">save</span>.png xxxx.<span class="keyword">log</span> #绘制图
+
+<span class="keyword">Notes</span>:  
+    1. Supporting multiple logs.  
+    2. <span class="keyword">Log</span> <span class="keyword">file</span> name must end with the lower-cased <span class="string">".log"</span>.  
+Supported chart types:  
+    0: <span class="keyword">Test</span> accuracy  vs. Iters  
+    1: <span class="keyword">Test</span> accuracy  vs. Seconds  
+    2: <span class="keyword">Test</span> loss  vs. Iters  
+    3: <span class="keyword">Test</span> loss  vs. Seconds  
+    4: Train learning rate  vs. Iters  
+    5: Train learning rate  vs. Seconds  
+    6: Train loss  vs. Iters  
+    7: Train loss  vs. Seconds  
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-python+opencv图像二值化" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1537,444 +1779,6 @@ python ./tools/train_net_multi_gpu<span class="class">.py</span> --gpu <span cla
 <pre><code>IndexError: <span class="keyword">index</span> <span class="number">4</span> <span class="keyword">is</span> <span class="keyword">out</span> <span class="keyword">of</span> bounds <span class="keyword">for</span> axis <span class="number">1</span> <span class="keyword">with</span> size <span class="number">4</span>
 </code></pre><p>说明在demo_rfcn.py执行矩形框操作时出了问题，先找到语句<code>cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]</code>，将其修改为<code>cls_boxes = boxes[:, 4:8]</code>即可。</p>
 <hr>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" class="article-date">
-  	<time datetime="2017-07-26T03:36:45.000Z" itemprop="datePublished">2017-07-26</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/">Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>1.安装Ubuntu16.04 LTS x64</strong></p>
-<p>利用工具rufus制作USB系统盘(官方下载64位版本: <a href="http://www.ubuntu.com/download/alternative-downloads" target="_blank" rel="external">ubuntu-16.04-desktop-amd64.iso</a>).</p>
-<p>语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。</p>
-<p><strong>2.更新源</strong></p>
-<pre><code>cd /etc/apt/
-sudo cp sources<span class="class">.list</span> sources<span class="class">.list</span><span class="class">.bak</span>
-sudo gedit sources.list
-</code></pre><p>在sources.list文件头部添加如下源：</p>
-<pre><code>deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
-</code></pre><p>然后更新源和安装的包:</p>
-<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
-sudo apt-<span class="built_in">get</span> upgrade
-</code></pre><p>常用软件安装：</p>
-<pre><code>sudo apt-<span class="keyword">get</span> install vim <span class="comment">#编辑</span>
-sudo apt-<span class="keyword">get</span> install htop <span class="comment">#查看cpu和内存占用情况</span>
-sudo apt-<span class="keyword">get</span> install python-pip
-</code></pre><p><strong>3.配置静态IP</strong></p>
-<p>首先查看本机的网卡名称</p>
-<pre><code>ifconfig
-</code></pre><p>配置静态ip地址</p>
-<pre><code><span class="title">sudo</span> vim /etc/network/interfaces
-
-<span class="comment">#在打开的interfaces文件中添加如下信息：</span>
-auto eth0 <span class="comment">#eth0对应你的网卡名称，在ifconfig中查看</span>
-iface eth0 inet static
-address <span class="number">192.168.1.100</span>
-netmask <span class="number">255.255.255.0</span>
-gateway <span class="number">192.168.1.1</span>
-dns-nameserver <span class="number">114.114.114.114</span>
-</code></pre><p>配置DNS</p>
-<pre><code><span class="title">sudo</span> vim /etc/resolv.conf
-
-<span class="comment">#添加如下信息：</span>
-nameserver <span class="number">114.114.114.114</span>
-
-sudo vim /etc/resolvconf/resolv.conf.d/base
-
-<span class="comment">#添加如下信息：</span>
-nameserver <span class="number">114.114.114.114</span>
-</code></pre><p>重启网卡服务</p>
-<pre><code><span class="title">sudo</span> /etc/init.d/networking restart
-<span class="comment">#重启检验是否设置成功</span>
-sudo reboot
-</code></pre><p><strong>4.配置SSH和SFTP</strong></p>
-<p>SSH安装命令：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-<span class="keyword">server</span></span>
-</code></pre><p>ssh-server配置文件位于<code>/etc/ssh/sshd_config</code>，在这里可以定义SSH的服务端口，默认端口是22。</p>
-<pre><code><span class="comment">#若更改端口后请重启SSH服务：</span>
-<span class="title">sudo</span> /etc/init.d/ssh resart
-</code></pre><p>Ubuntu或Mac客户端可在命令行中执行如下语句来使用ssh：</p>
-<pre><code><span class="title">ssh</span> username@<span class="number">192.168.1.100</span> 
-</code></pre><p>sftp安装：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-sftp-<span class="keyword">server</span></span>
-</code></pre><p>Ubuntu客户端可在文件管理器中选择“connect to server”，然后输入：</p>
-<pre><code><span class="string">sftp:</span><span class="comment">//192.168.1.100</span>
-</code></pre><p>即可查看到username所在的home文件夹下的内容。</p>
-<p><strong>5.安装NVIDIA显卡驱动</strong></p>
-<p>此处由于NVIDIA驱动和Ubuntu桌面冲突的问题（如循环卡在登录界面）。这里我们的VGA显示器默认接在主板的集显上，而不是接在NVIDIA显卡上，所以我们不采用ppa的显卡安装方式，而是采用独立的显卡驱动安装方式，关键之处在于不勾选OpenGL即可。</p>
-<p>首先到NVIDIA官网下载官方驱动：<a href="http://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="external">http://www.nvidia.cn/Download/index.aspx?lang=cn</a>，其中Titan XP属于GeForce 10 series系列。下载驱动：NVIDIA-Linux-x86_64-375.66.run</p>
-<p><strong>安装前准备：</strong></p>
-<p>卸载原有nvidia驱动，若采用的是<code>apt-get</code>安装方式</p>
-<pre><code>sudo apt-<span class="keyword">get</span> purge nvidia* 
-</code></pre><p>或者采用<code>--uninstall</code>的方式卸载，按提示操作</p>
-<pre><code>sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.<span class="command">run</span> <span class="comment">--uninstall</span>
-</code></pre><p>禁用nouveau</p>
-<pre><code>sudo vim /etc/modprobe.<span class="keyword">d</span>/blacklist.<span class="keyword">conf</span>
-</code></pre><p>在打开的文件的最后加入nouveau黑名单，禁用第三方驱动</p>
-<pre><code><span class="keyword">blacklist </span>nouveau 
-</code></pre><p>然后执行</p>
-<pre><code>sudo <span class="keyword">update</span>-initramfs -<span class="keyword">u</span>
-</code></pre><p>再执行如下语句，没有输出即说明已屏蔽成功</p>
-<pre><code>lsmod <span class="string">| grep nouveau </span>
-</code></pre><p><strong>开始安装驱动</strong></p>
-<p>首先关闭X服务：</p>
-<pre><code>sudo <span class="keyword">service</span> lightdm <span class="literal">stop</span>
-</code></pre><p>若在本机则要进入<code>Ctrl-Alt+F1</code>命令行界面</p>
-<p>若在远程主机则在ssh中执行即可，前提是要关闭x服务。</p>
-<p>开始：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> build-essential pkg-config xserver-xorg-dev linux-headers-<span class="string">`uname -r`</span>
-
-sudo chmod a+x NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run
-sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run -<span class="keyword">no</span>-opengl-files
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> mesa-common-dev
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> freeglut3-dev
-sudo reboot</span>
-</code></pre><p>其中参数(后面两个参数不加):</p>
-<pre><code>–<span class="literal">no</span>-opengl-files <span class="comment">#只安装驱动文件，不安装OpenGL文件。这个参数最重要</span>
-–<span class="literal">no</span>-x-check <span class="comment">#安装驱动时不检查X服务</span>
-–<span class="literal">no</span>-nouveau-check <span class="comment">#安装驱动时不检查nouveau </span>
-</code></pre><p>若安装过程中报关于kernel-source的错误:</p>
-<pre><code><span class="constant">E</span>RROR: <span class="constant">Unable</span> to find the <span class="built_in">kernel</span> <span class="literal">source</span> tree for the currently <span class="literal">running</span> <span class="built_in">kernel</span>.  <span class="constant">Please</span> make sure you have installed the <span class="built_in">kernel</span> <span class="literal">source</span> files for your <span class="built_in">kernel</span> <span class="keyword">and</span> that they are properly configured; on <span class="constant">Red</span> <span class="constant">Hat</span> <span class="constant">Linux</span> systems, for example, be sure you have the <span class="string">'kernel-source'</span> <span class="keyword">or</span> <span class="string">'kernel-devel'</span> <span class="constant">R</span>PM installed.  <span class="constant">If</span> you know the correct <span class="built_in">kernel</span> <span class="literal">source</span> files are installed, you may specify the <span class="built_in">kernel</span> <span class="literal">source</span> <span class="built_in">path</span> with the <span class="string">'--kernel-source-path'</span> <span class="literal">command</span> line option.
-</code></pre><p>请务必执行如下语句：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> linux-headers-<span class="string">`uname -r`</span></span>
-</code></pre><p>若出现警告说：</p>
-<pre><code>/sbin/ldconfig<span class="class">.real</span>: /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> is not <span class="tag">a</span> symbolic link
-</code></pre><p>可能是由于libEGL.lib存在多个版本的冲突，解决方法：</p>
-<pre><code>sudo mv /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
-sudo mv /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
-sudo ln -s /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
-sudo ln -s /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
-</code></pre><p>重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必安装驱动提示的x-config的选项安装，即一路yes即可。</p>
-<p>如果出现无法进入桌面的问题，这是因为驱动修改了xorg的配置，可执行一下命令：</p>
-<pre><code>cd /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/ 
-sudo mv nvidia-drm-outputclass<span class="class">.conf</span> nvidia-drm-outputclass<span class="class">.conf</span><span class="class">.bak</span>
-</code></pre><p>若进入到界面后发现分辨率问题：启动到界面之后发现分辨率只有600x480，而显示器适合1920x1080，采用xrandr并修改xorg.conf来解决：</p>
-<pre><code>sudo gedit /etc/X11/xorg<span class="class">.conf</span>
-修改如下：
-HorizSync <span class="number">31.0</span> - <span class="number">84.0</span>
-VertRefresh <span class="number">56.0</span>-<span class="number">77.0</span>
-</code></pre><p>即最终的xorg.conf文件部分内容为：</p>
-<pre><code><span class="title">Section "Device"    </span>
-    Identifier <span class="string">"Configured Video Device"</span>
-EndSection
-
-<span class="title">Section "Monitor"</span>
-    Identifier <span class="string">"Configured Monitor"</span>
-    Horizsync 30-84
-    Vertrefresh 56-77
-EndSection
-
-<span class="title">Section "Screen"</span>
-Identifier <span class="string">"Default Screen"</span>
-Monitor <span class="string">"Configured Monitor"</span>
-Device <span class="string">"Configured Video Device"</span>
-    SubSection <span class="string">"Display"</span>
-        Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
-    EndSubSection
-EndSection    
-</code></pre><p>或者采用cvt xrand方法修改分辨率：</p>
-<pre><code>cvt <span class="number">1920 1080</span>
-
-# <span class="number">1920x1080</span> 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz<span class="comment">; 173.00 MHZ</span>
-# Modeline "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
-
-xrandr --newmode "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
-
-xrandr -q #查看VGA
-# Sceen 0: minimum 320 x 200 .....
-# VGA-1 connected ....
-
-xrandr --addmode VGA-1 "<span class="number">1920x1080</span>_60.00"
-xrandr --output VGA-1 --mode "<span class="number">1920x1080</span>_60.00"
-</code></pre><p><strong>6.安装CUDA8.0</strong></p>
-<p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.61_linux.run</a>，复制到根目录下。</p>
-<pre><code>sudo sh cuda_8.0.61_linux.<span class="command">run</span> <span class="comment">--tmpdir=/tmp/</span>
-</code></pre><p>遇到问题：incomplete installation，然后执行</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install libx11-<span class="built_in">dev</span> libxmu-<span class="built_in">dev</span> libxi-<span class="built_in">dev</span> libgl1-mesa-glx libglu1-mesa libglu1-mesa-<span class="built_in">dev</span>
-
-sudo sh cuda_8.0.61_linux.run -silent -driver
-</code></pre><p>注：此时安装过程中提示是否要安装NVIDIA驱动时选择no。其他选择yes或默认即可。</p>
-<pre><code>Install NVIDIA Accelerated Graphics Driver <span class="keyword">for</span> Linux-x86_64 <span class="number">375.26</span>? <span class="params">(y)</span>es/<span class="params">(n)</span>o/<span class="params">(q)</span>uit: n
-</code></pre><p>安装完毕后声明环境变量：</p>
-<pre><code><span class="title">sudo</span> vim ~/.bashrc
-</code></pre><p>在.bashrc尾部添加如下内容：</p>
-<pre><code>export <span class="constant">PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/bin</span><span class="variable">${</span><span class="constant">PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">PATH</span>}}
-export <span class="constant">LD_LIBRARY_PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/lib</span>64<span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span>}}
-</code></pre><p>测试下安装是否成功：</p>
-<p>测试：</p>
-<pre><code>nvidia-<span class="keyword">smi</span>
-</code></pre><p>输出：</p>
-<pre><code>xx xx xx 15:20:34 2017       
-+-----------------------------------------------------------------------------+
-|<span class="string"> NVIDIA-SMI 375.66                 Driver Version: 375.66                    </span>|
-|<span class="string">-------------------------------+----------------------+----------------------+
-</span>|<span class="string"> GPU  Name        Persistence-M</span>|<span class="string"> Bus-Id        Disp.A </span>|<span class="string"> Volatile Uncorr. ECC </span>|
-|<span class="string"> Fan  Temp  Perf  Pwr:Usage/Cap</span>|<span class="string">         Memory-Usage </span>|<span class="string"> GPU-Util  Compute M. </span>|
-|<span class="string">===============================+======================+======================</span>|
-|<span class="string">   0  GeForce GTX TIT...  Off  </span>|<span class="string"> 0000:01:00.0      On </span>|<span class="string">                  N/A </span>|
-|<span class="string"> 22%   48C    P5    27W / 250W </span>|<span class="string">    169MiB / 12205MiB </span>|<span class="string">      1%      Default </span>|
-+-------------------------------+----------------------+----------------------+
-
-+-----------------------------------------------------------------------------+
-|<span class="string"> Processes:                                                       GPU Memory </span>|
-|<span class="string">  GPU       PID  Type  Process name                               Usage      </span>|
-|<span class="string">=============================================================================</span>|
-|<span class="string">    0      2421    G   /usr/lib/xorg/Xorg                             105MiB </span>|
-|<span class="string">    0     10062    G   compiz                                          63MiB </span>|
-+-----------------------------------------------------------------------------+
-</code></pre><p><strong>7.安装OpenCV 3.2.0</strong></p>
-<p>从官网下载zip源代码，解压到根目录下。<br>安装依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> -y remove ffmpeg x264 libx264-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> -y install libopencv-<span class="built_in">dev</span> build-essential checkinstall cmake pkg-config yasm  libjpeg-<span class="built_in">dev</span> libjasper-<span class="built_in">dev</span> libavcodec-<span class="built_in">dev</span> libavformat-<span class="built_in">dev</span> libswscale-<span class="built_in">dev</span> libdc1394-<span class="number">22</span>-<span class="built_in">dev</span>  libgstreamer0.10-<span class="built_in">dev</span> libgstreamer-plugins-base0.10-<span class="built_in">dev</span> libv4l-<span class="built_in">dev</span> python-<span class="built_in">dev</span> python-numpy libtbb-<span class="built_in">dev</span> libqt4-<span class="built_in">dev</span> libgtk2.0-<span class="built_in">dev</span> libfaac-<span class="built_in">dev</span> libmp3lame-<span class="built_in">dev</span> libopencore-amrnb-<span class="built_in">dev</span> libopencore-amrwb-<span class="built_in">dev</span> libtheora-<span class="built_in">dev</span> libvorbis-<span class="built_in">dev</span> libxvidcore-<span class="built_in">dev</span> x264 v4l-utils ffmpeg libgtk2.0-<span class="built_in">dev</span>
-
-cd opencv-<span class="number">3.2</span>.0
-mkdir build   
-cd build/
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
-make -j32
-sudo make install
-</code></pre><p>安装成功后配置环境：</p>
-<pre><code>sudo <span class="keyword">sh</span> -c 'echo <span class="string">"/usr/local/lib"</span> &gt; /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/opencv.<span class="keyword">conf</span>'
-sudo ldconfig
-</code></pre><p>测试OpenCV安装是否成功：</p>
-<pre><code><span class="built_in">mkdir</span> DisplayImage  
-<span class="keyword">cd</span> DisplayImage 
-<span class="keyword">vim</span> DisplayImage.cpp 
-</code></pre><p>添加代码：</p>
-<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;  </span>
-<span class="preprocessor">#<span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;  </span>
-<span class="keyword">using</span> <span class="keyword">namespace</span> cv;  
-
-<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  
-</span>{  
-     <span class="keyword">if</span>(argc!= <span class="number">2</span>)  
-     {  
-               <span class="built_in">printf</span>(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>);  
-               <span class="keyword">return</span> -<span class="number">1</span>;  
-     }  
-
-     Mat image;  
-     image= imread(argv[<span class="number">1</span>], <span class="number">1</span>);  
-
-    <span class="keyword">if</span>(!image.data)  
-    {  
-               <span class="built_in">printf</span>(<span class="string">"Noimage data\n"</span>);  
-               <span class="keyword">return</span> -<span class="number">1</span>;  
-     }  
-
-     namedWindow(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE);  
-     imshow(<span class="string">"DisplayImage"</span>,image);  
-
-     waitKey(<span class="number">0</span>);  
-     <span class="keyword">return</span> <span class="number">0</span>;  
-}  
-</code></pre><p>创建CMake文件：</p>
-<pre><code>vim CMakeLists<span class="class">.txt</span>  
-</code></pre><p>添加内容：</p>
-<pre><code><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span>  
-<span class="function"><span class="title">project</span><span class="params">(DisplayImage)</span></span>  
-<span class="function"><span class="title">find_package</span><span class="params">(OpenCV REQUIRED)</span></span>  
-<span class="function"><span class="title">add_executable</span><span class="params">(DisplayImage DisplayImage.cpp)</span></span>  
-<span class="function"><span class="title">target_link_libraries</span><span class="params">(DisplayImage ${OpenCV_LIBS})</span></span> 
-</code></pre><p>编译：</p>
-<pre><code>cmake .  
-<span class="built_in">make</span> 
-</code></pre><p>执行：</p>
-<pre><code>./DisplayImage lena<span class="class">.jpg</span>  
-</code></pre><p>如果在make opencv-3.2过程中错误：</p>
-<pre><code>fatal <span class="keyword">error</span>: LAPACKE_H_PATH-NOTFOUND/lapacke.<span class="keyword">h</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory #<span class="keyword">include</span> <span class="string">"LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
-</code></pre><p>此时LAPACK和BLAS都已经安装了，解决方案：</p>
-<pre><code>sudo apt-get install liblapacke-dev checkinstall
-修改在build文件夹内的lapack.h文件，将如下语句
-<span class="preprocessor">#<span class="keyword">include</span> "LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
-改为
-<span class="preprocessor">#<span class="keyword">include</span> "lapacke.h"</span>
-</code></pre><p><strong>8.安装cudnn 5.0</strong></p>
-<p>从官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cudnn-8.0-linux-x64-v5.0.tgz</a> for CUDA 8.0. 解压到当前目录：</p>
-<pre><code><span class="tag">tar</span> <span class="tag">-zxvf</span> <span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.0</span><span class="class">.tgz</span>
-</code></pre><p>解压后的文件如下：</p>
-<pre><code>cuda/include/cudnn<span class="class">.h</span>
-cuda/lib64/libcudnn<span class="class">.so</span>
-cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
-cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5.0</span>.<span class="number">5</span>
-cuda/lib64/libcudnn_static.a
-</code></pre><p>然后执行：</p>
-<pre><code>sudo cp cuda<span class="regexp">/include/</span>cudnn.h <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/
-sudo cp cuda<span class="regexp">/lib64/</span>libcudnn* <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/
-sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/cudnn.h
-sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/libcudnn*
-</code></pre><p><strong>9.BLAS安装与配置</strong></p>
-<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的key(<em>2HWS-34Z7S69B</em>)。</p>
-<pre><code>tar zxvf parallel_studio_xe_2017.tgz   <span class="comment">#解压下载文件</span>
-chmod <span class="number">777</span> parallel_studio_xe_2017 -R   <span class="comment">#获取文件权限</span>
-<span class="built_in">cd</span> parallel_studio_xe_2017/
-sudo ./install_GUI.sh
-</code></pre><p>安装完成之后，进行相关文件的链接：</p>
-<pre><code>sudo gedit /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/intel_mkl.<span class="keyword">conf</span>
-</code></pre><p>添加库文件:</p>
-<pre><code><span class="regexp">/opt/i</span>ntel<span class="regexp">/lib/i</span>ntel64
-<span class="regexp">/opt/i</span>ntel<span class="regexp">/mkl/</span>lib<span class="regexp">/intel64</span>
-</code></pre><p>编译链接使lib文件生效：</p>
-<pre><code><span class="title">sudo</span> ldconfig    
-</code></pre><p>如果选择安装ATLAS，在终端输入<code>sudo apt-get install libatlas-base-dev</code>即可。</p>
-<p><strong>10.Py-Faster-RCNN配置</strong></p>
-<p>下载源码：包含caffe文件夹</p>
-<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rbgirshick/<span class="keyword">py</span>-faster-rcnn.git
-</code></pre><p>安装库文件：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install python-opencv
-sudo pip install cython easydict
-
-sudo apt-<span class="built_in">get</span> install libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libboost-<span class="built_in">all</span>-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span> protobuf-compiler
-</code></pre><p>安装依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install -y build-essential cmake git pkg-config libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libopencv-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> protobuf-compiler libatlas-base-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> install --no-install-recommends libboost-<span class="built_in">all</span>-<span class="built_in">dev</span>
-</code></pre><p>安装Python接口依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-tk
-sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-pip
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy     sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy 
-</code></pre><p>在caffe的python文件夹内，使用root执行依赖项的检查与安装：</p>
-<pre><code>sudo <span class="keyword">su</span>
-<span class="keyword">cd</span> caffe-fast-rcnn/python
-<span class="keyword">for</span> req <span class="keyword">in</span> $(<span class="keyword">cat</span> requirements.txt); <span class="keyword">do</span> pip install <span class="label">$req</span>; done
-</code></pre><p>修改Makefile文件</p>
-<pre><code>终端输入
-cd py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>
-cp Makefile.config.example Makefile.config
-vim Makefile.config
-
-使用python层
-将 # <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>修改为 <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>
-
-使用cudnn加速
-将 # <span class="string">USE_CUDNN :</span>= <span class="number">1</span>修改为 <span class="string">USE_CUDNN :</span>= <span class="number">1</span>
-
-保留 # <span class="string">CPU_ONLY :</span>= <span class="number">1</span>不变，使用GPU运行
-
-如下两行对应内容修改为：
-<span class="string">INCLUDE_DIRS :</span>= $(PYTHON_INCLUDE) <span class="regexp">/usr/</span>local<span class="regexp">/include  /</span>usr<span class="regexp">/include/</span>hdf5/serial
-<span class="string">LIBRARY_DIRS :</span>= $(PYTHON_LIB) <span class="regexp">/usr/</span>local<span class="regexp">/lib /</span>usr<span class="regexp">/lib /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>hdf5<span class="regexp">/serial /</span>usr<span class="regexp">/local/</span>share<span class="regexp">/OpenCV/</span><span class="number">3</span>rdparty<span class="regexp">/lib/</span>
-</code></pre><p>在Makefile中配置：</p>
-<pre><code>LIBRARIES += glog gflags protobuf boost_system boost_filesystem <span class="keyword">m</span> hdf5_hl hdf5 opencv_core opencv_highgui opencv_imgproc opencv_imgcodecs
-
-hdf5的配置：官方说这对于Ubuntu 16.04是必须的；（libhdf5的版本号需要根据实际来修改）
-sudo find . -<span class="keyword">type</span> f -exec sed -i -<span class="keyword">e</span> 's^<span class="string">"hdf5.h"</span>^<span class="string">"hdf5/serial/hdf5.h"</span>^<span class="keyword">g</span>' -<span class="keyword">e</span> 's^<span class="string">"hdf5_hl.h"</span>^<span class="string">"hdf5/serial/hdf5_hl.h"</span>^<span class="keyword">g</span>' '{}' \;
-<span class="keyword">cd</span> /usr/lib/x86_64-linux-gnu
-sudo ln -s libhdf5_serial.<span class="keyword">so</span>.10.1.0 libhdf5.<span class="keyword">so</span>
-sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<span class="keyword">so</span>
-</code></pre><p><strong>编译Cython模块</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/lib/
-<span class="keyword">make</span>
-</code></pre><p><strong>编译caffe</strong></p>
-<p>由于当前版本的caffe中cudnn实现与系统所安装的cudnn的版本不一致会引起错误，rbgirshick的py-faster-rcnn其cudnn实现为旧版本的实现，所有出现了以上问题。</p>
-<pre><code><span class="tag">cudnn-7</span><span class="class">.0-linux-x64-v4</span><span class="class">.0-prod</span><span class="class">.tgz</span>不会出现此问题
-<span class="tag">cudnn-7</span><span class="class">.5-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
-<span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
-</code></pre><p>解决办法：</p>
-<pre><code><span class="number">1</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>util/cudnn.hpp 换成最新版caffe里的相应目录下的cudnn.hpp；
-<span class="number">2</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>layers/下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
-<span class="number">3</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>src<span class="regexp">/caffe/</span>layer下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
-</code></pre><p>注：官方caffe源包<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">caffe-master：https://github.com/BVLC/caffe</a></p>
-<p>编译</p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
-<span class="keyword">make</span> clean #清除前一次编译结果
-<span class="keyword">make</span> -j32
-</code></pre><p><strong>编译pycaffe</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
-<span class="keyword">make</span> pycaffe
-</code></pre><p><strong>下载训练好的模型</strong></p>
-<pre><code>终端输入
-<span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
-./data/scripts/fetch_faster_rcnn_models.<span class="keyword">sh</span>
-</code></pre><p><strong>faster-rcnn测试pascal_voc目标检测</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
-./tools/demo.<span class="keyword">py</span>
-</code></pre><hr>
-<p>常见的报错Debug：</p>
-<hr>
-<p><em>AttributeError: ‘module’ object has no attribute ‘text_format’</em></p>
-<p>需要在py-faster-rcnn/lib/fast_rcnn/train.py中添加：</p>
-<pre><code>import google<span class="class">.protobuf</span><span class="class">.text_format</span>
-</code></pre><hr>
-<p><em>KeyError: ‘chair’ [when train only several classes]</em><br><em>使用py-faster-rcnn训练VOC2007数据集时遇到如下问题：</em></p>
-<p>File “/home/sai/py-faster-rcnn/tools/../lib/datasets/pascal_voc.py”, line 217, in _load_pascal_annotation<br>cls = self._class_to_ind[obj.find(‘name’).text.lower().strip()]<br>KeyError: ‘chair‘</p>
-<p>解决：</p>
-<p>You probably need to write some line of codes to ignore any objects with classes except the classes you are looking for when you are loading the annotation _load_pascal_annotation.<br>Something like</p>
-<pre><code>cls_objs = [obj <span class="keyword">for</span> obj, clas <span class="keyword">in</span> objs, self._classes <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(‘name‘)</span></span>.text== clas]
-</code></pre><p>when you are loading the annotation in _load_pascal_annotation method, look for something like</p>
-<pre><code>objs = diff_objs <span class="list">(<span class="keyword">or</span> non_diff_objs)</span> <span class="list">(<span class="keyword">after</span> this line in pascal_voc.py)</span>
-</code></pre><p>After that line insert something similar to below code</p>
-<pre><code>cls_objs = [obj <span class="keyword">for</span> obj <span class="keyword">in</span> objs <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(<span class="string">'name'</span>)</span></span><span class="class">.text</span> <span class="keyword">in</span> self._classes]
-objs = cls_objs
-</code></pre><p>参考：<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/316" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/316</a></p>
-<hr>
-<p><em>Annotations files 标记文件问题</em></p>
-<p>Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
-<p>must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
 
       
     </div>
