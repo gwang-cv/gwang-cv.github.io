@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+  <title>Theano+OpenCV+LIFT | Hello World</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="说明 LIFT: Learned Invariant Feature Points 作者开源代码：https://github.com/cvlab-epfl/LIFT
+ PS: 注意下载作者release的1.0版，修复了一些bug:.locks directory is now included in the repository by default。
+
+安装最新OpenCV 3.x
+ 略">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Theano+OpenCV+LIFT">
+<meta property="og:url" content="http://gwang-cv.github.io/2018/06/28/Theano+OpenCV+LIFT/index.html">
+<meta property="og:site_name" content="Hello World">
+<meta property="og:description" content="说明 LIFT: Learned Invariant Feature Points 作者开源代码：https://github.com/cvlab-epfl/LIFT
+ PS: 注意下载作者release的1.0版，修复了一些bug:.locks directory is now included in the repository by default。
+
+安装最新OpenCV 3.x
+ 略">
+<meta property="og:updated_time" content="2018-06-28T10:29:25.940Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Theano+OpenCV+LIFT">
+<meta name="twitter:description" content="说明 LIFT: Learned Invariant Feature Points 作者开源代码：https://github.com/cvlab-epfl/LIFT
+ PS: 注意下载作者release的1.0版，修复了一些bug:.locks directory is now included in the repository by default。
+
+安装最新OpenCV 3.x
+ 略">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+	<header id="header" class="inner">
+		<a href="/" class="profilepic">
+			
+			<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+		</a>
+
+		<hgroup>
+		  <h1 class="header-author"><a href="/">Gang Wang</a></h1>
+		</hgroup>
+
+		
+		<p class="header-subtitle">a computer vision researcher</p>
+		
+
+		
+			<div class="switch-btn">
+				<div class="icon">
+					<div class="icon-ctn">
+						<div class="icon-wrap icon-house" data-idx="0">
+							<div class="birdhouse"></div>
+							<div class="birdhouse_holes"></div>
+						</div>
+						<div class="icon-wrap icon-ribbon hide" data-idx="1">
+							<div class="ribbon"></div>
+						</div>
+						
+						
+						<div class="icon-wrap icon-me hide" data-idx="3">
+							<div class="user"></div>
+							<div class="shoulder"></div>
+						</div>
+						
+					</div>
+					
+				</div>
+				<div class="tips-box hide">
+					<div class="tips-arrow"></div>
+					<ul class="tips-inner">
+						<li>Menu</li>
+						<li>Tags</li>
+						
+						
+						<li>Über</li>
+						
+					</ul>
+				</div>
+			</div>
+		
+
+		<div class="switch-area">
+			<div class="switch-wrap">
+				<section class="switch-part switch-part1">
+					<nav class="header-menu">
+						<ul>
+						
+							<li><a href="/">Home</a></li>
+				        
+							<li><a href="/archives">Archives</a></li>
+				        
+						</ul>
+					</nav>
+					<nav class="header-nav">
+						<div class="social">
+							
+								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+					        
+								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+					        
+								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+					        
+						</div>
+					</nav>
+				</section>
+				
+				
+				<section class="switch-part switch-part2">
+					<div class="widget tagcloud" id="js-tagcloud">
+						<a href="/tags/Debug/" style="font-size: 17.5px;">Debug</a> <a href="/tags/DeepLearning/" style="font-size: 20px;">DeepLearning</a> <a href="/tags/ML/" style="font-size: 10px;">ML</a> <a href="/tags/Mac/" style="font-size: 15px;">Mac</a> <a href="/tags/Math/" style="font-size: 10px;">Math</a> <a href="/tags/Matlab/" style="font-size: 10px;">Matlab</a> <a href="/tags/Python/" style="font-size: 12.5px;">Python</a> <a href="/tags/Researcher/" style="font-size: 10px;">Researcher</a> <a href="/tags/python/" style="font-size: 10px;">python</a>
+					</div>
+				</section>
+				
+				
+				
+
+				
+				
+				<section class="switch-part switch-part3">
+				
+					<div id="js-aboutme">Hello, I&#39;m Gang Wang. This is my blog, enjoy it.</div>
+				</section>
+				
+			</div>
+		</div>
+	</header>				
+</div>
+
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+  	<div class="overlay">
+  		<div class="slider-trigger"></div>
+  		<h1 class="header-author js-mobile-header hide">Gang Wang</h1>
+  	</div>
+	<div class="intrude-less">
+		<header id="header" class="inner">
+			<div class="profilepic">
+			
+				<img lazy-src="https://sites.google.com/site/2013gwang/logss.jpg" class="js-avatar">
+			
+			</div>
+			<hgroup>
+			  <h1 class="header-author">Gang Wang</h1>
+			</hgroup>
+			
+			<p class="header-subtitle">a computer vision researcher</p>
+			
+			<nav class="header-menu">
+				<ul>
+				
+					<li><a href="/">Home</a></li>
+		        
+					<li><a href="/archives">Archives</a></li>
+		        
+		        <div class="clearfix"></div>
+				</ul>
+			</nav>
+			<nav class="header-nav">
+				<div class="social">
+					
+						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
+			        
+						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
+			        
+						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
+			        
+				</div>
+			</nav>
+		</header>				
+	</div>
+</nav>
+
+      <div class="body-wrap"><article id="post-Theano+OpenCV+LIFT" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/28/Theano+OpenCV+LIFT/" class="article-date">
+  	<time datetime="2018-06-28T09:56:15.223Z" itemprop="datePublished">2018-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Theano+OpenCV+LIFT
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+        
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <ol>
+<li><p>说明<br> LIFT: Learned Invariant Feature Points<br> 作者开源代码：<a href="https://github.com/cvlab-epfl/LIFT" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT</a></p>
+<p> PS: 注意下载作者release的<a href="https://github.com/cvlab-epfl/LIFT/releases/tag/v0.0.10" target="_blank" rel="external">1.0版</a>，修复了一些bug:<code>.locks directory is now included in the repository by default</code>。</p>
+</li>
+<li><p>安装最新OpenCV 3.x</p>
+<p> 略</p>
+</li>
+<li><p>安装Theano并配置</p>
+ <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install theano==<span class="number">0.9</span><span class="number">.0</span></div></pre></td></tr></table></figure>
+<p> 配置：(开源代码中三个主要部分需要GPU的支持)</p>
+ <figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo</span> vim ~/.theanorc</div></pre></td></tr></table></figure>
+ <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="section">[global]</span>  </div><div class="line"><span class="attr">device</span> = gpu0  </div><div class="line"><span class="attr">floatX</span> = float32 </div><div class="line"><span class="section"> </span></div><div class="line">[nvcc]  </div><div class="line"><span class="attr">fastmath</span> = <span class="literal">True</span>  </div><div class="line"><span class="section"></span></div><div class="line">[cuda]    </div><div class="line"><span class="attr">root</span>=/usr/local/cuda-<span class="number">8.0</span></div></pre></td></tr></table></figure>
+</li>
+<li><p>安装其他依赖项</p>
+<p> 安装flufl.lock:<br> 1) 下载安装包<br> <a href="https://pypi.python.org/pypi/flufl.lock/2.4.1" target="_blank" rel="external">https://pypi.python.org/pypi/flufl.lock/2.4.1</a></p>
+ <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tar -zxf flufl<span class="selector-class">.lock-2</span>.<span class="number">4.1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line">sudo python setup<span class="selector-class">.py</span> install</div></pre></td></tr></table></figure>
+<p> 2) 或</p>
+ <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install flufl.lock==<span class="number">2.4</span><span class="number">.1</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code>安装Lasagne:
+下载安装包：[https://github.com/Lasagne/Lasagne](https://github.com/Lasagne/Lasagne)【(0.2.dev1)】
+
+<span class="comment"><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tar -zxf Lasagne<span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line">sudo python setup<span class="selector-class">.py</span> install</div></pre></td></tr></table></figure></span>
+
+
+其他项：
+
+<span class="comment"><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip <span class="keyword">install</span> numpy <span class="keyword">parse</span> h5py scipy</div></pre></td></tr></table></figure></span>
+</code></pre><ol>
+<li><p>测试demo</p>
+ <figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Build the shared library <span class="keyword">by</span></div><div class="line"><span class="keyword">cd</span> c-code/build</div><div class="line">cmake -<span class="keyword">D</span> CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda-8.0 ..</div><div class="line">make</div><div class="line"></div><div class="line">#To <span class="keyword">run</span> the <span class="keyword">test</span> <span class="keyword">program</span> simply</div><div class="line">./<span class="keyword">run</span>.<span class="keyword">sh</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<ol>
+<li><p>其他问题</p>
+<p> cmake报错：</p>
+ <figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  Could NOT find CUDA: Found unsuitable <span class="built_in">version</span> <span class="string">"9.1"</span>, <span class="keyword">but</span> required <span class="keyword">is</span> exact</div><div class="line"><span class="built_in">version</span> <span class="string">"8.0"</span> (found /usr/<span class="keyword">local</span>/cuda<span class="number">-9.1</span>)</div><div class="line">  <span class="comment">#需指定cuda版本</span></div><div class="line">  cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda<span class="number">-8.0</span> ..</div></pre></td></tr></table></figure>
+<p>已解决的一些issues： <a href="https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed</a></p>
+</li>
+</ol>
+
+      
+    </div>
+    
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2018/05/20/MacOs High Sierra using aria2/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MacOs High Sierra using aria2</div>
+      <strong class="article-nav-caption">></strong>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+<div class="share_jia">
+	<!-- JiaThis Button BEGIN -->
+	<div class="jiathis_style">
+		<span class="jiathis_txt">Share to: &nbsp; </span>
+		<a class="jiathis_button_facebook"></a> 
+    <a class="jiathis_button_twitter"></a>
+    <a class="jiathis_button_plus"></a> 
+    <a class="jiathis_button_tsina"></a>
+		<a class="jiathis_button_cqq"></a>
+		<a class="jiathis_button_douban"></a>
+		<a class="jiathis_button_weixin"></a>
+		<a class="jiathis_button_tumblr"></a>
+    <a href="http://www.jiathis.com/share" class="jiathis jiathis_txt jtico jtico_jiathis" target="_blank"></a>
+	</div>
+	<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=1405949716054953" charset="utf-8"></script>
+	<!-- JiaThis Button END -->
+</div>
+
+
+
+
+
+
+
+
+</div>
+      <footer id="footer">
+  <div class="outer">
+    <div id="footer-info">
+    	<div class="footer-left">
+    		&copy; 2018 Gang Wang
+    	</div>
+      	<div class="footer-right">
+      		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
+      	</div>
+    </div>
+  </div>
+</footer>
+    </div>
+    
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+
+
+<script>
+	var yiliaConfig = {
+		fancybox: true,
+		mathjax: true,
+		animate: true,
+		isHome: false,
+		isPost: true,
+		isArchive: false,
+		isTag: false,
+		isCategory: false,
+		open_in_new: false
+	}
+</script>
+<script src="http://7.url.cn/edu/jslib/comb/require-2.1.6,jquery-1.9.1.min.js"></script>
+<script src="/js/main.js"></script>
+
+
+
+
+
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+        processEscapes: true,
+        skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    }
+});
+
+MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+        all[i].SourceElement().parentNode.className += ' has-jax';                 
+    }       
+});
+</script>
+
+<script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+
+
+  </div>
+</body>
+</html>
