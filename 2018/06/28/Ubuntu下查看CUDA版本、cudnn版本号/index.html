@@ -6,43 +6,43 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <title>Ubuntu下查看CUDA版本、cudnn版本号 | Hello World</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="查看CUDA版本
+  <meta name="description" content="1.查看CUDA版本
 cat  /usr/local/cuda/version.txt
 例如输出：
-#CUDA Version 8.0.61
-查看cudnn版本
-cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
-例如输出：
-#define CUDNN_MAJOR      6
-#define CUDNN_MINOR      0
-#">
+CUDA Version 8.0.61
+or:
+nvcc --version
+输出：
+Copyright (c) 2005-2017 NVIDIA Corporation
+Built on Fri_Nov__3_21:07:56_CDT_2017
+Cuda compilation tools, re">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Ubuntu下查看CUDA版本、cudnn版本号">
 <meta property="og:url" content="http://gwang-cv.github.io/2018/06/28/Ubuntu下查看CUDA版本、cudnn版本号/index.html">
 <meta property="og:site_name" content="Hello World">
-<meta property="og:description" content="查看CUDA版本
+<meta property="og:description" content="1.查看CUDA版本
 cat  /usr/local/cuda/version.txt
 例如输出：
-#CUDA Version 8.0.61
-查看cudnn版本
-cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
-例如输出：
-#define CUDNN_MAJOR      6
-#define CUDNN_MINOR      0
-#">
-<meta property="og:updated_time" content="2018-06-28T11:53:07.741Z">
+CUDA Version 8.0.61
+or:
+nvcc --version
+输出：
+Copyright (c) 2005-2017 NVIDIA Corporation
+Built on Fri_Nov__3_21:07:56_CDT_2017
+Cuda compilation tools, re">
+<meta property="og:updated_time" content="2018-06-28T11:57:16.533Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Ubuntu下查看CUDA版本、cudnn版本号">
-<meta name="twitter:description" content="查看CUDA版本
+<meta name="twitter:description" content="1.查看CUDA版本
 cat  /usr/local/cuda/version.txt
 例如输出：
-#CUDA Version 8.0.61
-查看cudnn版本
-cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
-例如输出：
-#define CUDNN_MAJOR      6
-#define CUDNN_MINOR      0
-#">
+CUDA Version 8.0.61
+or:
+nvcc --version
+输出：
+Copyright (c) 2005-2017 NVIDIA Corporation
+Built on Fri_Nov__3_21:07:56_CDT_2017
+Cuda compilation tools, re">
   
   
     <link rel="icon" href="/favicon.png">
@@ -238,11 +238,17 @@ cat /usr/local/cuda/include/cudnn.h | grep CUDNN_MAJOR -A 2
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>查看CUDA版本</p>
+        <p>1.查看CUDA版本</p>
 <pre><code><span class="keyword">cat</span>  /usr/<span class="keyword">local</span>/cuda/<span class="keyword">version</span>.txt
 </code></pre><p>例如输出：</p>
-<pre><code><span class="id">#CUDA</span> <span class="tag">Version</span> 8<span class="class">.0</span><span class="class">.61</span>
-</code></pre><p>查看cudnn版本</p>
+<pre><code><span class="tag">CUDA</span> <span class="tag">Version</span> 8<span class="class">.0</span><span class="class">.61</span>
+</code></pre><p>or:</p>
+<pre><code>nvcc <span class="comment">--version</span>
+</code></pre><p>输出：</p>
+<pre><code><span class="tag">Copyright</span> (<span class="tag">c</span>) 2005<span class="tag">-2017</span> <span class="tag">NVIDIA</span> <span class="tag">Corporation</span>
+<span class="tag">Built</span> <span class="tag">on</span> <span class="tag">Fri_Nov__3_21</span><span class="pseudo">:07</span><span class="pseudo">:56_CDT_2017</span>
+<span class="tag">Cuda</span> <span class="tag">compilation</span> <span class="tag">tools</span>, <span class="tag">release</span> 9<span class="class">.1</span>, <span class="tag">V9</span><span class="class">.1</span><span class="class">.85</span>
+</code></pre><p>2.查看cudnn版本</p>
 <pre><code><span class="keyword">cat</span> /usr/<span class="keyword">local</span>/cuda/<span class="keyword">include</span>/cudnn.<span class="keyword">h</span> | grep CUDNN_MAJOR -A 2
 </code></pre><p>例如输出：</p>
 <pre><code><span class="preprocessor">#<span class="keyword">define</span> CUDNN_MAJOR      6</span>

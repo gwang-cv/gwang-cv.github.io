@@ -194,11 +194,17 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>查看CUDA版本</p>
+        <p>1.查看CUDA版本</p>
 <pre><code><span class="keyword">cat</span>  /usr/<span class="keyword">local</span>/cuda/<span class="keyword">version</span>.txt
 </code></pre><p>例如输出：</p>
-<pre><code><span class="id">#CUDA</span> <span class="tag">Version</span> 8<span class="class">.0</span><span class="class">.61</span>
-</code></pre><p>查看cudnn版本</p>
+<pre><code><span class="tag">CUDA</span> <span class="tag">Version</span> 8<span class="class">.0</span><span class="class">.61</span>
+</code></pre><p>or:</p>
+<pre><code>nvcc <span class="comment">--version</span>
+</code></pre><p>输出：</p>
+<pre><code><span class="tag">Copyright</span> (<span class="tag">c</span>) 2005<span class="tag">-2017</span> <span class="tag">NVIDIA</span> <span class="tag">Corporation</span>
+<span class="tag">Built</span> <span class="tag">on</span> <span class="tag">Fri_Nov__3_21</span><span class="pseudo">:07</span><span class="pseudo">:56_CDT_2017</span>
+<span class="tag">Cuda</span> <span class="tag">compilation</span> <span class="tag">tools</span>, <span class="tag">release</span> 9<span class="class">.1</span>, <span class="tag">V9</span><span class="class">.1</span><span class="class">.85</span>
+</code></pre><p>2.查看cudnn版本</p>
 <pre><code><span class="keyword">cat</span> /usr/<span class="keyword">local</span>/cuda/<span class="keyword">include</span>/cudnn.<span class="keyword">h</span> | grep CUDNN_MAJOR -A 2
 </code></pre><p>例如输出：</p>
 <pre><code><span class="preprocessor">#<span class="keyword">define</span> CUDNN_MAJOR      6</span>
