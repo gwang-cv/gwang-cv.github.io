@@ -194,47 +194,51 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <ol>
-<li><p>说明<br> LIFT: Learned Invariant Feature Points<br> 作者开源代码：<a href="https://github.com/cvlab-epfl/LIFT" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT</a></p>
-<p> PS: 注意下载作者release的<a href="https://github.com/cvlab-epfl/LIFT/releases/tag/v0.0.10" target="_blank" rel="external">1.0版</a>，修复了一些bug:<code>.locks directory is now included in the repository by default</code>。</p>
-</li>
-<li><p>安装最新OpenCV 3.x</p>
-<p> 略</p>
-</li>
-<li><p>安装Theano并配置</p>
- <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install theano==<span class="number">0.9</span><span class="number">.0</span></div></pre></td></tr></table></figure>
-<p> 配置：(开源代码中三个主要部分需要GPU的支持)</p>
- <figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">sudo</span> vim ~/.theanorc</div></pre></td></tr></table></figure>
- <figure class="highlight ini"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="section">[global]</span>  </div><div class="line"><span class="attr">device</span> = gpu0  </div><div class="line"><span class="attr">floatX</span> = float32 </div><div class="line"><span class="section"> </span></div><div class="line">[nvcc]  </div><div class="line"><span class="attr">fastmath</span> = <span class="literal">True</span>  </div><div class="line"><span class="section"></span></div><div class="line">[cuda]    </div><div class="line"><span class="attr">root</span>=/usr/local/cuda-<span class="number">8.0</span></div></pre></td></tr></table></figure>
-</li>
-<li><p>安装其他依赖项</p>
-<p> 安装flufl.lock:<br> 1) 下载安装包<br> <a href="https://pypi.python.org/pypi/flufl.lock/2.4.1" target="_blank" rel="external">https://pypi.python.org/pypi/flufl.lock/2.4.1</a></p>
- <figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tar -zxf flufl<span class="selector-class">.lock-2</span>.<span class="number">4.1</span><span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line">sudo python setup<span class="selector-class">.py</span> install</div></pre></td></tr></table></figure>
-<p> 2) 或</p>
- <figure class="highlight lsl"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install flufl.lock==<span class="number">2.4</span><span class="number">.1</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<pre><code>安装Lasagne:
-下载安装包：[https://github.com/Lasagne/Lasagne](https://github.com/Lasagne/Lasagne)【(0.2.dev1)】
+        <p>0.说明</p>
+<p>LIFT: Learned Invariant Feature Points<br>作者开源代码：<a href="https://github.com/cvlab-epfl/LIFT" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT</a></p>
+<p>PS: 注意下载作者release的<a href="https://github.com/cvlab-epfl/LIFT/releases/tag/v0.0.10" target="_blank" rel="external">1.0版</a>，修复了一些bug:<code>.locks directory is now included in the repository by default</code>。</p>
+<p>1.安装最新OpenCV 3.x</p>
+<p>略</p>
+<p>2.安装Theano并配置</p>
+<pre><code>pip <span class="keyword">install</span> theano==<span class="number">0.9</span>.<span class="number">0</span>
+</code></pre><p>配置：(开源代码中三个主要部分需要GPU的支持)</p>
+<pre><code>sudo vim ~/.theanorc
 
-<span class="comment"><figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">tar -zxf Lasagne<span class="selector-class">.tar</span><span class="selector-class">.gz</span></div><div class="line">sudo python setup<span class="selector-class">.py</span> install</div></pre></td></tr></table></figure></span>
+[global]  
+<span class="constant">device</span> = gpu0  
+<span class="constant">floatX</span> = float32 
 
+[nvcc]  
+<span class="constant">fastmath</span> = True  
 
-其他项：
+[cuda]    
+<span class="constant">root</span>=/usr/local/cuda-8.0  
+</code></pre><p>3.安装其他依赖项</p>
+<p>安装flufl.lock:<br>1) 下载安装包<br><a href="https://pypi.python.org/pypi/flufl.lock/2.4.1" target="_blank" rel="external">https://pypi.python.org/pypi/flufl.lock/2.4.1</a></p>
+<pre><code>tar -zxf flufl<span class="class">.lock-2</span>.<span class="number">4.1</span><span class="class">.tar</span><span class="class">.gz</span>
+sudo python setup<span class="class">.py</span> install  
+</code></pre><p>2) 或</p>
+<pre><code>pip <span class="operator"><span class="keyword">install</span> flufl.<span class="keyword">lock</span>==<span class="number">2.4</span>.1</span>
+</code></pre><p>安装Lasagne:<br>下载安装包：<a href="https://github.com/Lasagne/Lasagne" target="_blank" rel="external">https://github.com/Lasagne/Lasagne</a>【(0.2.dev1)】</p>
+<pre><code>tar -zxf Lasagne<span class="class">.tar</span><span class="class">.gz</span>
+sudo python setup<span class="class">.py</span> install  
+</code></pre><p>其他项：</p>
+<pre><code>pip <span class="operator"><span class="keyword">install</span> numpy <span class="keyword">parse</span> h5py scipy</span>
+</code></pre><p>4.测试demo</p>
+<pre><code># Build the shared library <span class="keyword">by</span>
+<span class="keyword">cd</span> c-code/build
+cmake -<span class="keyword">D</span> CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda-8.0 ..
+make
 
-<span class="comment"><figure class="highlight sql"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip <span class="keyword">install</span> numpy <span class="keyword">parse</span> h5py scipy</div></pre></td></tr></table></figure></span>
-</code></pre><ol>
-<li><p>测试demo</p>
- <figure class="highlight stata"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># Build the shared library <span class="keyword">by</span></div><div class="line"><span class="keyword">cd</span> c-code/build</div><div class="line">cmake -<span class="keyword">D</span> CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda-8.0 ..</div><div class="line">make</div><div class="line"></div><div class="line">#To <span class="keyword">run</span> the <span class="keyword">test</span> <span class="keyword">program</span> simply</div><div class="line">./<span class="keyword">run</span>.<span class="keyword">sh</span></div></pre></td></tr></table></figure>
-</li>
-</ol>
-<ol>
-<li><p>其他问题</p>
-<p> cmake报错：</p>
- <figure class="highlight applescript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">  Could NOT find CUDA: Found unsuitable <span class="built_in">version</span> <span class="string">"9.1"</span>, <span class="keyword">but</span> required <span class="keyword">is</span> exact</div><div class="line"><span class="built_in">version</span> <span class="string">"8.0"</span> (found /usr/<span class="keyword">local</span>/cuda<span class="number">-9.1</span>)</div><div class="line">  <span class="comment">#需指定cuda版本</span></div><div class="line">  cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda<span class="number">-8.0</span> ..</div></pre></td></tr></table></figure>
-<p>已解决的一些issues： <a href="https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed</a></p>
-</li>
-</ol>
+#To <span class="keyword">run</span> the <span class="keyword">test</span> <span class="keyword">program</span> simply
+./<span class="keyword">run</span>.<span class="keyword">sh</span>
+</code></pre><p>5.其他问题</p>
+<p>cmake报错：</p>
+<pre><code>Could NOT find CUDA: Found unsuitable <span class="property">version</span> <span class="string">"9.1"</span>, <span class="keyword">but</span> required <span class="keyword">is</span> exact
+</code></pre><p>  version “8.0” (found /usr/local/cuda-9.1)</p>
+<pre><code><span class="comment">#需指定cuda版本</span>
+cmake -D CUDA_TOOLKIT_ROOT_DIR=/usr/<span class="keyword">local</span>/cuda-<span class="number">8.0</span> ..
+</code></pre><p>   已解决的一些issues： <a href="https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed" target="_blank" rel="external">https://github.com/cvlab-epfl/LIFT/issues?q=is%3Aissue+is%3Aclosed</a></p>
 
       
     </div>
