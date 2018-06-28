@@ -168,6 +168,136 @@
 
       <div class="body-wrap">
   
+    <article id="post-Python爬取优酷视频" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/04/Python爬取优酷视频/" class="article-date">
+  	<time datetime="2016-04-04T14:12:31.000Z" itemprop="datePublished">2016-04-04</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/04/04/Python爬取优酷视频/">Python爬取优酷视频</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h3 id="get_youku_videos_using_“flvcd-com”">get youku videos using “flvcd.com”</h3><p>借用flvcd.com实现对优酷视频的爬取。</p>
+<p><strong>参考</strong>：<br>    <a href="http://www.flvcd.com/" target="_blank" rel="external">www.flvcd.com</a></p>
+<p><strong>格式</strong>：</p>
+<pre><code><span class="keyword">http</span>://www.flvcd.com/parse.php?kw=...&amp;<span class="built_in">format</span>=...
+
+<span class="built_in">format</span>=<span class="string">'normal'</span>; <span class="string">'high'</span>; <span class="string">'super'</span>
+</code></pre><hr>
+<pre><code><span class="comment"># -*- coding:utf-8 -*-</span>
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+<span class="keyword">import</span> urllib2
+<span class="keyword">import</span> urllib
+<span class="keyword">import</span> os
+<span class="keyword">import</span> requests
+
+<span class="function"><span class="keyword">def</span> <span class="title">getHtml</span><span class="params">(url)</span>:</span>
+    html = requests.get(url).content
+    selector = etree.HTML(html)
+    <span class="keyword">return</span> selector
+
+
+<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(htm, xpathStr)</span>:</span>
+    selector = htm
+    content = selector.xpath(xpathStr)
+    <span class="keyword">return</span> content
+
+<span class="function"><span class="keyword">def</span> <span class="title">getFlv</span><span class="params">(cons, title, folder)</span>:</span>
+    fn = <span class="string">'%s'</span> % title
+    pa = os.path.dirname(__file__) + <span class="string">'/'</span> + <span class="string">'youku/'</span> +  folder
+    <span class="comment"># check and create folder</span>
+    <span class="keyword">if</span> <span class="keyword">not</span> os.path.exists(pa):
+        os.mkdir(pa)
+    fl = pa + <span class="string">'/%s.flv'</span> % fn
+    r = requests.get(cons)
+    <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
+        code.write(r.content)
+
+<span class="comment"># = = = = = = #</span>
+videourl = <span class="string">'http://v.youku.com/v_show/id_XMTUyMjE2MTcwOA==.html'</span>
+format = <span class="string">'normal'</span>  <span class="comment"># 'high'  'normal'  'super'</span>
+
+url = <span class="string">'http://www.flvcd.com/parse.php?kw='</span> + urllib.quote(videourl) + <span class="string">'&amp;format='</span> + format
+<span class="keyword">print</span> url
+req = urllib2.Request(url)
+req.add_header(<span class="string">'Referer'</span>, <span class="string">'http://www.flvcd.com/'</span>)
+req.add_header(<span class="string">'User-Agent'</span>, <span class="string">'Mozilla/5.0 (Windows NT 6.2; rv:16.0) Gecko/20100101 Firefox/16.0'</span>)
+res = urllib2.urlopen(req)
+
+html = res.read()
+<span class="comment"># print html</span>
+selector = etree.HTML(html)
+
+<span class="comment"># get flv title</span>
+xp_title=<span class="string">'//*[@id="subtitle"]'</span>
+htm0=getHtml(videourl)
+cons=getContent(htm0,xp_title)
+title=cons[<span class="number">0</span>].text
+<span class="keyword">print</span> title
+
+<span class="comment"># get flv href</span>
+xp = <span class="string">'//*[@class="mn STYLE4"]//@href'</span>
+content = selector.xpath(xp)
+<span class="keyword">print</span> <span class="string">'%s'</span> % len(content)
+
+x=<span class="number">0</span>
+<span class="keyword">for</span> con <span class="keyword">in</span> content:
+    <span class="keyword">if</span> <span class="string">'http://k.youku.com'</span> <span class="keyword">in</span> con:
+        <span class="keyword">print</span> con
+        getFlv(con,  <span class="string">'%s'</span> % x, title)
+        <span class="comment"># urllib.urlretrieve(con, getPath('%s' % x, title))# , callbackfunc)</span>
+        x+=<span class="number">1</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Python爬取arxiv的paper" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -951,83 +1081,6 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
 <p><strong>安装matplotlib</strong></p>
 <pre><code>sudo pip <span class="keyword">install</span> matplotlib    
 </code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Debug/">Debug</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Mac终端安装lxml失败" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2016/03/30/Mac终端安装lxml失败/" class="article-date">
-  	<time datetime="2016-03-30T14:37:23.000Z" itemprop="datePublished">2016-03-30</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/Mac终端安装lxml失败/">Mac终端安装lxml失败</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>安装lxml，出现错误</strong></p>
-<pre><code>sudo pip <span class="operator"><span class="keyword">install</span> lxml
-Collecting lxml
-Downloading lxml-<span class="number">3.6</span>.0.tar.gz (<span class="number">3.7</span>MB)
-<span class="number">100</span>% |████████████████████████████████| <span class="number">3.7</span>MB <span class="number">157</span>kB/s 
-Installing collected packages: lxml
-Running setup.py <span class="keyword">install</span> <span class="keyword">for</span> lxml ... error</span>
-</code></pre><hr>
-<p><strong><strong> 解决方法</strong></strong></p>
-<pre><code>sudo C_INCLUDE_PATH=<span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span><span class="string">libxml2:</span><span class="regexp">/Applications/</span>Xcode.app<span class="regexp">/Contents/</span>Developer<span class="regexp">/Platforms/</span>MacOSX.platform<span class="regexp">/Developer/</span>SDKs<span class="regexp">/MacOSX10.11.sdk/</span>usr<span class="regexp">/include/</span>libxml2<span class="regexp">/libxml:/</span>Applications<span class="regexp">/Xcode.app/</span>Contents<span class="regexp">/Developer/</span>Platforms<span class="regexp">/MacOSX.platform/</span>Developer<span class="regexp">/SDKs/</span>MacOSX10.11.sdk<span class="regexp">/usr/</span>include
-
-pip install lxml
-
-Installing collected <span class="string">packages:</span> lxml
-Running setup.py install <span class="keyword">for</span> lxml ... done
-Successfully installed lxml-<span class="number">3.6</span>.0`
-</code></pre><p>同样的,如果需要设置libpath,也在pip之前加入C_LIB_PATH再使用pip.</p>
-
       
     </div>
     

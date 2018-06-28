@@ -168,6 +168,178 @@
 
       <div class="body-wrap">
   
+    <article id="post-为终端设置Shadowsocks代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/12/为终端设置Shadowsocks代理/" class="article-date">
+  	<time datetime="2017-09-12T09:55:10.000Z" itemprop="datePublished">2017-09-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/12/为终端设置Shadowsocks代理/">为终端设置Shadowsocks代理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PS：为解决python tweepy连接twitter api超时的问题。</p>
+<pre><code>tweepy.<span class="function"><span class="title">api</span><span class="params">(auth,proxy=<span class="string">"localhost:1080"</span>)</span></span>
+</code></pre><p>做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。<br>Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。<br>想要进行转换，需要借助工具，这里我们采用比较知名的polipo来实现。polipo是一个轻量级的缓存web代理程序。</p>
+<p><strong>准备工作</strong></p>
+<p>首先需要配置好一个可用的shadowsocks，客户端下载地址：<a href="https://github.com/shadowsocks/shadowsocks/releases" target="_blank" rel="external">https://github.com/shadowsocks/shadowsocks/releases</a></p>
+<p>安装和配置ss，请自行搜索解决。</p>
+<p>安装<br>Fedora安装</p>
+<pre><code>sudo yum <span class="keyword">install</span> polipo
+</code></pre><p>Mac下使用Homebrew安装</p>
+<pre><code><span class="keyword">brew </span>install polipo
+</code></pre><p>Ubuntu安装</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install polipo
+</code></pre><p><strong>修改配置(Linux)</strong></p>
+<p>如下打开配置文件</p>
+<pre><code>sudo vim <span class="regexp">/etc/</span>polipo<span class="regexp">/config</span>
+</code></pre><p>设置ParentProxy为Shadowsocks，通常情况下本机shadowsocks的地址如下</p>
+<pre><code><span class="comment"># Uncomment this if you want to use a parent SOCKS proxy:</span>
+
+<span class="variable">socksParentProxy =</span> <span class="string">"localhost:1080"</span>
+<span class="variable">socksProxyType =</span> socks5
+</code></pre><p>设置日志输出文件</p>
+<pre><code><span class="built_in">log</span>File=/var/<span class="built_in">log</span>/polipo
+<span class="built_in">log</span>Level=<span class="number">4</span>
+</code></pre><p><strong>修改配置(Mac)</strong></p>
+<p>设置每次登陆启动polipo</p>
+<pre><code>ln -sfv <span class="regexp">/usr/</span>local<span class="regexp">/opt/</span>polipo<span class="comment">/*.plist ~/Library/LaunchAgents</span>
+</code></pre><p>修改文件<code>/usr/local/opt/polipo/homebrew.mxcl.polipo.plist</code>设置parentProxy</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="doctype">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">plist</span> <span class="attribute">version</span>=<span class="value">"1.0"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">string</span>&gt;</span>homebrew.mxcl.polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">array</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/opt/polipo/bin/polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">string</span>&gt;</span>socksParentProxy=localhost:1080<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">array</span>&gt;</span>
+    <span class="comment">&lt;!-- Set `ulimit -n 20480`. The default OS X limit is 256, that's
+         not enough for Polipo (displays 'too many files open' errors).
+         It seems like you have no reason to lower this limit
+         (and unlikely will want to raise it). --&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>SoftResourceLimits<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">key</span>&gt;</span>NumberOfFiles<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">integer</span>&gt;</span>20480<span class="tag">&lt;/<span class="title">integer</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">plist</span>&gt;</span>
+</code></pre><p>修改的地方是增加了<code>&lt;string&gt;socksParentProxy=localhost:1080&lt;/string&gt;</code></p>
+<p><strong>启动（Linux）</strong></p>
+<p>先关闭正在运行的polipo，然后再次启动</p>
+<pre><code>sudo <span class="keyword">service</span> polipo <span class="literal">stop</span>
+sudo <span class="keyword">service</span> polipo <span class="literal">start</span>
+</code></pre><p><strong>启动(Mac)</strong></p>
+<pre><code>launchctl unload ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plist</span>
+launchctl load ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plis</span>
+</code></pre><p>注意：请确保Shadowsocks正常工作。</p>
+<p><strong>验证及使用</strong></p>
+<p>安装完成就需要进行验证是否work。这里展示一个最简单的验证方法，打开终端，如下执行</p>
+<pre><code><span class="number">07</span>:<span class="number">56</span>:<span class="number">24</span>-<span class="keyword">androidyue/var/log$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">15</span> 来自：中国天津天津 联通
+<span class="number">08</span>:<span class="number">09</span>:<span class="number">23</span>-<span class="keyword">androidyue/var/log$ </span>http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span> curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本
+</code></pre><p>如上所示，为某个命令设置代理，前面加上http_proxy=<a href="http://localhost:8123" target="_blank" rel="external">http://localhost:8123</a> 后接命令即可。<br>注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。</p>
+<p><strong>设置别名</strong></p>
+<p>bash中有一个很好的东西，就是别名alias. Linux用户修改~/.bashrc，Mac用户修改~/.bash_profile文件，增加如下设置</p>
+<pre><code><span class="keyword">alias</span> <span class="title">hp</span>=<span class="string">"http_proxy=http://localhost:8123"</span>
+</code></pre><p>然后Linux用户执行source ~/.bashrc，Mac用户执行source ~/.bash_profile</p>
+<p><strong>测试使用</strong></p>
+<pre><code><span class="number">20</span>:<span class="number">39</span>:<span class="number">39</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+<span class="number">20</span>:<span class="number">39</span>:<span class="number">44</span>-<span class="keyword">androidyue~$ </span>hp curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
+<span class="number">20</span>:<span class="number">39</span>:<span class="number">48</span>-<span class="keyword">androidyue~$ </span>
+</code></pre><p><strong>当前会话全局设置</strong></p>
+<p>如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。即使用export http_proxy=<a href="http://localhost:8123即可。" target="_blank" rel="external">http://localhost:8123即可。</a> 如果想撤销当前会话的http_proxy代理，使用 unset http_proxy 即可。 示例效果如下</p>
+<pre><code><span class="number">21</span>:<span class="number">29</span>:<span class="number">49</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+<span class="number">21</span>:<span class="number">29</span>:<span class="number">52</span>-<span class="keyword">androidyue~$ </span><span class="preprocessor">export</span> http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span>
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">07</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">12</span>-<span class="keyword">androidyue~$ </span>unset http_proxy
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">37</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+</code></pre><p>如果想要更长久的设置代理，可以将export http_proxy=<a href="http://localhost:8123加入.bashrc或者.bash_profile文件" target="_blank" rel="external">http://localhost:8123加入.bashrc或者.bash_profile文件</a></p>
+<p><strong>设置Git代理</strong><br>复杂一些的设置Git代理</p>
+<pre><code>git clone <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo --config http.proxy=localhost:8123</span>
+
+Cloning into <span class="string">'repo'</span>...
+<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
+<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
+<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
+Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 492 KiB/</span>s, done.
+Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
+</code></pre><p>其实这样还是比较复杂，因为需要记忆的东西比较多，下面是一个更简单的实现<br>首先，在.bashrc或者.bash_profile文件加入这一句。</p>
+<pre><code><span class="setting">gp=<span class="value"><span class="string">" --config http.proxy=localhost:8123"</span></span></span>
+</code></pre><p>然后执行source操作，更新当前bash配置。</p>
+<p>更简单的使用git的方法</p>
+<pre><code>git clone  <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo $gp</span>
+
+Cloning into <span class="string">'repo'</span>...
+<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
+<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
+<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
+Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 483 KiB/</span>s, done.
+Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
+</code></pre><p>End</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-解决opencv无法读取视频数据(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -1611,70 +1783,6 @@ sudo apt-get install aria2
       
 	<div class="article-tag tagcloud">
 		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Ubuntu下查看显卡型号及NVIDIA驱动版本" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/" class="article-date">
-  	<time datetime="2017-08-07T07:32:22.000Z" itemprop="datePublished">2017-08-07</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/">Ubuntu下查看显卡型号及NVIDIA驱动版本</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>查看GPU型号</p>
-<pre><code>lspci <span class="string">| grep -i nvidia</span>
-</code></pre><p>查看NVIDIA驱动版本</p>
-<pre><code>sudo dpkg --<span class="keyword">list</span> | <span class="keyword">grep</span> nvidia-*
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
 	</div>
 
       
