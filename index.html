@@ -91,8 +91,6 @@
 							
 								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
 					        
-								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
-					        
 								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
 					        
 						</div>
@@ -156,8 +154,6 @@
 					
 						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
 			        
-						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
-			        
 						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
 			        
 				</div>
@@ -167,6 +163,70 @@
 </nav>
 
       <div class="body-wrap">
+  
+    <article id="post-Ubuntu下查看OpenCV版本号" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2018/06/28/Ubuntu下查看OpenCV版本号/" class="article-date">
+  	<time datetime="2018-06-28T12:33:09.605Z" itemprop="datePublished">2018-06-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/28/Ubuntu下查看OpenCV版本号/">Ubuntu下查看OpenCV版本号</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>查看Ubuntu下OpenCV版本号：</p>
+<pre><code>pkg-config  <span class="comment">--modversion  opencv</span>
+</code></pre><p>输出：</p>
+<pre><code>3<span class="class">.2</span><span class="class">.0</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
   
     <article id="post-Ubuntu下查看CUDA版本、cudnn版本号" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1070,9 +1130,928 @@ python labelImg.py
 
 
   
+    <article id="post-为终端设置Shadowsocks代理" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/12/为终端设置Shadowsocks代理/" class="article-date">
+  	<time datetime="2017-09-12T09:55:10.000Z" itemprop="datePublished">2017-09-12</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/12/为终端设置Shadowsocks代理/">为终端设置Shadowsocks代理</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>PS：为解决python tweepy连接twitter api超时的问题。</p>
+<pre><code>tweepy.<span class="function"><span class="title">api</span><span class="params">(auth,proxy=<span class="string">"localhost:1080"</span>)</span></span>
+</code></pre><p>做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。<br>Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。<br>想要进行转换，需要借助工具，这里我们采用比较知名的polipo来实现。polipo是一个轻量级的缓存web代理程序。</p>
+<p><strong>准备工作</strong></p>
+<p>首先需要配置好一个可用的shadowsocks，客户端下载地址：<a href="https://github.com/shadowsocks/shadowsocks/releases" target="_blank" rel="external">https://github.com/shadowsocks/shadowsocks/releases</a></p>
+<p>安装和配置ss，请自行搜索解决。</p>
+<p>安装<br>Fedora安装</p>
+<pre><code>sudo yum <span class="keyword">install</span> polipo
+</code></pre><p>Mac下使用Homebrew安装</p>
+<pre><code><span class="keyword">brew </span>install polipo
+</code></pre><p>Ubuntu安装</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install polipo
+</code></pre><p><strong>修改配置(Linux)</strong></p>
+<p>如下打开配置文件</p>
+<pre><code>sudo vim <span class="regexp">/etc/</span>polipo<span class="regexp">/config</span>
+</code></pre><p>设置ParentProxy为Shadowsocks，通常情况下本机shadowsocks的地址如下</p>
+<pre><code><span class="comment"># Uncomment this if you want to use a parent SOCKS proxy:</span>
+
+<span class="variable">socksParentProxy =</span> <span class="string">"localhost:1080"</span>
+<span class="variable">socksProxyType =</span> socks5
+</code></pre><p>设置日志输出文件</p>
+<pre><code><span class="built_in">log</span>File=/var/<span class="built_in">log</span>/polipo
+<span class="built_in">log</span>Level=<span class="number">4</span>
+</code></pre><p><strong>修改配置(Mac)</strong></p>
+<p>设置每次登陆启动polipo</p>
+<pre><code>ln -sfv <span class="regexp">/usr/</span>local<span class="regexp">/opt/</span>polipo<span class="comment">/*.plist ~/Library/LaunchAgents</span>
+</code></pre><p>修改文件<code>/usr/local/opt/polipo/homebrew.mxcl.polipo.plist</code>设置parentProxy</p>
+<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
+<span class="doctype">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span>
+<span class="tag">&lt;<span class="title">plist</span> <span class="attribute">version</span>=<span class="value">"1.0"</span>&gt;</span>
+  <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">string</span>&gt;</span>homebrew.mxcl.polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">array</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/opt/polipo/bin/polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+        <span class="tag">&lt;<span class="title">string</span>&gt;</span>socksParentProxy=localhost:1080<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">array</span>&gt;</span>
+    <span class="comment">&lt;!-- Set `ulimit -n 20480`. The default OS X limit is 256, that's
+         not enough for Polipo (displays 'too many files open' errors).
+         It seems like you have no reason to lower this limit
+         (and unlikely will want to raise it). --&gt;</span>
+    <span class="tag">&lt;<span class="title">key</span>&gt;</span>SoftResourceLimits<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+    <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">key</span>&gt;</span>NumberOfFiles<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
+      <span class="tag">&lt;<span class="title">integer</span>&gt;</span>20480<span class="tag">&lt;/<span class="title">integer</span>&gt;</span>
+    <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
+  <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
+<span class="tag">&lt;/<span class="title">plist</span>&gt;</span>
+</code></pre><p>修改的地方是增加了<code>&lt;string&gt;socksParentProxy=localhost:1080&lt;/string&gt;</code></p>
+<p><strong>启动（Linux）</strong></p>
+<p>先关闭正在运行的polipo，然后再次启动</p>
+<pre><code>sudo <span class="keyword">service</span> polipo <span class="literal">stop</span>
+sudo <span class="keyword">service</span> polipo <span class="literal">start</span>
+</code></pre><p><strong>启动(Mac)</strong></p>
+<pre><code>launchctl unload ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plist</span>
+launchctl load ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plis</span>
+</code></pre><p>注意：请确保Shadowsocks正常工作。</p>
+<p><strong>验证及使用</strong></p>
+<p>安装完成就需要进行验证是否work。这里展示一个最简单的验证方法，打开终端，如下执行</p>
+<pre><code><span class="number">07</span>:<span class="number">56</span>:<span class="number">24</span>-<span class="keyword">androidyue/var/log$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">15</span> 来自：中国天津天津 联通
+<span class="number">08</span>:<span class="number">09</span>:<span class="number">23</span>-<span class="keyword">androidyue/var/log$ </span>http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span> curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本
+</code></pre><p>如上所示，为某个命令设置代理，前面加上http_proxy=<a href="http://localhost:8123" target="_blank" rel="external">http://localhost:8123</a> 后接命令即可。<br>注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。</p>
+<p><strong>设置别名</strong></p>
+<p>bash中有一个很好的东西，就是别名alias. Linux用户修改~/.bashrc，Mac用户修改~/.bash_profile文件，增加如下设置</p>
+<pre><code><span class="keyword">alias</span> <span class="title">hp</span>=<span class="string">"http_proxy=http://localhost:8123"</span>
+</code></pre><p>然后Linux用户执行source ~/.bashrc，Mac用户执行source ~/.bash_profile</p>
+<p><strong>测试使用</strong></p>
+<pre><code><span class="number">20</span>:<span class="number">39</span>:<span class="number">39</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+<span class="number">20</span>:<span class="number">39</span>:<span class="number">44</span>-<span class="keyword">androidyue~$ </span>hp curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
+<span class="number">20</span>:<span class="number">39</span>:<span class="number">48</span>-<span class="keyword">androidyue~$ </span>
+</code></pre><p><strong>当前会话全局设置</strong></p>
+<p>如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。即使用export http_proxy=<a href="http://localhost:8123即可。" target="_blank" rel="external">http://localhost:8123即可。</a> 如果想撤销当前会话的http_proxy代理，使用 unset http_proxy 即可。 示例效果如下</p>
+<pre><code><span class="number">21</span>:<span class="number">29</span>:<span class="number">49</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+<span class="number">21</span>:<span class="number">29</span>:<span class="number">52</span>-<span class="keyword">androidyue~$ </span><span class="preprocessor">export</span> http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span>
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">07</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">12</span>-<span class="keyword">androidyue~$ </span>unset http_proxy
+<span class="number">21</span>:<span class="number">30</span>:<span class="number">37</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
+当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
+</code></pre><p>如果想要更长久的设置代理，可以将export http_proxy=<a href="http://localhost:8123加入.bashrc或者.bash_profile文件" target="_blank" rel="external">http://localhost:8123加入.bashrc或者.bash_profile文件</a></p>
+<p><strong>设置Git代理</strong><br>复杂一些的设置Git代理</p>
+<pre><code>git clone <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo --config http.proxy=localhost:8123</span>
+
+Cloning into <span class="string">'repo'</span>...
+<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
+<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
+<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
+Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 492 KiB/</span>s, done.
+Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
+</code></pre><p>其实这样还是比较复杂，因为需要记忆的东西比较多，下面是一个更简单的实现<br>首先，在.bashrc或者.bash_profile文件加入这一句。</p>
+<pre><code><span class="setting">gp=<span class="value"><span class="string">" --config http.proxy=localhost:8123"</span></span></span>
+</code></pre><p>然后执行source操作，更新当前bash配置。</p>
+<p>更简单的使用git的方法</p>
+<pre><code>git clone  <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo $gp</span>
+
+Cloning into <span class="string">'repo'</span>...
+<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
+<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
+<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
+Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 483 KiB/</span>s, done.
+Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
+</code></pre><p>End</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-解决opencv无法读取视频数据(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/" class="article-date">
+  	<time datetime="2017-09-10T09:25:51.000Z" itemprop="datePublished">2017-09-10</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/">解决opencv无法读取视频数据(Ubuntu)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>错误描述：</strong></p>
+<pre><code>OpenCV <span class="keyword">Error</span>: Unspecified <span class="keyword">error</span> (The <span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild
+ the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span> Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu
+  <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> 
+  configure script) <span class="keyword">in</span> cvNamedWindow, file /io/opencv/modules/highgui/src/window.cpp, line <span class="number">565</span>
+Traceback (most recent <span class="keyword">call</span> last):
+  File <span class="string">"video_tools/demo.py"</span>, line <span class="number">103</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;
+    cv2.namedWindow(<span class="comment">'ret',0)</span>
+cv2.<span class="keyword">error</span>: /io/opencv/modules/highgui/src/window.cpp:<span class="number">565</span>: <span class="keyword">error</span>: (-<span class="number">2</span>) The 
+<span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span>
+ Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> 
+ pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> configure script <span class="keyword">in</span> <span class="keyword">function</span> cvNamedWindow
+</code></pre><p><strong>分析：</strong></p>
+<p>在Ubuntu16.04下安装OpenCV3.2之前，确实已经提前安装了各种依赖包，特别是libgtk2.0-dev and pkg-config已经确认安装，通过在python下使用<code>cv2.getBuildInformation()</code>查看：</p>
+<pre><code>GUI: 
+    QT:                          <span class="keyword">NO</span>
+    GTK+:                        <span class="keyword">NO</span>
+    GThread :                    YES (ver 2.12.3)
+    GtkGlExt:                    <span class="keyword">NO</span>
+    OpenGL support:              <span class="keyword">NO</span>
+    VTK support:                 <span class="keyword">NO</span>
+
+  Media I/O: 
+    ZLib:                        zlib (ver 1.2.8)
+    JPEG:                        libjpeg (ver 90)
+    WEBP:                        build (ver 0.3.1)
+    PNG:                         build (ver 1.6.24)
+    TIFF:                        build (ver 42 - 4.0.2)
+    JPEG 2000:                   build (ver 1.900.1)
+    OpenEXR:                     build (ver 1.7.1)
+    GDAL:                        <span class="keyword">NO</span>
+    GDCM:                        <span class="keyword">NO</span>
+
+  Video I/O:
+    DC1394 1.x:                  <span class="keyword">NO</span>
+    DC1394 2.x:                  <span class="keyword">NO</span>
+    FFMPEG:                      <span class="keyword">NO</span>
+      avcodec:                   <span class="keyword">NO</span>
+      avformat:                  <span class="keyword">NO</span>
+      avutil:                    <span class="keyword">NO</span>
+      swscale:                   <span class="keyword">NO</span>
+      avresample:                <span class="keyword">NO</span>
+    GStreamer:                   <span class="keyword">NO</span>
+    OpenNI:                      <span class="keyword">NO</span>
+    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
+    OpenNI2:                     <span class="keyword">NO</span>
+    PvAPI:                       <span class="keyword">NO</span>
+    GigEVisionSDK:               <span class="keyword">NO</span>
+    Aravis SDK:                  <span class="keyword">NO</span>
+    UniCap:                      <span class="keyword">NO</span>
+    UniCap ucil:                 <span class="keyword">NO</span>
+    V4L/V4L2:                    <span class="keyword">NO</span>/<span class="keyword">NO</span>
+    XIMEA:                       <span class="keyword">NO</span>
+    Xine:                        <span class="keyword">NO</span>
+    gPhoto2:                     <span class="keyword">NO</span>
+
+  Parallel framework:            pthreads
+
+  Other third-party libraries:
+    <span class="keyword">Use</span> IPP:                     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
+    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Lapack:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Cuda:                    <span class="keyword">NO</span>
+    <span class="keyword">Use</span> OpenCL:                  YES
+    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
+
+  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
+    <span class="keyword">Include</span> path:                /io/opencv/3rdparty/<span class="keyword">include</span>/opencl/1.2
+    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
+
+  Python 2:
+    Interpreter:                 python (ver 2.7.13)
+    Libraries:                   
+    numpy:                       /opt/python/cp27-cp27mu/lib/python2.7/site-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.1)
+    packages path:               /opt/python/cp27-cp27mu/lib/python2.7/site-packages
+
+  Python 3:
+    Interpreter:                 <span class="keyword">NO</span>
+
+  Python (<span class="keyword">for</span> build):            python
+
+  Java:
+    ant:                         <span class="keyword">NO</span>
+    JNI:                         <span class="keyword">NO</span>
+    Java wrappers:               <span class="keyword">NO</span>
+    Java tests:                  <span class="keyword">NO</span>
+
+  Matlab:                        Matlab not found or implicitly disabled
+
+  Tests and samples:
+    Tests:                       <span class="keyword">NO</span>
+    Performance tests:           <span class="keyword">NO</span>
+    C/C++ Examples:              <span class="keyword">NO</span>
+
+  Install path:                  /usr/<span class="keyword">local</span>
+
+  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /io/opencv/build
+-----------------------------------------------------------------
+</code></pre><p>安装官方给出的建议，重新编译，特别注意一些开关要设置下：</p>
+<pre><code>sudo apt-get -y install libopencv-dev build-essential checkinstall cmake pkg-config yasm  libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev  libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libtiff5-dev libjpeg62-dev ffmpeg libatlas-base-dev gfortran
+
+cmake 
+-<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_BUILD_TYPE</span>=<span class="constant">RELEASE</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_INSTALL_PREFIX</span>=<span class="regexp">/usr/local</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">FORCE_VTK</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_NEW_PYTHON_SUPPORT</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_C_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_PYTHON_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_TBB</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_V4L</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_QT</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_OPENGL</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_CUBLAS</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CUDA_NVCC_FLAGS</span>=<span class="string">"-D_FORCE_INLINES"</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_GDAL</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_XINE</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_EXAMPLES</span>=<span class="constant">ON</span> \
+</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_FFMPEG</span>=<span class="constant">ON</span> ..</span>
+</code></pre><p>   make -j32<br>   make install</p>
+<p>但是我发现，在重新编译后安装后的<code>cv2.so</code>，引入到python后得到的信息如下：</p>
+<pre><code>GUI: 
+    QT 4.x:                      YES (ver 4.8.7 EDITION = OpenSource)
+    QT OpenGL support:           YES (/usr/lib/x86_64-linux-gnu/libQtOpenGL.<span class="keyword">so</span>)
+    OpenGL support:              YES (/usr/lib/x86_64-linux-gnu/libGLU.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libGL.<span class="keyword">so</span>)
+    VTK support:                 <span class="keyword">NO</span>
+
+  Media I/O: 
+    ZLib:                        /usr/lib/x86_64-linux-gnu/libz.<span class="keyword">so</span> (ver 1.2.8)
+    JPEG:                        /usr/lib/x86_64-linux-gnu/libjpeg.<span class="keyword">so</span> (ver )
+    WEBP:                        build (ver 0.3.1)
+    PNG:                         /usr/lib/x86_64-linux-gnu/libpng.<span class="keyword">so</span> (ver 1.2.54)
+    TIFF:                        /usr/lib/x86_64-linux-gnu/libtiff.<span class="keyword">so</span> (ver 42 - 4.0.6)
+    JPEG 2000:                   /usr/lib/x86_64-linux-gnu/libjasper.<span class="keyword">so</span> (ver 1.900.1)
+    OpenEXR:                     /usr/lib/x86_64-linux-gnu/libImath.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmImf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIex.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libHalf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmThread.<span class="keyword">so</span> (ver 2.2.0)
+    GDAL:                        <span class="keyword">NO</span>
+    GDCM:                        <span class="keyword">NO</span>
+
+  Video I/O:
+    DC1394 1.x:                  <span class="keyword">NO</span>
+    DC1394 2.x:                  YES (ver 2.2.4)
+    FFMPEG:                      YES
+      avcodec:                   YES (ver 56.60.100)
+      avformat:                  YES (ver 56.40.101)
+      avutil:                    YES (ver 54.31.100)
+      swscale:                   YES (ver 3.1.101)
+      avresample:                <span class="keyword">NO</span>
+    GStreamer:                   
+      base:                      YES (ver 0.10.36)
+      video:                     YES (ver 0.10.36)
+      <span class="keyword">app</span>:                       YES (ver 0.10.36)
+      riff:                      YES (ver 0.10.36)
+      pbutils:                   YES (ver 0.10.36)
+    OpenNI:                      <span class="keyword">NO</span>
+    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
+    OpenNI2:                     <span class="keyword">NO</span>
+    PvAPI:                       <span class="keyword">NO</span>
+    GigEVisionSDK:               <span class="keyword">NO</span>
+    Aravis SDK:                  <span class="keyword">NO</span>
+    UniCap:                      <span class="keyword">NO</span>
+    UniCap ucil:                 <span class="keyword">NO</span>
+    V4L/V4L2:                    <span class="keyword">NO</span>/YES
+    XIMEA:                       <span class="keyword">NO</span>
+    Xine:                        <span class="keyword">NO</span>
+    gPhoto2:                     <span class="keyword">NO</span>
+
+  Parallel framework:            TBB (ver 4.4 interface 9002)
+
+  Other third-party libraries:
+    <span class="keyword">Use</span> IPP:                     9.0.1 [9.0.1]
+         at:                     /home/gwang/opencv-3.2.0/build/3rdparty/ippicv/ippicv_lnx
+    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
+    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Lapack:                  YES (/opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> -lpthread -lm -ldl)
+    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
+    <span class="keyword">Use</span> Cuda:                    YES (ver 8.0)
+    <span class="keyword">Use</span> OpenCL:                  YES
+    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
+
+  NVIDIA CUDA
+    <span class="keyword">Use</span> CUFFT:                   YES
+    <span class="keyword">Use</span> CUBLAS:                  YES
+    <span class="keyword">USE</span> NVCUVID:                 <span class="keyword">NO</span>
+    NVIDIA GPU <span class="keyword">arch</span>:             20 30 35 37 50 52 60 61
+    NVIDIA PTX archs:
+    <span class="keyword">Use</span> fast math:               <span class="keyword">NO</span>
+
+  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
+    <span class="keyword">Include</span> path:                /home/gwang/opencv-3.2.0/3rdparty/<span class="keyword">include</span>/opencl/1.2
+    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
+    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
+
+  Python 2:
+    Interpreter:                 /usr/bin/python2.7 (ver 2.7.12)
+    Libraries:                   /usr/lib/x86_64-linux-gnu/libpython2.7.<span class="keyword">so</span> (ver 2.7.12)
+    numpy:                       /usr/<span class="keyword">local</span>/lib/python2.7/dist-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.0)
+    packages path:               lib/python2.7/dist-packages
+
+  Python 3:
+    Interpreter:                 /usr/bin/python3 (ver 3.5.2)
+
+  Python (<span class="keyword">for</span> build):            /usr/bin/python2.7
+
+  Java:
+    ant:                         <span class="keyword">NO</span>
+    JNI:                         /usr/lib/jvm/default-java/<span class="keyword">include</span> /usr/lib/jvm/default-java/<span class="keyword">include</span>/linux /usr/lib/jvm/default-java/<span class="keyword">include</span>
+    Java wrappers:               <span class="keyword">NO</span>
+    Java tests:                  <span class="keyword">NO</span>
+
+  Matlab:
+    mex:                         /usr/<span class="keyword">local</span>/MATLAB/R2014a/bin/mex
+    Compiler/generator:          Not working (bindings will not be generated)
+
+  Documentation:
+    Doxygen:                     <span class="keyword">NO</span>
+
+  Tests and samples:
+    Tests:                       YES
+    Performance tests:           YES
+    C/C++ Examples:              YES
+
+  Install path:                  /usr/<span class="keyword">local</span>
+
+  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /home/gwang/opencv-3.2.0/build
+-----------------------------------------------------------------
+</code></pre><p>同样在终端内python控制台得到的information和.py文件内得到information居然不一样，仔细分析发现这两个不是一个东西，想想是不是通过其他方式安装了opencv，通过尝试如下命令发现了这个bug：</p>
+<pre><code>sudo pip uninstall opencv-python
+
+The directory '/home/xxx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
+Uninstalling opencv-python-<span class="number">3.2</span>.0.7:
+  /home/xxx/.<span class="keyword">local</span>/LICENSE-<span class="number">3</span>RD-PARTY.txt
+  /home/xxx/.<span class="keyword">local</span>/LICENSE.txt
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.py
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.pyc
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/cv2.so
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/DESCRIPTION.rst
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/INSTALLER
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/METADATA
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/RECORD
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/WHEEL
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/metadata.json
+  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/top_level.txt
+Proceed (y/n)? 
+y
+  Successfully uninstalled opencv-python-<span class="number">3.2</span>.0.7
+The directory '/home/xx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
+</code></pre><p>卸载后，到终端python命令行内进行测试：</p>
+<pre><code><span class="prompt">&gt;&gt;</span>&gt;python
+<span class="prompt">&gt;&gt;</span>&gt;import cv2
+<span class="prompt">&gt;&gt;</span>&gt;<span class="constant">Traceback</span> (most recent call last)<span class="symbol">:</span>
+  <span class="constant">File</span> <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;<span class="class"><span class="keyword">module</span>&gt;</span>
+<span class="constant">ImportError</span><span class="symbol">:</span> <span class="constant">No</span> <span class="class"><span class="keyword">module</span> <span class="title">named</span> <span class="title">cv2</span></span>
+</code></pre><p>没有找到cv2，那么要把编译安装后的cv2.so重新链接下：</p>
+<pre><code>cd <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7/dist-packages
+sudo ln -s <span class="regexp">/home/</span>xxx<span class="regexp">/opencv3.2/</span>build<span class="regexp">/lib/</span>cv2.so cv2.so
+</code></pre><p>至此，终于搞定这个问题！！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-编译ab压力测试并发(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/09/08/编译ab压力测试并发(Ubuntu)/" class="article-date">
+  	<time datetime="2017-09-08T07:50:31.000Z" itemprop="datePublished">2017-09-08</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">编译ab压力测试并发(Ubuntu)</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Abstract</strong></p>
+<p>用深度学习框架caffe做的project，需要对其进行并发数请求数的压力测试，找到了apachebench(ab)简单的压力测试工具，但在Ubuntu下通过apt-get安装的ab，在处理请求数高于200,300左右的时候就会报错终止<code>apr_socket_recv: Connection reset by peer</code>，查阅资料显示需要对ab进行重新修改并编译后方可破除这个问题（无论是如何安装的，都要从头开始重新修改编译安装）。</p>
+<p><strong>1.下载所需要的源码</strong></p>
+<p>apr和apr-util下载：<a href="http://apr.apache.org/download.cgi" target="_blank" rel="external">http://apr.apache.org/download.cgi </a></p>
+<p>ab-standalone源码下载:<a href="https://code.google.com/p/apachebench-standalone/downloads/list" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/downloads/list</a></p>
+<p><strong>2.编译安装</strong></p>
+<p>分别解压三个压缩包：</p>
+<pre><code>ab-standalone-<span class="number">0.1</span><span class="class">.tar</span><span class="class">.bz2</span> 
+apr-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
+apr-util-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
+</code></pre><p><strong>a.编译apr</strong></p>
+<pre><code><span class="variable">$ </span>cd apr
+<span class="variable">$ </span>./configure  
+<span class="variable">$ </span>make  
+<span class="variable">$ </span>sudo make install  
+</code></pre><p><strong>b.编译apr-util</strong></p>
+<pre><code><span class="char">$ </span>cd apr-util 
+<span class="char">$ </span>./configure --with-apr=/usr/local/apr  
+<span class="char">$ </span>make  
+<span class="char">$ </span>sudo make install  
+</code></pre><p><strong>c.编译ab</strong></p>
+<p>修改ab-standalone/ab.c文件</p>
+<pre><code>$ <span class="keyword">cd</span> <span class="keyword">ab</span>/<span class="keyword">ab</span>-standalone  
+$ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="keyword">c</span>  
+</code></pre><p>到1380行修改成如下:</p>
+<pre><code><span class="comment">/* catch legitimate fatal apr_socket_recv errors */</span>  
+<span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(status != APR_SUCCESS)</span> {  
+    err_recv++;  
+    <span class="keyword">if</span> <span class="params">(recverrok)</span> {  
+        bad++;  
+        close_connection<span class="params">(c)</span>;  
+        <span class="keyword">if</span> <span class="params">(verbosity &gt;= <span class="number">1</span>)</span> {  
+            char buf[<span class="number">120</span>];  
+            fprintf<span class="params">(stderr,<span class="string">"%s: %s (%d)\n"</span>, <span class="string">"apr_socket_recv"</span>, apr_strerror<span class="params">(status, buf, sizeof buf)</span>, status)</span>;  
+        }  
+        return;  
+    } <span class="keyword">else</span> {  
+        <span class="comment">//apr_err("apr_socket_recv", status);   // begin </span>
+        bad++;  
+        close_connection<span class="params">(c)</span>;  
+        return;      <span class="comment">// end </span>
+    }  
+}  
+</code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
+<p>开始编译ab</p>
+<pre><code>$ <span class="keyword">make</span> apr-skeleton
+$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
+$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
+</code></pre><hr>
+<p><strong>3.注意</strong></p>
+<p>连接库文件问题：</p>
+<p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>
+<p>或者从编译后的usr/local/apr/lib下面将几个文件拷贝到/usr/lib/x86_64-linux-gnu下做链接：</p>
+<pre><code>sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.a /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
+sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/liaprutil-1.so /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
+sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.so.0.6.0 /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
+sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.la /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
+cd <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>
+sudo ln -s libaprutil-<span class="number">1.</span>so.0.6.0 libaprutil-<span class="number">1.</span>so.0
+sudo ldconfig
+</code></pre><p>同理，不选择apt-get安装，而如此设置libapr1.so.0即可。</p>
+<hr>
+<p><strong>4.测试</strong></p>
+<p>查看版本：</p>
+<pre><code><span class="variable">$ </span>ab -<span class="constant">V</span>
+<span class="constant">This </span>is <span class="constant">ApacheBench,</span> <span class="constant">Version </span><span class="number">2.3</span> &lt;<span class="variable">$Revision</span><span class="variable">$&gt;</span>
+<span class="constant">Copyright </span><span class="number">1996</span> <span class="constant">Adam Twiss,</span> <span class="constant">Zeus Technology Ltd,</span> <span class="symbol">http:</span>/<span class="regexp">/www.zeustech.net/</span>
+<span class="constant">Licensed </span>to <span class="constant">The Apache Software Foundation,</span> <span class="symbol">http:</span>/<span class="regexp">/www.apache.org/</span>
+</code></pre><p>测试并发数：</p>
+<pre><code>ab -n <span class="number">500</span> -c <span class="number">500</span> <span class="number">127.0</span>.0.1  # -n请求数，-c并发数，-n&gt;=-c
+
+This is ApacheBench, Version <span class="number">2.3</span> &lt;$Revision$&gt;
+Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, <span class="string">http:</span><span class="comment">//www.zeustech.net/</span>
+Licensed to The Apache Software Foundation, <span class="string">http:</span><span class="comment">//www.apache.org/</span>
+
+Benchmarking <span class="number">127.0</span>.0.1 (be patient)
+Completed <span class="number">100</span> requests
+Completed <span class="number">200</span> requests
+Completed <span class="number">300</span> requests
+Completed <span class="number">400</span> requests
+Completed <span class="number">500</span> requests
+Finished <span class="number">500</span> requests
+
+
+Server <span class="string">Software:</span>        TornadoServer/<span class="number">4.5</span>.2
+Server <span class="string">Hostname:</span>        <span class="number">127.0</span>.0.1
+Server <span class="string">Port:</span>            <span class="number">1000</span>
+
+Document <span class="string">Path:</span>          /
+Document <span class="string">Length:</span>        <span class="number">221727</span> bytes
+
+Concurrency <span class="string">Level:</span>      <span class="number">500</span>
+Time taken <span class="keyword">for</span> <span class="string">tests:</span>   <span class="number">215.661</span> seconds
+Complete <span class="string">requests:</span>      <span class="number">500</span>
+Failed <span class="string">requests:</span>        <span class="number">1023</span>
+   (<span class="string">Connect:</span> <span class="number">0</span>, <span class="string">Receive:</span> <span class="number">341</span>, <span class="string">Length:</span> <span class="number">341</span>, <span class="string">Exceptions:</span> <span class="number">341</span>)
+Write <span class="string">errors:</span>           <span class="number">0</span>
+Total <span class="string">transferred:</span>      <span class="number">35272401</span> bytes
+HTML <span class="string">transferred:</span>       <span class="number">35254593</span> bytes
+Requests per <span class="string">second:</span>    <span class="number">2.32</span> [#/sec] (mean)
+Time per <span class="string">request:</span>       <span class="number">215661.110</span> [ms] (mean)
+Time per <span class="string">request:</span>       <span class="number">431.322</span> [ms] (mean, across all concurrent requests)
+Transfer <span class="string">rate:</span>          <span class="number">159.72</span> [Kbytes/sec] received
+
+Connection Times (ms)
+              min  mean[+/-sd] median   max
+<span class="string">Connect:</span>        <span class="number">0</span>  <span class="number">355</span> <span class="number">3586.5</span>      <span class="number">0</span>   <span class="number">63141</span>
+<span class="string">Processing:</span>  <span class="number">1557</span> <span class="number">119576</span> <span class="number">33974.7</span> <span class="number">127335</span>  <span class="number">182963</span>
+<span class="string">Waiting:</span>        <span class="number">0</span> <span class="number">33466</span> <span class="number">58718.9</span>      <span class="number">0</span>  <span class="number">182963</span>
+<span class="string">Total:</span>       <span class="number">1566</span> <span class="number">119931</span> <span class="number">34207.2</span> <span class="number">127335</span>  <span class="number">210234</span>
+
+Percentage of the requests served within a certain time (ms)
+  <span class="number">50</span>%  <span class="number">127335</span>
+  <span class="number">66</span>%  <span class="number">127336</span>
+  <span class="number">75</span>%  <span class="number">127337</span>
+  <span class="number">80</span>%  <span class="number">127337</span>
+  <span class="number">90</span>%  <span class="number">151213</span>
+  <span class="number">95</span>%  <span class="number">175948</span>
+  <span class="number">98</span>%  <span class="number">176152</span>
+  <span class="number">99</span>%  <span class="number">177742</span>
+ <span class="number">100</span>%  <span class="number">210234</span> (longest request)
+</code></pre><p><strong>参考</strong></p>
+<p><a href="http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/" target="_blank" rel="external">http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/</a><br><a href="http://blog.csdn.net/kimsung/article/details/9422991" target="_blank" rel="external">http://blog.csdn.net/kimsung/article/details/9422991</a><br><a href="https://code.google.com/p/apachebench-standalone/wiki/HowToBuild" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/wiki/HowToBuild</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Caffe训练分类模型" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/31/Caffe训练分类模型/" class="article-date">
+  	<time datetime="2017-08-31T06:27:54.000Z" itemprop="datePublished">2017-08-31</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Caffe训练分类模型/">Caffe训练分类模型</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装Caffe</strong></p>
+<p>按照官方<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">https://github.com/BVLC/caffe</a>说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。</p>
+<p><strong>2.整理自己的数据</strong></p>
+<p>图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.txt，一起放到caffe/data/mydata文件夹下。</p>
+<pre><code>path/to/image/<span class="number">001</span><span class="class">.jpg</span> <span class="number">0</span>
+path/to/image/<span class="number">002</span><span class="class">.jpg</span> <span class="number">1</span>
+path/to/image/<span class="number">003</span><span class="class">.jpg</span> <span class="number">2</span>
+</code></pre><p>在caffe/examples/imagenet中，将创建lmdb文件和mean文件的的几个sh文件拷贝到自己的examples/mytask中，然后修改这两个文件中的几个地址和名称：</p>
+<p><strong>修改create_imagenet.sh</strong></p>
+<pre><code><span class="comment">//当前路径</span>
+EXAMPLE=/home/xxx/caffe/examples/mytask
+<span class="comment">//存放train.txt和val.txt的路径，就是data/mydata</span>
+DATA=/home/xxx/caffe/data/mydata
+<span class="comment">//不变</span>
+TOOLS=/home/xxx/caffe/build/tools
+
+<span class="comment">//存放train和val图片文件夹的主目录（这里与txt文件中的目录合起来才是图片目录）</span>
+TRAIN_DATA_ROOT=/home/xxx/project-data/
+VAL_DATA_ROOT=/home/xxx/project-data/
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$TRAIN_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/train<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/train_lmdb  ##修改名称，与prototxt中的对应
+
+echo <span class="string">"Creating val lmdb..."</span>
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$VAL_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/val<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/val_lmdb  ##修改名称
+</code></pre><p>同理，修改make_imagenet_mean.sh。</p>
+<p>分别执行这两个命令，创建文件lmdb数据库和均值mean文件。</p>
+<p><strong>3.设置模型</strong></p>
+<p>在caffe/models下有很多预制的模型可供使用，模型文件一共可包括至少三个文件：deploy.prototxt；solver.prototxt；train_val.prototxt，有时需要finetune已训练好的模型，还需要一些比如在imagenet上预训练的caffemodel文件。</p>
+<p>sovler里面包含超参数和一些信息：</p>
+<pre><code><span class="attribute">net</span>: <span class="string">"models/bvlc_googlenet/train_val.prototxt"</span>
+<span class="attribute">test_iter</span>: <span class="string">1000</span>
+<span class="attribute">test_interval</span>: <span class="string">4000</span>
+<span class="attribute">test_initialization</span>: <span class="string">false</span>
+<span class="attribute">display</span>: <span class="string">40</span>
+<span class="attribute">average_loss</span>: <span class="string">40</span>
+<span class="attribute">base_lr</span>: <span class="string">0.01</span>
+<span class="attribute">lr_policy</span>: <span class="string">"step"</span>
+<span class="attribute">stepsize</span>: <span class="string">320000</span>
+<span class="attribute">gamma</span>: <span class="string">0.96</span>
+<span class="attribute">max_iter</span>: <span class="string">10000000</span>
+<span class="attribute">momentum</span>: <span class="string">0.9</span>
+<span class="attribute">weight_decay</span>: <span class="string">0.0002</span>
+<span class="attribute">snapshot</span>: <span class="string">40000</span>
+<span class="attribute">snapshot_prefix</span>: <span class="string">"models/bvlc_googlenet/bvlc_googlenet"</span>
+<span class="attribute">solver_mode</span>: <span class="string">GPU</span>
+</code></pre><p>train_val里面的主要修改的地方是batch_size，它与sovler里面的test_iter相乘的结果对应训练图像的总数；修改train和val的sorce文件地址：train_lmdb,val_lmdb. </p>
+<pre><code><span class="tag">data_param</span> {
+<span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
+<span class="attribute">batch_size</span>: <span class="number">32</span>
+<span class="attribute">backend</span>: LMDB
+  }
+</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
+<pre><code>layer {
+  name: <span class="string">"data"</span>
+  <span class="keyword">type</span>: <span class="string">"Data"</span>
+  top: <span class="string">"data"</span>
+  top: <span class="string">"label"</span>
+  <span class="keyword">include</span> {
+    phase: <span class="type">TRAIN</span>
+  }
+</code></pre><p>PS: 在finetune残差网络resnet时，网络结构文件中BatchNorm层的参数要注意： </p>
+<pre><code><span class="attribute">1.在训练时所有BN层要设置use_global_stats</span>: <span class="string">false（也可以不写，caffe默认是false） </span>
+<span class="attribute">2.在测试时所有BN层要设置use_global_stats</span>: <span class="string">true</span>
+
+<span class="cal"><span class="string">#1</span>.训练如果不设为<span class="literal">false</span>，会导致模型不收敛 
+<span class="string">#2</span>.测试如果不设置为<span class="literal">true</span>，会导致准确率极低 </span>
+</code></pre><p><strong>4.开始训练</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+PRETRAINED_MODEL=./models/resnet50/ResNet-<span class="number">50</span>-model.caffemodel
+t=$(date +%Y-%m-%d_%H:%M:%S) 
+LOG=./<span class="built_in">log</span>/train_res50_<span class="variable">$t</span>.log
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe train \
+    --solver=./models/resnet50/solver.prototxt \
+    --weights=<span class="variable">$PRETRAINED_MODEL</span> \
+    --gpu=<span class="number">0</span>,<span class="number">1</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> | tee <span class="variable">$LOG</span>
+</code></pre><p>训练时若出现内存不足停止，要减小train_val.prototxt中batchsize的大小。<br>若出现waiting for data，可能是硬盘读写速度慢，那就waiting吧。。。</p>
+<p><strong>5.测试</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe <span class="built_in">test</span> \
+    --model=./models/resnet50/ResNet-<span class="number">50</span>-train-val.prototxt \
+    --weights=./models/resnet50/output_iter_100000.caffemodel \
+    --gpu=<span class="number">1</span> \
+    --iterations=<span class="number">2000</span>
+</code></pre><p><strong>6.分类demo</strong></p>
+<p>在caffe/python下的classify.py文件可以用来对图像进行分类，但是没有输出可见的分类结果，需要改写些内容。开始之前需要把mean均值文件转换为.npy格式，代码如下：</p>
+<pre><code>import caffe
+import numpy as np
+import sys
+
+<span class="keyword">if</span> <span class="function"><span class="title">len</span><span class="params">(sys.argv)</span></span> != <span class="number">3</span>:
+    print <span class="string">"Usage: python convert_protomean.py proto.mean out.npy"</span>
+    sys.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+
+blob = caffe<span class="class">.proto</span><span class="class">.caffe_pb2</span><span class="class">.BlobProto</span>()
+data = <span class="function"><span class="title">open</span><span class="params">( sys.argv[<span class="number">1</span>] , <span class="string">'rb'</span> )</span></span>.<span class="function"><span class="title">read</span><span class="params">()</span></span>
+blob.<span class="function"><span class="title">ParseFromString</span><span class="params">(data)</span></span>
+arr = np.<span class="function"><span class="title">array</span><span class="params">( caffe.io.blobproto_to_array(blob)</span></span> )
+out = arr[<span class="number">0</span>]
+np.<span class="function"><span class="title">save</span><span class="params">( sys.argv[<span class="number">2</span>] , out )</span></span>
+</code></pre><p><strong>自己改写的classify-demo.py</strong></p>
+<pre><code><span class="built_in">import</span> numpy as np
+<span class="built_in">import</span> sys
+<span class="built_in">import</span> os
+<span class="built_in">import</span> caffe
+<span class="built_in">import</span> io
+<span class="built_in">#</span>from sys <span class="built_in">import</span> argv
+<span class="built_in">#</span>input filefolder you want to test
+<span class="built_in">#</span>tools,filefolder=argv
+
+caffe.set_device<span class="params">(<span class="number">0</span>)</span> 
+caffe.set_mode_gpu<span class="params">()</span>
+MODEL_FILE =<span class="string">"../models/googlenet/deploy.prototxt"</span>
+PRETRAINED = <span class="string">"../models/googlenet/output/bvlc_googlenet_iter_200000.caffemodel"</span>
+MEAN = <span class="string">"mean.npy"</span>
+
+net = caffe.Classifier<span class="params">(MODEL_FILE, PRETRAINED, mean = np.load<span class="params">(MEAN)</span>.mean<span class="params">(<span class="number">1</span>)</span>.mean<span class="params">(<span class="number">1</span>)</span>,
+channel_swap=<span class="params">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>)</span>,
+raw_scale=<span class="number">255</span>,
+image_dims=<span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span>)</span>
+
+filewriter = open<span class="params">(<span class="string">"../data/mydata/result.txt"</span>,<span class="string">"w+"</span>)</span>
+labels_file = '../data/mydata/synset_words.txt'
+labels = np.loadtxt<span class="params">(labels_file, str, delimiter='\t')</span>
+<span class="built_in">#</span>load groundtruth txt to dictionary
+groundtruth_file = '../data/mydata/groundtruth/abc.txt'
+dict_data = {}
+with open<span class="params">(groundtruth_file, 'r')</span> as df:
+    <span class="keyword">for</span> kv in [d.strip<span class="params">()</span>.split<span class="params">(' ')</span> <span class="keyword">for</span> d in df]:
+    dict_data[kv[<span class="number">0</span>]] = kv[<span class="number">1</span>]
+
+<span class="keyword">for</span> root,dirs,files in os.walk<span class="params">(<span class="string">"/home/xxx/project_data/mydata/abc/"</span>)</span>: <span class="built_in">#</span> all the images are in test folder
+
+    <span class="keyword">for</span> file in files:
+    IMAGE_FILE = os.path.join<span class="params">(root,file)</span>.decode<span class="params">('gbk')</span>.encode<span class="params">('utf8')</span>
+    <span class="built_in">#</span>print IMAGE_FILE
+    input_image = caffe.io.load_image<span class="params">(IMAGE_FILE)</span>
+    prediction = net.predict<span class="params">([input_image])</span>
+    string = os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>+<span class="string">"\n"</span>
+    filewriter.write<span class="params">(string)</span>
+    <span class="built_in">#</span>print os.path.basename<span class="params">(IMAGE_FILE)</span>, prediction[<span class="number">0</span>].argmax<span class="params">()</span>
+    <span class="built_in">#</span> load ImageNet labels
+
+    label_true=dict_data[os.path.basename<span class="params">(IMAGE_FILE)</span>]
+    <span class="keyword">if</span> label_true==<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'v'
+    <span class="keyword">else</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'x'
+
+filewriter.close<span class="params">()</span>
+</code></pre><p><strong>7.plot训练测试曲线</strong></p>
+<p>caffe/tools/extra下包含几个有用的工具，其中包括将日志文件.log绘制出训练阶段的loss变化和测试阶段accuracy的变化情况，具体：</p>
+<pre><code>./parse_log.<span class="keyword">sh</span> xxxx.<span class="keyword">log</span> #解析日志，划分为train <span class="keyword">test</span>两个文件
+
+./plot_training_log.py.example 0~7 <span class="keyword">save</span>.png xxxx.<span class="keyword">log</span> #绘制图
+
+<span class="keyword">Notes</span>:  
+    1. Supporting multiple logs.  
+    2. <span class="keyword">Log</span> <span class="keyword">file</span> name must end with the lower-cased <span class="string">".log"</span>.  
+Supported chart types:  
+    0: <span class="keyword">Test</span> accuracy  vs. Iters  
+    1: <span class="keyword">Test</span> accuracy  vs. Seconds  
+    2: <span class="keyword">Test</span> loss  vs. Iters  
+    3: <span class="keyword">Test</span> loss  vs. Seconds  
+    4: Train learning rate  vs. Iters  
+    5: Train learning rate  vs. Seconds  
+    6: Train loss  vs. Iters  
+    7: Train loss  vs. Seconds  
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/">Next &raquo;</a>
     </nav>
   
 </div>

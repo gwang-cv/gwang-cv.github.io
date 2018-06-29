@@ -91,8 +91,6 @@
 							
 								<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
 					        
-								<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
-					        
 								<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
 					        
 						</div>
@@ -156,8 +154,6 @@
 					
 						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github">github</a>
 			        
-						<a class="weibo" target="_blank" href="http://weibo.com/messiwang" title="weibo">weibo</a>
-			        
 						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google">google</a>
 			        
 				</div>
@@ -167,925 +163,6 @@
 </nav>
 
       <div class="body-wrap">
-  
-    <article id="post-为终端设置Shadowsocks代理" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/12/为终端设置Shadowsocks代理/" class="article-date">
-  	<time datetime="2017-09-12T09:55:10.000Z" itemprop="datePublished">2017-09-12</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/12/为终端设置Shadowsocks代理/">为终端设置Shadowsocks代理</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>PS：为解决python tweepy连接twitter api超时的问题。</p>
-<pre><code>tweepy.<span class="function"><span class="title">api</span><span class="params">(auth,proxy=<span class="string">"localhost:1080"</span>)</span></span>
-</code></pre><p>做开发都会经常接触终端，有些时候我们在终端会做一些网络操作，比如下载gradle包等，由于一些你懂我也懂的原因，某些网络操作不是那么理想，这时候我们就需要设置代理来自由地访问网络。<br>Shadowsocks是我们常用的代理工具，它使用socks5协议，而终端很多工具目前只支持http和https等协议，对socks5协议支持不够好，所以我们为终端设置shadowsocks的思路就是将socks协议转换成http协议，然后为终端设置即可。仔细想想也算是适配器模式的一种现实应用吧。<br>想要进行转换，需要借助工具，这里我们采用比较知名的polipo来实现。polipo是一个轻量级的缓存web代理程序。</p>
-<p><strong>准备工作</strong></p>
-<p>首先需要配置好一个可用的shadowsocks，客户端下载地址：<a href="https://github.com/shadowsocks/shadowsocks/releases" target="_blank" rel="external">https://github.com/shadowsocks/shadowsocks/releases</a></p>
-<p>安装和配置ss，请自行搜索解决。</p>
-<p>安装<br>Fedora安装</p>
-<pre><code>sudo yum <span class="keyword">install</span> polipo
-</code></pre><p>Mac下使用Homebrew安装</p>
-<pre><code><span class="keyword">brew </span>install polipo
-</code></pre><p>Ubuntu安装</p>
-<pre><code>sudo apt-<span class="keyword">get</span> install polipo
-</code></pre><p><strong>修改配置(Linux)</strong></p>
-<p>如下打开配置文件</p>
-<pre><code>sudo vim <span class="regexp">/etc/</span>polipo<span class="regexp">/config</span>
-</code></pre><p>设置ParentProxy为Shadowsocks，通常情况下本机shadowsocks的地址如下</p>
-<pre><code><span class="comment"># Uncomment this if you want to use a parent SOCKS proxy:</span>
-
-<span class="variable">socksParentProxy =</span> <span class="string">"localhost:1080"</span>
-<span class="variable">socksProxyType =</span> socks5
-</code></pre><p>设置日志输出文件</p>
-<pre><code><span class="built_in">log</span>File=/var/<span class="built_in">log</span>/polipo
-<span class="built_in">log</span>Level=<span class="number">4</span>
-</code></pre><p><strong>修改配置(Mac)</strong></p>
-<p>设置每次登陆启动polipo</p>
-<pre><code>ln -sfv <span class="regexp">/usr/</span>local<span class="regexp">/opt/</span>polipo<span class="comment">/*.plist ~/Library/LaunchAgents</span>
-</code></pre><p>修改文件<code>/usr/local/opt/polipo/homebrew.mxcl.polipo.plist</code>设置parentProxy</p>
-<pre><code><span class="pi">&lt;?xml version="1.0" encoding="UTF-8"?&gt;</span>
-<span class="doctype">&lt;!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd"&gt;</span>
-<span class="tag">&lt;<span class="title">plist</span> <span class="attribute">version</span>=<span class="value">"1.0"</span>&gt;</span>
-  <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">key</span>&gt;</span>Label<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">string</span>&gt;</span>homebrew.mxcl.polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">key</span>&gt;</span>RunAtLoad<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
-    <span class="tag">&lt;<span class="title">key</span>&gt;</span>KeepAlive<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">true</span>/&gt;</span>
-    <span class="tag">&lt;<span class="title">key</span>&gt;</span>ProgramArguments<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">array</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">string</span>&gt;</span>/usr/local/opt/polipo/bin/polipo<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
-        <span class="tag">&lt;<span class="title">string</span>&gt;</span>socksParentProxy=localhost:1080<span class="tag">&lt;/<span class="title">string</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">array</span>&gt;</span>
-    <span class="comment">&lt;!-- Set `ulimit -n 20480`. The default OS X limit is 256, that's
-         not enough for Polipo (displays 'too many files open' errors).
-         It seems like you have no reason to lower this limit
-         (and unlikely will want to raise it). --&gt;</span>
-    <span class="tag">&lt;<span class="title">key</span>&gt;</span>SoftResourceLimits<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-    <span class="tag">&lt;<span class="title">dict</span>&gt;</span>
-      <span class="tag">&lt;<span class="title">key</span>&gt;</span>NumberOfFiles<span class="tag">&lt;/<span class="title">key</span>&gt;</span>
-      <span class="tag">&lt;<span class="title">integer</span>&gt;</span>20480<span class="tag">&lt;/<span class="title">integer</span>&gt;</span>
-    <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
-  <span class="tag">&lt;/<span class="title">dict</span>&gt;</span>
-<span class="tag">&lt;/<span class="title">plist</span>&gt;</span>
-</code></pre><p>修改的地方是增加了<code>&lt;string&gt;socksParentProxy=localhost:1080&lt;/string&gt;</code></p>
-<p><strong>启动（Linux）</strong></p>
-<p>先关闭正在运行的polipo，然后再次启动</p>
-<pre><code>sudo <span class="keyword">service</span> polipo <span class="literal">stop</span>
-sudo <span class="keyword">service</span> polipo <span class="literal">start</span>
-</code></pre><p><strong>启动(Mac)</strong></p>
-<pre><code>launchctl unload ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plist</span>
-launchctl load ~/Library/LaunchAgents/homebrew<span class="class">.mxcl</span><span class="class">.polipo</span><span class="class">.plis</span>
-</code></pre><p>注意：请确保Shadowsocks正常工作。</p>
-<p><strong>验证及使用</strong></p>
-<p>安装完成就需要进行验证是否work。这里展示一个最简单的验证方法，打开终端，如下执行</p>
-<pre><code><span class="number">07</span>:<span class="number">56</span>:<span class="number">24</span>-<span class="keyword">androidyue/var/log$ </span>curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">15</span> 来自：中国天津天津 联通
-<span class="number">08</span>:<span class="number">09</span>:<span class="number">23</span>-<span class="keyword">androidyue/var/log$ </span>http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span> curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本
-</code></pre><p>如上所示，为某个命令设置代理，前面加上http_proxy=<a href="http://localhost:8123" target="_blank" rel="external">http://localhost:8123</a> 后接命令即可。<br>注：8123是polipo的默认端口，如有需要，可以修改成其他有效端口。</p>
-<p><strong>设置别名</strong></p>
-<p>bash中有一个很好的东西，就是别名alias. Linux用户修改~/.bashrc，Mac用户修改~/.bash_profile文件，增加如下设置</p>
-<pre><code><span class="keyword">alias</span> <span class="title">hp</span>=<span class="string">"http_proxy=http://localhost:8123"</span>
-</code></pre><p>然后Linux用户执行source ~/.bashrc，Mac用户执行source ~/.bash_profile</p>
-<p><strong>测试使用</strong></p>
-<pre><code><span class="number">20</span>:<span class="number">39</span>:<span class="number">39</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
-<span class="number">20</span>:<span class="number">39</span>:<span class="number">44</span>-<span class="keyword">androidyue~$ </span>hp curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
-<span class="number">20</span>:<span class="number">39</span>:<span class="number">48</span>-<span class="keyword">androidyue~$ </span>
-</code></pre><p><strong>当前会话全局设置</strong></p>
-<p>如果嫌每次为每一个命令设置代理比较麻烦，可以为当前会话设置全局的代理。即使用export http_proxy=<a href="http://localhost:8123即可。" target="_blank" rel="external">http://localhost:8123即可。</a> 如果想撤销当前会话的http_proxy代理，使用 unset http_proxy 即可。 示例效果如下</p>
-<pre><code><span class="number">21</span>:<span class="number">29</span>:<span class="number">49</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
-<span class="number">21</span>:<span class="number">29</span>:<span class="number">52</span>-<span class="keyword">androidyue~$ </span><span class="preprocessor">export</span> http_proxy<span class="label">=http</span>://localhost:<span class="number">8123</span>
-<span class="number">21</span>:<span class="number">30</span>:<span class="number">07</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">210</span>.<span class="number">140</span>.<span class="number">193</span>.<span class="number">128</span> 来自：日本日本 
-<span class="number">21</span>:<span class="number">30</span>:<span class="number">12</span>-<span class="keyword">androidyue~$ </span>unset http_proxy
-<span class="number">21</span>:<span class="number">30</span>:<span class="number">37</span>-<span class="keyword">androidyue~$ </span>curl <span class="literal">ip</span>.gs
-当前 <span class="literal">IP</span>：<span class="number">125</span>.<span class="number">39</span>.<span class="number">112</span>.<span class="number">14</span> 来自：中国天津天津 联通
-</code></pre><p>如果想要更长久的设置代理，可以将export http_proxy=<a href="http://localhost:8123加入.bashrc或者.bash_profile文件" target="_blank" rel="external">http://localhost:8123加入.bashrc或者.bash_profile文件</a></p>
-<p><strong>设置Git代理</strong><br>复杂一些的设置Git代理</p>
-<pre><code>git clone <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo --config http.proxy=localhost:8123</span>
-
-Cloning into <span class="string">'repo'</span>...
-<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
-<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
-<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
-Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 492 KiB/</span>s, done.
-Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
-</code></pre><p>其实这样还是比较复杂，因为需要记忆的东西比较多，下面是一个更简单的实现<br>首先，在.bashrc或者.bash_profile文件加入这一句。</p>
-<pre><code><span class="setting">gp=<span class="value"><span class="string">" --config http.proxy=localhost:8123"</span></span></span>
-</code></pre><p>然后执行source操作，更新当前bash配置。</p>
-<p>更简单的使用git的方法</p>
-<pre><code>git clone  <span class="string">https:</span><span class="comment">//android.googlesource.com/tools/repo $gp</span>
-
-Cloning into <span class="string">'repo'</span>...
-<span class="string">remote:</span> Counting <span class="string">objects:</span> <span class="number">135</span>, done
-<span class="string">remote:</span> Finding <span class="string">sources:</span> <span class="number">100</span>% (<span class="number">135</span>/<span class="number">135</span>)
-<span class="string">remote:</span> Total <span class="number">3483</span> (delta <span class="number">1956</span>), reused <span class="number">3483</span> (delta <span class="number">1956</span>)
-Receiving <span class="string">objects:</span> <span class="number">100</span>% (<span class="number">3483</span><span class="regexp">/3483), 2.63 MiB | 483 KiB/</span>s, done.
-Resolving <span class="string">deltas:</span> <span class="number">100</span>% (<span class="number">1956</span>/<span class="number">1956</span>), done.
-</code></pre><p>End</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-解决opencv无法读取视频数据(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/" class="article-date">
-  	<time datetime="2017-09-10T09:25:51.000Z" itemprop="datePublished">2017-09-10</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/">解决opencv无法读取视频数据(Ubuntu)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>错误描述：</strong></p>
-<pre><code>OpenCV <span class="keyword">Error</span>: Unspecified <span class="keyword">error</span> (The <span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild
- the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span> Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu
-  <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> 
-  configure script) <span class="keyword">in</span> cvNamedWindow, file /io/opencv/modules/highgui/src/window.cpp, line <span class="number">565</span>
-Traceback (most recent <span class="keyword">call</span> last):
-  File <span class="string">"video_tools/demo.py"</span>, line <span class="number">103</span>, <span class="keyword">in</span> &lt;<span class="keyword">module</span>&gt;
-    cv2.namedWindow(<span class="comment">'ret',0)</span>
-cv2.<span class="keyword">error</span>: /io/opencv/modules/highgui/src/window.cpp:<span class="number">565</span>: <span class="keyword">error</span>: (-<span class="number">2</span>) The 
-<span class="keyword">function</span> <span class="keyword">is</span> <span class="keyword">not</span> implemented. Rebuild the library <span class="keyword">with</span> Windows, GTK+ <span class="number">2.</span>x <span class="keyword">or</span>
- Carbon support. <span class="keyword">If</span> you are <span class="keyword">on</span> Ubuntu <span class="keyword">or</span> Debian, install libgtk2.0-dev <span class="keyword">and</span> 
- pkg-config, <span class="keyword">then</span> re-run cmake <span class="keyword">or</span> configure script <span class="keyword">in</span> <span class="keyword">function</span> cvNamedWindow
-</code></pre><p><strong>分析：</strong></p>
-<p>在Ubuntu16.04下安装OpenCV3.2之前，确实已经提前安装了各种依赖包，特别是libgtk2.0-dev and pkg-config已经确认安装，通过在python下使用<code>cv2.getBuildInformation()</code>查看：</p>
-<pre><code>GUI: 
-    QT:                          <span class="keyword">NO</span>
-    GTK+:                        <span class="keyword">NO</span>
-    GThread :                    YES (ver 2.12.3)
-    GtkGlExt:                    <span class="keyword">NO</span>
-    OpenGL support:              <span class="keyword">NO</span>
-    VTK support:                 <span class="keyword">NO</span>
-
-  Media I/O: 
-    ZLib:                        zlib (ver 1.2.8)
-    JPEG:                        libjpeg (ver 90)
-    WEBP:                        build (ver 0.3.1)
-    PNG:                         build (ver 1.6.24)
-    TIFF:                        build (ver 42 - 4.0.2)
-    JPEG 2000:                   build (ver 1.900.1)
-    OpenEXR:                     build (ver 1.7.1)
-    GDAL:                        <span class="keyword">NO</span>
-    GDCM:                        <span class="keyword">NO</span>
-
-  Video I/O:
-    DC1394 1.x:                  <span class="keyword">NO</span>
-    DC1394 2.x:                  <span class="keyword">NO</span>
-    FFMPEG:                      <span class="keyword">NO</span>
-      avcodec:                   <span class="keyword">NO</span>
-      avformat:                  <span class="keyword">NO</span>
-      avutil:                    <span class="keyword">NO</span>
-      swscale:                   <span class="keyword">NO</span>
-      avresample:                <span class="keyword">NO</span>
-    GStreamer:                   <span class="keyword">NO</span>
-    OpenNI:                      <span class="keyword">NO</span>
-    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
-    OpenNI2:                     <span class="keyword">NO</span>
-    PvAPI:                       <span class="keyword">NO</span>
-    GigEVisionSDK:               <span class="keyword">NO</span>
-    Aravis SDK:                  <span class="keyword">NO</span>
-    UniCap:                      <span class="keyword">NO</span>
-    UniCap ucil:                 <span class="keyword">NO</span>
-    V4L/V4L2:                    <span class="keyword">NO</span>/<span class="keyword">NO</span>
-    XIMEA:                       <span class="keyword">NO</span>
-    Xine:                        <span class="keyword">NO</span>
-    gPhoto2:                     <span class="keyword">NO</span>
-
-  Parallel framework:            pthreads
-
-  Other third-party libraries:
-    <span class="keyword">Use</span> IPP:                     <span class="keyword">NO</span>
-    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
-    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Lapack:                  <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Cuda:                    <span class="keyword">NO</span>
-    <span class="keyword">Use</span> OpenCL:                  YES
-    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
-    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
-
-  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
-    <span class="keyword">Include</span> path:                /io/opencv/3rdparty/<span class="keyword">include</span>/opencl/1.2
-    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
-    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
-
-  Python 2:
-    Interpreter:                 python (ver 2.7.13)
-    Libraries:                   
-    numpy:                       /opt/python/cp27-cp27mu/lib/python2.7/site-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.1)
-    packages path:               /opt/python/cp27-cp27mu/lib/python2.7/site-packages
-
-  Python 3:
-    Interpreter:                 <span class="keyword">NO</span>
-
-  Python (<span class="keyword">for</span> build):            python
-
-  Java:
-    ant:                         <span class="keyword">NO</span>
-    JNI:                         <span class="keyword">NO</span>
-    Java wrappers:               <span class="keyword">NO</span>
-    Java tests:                  <span class="keyword">NO</span>
-
-  Matlab:                        Matlab not found or implicitly disabled
-
-  Tests and samples:
-    Tests:                       <span class="keyword">NO</span>
-    Performance tests:           <span class="keyword">NO</span>
-    C/C++ Examples:              <span class="keyword">NO</span>
-
-  Install path:                  /usr/<span class="keyword">local</span>
-
-  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /io/opencv/build
------------------------------------------------------------------
-</code></pre><p>安装官方给出的建议，重新编译，特别注意一些开关要设置下：</p>
-<pre><code>sudo apt-get -y install libopencv-dev build-essential checkinstall cmake pkg-config yasm  libjpeg-dev libjasper-dev libavcodec-dev libavformat-dev libswscale-dev libdc1394-22-dev  libgstreamer0.10-dev libgstreamer-plugins-base0.10-dev libv4l-dev python-dev python-numpy libtbb-dev libqt4-dev libgtk2.0-dev libfaac-dev libmp3lame-dev libopencore-amrnb-dev libopencore-amrwb-dev libtheora-dev libvorbis-dev libxvidcore-dev x264 v4l-utils libtiff5-dev libjpeg62-dev ffmpeg libatlas-base-dev gfortran
-
-cmake 
--<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_BUILD_TYPE</span>=<span class="constant">RELEASE</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CMAKE_INSTALL_PREFIX</span>=<span class="regexp">/usr/local</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">FORCE_VTK</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_NEW_PYTHON_SUPPORT</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_C_EXAMPLES</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">INSTALL_PYTHON_EXAMPLES</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_TBB</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_V4L</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_QT</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_OPENGL</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_CUBLAS</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">CUDA_NVCC_FLAGS</span>=<span class="string">"-D_FORCE_INLINES"</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_GDAL</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_XINE</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">BUILD_EXAMPLES</span>=<span class="constant">ON</span> \
-</span>-<span class="ruby"><span class="constant">D</span> <span class="constant">WITH_FFMPEG</span>=<span class="constant">ON</span> ..</span>
-</code></pre><p>   make -j32<br>   make install</p>
-<p>但是我发现，在重新编译后安装后的<code>cv2.so</code>，引入到python后得到的信息如下：</p>
-<pre><code>GUI: 
-    QT 4.x:                      YES (ver 4.8.7 EDITION = OpenSource)
-    QT OpenGL support:           YES (/usr/lib/x86_64-linux-gnu/libQtOpenGL.<span class="keyword">so</span>)
-    OpenGL support:              YES (/usr/lib/x86_64-linux-gnu/libGLU.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libGL.<span class="keyword">so</span>)
-    VTK support:                 <span class="keyword">NO</span>
-
-  Media I/O: 
-    ZLib:                        /usr/lib/x86_64-linux-gnu/libz.<span class="keyword">so</span> (ver 1.2.8)
-    JPEG:                        /usr/lib/x86_64-linux-gnu/libjpeg.<span class="keyword">so</span> (ver )
-    WEBP:                        build (ver 0.3.1)
-    PNG:                         /usr/lib/x86_64-linux-gnu/libpng.<span class="keyword">so</span> (ver 1.2.54)
-    TIFF:                        /usr/lib/x86_64-linux-gnu/libtiff.<span class="keyword">so</span> (ver 42 - 4.0.6)
-    JPEG 2000:                   /usr/lib/x86_64-linux-gnu/libjasper.<span class="keyword">so</span> (ver 1.900.1)
-    OpenEXR:                     /usr/lib/x86_64-linux-gnu/libImath.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmImf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIex.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libHalf.<span class="keyword">so</span> /usr/lib/x86_64-linux-gnu/libIlmThread.<span class="keyword">so</span> (ver 2.2.0)
-    GDAL:                        <span class="keyword">NO</span>
-    GDCM:                        <span class="keyword">NO</span>
-
-  Video I/O:
-    DC1394 1.x:                  <span class="keyword">NO</span>
-    DC1394 2.x:                  YES (ver 2.2.4)
-    FFMPEG:                      YES
-      avcodec:                   YES (ver 56.60.100)
-      avformat:                  YES (ver 56.40.101)
-      avutil:                    YES (ver 54.31.100)
-      swscale:                   YES (ver 3.1.101)
-      avresample:                <span class="keyword">NO</span>
-    GStreamer:                   
-      base:                      YES (ver 0.10.36)
-      video:                     YES (ver 0.10.36)
-      <span class="keyword">app</span>:                       YES (ver 0.10.36)
-      riff:                      YES (ver 0.10.36)
-      pbutils:                   YES (ver 0.10.36)
-    OpenNI:                      <span class="keyword">NO</span>
-    OpenNI PrimeSensor Modules:  <span class="keyword">NO</span>
-    OpenNI2:                     <span class="keyword">NO</span>
-    PvAPI:                       <span class="keyword">NO</span>
-    GigEVisionSDK:               <span class="keyword">NO</span>
-    Aravis SDK:                  <span class="keyword">NO</span>
-    UniCap:                      <span class="keyword">NO</span>
-    UniCap ucil:                 <span class="keyword">NO</span>
-    V4L/V4L2:                    <span class="keyword">NO</span>/YES
-    XIMEA:                       <span class="keyword">NO</span>
-    Xine:                        <span class="keyword">NO</span>
-    gPhoto2:                     <span class="keyword">NO</span>
-
-  Parallel framework:            TBB (ver 4.4 interface 9002)
-
-  Other third-party libraries:
-    <span class="keyword">Use</span> IPP:                     9.0.1 [9.0.1]
-         at:                     /home/gwang/opencv-3.2.0/build/3rdparty/ippicv/ippicv_lnx
-    <span class="keyword">Use</span> IPP Async:               <span class="keyword">NO</span>
-    <span class="keyword">Use</span> VA:                      <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Intel VA-API/OpenCL:     <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Lapack:                  YES (/opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_core.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_intel_lp64.<span class="keyword">so</span> /opt/intel/mkl/lib/intel64/libmkl_sequential.<span class="keyword">so</span> -lpthread -lm -ldl)
-    <span class="keyword">Use</span> Eigen:                   <span class="keyword">NO</span>
-    <span class="keyword">Use</span> Cuda:                    YES (ver 8.0)
-    <span class="keyword">Use</span> OpenCL:                  YES
-    <span class="keyword">Use</span> OpenVX:                  <span class="keyword">NO</span>
-    <span class="keyword">Use</span> custom HAL:              <span class="keyword">NO</span>
-
-  NVIDIA CUDA
-    <span class="keyword">Use</span> CUFFT:                   YES
-    <span class="keyword">Use</span> CUBLAS:                  YES
-    <span class="keyword">USE</span> NVCUVID:                 <span class="keyword">NO</span>
-    NVIDIA GPU <span class="keyword">arch</span>:             20 30 35 37 50 52 60 61
-    NVIDIA PTX archs:
-    <span class="keyword">Use</span> fast math:               <span class="keyword">NO</span>
-
-  OpenCL:                        &lt;Dynamic loading of OpenCL library&gt;
-    <span class="keyword">Include</span> path:                /home/gwang/opencv-3.2.0/3rdparty/<span class="keyword">include</span>/opencl/1.2
-    <span class="keyword">Use</span> AMDFFT:                  <span class="keyword">NO</span>
-    <span class="keyword">Use</span> AMDBLAS:                 <span class="keyword">NO</span>
-
-  Python 2:
-    Interpreter:                 /usr/bin/python2.7 (ver 2.7.12)
-    Libraries:                   /usr/lib/x86_64-linux-gnu/libpython2.7.<span class="keyword">so</span> (ver 2.7.12)
-    numpy:                       /usr/<span class="keyword">local</span>/lib/python2.7/dist-packages/numpy/core/<span class="keyword">include</span> (ver 1.11.0)
-    packages path:               lib/python2.7/dist-packages
-
-  Python 3:
-    Interpreter:                 /usr/bin/python3 (ver 3.5.2)
-
-  Python (<span class="keyword">for</span> build):            /usr/bin/python2.7
-
-  Java:
-    ant:                         <span class="keyword">NO</span>
-    JNI:                         /usr/lib/jvm/default-java/<span class="keyword">include</span> /usr/lib/jvm/default-java/<span class="keyword">include</span>/linux /usr/lib/jvm/default-java/<span class="keyword">include</span>
-    Java wrappers:               <span class="keyword">NO</span>
-    Java tests:                  <span class="keyword">NO</span>
-
-  Matlab:
-    mex:                         /usr/<span class="keyword">local</span>/MATLAB/R2014a/bin/mex
-    Compiler/generator:          Not working (bindings will not be generated)
-
-  Documentation:
-    Doxygen:                     <span class="keyword">NO</span>
-
-  Tests and samples:
-    Tests:                       YES
-    Performance tests:           YES
-    C/C++ Examples:              YES
-
-  Install path:                  /usr/<span class="keyword">local</span>
-
-  cvconfig.<span class="keyword">h</span> is <span class="keyword">in</span>:              /home/gwang/opencv-3.2.0/build
------------------------------------------------------------------
-</code></pre><p>同样在终端内python控制台得到的information和.py文件内得到information居然不一样，仔细分析发现这两个不是一个东西，想想是不是通过其他方式安装了opencv，通过尝试如下命令发现了这个bug：</p>
-<pre><code>sudo pip uninstall opencv-python
-
-The directory '/home/xxx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
-Uninstalling opencv-python-<span class="number">3.2</span>.0.7:
-  /home/xxx/.<span class="keyword">local</span>/LICENSE-<span class="number">3</span>RD-PARTY.txt
-  /home/xxx/.<span class="keyword">local</span>/LICENSE.txt
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.py
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/__init__.pyc
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/cv2/cv2.so
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/DESCRIPTION.rst
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/INSTALLER
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/METADATA
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/RECORD
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/WHEEL
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/metadata.json
-  /home/xxx/.<span class="keyword">local</span>/lib/python2.7/site-packages/opencv_python-<span class="number">3.2</span>.0.7.dist-info/top_level.txt
-Proceed (y/n)? 
-y
-  Successfully uninstalled opencv-python-<span class="number">3.2</span>.0.7
-The directory '/home/xx/.cache/pip/http' <span class="keyword">or</span> <span class="keyword">its</span> parent directory <span class="keyword">is</span> <span class="keyword">not</span> owned <span class="keyword">by</span> <span class="keyword">the</span> current user <span class="keyword">and</span> <span class="keyword">the</span> cache has been disabled. Please check <span class="keyword">the</span> permissions <span class="keyword">and</span> owner <span class="keyword">of</span> <span class="keyword">that</span> directory. If executing pip <span class="keyword">with</span> sudo, you may want sudo's -H flag.
-</code></pre><p>卸载后，到终端python命令行内进行测试：</p>
-<pre><code><span class="prompt">&gt;&gt;</span>&gt;python
-<span class="prompt">&gt;&gt;</span>&gt;import cv2
-<span class="prompt">&gt;&gt;</span>&gt;<span class="constant">Traceback</span> (most recent call last)<span class="symbol">:</span>
-  <span class="constant">File</span> <span class="string">"&lt;stdin&gt;"</span>, line <span class="number">1</span>, <span class="keyword">in</span> &lt;<span class="class"><span class="keyword">module</span>&gt;</span>
-<span class="constant">ImportError</span><span class="symbol">:</span> <span class="constant">No</span> <span class="class"><span class="keyword">module</span> <span class="title">named</span> <span class="title">cv2</span></span>
-</code></pre><p>没有找到cv2，那么要把编译安装后的cv2.so重新链接下：</p>
-<pre><code>cd <span class="regexp">/usr/</span>local<span class="regexp">/lib/</span>python2.7/dist-packages
-sudo ln -s <span class="regexp">/home/</span>xxx<span class="regexp">/opencv3.2/</span>build<span class="regexp">/lib/</span>cv2.so cv2.so
-</code></pre><p>至此，终于搞定这个问题！！</p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-编译ab压力测试并发(Ubuntu)" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/09/08/编译ab压力测试并发(Ubuntu)/" class="article-date">
-  	<time datetime="2017-09-08T07:50:31.000Z" itemprop="datePublished">2017-09-08</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">编译ab压力测试并发(Ubuntu)</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Abstract</strong></p>
-<p>用深度学习框架caffe做的project，需要对其进行并发数请求数的压力测试，找到了apachebench(ab)简单的压力测试工具，但在Ubuntu下通过apt-get安装的ab，在处理请求数高于200,300左右的时候就会报错终止<code>apr_socket_recv: Connection reset by peer</code>，查阅资料显示需要对ab进行重新修改并编译后方可破除这个问题（无论是如何安装的，都要从头开始重新修改编译安装）。</p>
-<p><strong>1.下载所需要的源码</strong></p>
-<p>apr和apr-util下载：<a href="http://apr.apache.org/download.cgi" target="_blank" rel="external">http://apr.apache.org/download.cgi </a></p>
-<p>ab-standalone源码下载:<a href="https://code.google.com/p/apachebench-standalone/downloads/list" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/downloads/list</a></p>
-<p><strong>2.编译安装</strong></p>
-<p>分别解压三个压缩包：</p>
-<pre><code>ab-standalone-<span class="number">0.1</span><span class="class">.tar</span><span class="class">.bz2</span> 
-apr-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-apr-util-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-</code></pre><p><strong>a.编译apr</strong></p>
-<pre><code><span class="variable">$ </span>cd apr
-<span class="variable">$ </span>./configure  
-<span class="variable">$ </span>make  
-<span class="variable">$ </span>sudo make install  
-</code></pre><p><strong>b.编译apr-util</strong></p>
-<pre><code><span class="char">$ </span>cd apr-util 
-<span class="char">$ </span>./configure --with-apr=/usr/local/apr  
-<span class="char">$ </span>make  
-<span class="char">$ </span>sudo make install  
-</code></pre><p><strong>c.编译ab</strong></p>
-<p>修改ab-standalone/ab.c文件</p>
-<pre><code>$ <span class="keyword">cd</span> <span class="keyword">ab</span>/<span class="keyword">ab</span>-standalone  
-$ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="keyword">c</span>  
-</code></pre><p>到1380行修改成如下:</p>
-<pre><code><span class="comment">/* catch legitimate fatal apr_socket_recv errors */</span>  
-<span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(status != APR_SUCCESS)</span> {  
-    err_recv++;  
-    <span class="keyword">if</span> <span class="params">(recverrok)</span> {  
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        <span class="keyword">if</span> <span class="params">(verbosity &gt;= <span class="number">1</span>)</span> {  
-            char buf[<span class="number">120</span>];  
-            fprintf<span class="params">(stderr,<span class="string">"%s: %s (%d)\n"</span>, <span class="string">"apr_socket_recv"</span>, apr_strerror<span class="params">(status, buf, sizeof buf)</span>, status)</span>;  
-        }  
-        return;  
-    } <span class="keyword">else</span> {  
-        <span class="comment">//apr_err("apr_socket_recv", status);   // begin </span>
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        return;      <span class="comment">// end </span>
-    }  
-}  
-</code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
-<p>开始编译ab</p>
-<pre><code>$ <span class="keyword">make</span> apr-skeleton
-$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
-$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
-</code></pre><hr>
-<p><strong>3.注意</strong></p>
-<p>连接库文件问题：</p>
-<p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>
-<p>或者从编译后的usr/local/apr/lib下面将几个文件拷贝到/usr/lib/x86_64-linux-gnu下做链接：</p>
-<pre><code>sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.a /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/liaprutil-1.so /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.so.0.6.0 /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.la /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-cd <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>
-sudo ln -s libaprutil-<span class="number">1.</span>so.0.6.0 libaprutil-<span class="number">1.</span>so.0
-sudo ldconfig
-</code></pre><p>同理，不选择apt-get安装，而如此设置libapr1.so.0即可。</p>
-<hr>
-<p><strong>4.测试</strong></p>
-<p>查看版本：</p>
-<pre><code><span class="variable">$ </span>ab -<span class="constant">V</span>
-<span class="constant">This </span>is <span class="constant">ApacheBench,</span> <span class="constant">Version </span><span class="number">2.3</span> &lt;<span class="variable">$Revision</span><span class="variable">$&gt;</span>
-<span class="constant">Copyright </span><span class="number">1996</span> <span class="constant">Adam Twiss,</span> <span class="constant">Zeus Technology Ltd,</span> <span class="symbol">http:</span>/<span class="regexp">/www.zeustech.net/</span>
-<span class="constant">Licensed </span>to <span class="constant">The Apache Software Foundation,</span> <span class="symbol">http:</span>/<span class="regexp">/www.apache.org/</span>
-</code></pre><p>测试并发数：</p>
-<pre><code>ab -n <span class="number">500</span> -c <span class="number">500</span> <span class="number">127.0</span>.0.1  # -n请求数，-c并发数，-n&gt;=-c
-
-This is ApacheBench, Version <span class="number">2.3</span> &lt;$Revision$&gt;
-Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, <span class="string">http:</span><span class="comment">//www.zeustech.net/</span>
-Licensed to The Apache Software Foundation, <span class="string">http:</span><span class="comment">//www.apache.org/</span>
-
-Benchmarking <span class="number">127.0</span>.0.1 (be patient)
-Completed <span class="number">100</span> requests
-Completed <span class="number">200</span> requests
-Completed <span class="number">300</span> requests
-Completed <span class="number">400</span> requests
-Completed <span class="number">500</span> requests
-Finished <span class="number">500</span> requests
-
-
-Server <span class="string">Software:</span>        TornadoServer/<span class="number">4.5</span>.2
-Server <span class="string">Hostname:</span>        <span class="number">127.0</span>.0.1
-Server <span class="string">Port:</span>            <span class="number">1000</span>
-
-Document <span class="string">Path:</span>          /
-Document <span class="string">Length:</span>        <span class="number">221727</span> bytes
-
-Concurrency <span class="string">Level:</span>      <span class="number">500</span>
-Time taken <span class="keyword">for</span> <span class="string">tests:</span>   <span class="number">215.661</span> seconds
-Complete <span class="string">requests:</span>      <span class="number">500</span>
-Failed <span class="string">requests:</span>        <span class="number">1023</span>
-   (<span class="string">Connect:</span> <span class="number">0</span>, <span class="string">Receive:</span> <span class="number">341</span>, <span class="string">Length:</span> <span class="number">341</span>, <span class="string">Exceptions:</span> <span class="number">341</span>)
-Write <span class="string">errors:</span>           <span class="number">0</span>
-Total <span class="string">transferred:</span>      <span class="number">35272401</span> bytes
-HTML <span class="string">transferred:</span>       <span class="number">35254593</span> bytes
-Requests per <span class="string">second:</span>    <span class="number">2.32</span> [#/sec] (mean)
-Time per <span class="string">request:</span>       <span class="number">215661.110</span> [ms] (mean)
-Time per <span class="string">request:</span>       <span class="number">431.322</span> [ms] (mean, across all concurrent requests)
-Transfer <span class="string">rate:</span>          <span class="number">159.72</span> [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-<span class="string">Connect:</span>        <span class="number">0</span>  <span class="number">355</span> <span class="number">3586.5</span>      <span class="number">0</span>   <span class="number">63141</span>
-<span class="string">Processing:</span>  <span class="number">1557</span> <span class="number">119576</span> <span class="number">33974.7</span> <span class="number">127335</span>  <span class="number">182963</span>
-<span class="string">Waiting:</span>        <span class="number">0</span> <span class="number">33466</span> <span class="number">58718.9</span>      <span class="number">0</span>  <span class="number">182963</span>
-<span class="string">Total:</span>       <span class="number">1566</span> <span class="number">119931</span> <span class="number">34207.2</span> <span class="number">127335</span>  <span class="number">210234</span>
-
-Percentage of the requests served within a certain time (ms)
-  <span class="number">50</span>%  <span class="number">127335</span>
-  <span class="number">66</span>%  <span class="number">127336</span>
-  <span class="number">75</span>%  <span class="number">127337</span>
-  <span class="number">80</span>%  <span class="number">127337</span>
-  <span class="number">90</span>%  <span class="number">151213</span>
-  <span class="number">95</span>%  <span class="number">175948</span>
-  <span class="number">98</span>%  <span class="number">176152</span>
-  <span class="number">99</span>%  <span class="number">177742</span>
- <span class="number">100</span>%  <span class="number">210234</span> (longest request)
-</code></pre><p><strong>参考</strong></p>
-<p><a href="http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/" target="_blank" rel="external">http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/</a><br><a href="http://blog.csdn.net/kimsung/article/details/9422991" target="_blank" rel="external">http://blog.csdn.net/kimsung/article/details/9422991</a><br><a href="https://code.google.com/p/apachebench-standalone/wiki/HowToBuild" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/wiki/HowToBuild</a></p>
-
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Debug/">Debug</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
-  
-    <article id="post-Caffe训练分类模型" class="article article-type-post" itemscope itemprop="blogPost">
-  
-    <div class="article-meta">
-      <a href="/2017/08/31/Caffe训练分类模型/" class="article-date">
-  	<time datetime="2017-08-31T06:27:54.000Z" itemprop="datePublished">2017-08-31</time>
-</a>
-    </div>
-  
-  <div class="article-inner">
-    
-      <input type="hidden" class="isFancy" />
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Caffe训练分类模型/">Caffe训练分类模型</a>
-    </h1>
-  
-
-      </header>
-      
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>1.安装Caffe</strong></p>
-<p>按照官方<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">https://github.com/BVLC/caffe</a>说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。</p>
-<p><strong>2.整理自己的数据</strong></p>
-<p>图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.txt，一起放到caffe/data/mydata文件夹下。</p>
-<pre><code>path/to/image/<span class="number">001</span><span class="class">.jpg</span> <span class="number">0</span>
-path/to/image/<span class="number">002</span><span class="class">.jpg</span> <span class="number">1</span>
-path/to/image/<span class="number">003</span><span class="class">.jpg</span> <span class="number">2</span>
-</code></pre><p>在caffe/examples/imagenet中，将创建lmdb文件和mean文件的的几个sh文件拷贝到自己的examples/mytask中，然后修改这两个文件中的几个地址和名称：</p>
-<p><strong>修改create_imagenet.sh</strong></p>
-<pre><code><span class="comment">//当前路径</span>
-EXAMPLE=/home/xxx/caffe/examples/mytask
-<span class="comment">//存放train.txt和val.txt的路径，就是data/mydata</span>
-DATA=/home/xxx/caffe/data/mydata
-<span class="comment">//不变</span>
-TOOLS=/home/xxx/caffe/build/tools
-
-<span class="comment">//存放train和val图片文件夹的主目录（这里与txt文件中的目录合起来才是图片目录）</span>
-TRAIN_DATA_ROOT=/home/xxx/project-data/
-VAL_DATA_ROOT=/home/xxx/project-data/
-
-GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
-    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
-    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
-    --shuffle \
-    <span class="variable">$TRAIN_DATA_ROOT</span> \
-    <span class="variable">$DATA</span>/train<span class="class">.txt</span> \
-    <span class="variable">$EXAMPLE</span>/train_lmdb  ##修改名称，与prototxt中的对应
-
-echo <span class="string">"Creating val lmdb..."</span>
-
-GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
-    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
-    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
-    --shuffle \
-    <span class="variable">$VAL_DATA_ROOT</span> \
-    <span class="variable">$DATA</span>/val<span class="class">.txt</span> \
-    <span class="variable">$EXAMPLE</span>/val_lmdb  ##修改名称
-</code></pre><p>同理，修改make_imagenet_mean.sh。</p>
-<p>分别执行这两个命令，创建文件lmdb数据库和均值mean文件。</p>
-<p><strong>3.设置模型</strong></p>
-<p>在caffe/models下有很多预制的模型可供使用，模型文件一共可包括至少三个文件：deploy.prototxt；solver.prototxt；train_val.prototxt，有时需要finetune已训练好的模型，还需要一些比如在imagenet上预训练的caffemodel文件。</p>
-<p>sovler里面包含超参数和一些信息：</p>
-<pre><code><span class="attribute">net</span>: <span class="string">"models/bvlc_googlenet/train_val.prototxt"</span>
-<span class="attribute">test_iter</span>: <span class="string">1000</span>
-<span class="attribute">test_interval</span>: <span class="string">4000</span>
-<span class="attribute">test_initialization</span>: <span class="string">false</span>
-<span class="attribute">display</span>: <span class="string">40</span>
-<span class="attribute">average_loss</span>: <span class="string">40</span>
-<span class="attribute">base_lr</span>: <span class="string">0.01</span>
-<span class="attribute">lr_policy</span>: <span class="string">"step"</span>
-<span class="attribute">stepsize</span>: <span class="string">320000</span>
-<span class="attribute">gamma</span>: <span class="string">0.96</span>
-<span class="attribute">max_iter</span>: <span class="string">10000000</span>
-<span class="attribute">momentum</span>: <span class="string">0.9</span>
-<span class="attribute">weight_decay</span>: <span class="string">0.0002</span>
-<span class="attribute">snapshot</span>: <span class="string">40000</span>
-<span class="attribute">snapshot_prefix</span>: <span class="string">"models/bvlc_googlenet/bvlc_googlenet"</span>
-<span class="attribute">solver_mode</span>: <span class="string">GPU</span>
-</code></pre><p>train_val里面的主要修改的地方是batch_size，它与sovler里面的test_iter相乘的结果对应训练图像的总数；修改train和val的sorce文件地址：train_lmdb,val_lmdb. </p>
-<pre><code><span class="tag">data_param</span> {
-<span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
-<span class="attribute">batch_size</span>: <span class="number">32</span>
-<span class="attribute">backend</span>: LMDB
-  }
-</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
-<pre><code>layer {
-  name: <span class="string">"data"</span>
-  <span class="keyword">type</span>: <span class="string">"Data"</span>
-  top: <span class="string">"data"</span>
-  top: <span class="string">"label"</span>
-  <span class="keyword">include</span> {
-    phase: <span class="type">TRAIN</span>
-  }
-</code></pre><p>PS: 在finetune残差网络resnet时，网络结构文件中BatchNorm层的参数要注意： </p>
-<pre><code><span class="attribute">1.在训练时所有BN层要设置use_global_stats</span>: <span class="string">false（也可以不写，caffe默认是false） </span>
-<span class="attribute">2.在测试时所有BN层要设置use_global_stats</span>: <span class="string">true</span>
-
-<span class="cal"><span class="string">#1</span>.训练如果不设为<span class="literal">false</span>，会导致模型不收敛 
-<span class="string">#2</span>.测试如果不设置为<span class="literal">true</span>，会导致准确率极低 </span>
-</code></pre><p><strong>4.开始训练</strong></p>
-<pre><code><span class="shebang">#!/bin/bash</span>
-<span class="shebang">#!/usr/bin/env sh</span>
-PRETRAINED_MODEL=./models/resnet50/ResNet-<span class="number">50</span>-model.caffemodel
-t=$(date +%Y-%m-%d_%H:%M:%S) 
-LOG=./<span class="built_in">log</span>/train_res50_<span class="variable">$t</span>.log
-GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe train \
-    --solver=./models/resnet50/solver.prototxt \
-    --weights=<span class="variable">$PRETRAINED_MODEL</span> \
-    --gpu=<span class="number">0</span>,<span class="number">1</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> | tee <span class="variable">$LOG</span>
-</code></pre><p>训练时若出现内存不足停止，要减小train_val.prototxt中batchsize的大小。<br>若出现waiting for data，可能是硬盘读写速度慢，那就waiting吧。。。</p>
-<p><strong>5.测试</strong></p>
-<pre><code><span class="shebang">#!/bin/bash</span>
-<span class="shebang">#!/usr/bin/env sh</span>
-GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe <span class="built_in">test</span> \
-    --model=./models/resnet50/ResNet-<span class="number">50</span>-train-val.prototxt \
-    --weights=./models/resnet50/output_iter_100000.caffemodel \
-    --gpu=<span class="number">1</span> \
-    --iterations=<span class="number">2000</span>
-</code></pre><p><strong>6.分类demo</strong></p>
-<p>在caffe/python下的classify.py文件可以用来对图像进行分类，但是没有输出可见的分类结果，需要改写些内容。开始之前需要把mean均值文件转换为.npy格式，代码如下：</p>
-<pre><code>import caffe
-import numpy as np
-import sys
-
-<span class="keyword">if</span> <span class="function"><span class="title">len</span><span class="params">(sys.argv)</span></span> != <span class="number">3</span>:
-    print <span class="string">"Usage: python convert_protomean.py proto.mean out.npy"</span>
-    sys.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
-
-blob = caffe<span class="class">.proto</span><span class="class">.caffe_pb2</span><span class="class">.BlobProto</span>()
-data = <span class="function"><span class="title">open</span><span class="params">( sys.argv[<span class="number">1</span>] , <span class="string">'rb'</span> )</span></span>.<span class="function"><span class="title">read</span><span class="params">()</span></span>
-blob.<span class="function"><span class="title">ParseFromString</span><span class="params">(data)</span></span>
-arr = np.<span class="function"><span class="title">array</span><span class="params">( caffe.io.blobproto_to_array(blob)</span></span> )
-out = arr[<span class="number">0</span>]
-np.<span class="function"><span class="title">save</span><span class="params">( sys.argv[<span class="number">2</span>] , out )</span></span>
-</code></pre><p><strong>自己改写的classify-demo.py</strong></p>
-<pre><code><span class="built_in">import</span> numpy as np
-<span class="built_in">import</span> sys
-<span class="built_in">import</span> os
-<span class="built_in">import</span> caffe
-<span class="built_in">import</span> io
-<span class="built_in">#</span>from sys <span class="built_in">import</span> argv
-<span class="built_in">#</span>input filefolder you want to test
-<span class="built_in">#</span>tools,filefolder=argv
-
-caffe.set_device<span class="params">(<span class="number">0</span>)</span> 
-caffe.set_mode_gpu<span class="params">()</span>
-MODEL_FILE =<span class="string">"../models/googlenet/deploy.prototxt"</span>
-PRETRAINED = <span class="string">"../models/googlenet/output/bvlc_googlenet_iter_200000.caffemodel"</span>
-MEAN = <span class="string">"mean.npy"</span>
-
-net = caffe.Classifier<span class="params">(MODEL_FILE, PRETRAINED, mean = np.load<span class="params">(MEAN)</span>.mean<span class="params">(<span class="number">1</span>)</span>.mean<span class="params">(<span class="number">1</span>)</span>,
-channel_swap=<span class="params">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>)</span>,
-raw_scale=<span class="number">255</span>,
-image_dims=<span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span>)</span>
-
-filewriter = open<span class="params">(<span class="string">"../data/mydata/result.txt"</span>,<span class="string">"w+"</span>)</span>
-labels_file = '../data/mydata/synset_words.txt'
-labels = np.loadtxt<span class="params">(labels_file, str, delimiter='\t')</span>
-<span class="built_in">#</span>load groundtruth txt to dictionary
-groundtruth_file = '../data/mydata/groundtruth/abc.txt'
-dict_data = {}
-with open<span class="params">(groundtruth_file, 'r')</span> as df:
-    <span class="keyword">for</span> kv in [d.strip<span class="params">()</span>.split<span class="params">(' ')</span> <span class="keyword">for</span> d in df]:
-    dict_data[kv[<span class="number">0</span>]] = kv[<span class="number">1</span>]
-
-<span class="keyword">for</span> root,dirs,files in os.walk<span class="params">(<span class="string">"/home/xxx/project_data/mydata/abc/"</span>)</span>: <span class="built_in">#</span> all the images are in test folder
-
-    <span class="keyword">for</span> file in files:
-    IMAGE_FILE = os.path.join<span class="params">(root,file)</span>.decode<span class="params">('gbk')</span>.encode<span class="params">('utf8')</span>
-    <span class="built_in">#</span>print IMAGE_FILE
-    input_image = caffe.io.load_image<span class="params">(IMAGE_FILE)</span>
-    prediction = net.predict<span class="params">([input_image])</span>
-    string = os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>+<span class="string">"\n"</span>
-    filewriter.write<span class="params">(string)</span>
-    <span class="built_in">#</span>print os.path.basename<span class="params">(IMAGE_FILE)</span>, prediction[<span class="number">0</span>].argmax<span class="params">()</span>
-    <span class="built_in">#</span> load ImageNet labels
-
-    label_true=dict_data[os.path.basename<span class="params">(IMAGE_FILE)</span>]
-    <span class="keyword">if</span> label_true==<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>:
-        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'v'
-    <span class="keyword">else</span>:
-        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'x'
-
-filewriter.close<span class="params">()</span>
-</code></pre><p><strong>7.plot训练测试曲线</strong></p>
-<p>caffe/tools/extra下包含几个有用的工具，其中包括将日志文件.log绘制出训练阶段的loss变化和测试阶段accuracy的变化情况，具体：</p>
-<pre><code>./parse_log.<span class="keyword">sh</span> xxxx.<span class="keyword">log</span> #解析日志，划分为train <span class="keyword">test</span>两个文件
-
-./plot_training_log.py.example 0~7 <span class="keyword">save</span>.png xxxx.<span class="keyword">log</span> #绘制图
-
-<span class="keyword">Notes</span>:  
-    1. Supporting multiple logs.  
-    2. <span class="keyword">Log</span> <span class="keyword">file</span> name must end with the lower-cased <span class="string">".log"</span>.  
-Supported chart types:  
-    0: <span class="keyword">Test</span> accuracy  vs. Iters  
-    1: <span class="keyword">Test</span> accuracy  vs. Seconds  
-    2: <span class="keyword">Test</span> loss  vs. Iters  
-    3: <span class="keyword">Test</span> loss  vs. Seconds  
-    4: Train learning rate  vs. Iters  
-    5: Train learning rate  vs. Seconds  
-    6: Train loss  vs. Iters  
-    7: Train loss  vs. Seconds  
-</code></pre>
-      
-    </div>
-    
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-	<a class="article-category-link" href="/categories/Research/">Research</a>
-	</div>
-
-
-      
-      <div class="clearfix"></div>
-    </div>
-    
-  </div>
-  
-</article>
-
-
-
-
-
-
-
-
-
   
     <article id="post-python+opencv图像二值化" class="article article-type-post" itemscope itemprop="blogPost">
   
@@ -1808,9 +885,2091 @@ sudo apt-get install aria2
 
 
   
+    <article id="post-Ubuntu下查看显卡型号及NVIDIA驱动版本" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/" class="article-date">
+  	<time datetime="2017-08-07T07:32:22.000Z" itemprop="datePublished">2017-08-07</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/07/Ubuntu下查看显卡型号及NVIDIA驱动版本/">Ubuntu下查看显卡型号及NVIDIA驱动版本</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>查看GPU型号</p>
+<pre><code>lspci <span class="string">| grep -i nvidia</span>
+</code></pre><p>查看NVIDIA驱动版本</p>
+<pre><code>sudo dpkg --<span class="keyword">list</span> | <span class="keyword">grep</span> nvidia-*
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-TextBoxes文本检测" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/08/02/TextBoxes文本检测/" class="article-date">
+  	<time datetime="2017-08-02T08:03:20.000Z" itemprop="datePublished">2017-08-02</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/02/TextBoxes文本检测/">TextBoxes文本检测</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>安装环境：Ubuntu16.04, Nvidia Titan x, cuda 8.0, cudnn 5.0, protobuf 2.6, python 2.7, OpenCV 3.2</p>
+<p>下载TextBoxes：<a href="https://github.com/MhLiao/TextBoxes" target="_blank" rel="external">https://github.com/MhLiao/TextBoxes</a></p>
+<pre><code># 修改Makefile.config文件：use cuda，use opencv, mkl
+
+git clone http<span class="variable">s:</span>//github.<span class="keyword">com</span>/MhLiao/TextBoxes.git
+
+<span class="keyword">cd</span> TextBoxes
+
+<span class="keyword">make</span> -j64
+
+<span class="keyword">make</span> <span class="keyword">py</span>
+</code></pre><p>测试demo</p>
+<p>下载训练好的模型<a href="http://pan.baidu.com/s/1qY73XHq" target="_blank" rel="external">Models trained on ICDAR 2013</a>，拷贝到文件夹examples/TextBoxes/下。</p>
+<pre><code><span class="comment"># 测试demo.jpg的文本区域检测</span>
+
+<span class="title">python</span> examples/TextBoxes/demo.py
+</code></pre><hr>
+<p>报错1：<code>No module named shapely</code><br>安装shapely：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-shapely
+</code></pre><p>报错2：<code>Could not find lib geos_c or load any of its variants</code><br>安装shapely的依赖库GEOS：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install libgeos-<span class="built_in">dev</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-py-R-FCN-MultiGPU安装" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/29/py-R-FCN-MultiGPU安装/" class="article-date">
+  	<time datetime="2017-07-29T09:00:26.000Z" itemprop="datePublished">2017-07-29</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/29/py-R-FCN-MultiGPU安装/">py-R-FCN-MultiGPU安装</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>下载R-FCN</strong></p>
+<p>master</p>
+<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/bharatsingh430/<span class="keyword">py</span>-R-FCN-multiGPU/
+</code></pre><p>coco branch</p>
+<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/bharatsingh430/<span class="keyword">py</span>-R-FCN-multiGPU/
+</code></pre><p><strong>编译Cython模块</strong></p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-R-FCN-MultiGPU-coco/lib
+<span class="keyword">make</span>
+</code></pre><p><strong>安装依赖</strong></p>
+<pre><code>cython, <span class="keyword">python</span>-opencv, easydict
+</code></pre><p><strong>修改Makefile.config</strong></p>
+<pre><code><span class="comment"># In your Makefile.config, make sure to have this line uncommented</span>
+<span class="constant">WITH_PYTHON_LAYER</span> := 1
+<span class="comment"># Unrelatedly, it's also recommended that you use CUDNN</span>
+<span class="constant">USE_CUDNN</span> := 1
+<span class="constant">USE_NCCL</span> := 1
+</code></pre><p><strong>安装NCCL</strong></p>
+<pre><code>#Nvidia's NCCL library <span class="keyword">which</span> is used <span class="keyword">for</span> multi-GPU training
+#nccl.hpp:5:18: fatal <span class="keyword">error</span>: nccl.<span class="keyword">h</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory    # 在多个 GPU 上运行 Caffe 需要使用 NVIDIA NCCL
+git clone https:<span class="comment">//github.com/NVIDIA/nccl.git</span>
+<span class="keyword">cd</span> nccl
+sudo make install -j32
+# NCCL 库和文件头将安装在 /usr/<span class="keyword">local</span>/lib 和 /usr/<span class="keyword">local</span>/<span class="keyword">include</span> 中
+sudo  ldconfig 
+# 该命令不执行会出现错误： <span class="keyword">error</span> <span class="keyword">while</span> loading shared libraries: libnccl.<span class="keyword">so</span>.1: cannot <span class="keyword">open</span> shared object <span class="keyword">file</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory 
+</code></pre><p><strong>Build Caffe and pycaffe</strong></p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-R-FCN-MultiGPU-coco/caffe
+<span class="keyword">make</span> -j8 &amp;&amp; <span class="keyword">make</span> pycaffe
+</code></pre><hr>
+<p>若编译过程报错：fatal error: caffe/proto/caffe.pb.h: No such file or directory<br><a href="https://github.com/NVIDIA/DIGITS/issues/105" target="_blank" rel="external">https://github.com/NVIDIA/DIGITS/issues/105</a></p>
+<p>可通过如下方式将编译通过（首先需要进入 caffe 根目录）：</p>
+<pre><code>protoc src/caffe/<span class="keyword">proto</span>/caffe.<span class="keyword">proto</span> --cpp_out=.
+sudo mkdir include/caffe/<span class="keyword">proto</span>
+sudo mv src/caffe/<span class="keyword">proto</span>/caffe.pb.h include/caffe/<span class="keyword">proto</span>
+</code></pre><hr>
+<p>尝试</p>
+<p>下载训练好的模型<a href="https://1drv.ms/u/s!AoN7vygOjLIQqUWHpY67oaC7mopf" target="_blank" rel="external">https://1drv.ms/u/s!AoN7vygOjLIQqUWHpY67oaC7mopf</a></p>
+<p>解压并拷贝到目录：</p>
+<pre><code><span class="title">py</span>-<span class="type">R</span>-<span class="type">FCN</span>-<span class="type">MultiGPU</span>-coco/<span class="typedef"><span class="keyword">data</span>/rfcn_models/resnet50_rfcn_final.caffemodel</span>
+<span class="title">py</span>-<span class="type">R</span>-<span class="type">FCN</span>-<span class="type">MultiGPU</span>-coco/<span class="typedef"><span class="keyword">data</span>/rfcn_models/resnet101_rfcn_final.caffemodel</span>
+</code></pre><p>运行demo</p>
+<pre><code>.<span class="regexp">/tools/</span>demo_rfcn.py
+</code></pre><hr>
+<p>demo报错：</p>
+<pre><code><span class="comment">[libprotobuf ERROR google/protobuf/message_lite.cc:123]</span> 
+Can't parse message <span class="keyword">of</span> type <span class="string">"caffe.NetParameter"</span> 
+because it <span class="keyword">is</span> missing required fields: 
+layer<span class="comment">[494]</span>.psroi_pooling_param.output_dim, 
+layer<span class="comment">[494]</span>.psroi_pooling_param.group_size
+</code></pre><p>可能的解决方法：    </p>
+<pre><code>zhanghaoinf commented <span class="function_start"><span class="keyword">on</span></span> Apr <span class="number">12</span> • edited
+Hi, @liu09114 , I checked <span class="keyword">before</span> when I used <span class="keyword">the</span> detection model published
+ <span class="keyword">by</span> msra (models store <span class="keyword">in</span> onedrive), <span class="keyword">the</span> problem will occur. If you 
+ initialize <span class="keyword">and</span> train your own model <span class="keyword">with</span> resnet-<span class="number">101</span> (classification model 
+ pre-trained <span class="function_start"><span class="keyword">on</span></span> ImageNet-<span class="number">1000</span>), <span class="keyword">the</span> problem will disappear. By <span class="keyword">the</span> way, you 
+ need <span class="keyword">the</span> coco branch <span class="keyword">to</span> train your own model.
+
+I think <span class="keyword">the</span> sentence <span class="string">"If you want to use/train this model, 
+please use the coco branch of this repository. "</span> <span class="keyword">in</span> <span class="keyword">the</span> readme <span class="keyword">is</span> important. :)    
+</code></pre><hr>
+<h2 id="训练自己的模型">训练自己的模型</h2><p>1.数据集</p>
+<p>数据集拷贝到$RFCN_ROOT/data下，此处只有VOC2007的数据：</p>
+<pre><code>VOCdevkit2007  <span class="comment">#link</span>
+VOCdevkit0712  <span class="comment">#link                     </span>
+VOCdevkit<span class="regexp">/VOC2007/</span>                  
+VOCdevkit<span class="regexp">/VOC0712/</span>   <span class="comment">#作者是用VOC2007和VOC2012训练的，所以文件夹名字带0712                </span>
+</code></pre><p>2.准备预训练模型</p>
+<p>deep-residual-networks: <a href="https://github.com/KaimingHe/deep-residual-networks" target="_blank" rel="external">https://github.com/KaimingHe/deep-residual-networks</a></p>
+<p>OneDrive download: <a href="https://onedrive.live.com/?authkey=%21AAFW2-FVoxeVRck&amp;id=4006CBB8476FF777%2117887&amp;cid=4006CBB8476FF777" target="_blank" rel="external">https://onedrive.live.com/?authkey=%21AAFW2-FVoxeVRck&amp;id=4006CBB8476FF777%2117887&amp;cid=4006CBB8476FF777</a></p>
+<p>然后将caffemodel放在<code>./data/imagenet_models</code>文件夹下。</p>
+<p>3.修改网络</p>
+<p>打开<code>./models/pascal_voc/ResNet-50/rfcn_end2end</code>  (以end2end为例)</p>
+<p>PS：下面的cls_num指的是你数据集的类别数+1（背景）。比如我有15类，+1类背景，cls_num=16.</p>
+<p><1>修改class-aware/train_ohem.prototxt</1></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+  name: <span class="symbol">'roi</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  bottom: <span class="symbol">'rpn_rois'</span>  
+  bottom: <span class="symbol">'gt_boxes'</span>  
+  top: <span class="symbol">'rois'</span>  
+  top: <span class="symbol">'labels'</span>  
+  top: <span class="symbol">'bbox_targets'</span>  
+  top: <span class="symbol">'bbox_inside_weights'</span>  
+  top: <span class="symbol">'bbox_outside_weights'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'rpn</span>.proposal_target_layer'  
+    layer: <span class="symbol">'ProposalTargetLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_bbox"</span>  
+    name: <span class="string">"rfcn_bbox"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">3136</span> #<span class="number">4</span>*cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_bbox"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_loc_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_loc_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">64</span> <span class="comment">#4*cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><2>修改class-aware/test.prototxt</2></p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_bbox"</span>  
+    name: <span class="string">"rfcn_bbox"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">3136</span> #<span class="number">4</span>*cls_num*(score_maps_size^<span class="number">2</span>)  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_bbox"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_loc_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_loc_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">64</span>  <span class="comment">#4*cls_num  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"cls_prob_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"cls_prob_pre"</span>  
+    top: <span class="string">"cls_prob"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">16</span>  <span class="comment">#cls_num  </span>
+        }  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"bbox_pred_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"bbox_pred_pre"</span>  
+    top: <span class="string">"bbox_pred"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">64</span>  <span class="comment">#4*cls_num  </span>
+        }  
+    }  
+}  
+</code></pre><p><3>修改train_agnostic.prototxt</3></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span>  #cls_num  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)   ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><4>修改train_agnostic_ohem.prototxt</4></p>
+<pre><code>layer {  
+  name: <span class="symbol">'input</span>-data'  
+  <span class="keyword">type</span>: <span class="symbol">'Python'</span>  
+  top: <span class="symbol">'data'</span>  
+  top: <span class="symbol">'im_info'</span>  
+  top: <span class="symbol">'gt_boxes'</span>  
+  python_param {  
+    <span class="keyword">module</span>: <span class="symbol">'roi_data_layer</span>.layer'  
+    layer: <span class="symbol">'RoIDataLayer'</span>  
+    param_str: <span class="string">"'num_classes': 16"</span> #cls_num ###  
+  }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>)   ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p><5>修改test_agnostic.prototxt</5></p>
+<pre><code>layer {  
+    bottom: <span class="string">"conv_new_1"</span>  
+    top: <span class="string">"rfcn_cls"</span>  
+    name: <span class="string">"rfcn_cls"</span>  
+    <span class="class"><span class="keyword">type</span>:</span> <span class="string">"Convolution"</span>  
+    convolution_param {  
+        num_output: <span class="number">784</span> #cls_num*(score_maps_size^<span class="number">2</span>) ###  
+        kernel_size: <span class="number">1</span>  
+        pad: <span class="number">0</span>  
+        weight_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"gaussian"</span>  
+            std: <span class="number">0.01</span>  
+        }  
+        bias_filler {  
+            <span class="class"><span class="keyword">type</span>:</span> <span class="string">"constant"</span>  
+            value: <span class="number">0</span>  
+        }  
+    }  
+    param {  
+        lr_mult: <span class="number">1.0</span>  
+    }  
+    param {  
+        lr_mult: <span class="number">2.0</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    bottom: <span class="string">"rfcn_cls"</span>  
+    bottom: <span class="string">"rois"</span>  
+    top: <span class="string">"psroipooled_cls_rois"</span>  
+    <span class="property">name</span>: <span class="string">"psroipooled_cls_rois"</span>  
+    type: <span class="string">"PSROIPooling"</span>  
+    psroi_pooling_param {  
+        spatial_scale: <span class="number">0.0625</span>  
+        output_dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        group_size: <span class="number">7</span>  
+    }  
+}  
+</code></pre><p>+</p>
+<pre><code>layer {  
+    <span class="property">name</span>: <span class="string">"cls_prob_reshape"</span>  
+    type: <span class="string">"Reshape"</span>  
+    bottom: <span class="string">"cls_prob_pre"</span>  
+    top: <span class="string">"cls_prob"</span>  
+    reshape_param {  
+        shape {  
+            dim: -<span class="number">1</span>  
+            dim: <span class="number">16</span> <span class="comment">#cls_num   ###  </span>
+        }  
+    }  
+}  
+</code></pre><p>4.修改代码</p>
+<p><1>修改./lib/datasets/pascal_voc.py</1></p>
+<pre><code><span class="class"><span class="keyword">class</span> <span class="title">pascal_voc</span>(<span class="title">imdb</span>):  </span>
+    <span class="function"><span class="keyword">def</span> </span>__init_<span class="number">_</span>(<span class="keyword">self</span>, image_set, year, devkit_path=<span class="constant">None</span>)<span class="symbol">:</span>  
+        imdb.__init_<span class="number">_</span>(<span class="keyword">self</span>, <span class="string">'voc_'</span> + year + <span class="string">'_'</span> + image_set)  
+        <span class="keyword">self</span>._year = year  
+        <span class="keyword">self</span>._image_set = image_set  
+        <span class="keyword">self</span>._devkit_path = <span class="keyword">self</span>._get_default_path() <span class="keyword">if</span> devkit_path is <span class="constant">None</span> \  
+                            <span class="keyword">else</span> devkit_path  
+        <span class="keyword">self</span>._data_path = os.path.join(<span class="keyword">self</span>._devkit_path, <span class="string">'VOC'</span> + <span class="keyword">self</span>._year)  
+        <span class="keyword">self</span>._classes = (<span class="string">'__background__'</span>, <span class="comment"># always index 0  </span>
+                         <span class="string">'你的标签1'</span>,<span class="string">'你的标签2'</span>,你的标签<span class="number">3</span><span class="string">','</span>你的标签<span class="number">4</span><span class="string">'  
+                      )  </span>
+</code></pre><p><2>修改./lib/datasets/imdb.py</2></p>
+<p>在语句<code>assert (boxes[:, 2] &gt;= boxes[:, 0]).all()</code>前面添加：</p>
+<pre><code><span class="keyword">for</span> <span class="tag">b</span> <span class="keyword">in</span> <span class="function"><span class="title">range</span><span class="params">(len(boxes)</span></span>):
+    <span class="keyword">if</span> boxes[b][<span class="number">2</span>]&lt; boxes[b][<span class="number">0</span>]:
+        boxes[b][<span class="number">0</span>] = <span class="number">0</span>
+</code></pre><p>以避免出现AssertionError.</p>
+<p><3>修改./lib/fast_rcnn/train.py和train_multi_gpu.py </3></p>
+<p>在开头添加：<code>import google.protobuf.text_format</code>，以避免因protobuf版本问题出现的<code>AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;</code>.</p>
+<p>5.开始训练</p>
+<p>Multi-GPU Training R-FCN</p>
+<pre><code>cd py-R-FCN-multiGPU-coco
+
+python ./tools/train_net_multi_gpu<span class="class">.py</span> --gpu <span class="number">0</span>,<span class="number">1</span> ...
+--solver models/pascal_voc/ResNet-<span class="number">50</span>/rfcn_end2end/solver_ohem<span class="class">.prototxt</span> ...
+--weights data/imagenet_models/ResNet-<span class="number">50</span>-model<span class="class">.caffemodel</span> ...
+--iters <span class="number">110000</span> --cfg experiments/cfgs/rfcn_end2end_ohem.yml
+</code></pre><p>6.测试训练好的模型</p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-R-FCN-multiGPU-coco
+./tools/demo_rfcn.<span class="keyword">py</span>
+</code></pre><p>此时如果<strong>报错</strong>：</p>
+<pre><code>IndexError: <span class="keyword">index</span> <span class="number">4</span> <span class="keyword">is</span> <span class="keyword">out</span> <span class="keyword">of</span> bounds <span class="keyword">for</span> axis <span class="number">1</span> <span class="keyword">with</span> size <span class="number">4</span>
+</code></pre><p>说明在demo_rfcn.py执行矩形框操作时出了问题，先找到语句<code>cls_boxes = boxes[:, 4*cls_ind:4*(cls_ind + 1)]</code>，将其修改为<code>cls_boxes = boxes[:, 4:8]</code>即可。</p>
+<hr>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" class="article-date">
+  	<time datetime="2017-07-26T03:36:45.000Z" itemprop="datePublished">2017-07-26</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/">Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装Ubuntu16.04 LTS x64</strong></p>
+<p>利用工具rufus制作USB系统盘(官方下载64位版本: <a href="http://www.ubuntu.com/download/alternative-downloads" target="_blank" rel="external">ubuntu-16.04-desktop-amd64.iso</a>).</p>
+<p>语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。</p>
+<p><strong>2.更新源</strong></p>
+<pre><code>cd /etc/apt/
+sudo cp sources<span class="class">.list</span> sources<span class="class">.list</span><span class="class">.bak</span>
+sudo gedit sources.list
+</code></pre><p>在sources.list文件头部添加如下源：</p>
+<pre><code>deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
+</code></pre><p>然后更新源和安装的包:</p>
+<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
+sudo apt-<span class="built_in">get</span> upgrade
+</code></pre><p>常用软件安装：</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install vim <span class="comment">#编辑</span>
+sudo apt-<span class="keyword">get</span> install htop <span class="comment">#查看cpu和内存占用情况</span>
+sudo apt-<span class="keyword">get</span> install python-pip
+</code></pre><p><strong>3.配置静态IP</strong></p>
+<p>首先查看本机的网卡名称</p>
+<pre><code>ifconfig
+</code></pre><p>配置静态ip地址</p>
+<pre><code><span class="title">sudo</span> vim /etc/network/interfaces
+
+<span class="comment">#在打开的interfaces文件中添加如下信息：</span>
+auto eth0 <span class="comment">#eth0对应你的网卡名称，在ifconfig中查看</span>
+iface eth0 inet static
+address <span class="number">192.168.1.100</span>
+netmask <span class="number">255.255.255.0</span>
+gateway <span class="number">192.168.1.1</span>
+dns-nameserver <span class="number">114.114.114.114</span>
+</code></pre><p>配置DNS</p>
+<pre><code><span class="title">sudo</span> vim /etc/resolv.conf
+
+<span class="comment">#添加如下信息：</span>
+nameserver <span class="number">114.114.114.114</span>
+
+sudo vim /etc/resolvconf/resolv.conf.d/base
+
+<span class="comment">#添加如下信息：</span>
+nameserver <span class="number">114.114.114.114</span>
+</code></pre><p>重启网卡服务</p>
+<pre><code><span class="title">sudo</span> /etc/init.d/networking restart
+<span class="comment">#重启检验是否设置成功</span>
+sudo reboot
+</code></pre><p><strong>4.配置SSH和SFTP</strong></p>
+<p>SSH安装命令：</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-<span class="keyword">server</span></span>
+</code></pre><p>ssh-server配置文件位于<code>/etc/ssh/sshd_config</code>，在这里可以定义SSH的服务端口，默认端口是22。</p>
+<pre><code><span class="comment">#若更改端口后请重启SSH服务：</span>
+<span class="title">sudo</span> /etc/init.d/ssh resart
+</code></pre><p>Ubuntu或Mac客户端可在命令行中执行如下语句来使用ssh：</p>
+<pre><code><span class="title">ssh</span> username@<span class="number">192.168.1.100</span> 
+</code></pre><p>sftp安装：</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-sftp-<span class="keyword">server</span></span>
+</code></pre><p>Ubuntu客户端可在文件管理器中选择“connect to server”，然后输入：</p>
+<pre><code><span class="string">sftp:</span><span class="comment">//192.168.1.100</span>
+</code></pre><p>即可查看到username所在的home文件夹下的内容。</p>
+<p><strong>5.安装NVIDIA显卡驱动</strong></p>
+<p>此处由于NVIDIA驱动和Ubuntu桌面冲突的问题（如循环卡在登录界面）。这里我们的VGA显示器默认接在主板的集显上，而不是接在NVIDIA显卡上，所以我们不采用ppa的显卡安装方式，而是采用独立的显卡驱动安装方式，关键之处在于不勾选OpenGL即可。</p>
+<p>首先到NVIDIA官网下载官方驱动：<a href="http://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="external">http://www.nvidia.cn/Download/index.aspx?lang=cn</a>，其中Titan XP属于GeForce 10 series系列。下载驱动：NVIDIA-Linux-x86_64-375.66.run</p>
+<p><strong>安装前准备：</strong></p>
+<p>卸载原有nvidia驱动，若采用的是<code>apt-get</code>安装方式</p>
+<pre><code>sudo apt-<span class="keyword">get</span> purge nvidia* 
+</code></pre><p>或者采用<code>--uninstall</code>的方式卸载，按提示操作</p>
+<pre><code>sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.<span class="command">run</span> <span class="comment">--uninstall</span>
+</code></pre><p>禁用nouveau</p>
+<pre><code>sudo vim /etc/modprobe.<span class="keyword">d</span>/blacklist.<span class="keyword">conf</span>
+</code></pre><p>在打开的文件的最后加入nouveau黑名单，禁用第三方驱动</p>
+<pre><code><span class="keyword">blacklist </span>nouveau 
+</code></pre><p>然后执行</p>
+<pre><code>sudo <span class="keyword">update</span>-initramfs -<span class="keyword">u</span>
+</code></pre><p>再执行如下语句，没有输出即说明已屏蔽成功</p>
+<pre><code>lsmod <span class="string">| grep nouveau </span>
+</code></pre><p><strong>开始安装驱动</strong></p>
+<p>首先关闭X服务：</p>
+<pre><code>sudo <span class="keyword">service</span> lightdm <span class="literal">stop</span>
+</code></pre><p>若在本机则要进入<code>Ctrl-Alt+F1</code>命令行界面</p>
+<p>若在远程主机则在ssh中执行即可，前提是要关闭x服务。</p>
+<p>开始：</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> build-essential pkg-config xserver-xorg-dev linux-headers-<span class="string">`uname -r`</span>
+
+sudo chmod a+x NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run
+sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run -<span class="keyword">no</span>-opengl-files
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> mesa-common-dev
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> freeglut3-dev
+sudo reboot</span>
+</code></pre><p>其中参数(后面两个参数不加):</p>
+<pre><code>–<span class="literal">no</span>-opengl-files <span class="comment">#只安装驱动文件，不安装OpenGL文件。这个参数最重要</span>
+–<span class="literal">no</span>-x-check <span class="comment">#安装驱动时不检查X服务</span>
+–<span class="literal">no</span>-nouveau-check <span class="comment">#安装驱动时不检查nouveau </span>
+</code></pre><p>若安装过程中报关于kernel-source的错误:</p>
+<pre><code><span class="constant">E</span>RROR: <span class="constant">Unable</span> to find the <span class="built_in">kernel</span> <span class="literal">source</span> tree for the currently <span class="literal">running</span> <span class="built_in">kernel</span>.  <span class="constant">Please</span> make sure you have installed the <span class="built_in">kernel</span> <span class="literal">source</span> files for your <span class="built_in">kernel</span> <span class="keyword">and</span> that they are properly configured; on <span class="constant">Red</span> <span class="constant">Hat</span> <span class="constant">Linux</span> systems, for example, be sure you have the <span class="string">'kernel-source'</span> <span class="keyword">or</span> <span class="string">'kernel-devel'</span> <span class="constant">R</span>PM installed.  <span class="constant">If</span> you know the correct <span class="built_in">kernel</span> <span class="literal">source</span> files are installed, you may specify the <span class="built_in">kernel</span> <span class="literal">source</span> <span class="built_in">path</span> with the <span class="string">'--kernel-source-path'</span> <span class="literal">command</span> line option.
+</code></pre><p>请务必执行如下语句：</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> linux-headers-<span class="string">`uname -r`</span></span>
+</code></pre><p>若出现警告说：</p>
+<pre><code>/sbin/ldconfig<span class="class">.real</span>: /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> is not <span class="tag">a</span> symbolic link
+</code></pre><p>可能是由于libEGL.lib存在多个版本的冲突，解决方法：</p>
+<pre><code>sudo mv /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
+sudo mv /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
+sudo ln -s /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
+sudo ln -s /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
+</code></pre><p>重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必安装驱动提示的x-config的选项安装，即一路yes即可。</p>
+<p>如果出现无法进入桌面的问题，这是因为驱动修改了xorg的配置，可执行一下命令：</p>
+<pre><code>cd /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/ 
+sudo mv nvidia-drm-outputclass<span class="class">.conf</span> nvidia-drm-outputclass<span class="class">.conf</span><span class="class">.bak</span>
+</code></pre><p>若进入到界面后发现分辨率问题：启动到界面之后发现分辨率只有600x480，而显示器适合1920x1080，采用xrandr并修改xorg.conf来解决：</p>
+<pre><code>sudo gedit /etc/X11/xorg<span class="class">.conf</span>
+修改如下：
+HorizSync <span class="number">31.0</span> - <span class="number">84.0</span>
+VertRefresh <span class="number">56.0</span>-<span class="number">77.0</span>
+</code></pre><p>即最终的xorg.conf文件部分内容为：</p>
+<pre><code><span class="title">Section "Device"    </span>
+    Identifier <span class="string">"Configured Video Device"</span>
+EndSection
+
+<span class="title">Section "Monitor"</span>
+    Identifier <span class="string">"Configured Monitor"</span>
+    Horizsync 30-84
+    Vertrefresh 56-77
+EndSection
+
+<span class="title">Section "Screen"</span>
+Identifier <span class="string">"Default Screen"</span>
+Monitor <span class="string">"Configured Monitor"</span>
+Device <span class="string">"Configured Video Device"</span>
+    SubSection <span class="string">"Display"</span>
+        Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
+    EndSubSection
+EndSection    
+</code></pre><p>或者采用cvt xrand方法修改分辨率：</p>
+<pre><code>cvt <span class="number">1920 1080</span>
+
+# <span class="number">1920x1080</span> 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz<span class="comment">; 173.00 MHZ</span>
+# Modeline "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
+
+xrandr --newmode "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
+
+xrandr -q #查看VGA
+# Sceen 0: minimum 320 x 200 .....
+# VGA-1 connected ....
+
+xrandr --addmode VGA-1 "<span class="number">1920x1080</span>_60.00"
+xrandr --output VGA-1 --mode "<span class="number">1920x1080</span>_60.00"
+</code></pre><p><strong>6.安装CUDA8.0</strong></p>
+<p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.61_linux.run</a>，复制到根目录下。</p>
+<pre><code>sudo sh cuda_8.0.61_linux.<span class="command">run</span> <span class="comment">--tmpdir=/tmp/</span>
+</code></pre><p>遇到问题：incomplete installation，然后执行</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install libx11-<span class="built_in">dev</span> libxmu-<span class="built_in">dev</span> libxi-<span class="built_in">dev</span> libgl1-mesa-glx libglu1-mesa libglu1-mesa-<span class="built_in">dev</span>
+
+sudo sh cuda_8.0.61_linux.run -silent -driver
+</code></pre><p>注：此时安装过程中提示是否要安装NVIDIA驱动时选择no。其他选择yes或默认即可。</p>
+<pre><code>Install NVIDIA Accelerated Graphics Driver <span class="keyword">for</span> Linux-x86_64 <span class="number">375.26</span>? <span class="params">(y)</span>es/<span class="params">(n)</span>o/<span class="params">(q)</span>uit: n
+</code></pre><p>安装完毕后声明环境变量：</p>
+<pre><code><span class="title">sudo</span> vim ~/.bashrc
+</code></pre><p>在.bashrc尾部添加如下内容：</p>
+<pre><code>export <span class="constant">PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/bin</span><span class="variable">${</span><span class="constant">PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">PATH</span>}}
+export <span class="constant">LD_LIBRARY_PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/lib</span>64<span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span>}}
+</code></pre><p>测试下安装是否成功：</p>
+<p>测试：</p>
+<pre><code>nvidia-<span class="keyword">smi</span>
+</code></pre><p>输出：</p>
+<pre><code>xx xx xx 15:20:34 2017       
++-----------------------------------------------------------------------------+
+|<span class="string"> NVIDIA-SMI 375.66                 Driver Version: 375.66                    </span>|
+|<span class="string">-------------------------------+----------------------+----------------------+
+</span>|<span class="string"> GPU  Name        Persistence-M</span>|<span class="string"> Bus-Id        Disp.A </span>|<span class="string"> Volatile Uncorr. ECC </span>|
+|<span class="string"> Fan  Temp  Perf  Pwr:Usage/Cap</span>|<span class="string">         Memory-Usage </span>|<span class="string"> GPU-Util  Compute M. </span>|
+|<span class="string">===============================+======================+======================</span>|
+|<span class="string">   0  GeForce GTX TIT...  Off  </span>|<span class="string"> 0000:01:00.0      On </span>|<span class="string">                  N/A </span>|
+|<span class="string"> 22%   48C    P5    27W / 250W </span>|<span class="string">    169MiB / 12205MiB </span>|<span class="string">      1%      Default </span>|
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+|<span class="string"> Processes:                                                       GPU Memory </span>|
+|<span class="string">  GPU       PID  Type  Process name                               Usage      </span>|
+|<span class="string">=============================================================================</span>|
+|<span class="string">    0      2421    G   /usr/lib/xorg/Xorg                             105MiB </span>|
+|<span class="string">    0     10062    G   compiz                                          63MiB </span>|
++-----------------------------------------------------------------------------+
+</code></pre><p><strong>7.安装OpenCV 3.2.0</strong></p>
+<p>从官网下载zip源代码，解压到根目录下。<br>安装依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> -y remove ffmpeg x264 libx264-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> -y install libopencv-<span class="built_in">dev</span> build-essential checkinstall cmake pkg-config yasm  libjpeg-<span class="built_in">dev</span> libjasper-<span class="built_in">dev</span> libavcodec-<span class="built_in">dev</span> libavformat-<span class="built_in">dev</span> libswscale-<span class="built_in">dev</span> libdc1394-<span class="number">22</span>-<span class="built_in">dev</span>  libgstreamer0.10-<span class="built_in">dev</span> libgstreamer-plugins-base0.10-<span class="built_in">dev</span> libv4l-<span class="built_in">dev</span> python-<span class="built_in">dev</span> python-numpy libtbb-<span class="built_in">dev</span> libqt4-<span class="built_in">dev</span> libgtk2.0-<span class="built_in">dev</span> libfaac-<span class="built_in">dev</span> libmp3lame-<span class="built_in">dev</span> libopencore-amrnb-<span class="built_in">dev</span> libopencore-amrwb-<span class="built_in">dev</span> libtheora-<span class="built_in">dev</span> libvorbis-<span class="built_in">dev</span> libxvidcore-<span class="built_in">dev</span> x264 v4l-utils ffmpeg libgtk2.0-<span class="built_in">dev</span>
+
+cd opencv-<span class="number">3.2</span>.0
+mkdir build   
+cd build/
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+make -j32
+sudo make install
+</code></pre><p>安装成功后配置环境：</p>
+<pre><code>sudo <span class="keyword">sh</span> -c 'echo <span class="string">"/usr/local/lib"</span> &gt; /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/opencv.<span class="keyword">conf</span>'
+sudo ldconfig
+</code></pre><p>测试OpenCV安装是否成功：</p>
+<pre><code><span class="built_in">mkdir</span> DisplayImage  
+<span class="keyword">cd</span> DisplayImage 
+<span class="keyword">vim</span> DisplayImage.cpp 
+</code></pre><p>添加代码：</p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;  </span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;  </span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> cv;  
+
+<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  
+</span>{  
+     <span class="keyword">if</span>(argc!= <span class="number">2</span>)  
+     {  
+               <span class="built_in">printf</span>(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
+     }  
+
+     Mat image;  
+     image= imread(argv[<span class="number">1</span>], <span class="number">1</span>);  
+
+    <span class="keyword">if</span>(!image.data)  
+    {  
+               <span class="built_in">printf</span>(<span class="string">"Noimage data\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
+     }  
+
+     namedWindow(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE);  
+     imshow(<span class="string">"DisplayImage"</span>,image);  
+
+     waitKey(<span class="number">0</span>);  
+     <span class="keyword">return</span> <span class="number">0</span>;  
+}  
+</code></pre><p>创建CMake文件：</p>
+<pre><code>vim CMakeLists<span class="class">.txt</span>  
+</code></pre><p>添加内容：</p>
+<pre><code><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span>  
+<span class="function"><span class="title">project</span><span class="params">(DisplayImage)</span></span>  
+<span class="function"><span class="title">find_package</span><span class="params">(OpenCV REQUIRED)</span></span>  
+<span class="function"><span class="title">add_executable</span><span class="params">(DisplayImage DisplayImage.cpp)</span></span>  
+<span class="function"><span class="title">target_link_libraries</span><span class="params">(DisplayImage ${OpenCV_LIBS})</span></span> 
+</code></pre><p>编译：</p>
+<pre><code>cmake .  
+<span class="built_in">make</span> 
+</code></pre><p>执行：</p>
+<pre><code>./DisplayImage lena<span class="class">.jpg</span>  
+</code></pre><p>如果在make opencv-3.2过程中错误：</p>
+<pre><code>fatal <span class="keyword">error</span>: LAPACKE_H_PATH-NOTFOUND/lapacke.<span class="keyword">h</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory #<span class="keyword">include</span> <span class="string">"LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
+</code></pre><p>此时LAPACK和BLAS都已经安装了，解决方案：</p>
+<pre><code>sudo apt-get install liblapacke-dev checkinstall
+修改在build文件夹内的lapack.h文件，将如下语句
+<span class="preprocessor">#<span class="keyword">include</span> "LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
+改为
+<span class="preprocessor">#<span class="keyword">include</span> "lapacke.h"</span>
+</code></pre><p><strong>8.安装cudnn 5.0</strong></p>
+<p>从官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cudnn-8.0-linux-x64-v5.0.tgz</a> for CUDA 8.0. 解压到当前目录：</p>
+<pre><code><span class="tag">tar</span> <span class="tag">-zxvf</span> <span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.0</span><span class="class">.tgz</span>
+</code></pre><p>解压后的文件如下：</p>
+<pre><code>cuda/include/cudnn<span class="class">.h</span>
+cuda/lib64/libcudnn<span class="class">.so</span>
+cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
+cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5.0</span>.<span class="number">5</span>
+cuda/lib64/libcudnn_static.a
+</code></pre><p>然后执行：</p>
+<pre><code>sudo cp cuda<span class="regexp">/include/</span>cudnn.h <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/
+sudo cp cuda<span class="regexp">/lib64/</span>libcudnn* <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/
+sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/cudnn.h
+sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/libcudnn*
+</code></pre><p><strong>9.BLAS安装与配置</strong></p>
+<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的key(<em>2HWS-34Z7S69B</em>)。</p>
+<pre><code>tar zxvf parallel_studio_xe_2017.tgz   <span class="comment">#解压下载文件</span>
+chmod <span class="number">777</span> parallel_studio_xe_2017 -R   <span class="comment">#获取文件权限</span>
+<span class="built_in">cd</span> parallel_studio_xe_2017/
+sudo ./install_GUI.sh
+</code></pre><p>安装完成之后，进行相关文件的链接：</p>
+<pre><code>sudo gedit /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/intel_mkl.<span class="keyword">conf</span>
+</code></pre><p>添加库文件:</p>
+<pre><code><span class="regexp">/opt/i</span>ntel<span class="regexp">/lib/i</span>ntel64
+<span class="regexp">/opt/i</span>ntel<span class="regexp">/mkl/</span>lib<span class="regexp">/intel64</span>
+</code></pre><p>编译链接使lib文件生效：</p>
+<pre><code><span class="title">sudo</span> ldconfig    
+</code></pre><p>如果选择安装ATLAS，在终端输入<code>sudo apt-get install libatlas-base-dev</code>即可。</p>
+<p><strong>10.Py-Faster-RCNN配置</strong></p>
+<p>下载源码：包含caffe文件夹</p>
+<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rbgirshick/<span class="keyword">py</span>-faster-rcnn.git
+</code></pre><p>安装库文件：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install python-opencv
+sudo pip install cython easydict
+
+sudo apt-<span class="built_in">get</span> install libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libboost-<span class="built_in">all</span>-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span> protobuf-compiler
+</code></pre><p>安装依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install -y build-essential cmake git pkg-config libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libopencv-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> protobuf-compiler libatlas-base-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> install --no-install-recommends libboost-<span class="built_in">all</span>-<span class="built_in">dev</span>
+</code></pre><p>安装Python接口依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-tk
+sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-pip
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy     sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy 
+</code></pre><p>在caffe的python文件夹内，使用root执行依赖项的检查与安装：</p>
+<pre><code>sudo <span class="keyword">su</span>
+<span class="keyword">cd</span> caffe-fast-rcnn/python
+<span class="keyword">for</span> req <span class="keyword">in</span> $(<span class="keyword">cat</span> requirements.txt); <span class="keyword">do</span> pip install <span class="label">$req</span>; done
+</code></pre><p>修改Makefile文件</p>
+<pre><code>终端输入
+cd py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>
+cp Makefile.config.example Makefile.config
+vim Makefile.config
+
+使用python层
+将 # <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>修改为 <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>
+
+使用cudnn加速
+将 # <span class="string">USE_CUDNN :</span>= <span class="number">1</span>修改为 <span class="string">USE_CUDNN :</span>= <span class="number">1</span>
+
+保留 # <span class="string">CPU_ONLY :</span>= <span class="number">1</span>不变，使用GPU运行
+
+如下两行对应内容修改为：
+<span class="string">INCLUDE_DIRS :</span>= $(PYTHON_INCLUDE) <span class="regexp">/usr/</span>local<span class="regexp">/include  /</span>usr<span class="regexp">/include/</span>hdf5/serial
+<span class="string">LIBRARY_DIRS :</span>= $(PYTHON_LIB) <span class="regexp">/usr/</span>local<span class="regexp">/lib /</span>usr<span class="regexp">/lib /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>hdf5<span class="regexp">/serial /</span>usr<span class="regexp">/local/</span>share<span class="regexp">/OpenCV/</span><span class="number">3</span>rdparty<span class="regexp">/lib/</span>
+</code></pre><p>在Makefile中配置：</p>
+<pre><code>LIBRARIES += glog gflags protobuf boost_system boost_filesystem <span class="keyword">m</span> hdf5_hl hdf5 opencv_core opencv_highgui opencv_imgproc opencv_imgcodecs
+
+hdf5的配置：官方说这对于Ubuntu 16.04是必须的；（libhdf5的版本号需要根据实际来修改）
+sudo find . -<span class="keyword">type</span> f -exec sed -i -<span class="keyword">e</span> 's^<span class="string">"hdf5.h"</span>^<span class="string">"hdf5/serial/hdf5.h"</span>^<span class="keyword">g</span>' -<span class="keyword">e</span> 's^<span class="string">"hdf5_hl.h"</span>^<span class="string">"hdf5/serial/hdf5_hl.h"</span>^<span class="keyword">g</span>' '{}' \;
+<span class="keyword">cd</span> /usr/lib/x86_64-linux-gnu
+sudo ln -s libhdf5_serial.<span class="keyword">so</span>.10.1.0 libhdf5.<span class="keyword">so</span>
+sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<span class="keyword">so</span>
+</code></pre><p><strong>编译Cython模块</strong></p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/lib/
+<span class="keyword">make</span>
+</code></pre><p><strong>编译caffe</strong></p>
+<p>由于当前版本的caffe中cudnn实现与系统所安装的cudnn的版本不一致会引起错误，rbgirshick的py-faster-rcnn其cudnn实现为旧版本的实现，所有出现了以上问题。</p>
+<pre><code><span class="tag">cudnn-7</span><span class="class">.0-linux-x64-v4</span><span class="class">.0-prod</span><span class="class">.tgz</span>不会出现此问题
+<span class="tag">cudnn-7</span><span class="class">.5-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
+<span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
+</code></pre><p>解决办法：</p>
+<pre><code><span class="number">1</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>util/cudnn.hpp 换成最新版caffe里的相应目录下的cudnn.hpp；
+<span class="number">2</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>layers/下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
+<span class="number">3</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>src<span class="regexp">/caffe/</span>layer下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
+</code></pre><p>注：官方caffe源包<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">caffe-master：https://github.com/BVLC/caffe</a></p>
+<p>编译</p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
+<span class="keyword">make</span> clean #清除前一次编译结果
+<span class="keyword">make</span> -j32
+</code></pre><p><strong>编译pycaffe</strong></p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
+<span class="keyword">make</span> pycaffe
+</code></pre><p><strong>下载训练好的模型</strong></p>
+<pre><code>终端输入
+<span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
+./data/scripts/fetch_faster_rcnn_models.<span class="keyword">sh</span>
+</code></pre><p><strong>faster-rcnn测试pascal_voc目标检测</strong></p>
+<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
+./tools/demo.<span class="keyword">py</span>
+</code></pre><hr>
+<p>常见的报错Debug：</p>
+<hr>
+<p><em>AttributeError: ‘module’ object has no attribute ‘text_format’</em></p>
+<p>需要在py-faster-rcnn/lib/fast_rcnn/train.py中添加：</p>
+<pre><code>import google<span class="class">.protobuf</span><span class="class">.text_format</span>
+</code></pre><hr>
+<p><em>KeyError: ‘chair’ [when train only several classes]</em><br><em>使用py-faster-rcnn训练VOC2007数据集时遇到如下问题：</em></p>
+<p>File “/home/sai/py-faster-rcnn/tools/../lib/datasets/pascal_voc.py”, line 217, in _load_pascal_annotation<br>cls = self._class_to_ind[obj.find(‘name’).text.lower().strip()]<br>KeyError: ‘chair‘</p>
+<p>解决：</p>
+<p>You probably need to write some line of codes to ignore any objects with classes except the classes you are looking for when you are loading the annotation _load_pascal_annotation.<br>Something like</p>
+<pre><code>cls_objs = [obj <span class="keyword">for</span> obj, clas <span class="keyword">in</span> objs, self._classes <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(‘name‘)</span></span>.text== clas]
+</code></pre><p>when you are loading the annotation in _load_pascal_annotation method, look for something like</p>
+<pre><code>objs = diff_objs <span class="list">(<span class="keyword">or</span> non_diff_objs)</span> <span class="list">(<span class="keyword">after</span> this line in pascal_voc.py)</span>
+</code></pre><p>After that line insert something similar to below code</p>
+<pre><code>cls_objs = [obj <span class="keyword">for</span> obj <span class="keyword">in</span> objs <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(<span class="string">'name'</span>)</span></span><span class="class">.text</span> <span class="keyword">in</span> self._classes]
+objs = cls_objs
+</code></pre><p>参考：<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/316" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/316</a></p>
+<hr>
+<p><em>Annotations files 标记文件问题</em></p>
+<p>Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
+<p>must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Git配置出错Permission Denied" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Git配置出错Permission Denied/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Git配置出错Permission Denied/">Git配置出现Permission denied问题</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>MacOS github后台配置ssh key之后本地无法git clone的问题 </p>
+<pre><code><span class="variable">Permission</span> denied (publickey).
+</code></pre><p>当你在github后台添加了ssh keys之后，在本地这么测试一下：</p>
+<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
+</code></pre><p>如果返回是：</p>
+<pre><code><span class="variable">Permission</span> denied (publickey).
+</code></pre><p>那么你可能要在本地ssh-add一下，当然在这之前你可以使用 ssh -vT git@github.com 查看一下到底是因为什么原因导致的失败。</p>
+<pre><code><span class="label">ssh</span>-<span class="keyword">add </span>~/.ssh/id_rsa (maybe: ssh-<span class="keyword">add </span>~/id_rsa)
+</code></pre><p>然后会返回如下：</p>
+<pre><code>Enter passphrase <span class="keyword">for</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span><span class="string">id_rsa:</span>
+Identity <span class="string">added:</span> <span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>id_rsa (<span class="regexp">/Users/</span>xxx<span class="regexp">/.ssh/</span>youraccount_rsa)
+</code></pre><p>之后再使用 </p>
+<pre><code><span class="title">ssh</span> -T git<span class="variable">@github</span>.com
+</code></pre><p>会返回成功：</p>
+<pre><code>Hi youraccount! You've successfully authenticated, <span class="keyword">but</span> GitHub <span class="keyword">does</span> <span class="keyword">not</span> provide shell access.
+</code></pre><p>说明你目前本地的ssh已经切换到了id_rsa这个账号，</p>
+<p>之后便可以进行git clone到本地的操作了！</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Mac/">Mac</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/07/06/Python除法/" class="article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished">2017-07-06</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/python/">python</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Debug/">Debug</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Ubuntu16.04+Titan X+CUDA8.0+cudnn5" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/30/Ubuntu16.04+Titan X+CUDA8.0+cudnn5/" class="article-date">
+  	<time datetime="2016-12-30T03:15:04.000Z" itemprop="datePublished">2016-12-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/30/Ubuntu16.04+Titan X+CUDA8.0+cudnn5/">Ubuntu16.04+Titan X+CUDA8.0+cudnn5.1+Caffe</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装Ubuntu16.04 LTS x64</strong></p>
+<p>利用工具rufus制作USB系统盘(官方下载64位版本: <a href="http://www.ubuntu.com/download/alternative-downloads" target="_blank" rel="external">ubuntu-16.04-desktop-amd64.iso</a>)，因为已有Win7系统，此处选择“Install Ubuntu alongside Windows Boot Manager”，分区采用默认选择，语言选择English，安装完毕。</p>
+<p><em>注：此时显示器VGA接口接到主板集成显卡接口上。</em><br><em>PS: or always plug VGA to Nvidia Titan X, and then set “nomodeset” in /etc/default/grub, then install nvidia drivers in tty…</em></p>
+<p><strong>2.更新源</strong></p>
+<pre><code>cd /etc/apt/
+sudo cp sources<span class="class">.list</span> sources<span class="class">.list</span><span class="class">.bak</span>
+sudo gedit sources.list
+</code></pre><p>在sources.list文件头部添加如下源：</p>
+<pre><code>deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
+deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
+deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
+</code></pre><p>然后更新源和安装的包:</p>
+<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
+sudo apt-<span class="built_in">get</span> upgrade
+</code></pre><p><strong>3.安装NVIDIA显卡驱动</strong></p>
+<p>采用ppa安装方式，没选择最新的nvidia-370，我选择了nvidia-367。</p>
+<p>Ctrl+Alt+F1进入tty命令控制台，停止lightdm，然后开始安装驱动。</p>
+<pre><code>sudo services lightdm stop
+
+sudo<span class="instruction"> add-apt-repository </span>ppa:graphics-drivers/ppa
+sudo apt-get update
+sudo apt-get install nvidia-367
+sudo apt-get install mesa-common-dev
+sudo apt-get install freeglut3-dev
+sudo reboot
+</code></pre><p><em>将显示器VGA接口换到NVIDIA显卡上。</em></p>
+<p>PS: If login loop, then Ctrl+Alt+F1, and then uninstall nvidia driver and reinstall again..</p>
+<pre><code>sudo apt-get purge nvidia-*
+sudo<span class="instruction"> add-apt-repository </span>ppa:graphics-drivers/ppa
+sudo apt-get update 
+sudo apt-get install nvidia-367
+sudo apt-get install mesa-common-dev
+sudo apt-get install freeglut3-dev
+sudo reboot
+</code></pre><p><strong>4.修改分辨率</strong></p>
+<p>启动到界面之后发现分辨率只有1366x768，显示器适合1920x1080，采用xrandr并修改xorg.conf来解决。[或者，更容易的是采用一个HDMI的转接头来解决！]</p>
+<pre><code>sudo gedit /etc/X11/xorg<span class="class">.conf</span>
+修改如下：
+HorizSync <span class="number">31.0</span> - <span class="number">84.0</span>
+VertRefresh <span class="number">56.0</span>-<span class="number">77.0</span>
+</code></pre><p>即最终的xorg.conf文件为：</p>
+<pre><code><span class="title">Section "Device"    </span>
+    Identifier <span class="string">"Configured Video Device"</span>
+EndSection
+
+<span class="title">Section "Monitor"</span>
+    Identifier <span class="string">"Configured Monitor"</span>
+    Horizsync 30-84
+    Vertrefresh 56-77
+EndSection
+
+<span class="title">Section "Screen"</span>
+Identifier <span class="string">"Default Screen"</span>
+Monitor <span class="string">"Configured Monitor"</span>
+Device <span class="string">"Configured Video Device"</span>
+    SubSection <span class="string">"Display"</span>
+        Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
+    EndSubSection
+EndSection        
+</code></pre><p>注销系统再次登录后，选择适合的桌面分辨率即可。</p>
+<p><strong>5.安装CUDA8.0</strong></p>
+<p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.44_linux.run</a>，复制到根目录下。</p>
+<pre><code>sudo sh cuda_8.0.44_linux.<span class="command">run</span> <span class="comment">--tmpdir=/tmp/</span>
+</code></pre><p>遇到问题：incomplete installation，然后执行</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install freeglut3-<span class="built_in">dev</span> build-essential libx11-<span class="built_in">dev</span> libxmu-<span class="built_in">dev</span> libxi-<span class="built_in">dev</span> libgl1-mesa-glx libglu1-mesa libglu1-mesa-<span class="built_in">dev</span>
+sudo sh cuda_8.0.44_linux.run -silent -driver
+</code></pre><p>注：此时安装过程中提示是否要安装NVIDIA驱动时选择no。其他选择yes或默认即可。</p>
+<pre><code>Install NVIDIA Accelerated Graphics Driver <span class="keyword">for</span> Linux-x86_64 <span class="number">361.62</span>? <span class="params">(y)</span>es/<span class="params">(n)</span>o/<span class="params">(q)</span>uit: n
+</code></pre><p>安装完毕后声明环境变量：</p>
+<pre><code><span class="title">sudo</span> gedit ~/.bashrc
+</code></pre><p>在.bashrc尾部添加如下内容：</p>
+<pre><code>export <span class="constant">PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/bin</span><span class="variable">${</span><span class="constant">PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">PATH</span>}}
+export <span class="constant">LD_LIBRARY_PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/lib</span>64<span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span>}}
+</code></pre><p>测试下安装是否成功：</p>
+<p>测试1：</p>
+<pre><code>cd NVIDI<span class="built_in">A_CUDA</span>-<span class="number">8.0</span>_Samples/
+nvidia-smi
+</code></pre><p>输出：</p>
+<pre><code>Tue Oct 18 15:20:34 2016       
++-----------------------------------------------------------------------------+
+|<span class="string"> NVIDIA-SMI 367.44                 Driver Version: 367.44                    </span>|
+|<span class="string">-------------------------------+----------------------+----------------------+
+</span>|<span class="string"> GPU  Name        Persistence-M</span>|<span class="string"> Bus-Id        Disp.A </span>|<span class="string"> Volatile Uncorr. ECC </span>|
+|<span class="string"> Fan  Temp  Perf  Pwr:Usage/Cap</span>|<span class="string">         Memory-Usage </span>|<span class="string"> GPU-Util  Compute M. </span>|
+|<span class="string">===============================+======================+======================</span>|
+|<span class="string">   0  GeForce GTX TIT...  Off  </span>|<span class="string"> 0000:01:00.0      On </span>|<span class="string">                  N/A </span>|
+|<span class="string"> 22%   48C    P5    27W / 250W </span>|<span class="string">    169MiB / 12205MiB </span>|<span class="string">      1%      Default </span>|
++-------------------------------+----------------------+----------------------+
+
++-----------------------------------------------------------------------------+
+|<span class="string"> Processes:                                                       GPU Memory </span>|
+|<span class="string">  GPU       PID  Type  Process name                               Usage      </span>|
+|<span class="string">=============================================================================</span>|
+|<span class="string">    0      2421    G   /usr/lib/xorg/Xorg                             105MiB </span>|
+|<span class="string">    0     10062    G   compiz                                          63MiB </span>|
++-----------------------------------------------------------------------------+
+</code></pre><p>测试2：</p>
+<pre><code>cd <span class="number">1</span>_Utilities/deviceQuery
+make
+<span class="attribute">...</span><span class="attribute">...</span><span class="built_in">..
+</span><span class="built_in">.</span>/deviceQuery 
+</code></pre><p>输出：</p>
+<pre><code>./deviceQuery Starting...
+
+ CUDA Device Query (Runtime API) version (CUDART static linking)
+
+Detected 1 CUDA Capable device(s)
+
+Device 0: "GeForce GTX TITAN X"
+  CUDA Driver Version / Runtime Version          8.0 / 8.0
+  CUDA Capability Major/Minor version number:    5.2
+  Total amount of global memory:                 12205 MBytes (12798197760 bytes)
+  (24) Multiprocessors, (128) CUDA Cores/MP:     3072 CUDA Cores
+  GPU Max Clock rate:                            1076 MHz (1.08 GHz)
+  Memory Clock rate:                             3505 Mhz
+  Memory Bus Width:                              384-bit
+  L2 <span class="operator"><span class="keyword">Cache</span> <span class="keyword">Size</span>:                                 <span class="number">3145728</span> bytes
+  Maximum Texture Dimension <span class="keyword">Size</span> (x,y,z)         <span class="number">1</span>D=(<span class="number">65536</span>), <span class="number">2</span>D=(<span class="number">65536</span>, <span class="number">65536</span>), <span class="number">3</span>D=(<span class="number">4096</span>, <span class="number">4096</span>, <span class="number">4096</span>)
+  Maximum Layered <span class="number">1</span>D Texture <span class="keyword">Size</span>, (num) layers  <span class="number">1</span>D=(<span class="number">16384</span>), <span class="number">2048</span> layers
+  Maximum Layered <span class="number">2</span>D Texture <span class="keyword">Size</span>, (num) layers  <span class="number">2</span>D=(<span class="number">16384</span>, <span class="number">16384</span>), <span class="number">2048</span> layers
+  Total amount <span class="keyword">of</span> constant memory:               <span class="number">65536</span> bytes
+  Total amount <span class="keyword">of</span> shared memory per block:       <span class="number">49152</span> bytes
+  Total <span class="built_in">number</span> <span class="keyword">of</span> registers available per block: <span class="number">65536</span>
+  Warp <span class="keyword">size</span>:                                     <span class="number">32</span>
+  Maximum <span class="built_in">number</span> <span class="keyword">of</span> threads per multiprocessor:  <span class="number">2048</span>
+  Maximum <span class="built_in">number</span> <span class="keyword">of</span> threads per block:           <span class="number">1024</span>
+  <span class="keyword">Max</span> dimension <span class="keyword">size</span> <span class="keyword">of</span> a thread block (x,y,z): (<span class="number">1024</span>, <span class="number">1024</span>, <span class="number">64</span>)
+  <span class="keyword">Max</span> dimension <span class="keyword">size</span> <span class="keyword">of</span> a grid <span class="keyword">size</span>    (x,y,z): (<span class="number">2147483647</span>, <span class="number">65535</span>, <span class="number">65535</span>)
+  Maximum memory pitch:                          <span class="number">2147483647</span> bytes
+  Texture alignment:                             <span class="number">512</span> bytes
+  <span class="keyword">Concurrent</span> copy <span class="keyword">and</span> kernel execution:          Yes <span class="keyword">with</span> <span class="number">2</span> copy <span class="keyword">engine</span>(s)
+  Run <span class="keyword">time</span> <span class="keyword">limit</span> <span class="keyword">on</span> kernels:                     Yes
+  Integrated GPU sharing Host Memory:            <span class="keyword">No</span>
+  Support host page-locked memory mapping:       Yes
+  Alignment requirement <span class="keyword">for</span> Surfaces:            Yes
+  Device has ECC support:                        Disabled
+  Device supports Unified Addressing (UVA):      Yes
+  Device PCI <span class="keyword">Domain</span> ID / Bus ID / location ID:   <span class="number">0</span> / <span class="number">1</span> / <span class="number">0</span>
+  Compute <span class="keyword">Mode</span>:
+     &lt; <span class="keyword">Default</span> (multiple host threads can <span class="keyword">use</span> ::cudaSetDevice() <span class="keyword">with</span> device simultaneously) &gt;
+
+deviceQuery, CUDA Driver = CUDART, CUDA Driver <span class="keyword">Version</span> = <span class="number">8.0</span>, CUDA Runtime <span class="keyword">Version</span> = <span class="number">8.0</span>, NumDevs = <span class="number">1</span>, Device0 = GeForce GTX TITAN X
+Result = PASS</span>
+</code></pre><p>测试3：</p>
+<pre><code>cd <span class="built_in">..</span><span class="subst">/</span><span class="built_in">..</span>/<span class="number">5</span>_Simulations/nbody<span class="subst">/</span>
+make
+<span class="attribute">...</span><span class="attribute">...</span><span class="attribute">...</span>
+<span class="built_in">.</span>/nbody <span class="attribute">-benchmark</span> <span class="attribute">-numbodies</span><span class="subst">=</span><span class="number">256000</span> <span class="attribute">-device</span><span class="subst">=</span><span class="number">0</span>
+</code></pre><p>输出：</p>
+<pre><code>mark -numbodies=<span class="number">256000</span> -device=<span class="number">0</span>
+Run <span class="string">"nbody -benchmark [-numbodies=&lt;numBodies&gt;]"</span> <span class="keyword">to</span> measure performance.
+-fullscreen       (<span class="command">run</span> n-body simulation <span class="keyword">in</span> fullscreen mode)
+-fp64             (use double precision floating point values <span class="keyword">for</span> simulation)
+-hostmem          (stores simulation data <span class="keyword">in</span> host memory)
+-benchmark        (<span class="command">run</span> benchmark <span class="keyword">to</span> measure performance) 
+-numbodies=&lt;N&gt;    (<span class="type">number</span> <span class="keyword">of</span> bodies (&gt;= <span class="number">1</span>) <span class="keyword">to</span> <span class="command">run</span> <span class="keyword">in</span> simulation) 
+-device=&lt;d&gt;       (<span class="keyword">where</span> d=<span class="number">0</span>,<span class="number">1</span>,<span class="number">2.</span>... <span class="keyword">for</span> <span class="keyword">the</span> CUDA device <span class="keyword">to</span> use)
+-numdevices=&lt;i&gt;   (<span class="keyword">where</span> i=(<span class="type">number</span> <span class="keyword">of</span> CUDA devices &gt; <span class="number">0</span>) <span class="keyword">to</span> use <span class="keyword">for</span> simulation)
+-compare          (compares simulation results <span class="property">running</span> once <span class="function_start"><span class="keyword">on</span></span> <span class="keyword">the</span> default GPU <span class="keyword">and</span> once <span class="function_start"><span class="keyword">on</span></span> <span class="keyword">the</span> CPU)
+-cpu              (<span class="command">run</span> n-body simulation <span class="function_start"><span class="keyword">on</span></span> <span class="keyword">the</span> CPU)
+-tipsy=&lt;<span class="type">file</span>.bin&gt; (load a tipsy model <span class="type">file</span> <span class="keyword">for</span> simulation)
+
+NOTE: The CUDA Samples are <span class="keyword">not</span> meant <span class="keyword">for</span> performance measurements. Results may vary when GPU Boost <span class="keyword">is</span> enabled.
+
+&gt; Windowed mode
+&gt; Simulation data stored <span class="keyword">in</span> video memory
+&gt; Single precision floating point simulation
+&gt; <span class="number">1</span> Devices used <span class="keyword">for</span> simulation
+gpuDeviceInit() CUDA Device [<span class="number">0</span>]: <span class="string">"GeForce GTX TITAN X
+&gt; Compute 5.2 CUDA device: [GeForce GTX TITAN X]
+number of bodies = 256000
+256000 bodies, total time for 10 iterations: 3104.433 ms
+= 211.105 billion interactions per second
+= 4222.091 single-precision GFLOP/s at 20 flops per interaction</span>
+</code></pre><p><strong>6.安装OpenCV 3.1.0</strong></p>
+<p>从官网下载zip源代码，解压到根目录下。<br>安装依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> -y remove ffmpeg x264 libx264-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> -y install libopencv-<span class="built_in">dev</span> build-essential checkinstall cmake pkg-config yasm  libjpeg-<span class="built_in">dev</span> libjasper-<span class="built_in">dev</span> libavcodec-<span class="built_in">dev</span> libavformat-<span class="built_in">dev</span> libswscale-<span class="built_in">dev</span> libdc1394-<span class="number">22</span>-<span class="built_in">dev</span>  libgstreamer0.10-<span class="built_in">dev</span> libgstreamer-plugins-base0.10-<span class="built_in">dev</span> libv4l-<span class="built_in">dev</span> python-<span class="built_in">dev</span> python-numpy libtbb-<span class="built_in">dev</span> libqt4-<span class="built_in">dev</span> libgtk2.0-<span class="built_in">dev</span> libfaac-<span class="built_in">dev</span> libmp3lame-<span class="built_in">dev</span> libopencore-amrnb-<span class="built_in">dev</span> libopencore-amrwb-<span class="built_in">dev</span> libtheora-<span class="built_in">dev</span> libvorbis-<span class="built_in">dev</span> libxvidcore-<span class="built_in">dev</span> x264 v4l-utils ffmpeg libgtk2.0-<span class="built_in">dev</span>
+
+cd opencv-<span class="number">3.1</span>.0
+mkdir build   
+cd build/
+cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
+make -j8
+sudo make install
+</code></pre><p>遇到的错误：Errors</p>
+<pre><code><span class="keyword">error</span>: ‘NppiGraphcutState’ has <span class="keyword">not</span> been declared
+<span class="keyword">error</span>: ‘NppiGraphcutState’ <span class="keyword">does</span> <span class="keyword">not</span> <span class="property">name</span> a type
+...
+</code></pre><p>解决方法：(由于CUDA版本高于8.0，所以需要做如下修改。在源文件中找到“graphcuts.cpp”)</p>
+<p>将：</p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> "precomp.hpp"</span>
+<span class="preprocessor">#<span class="keyword">if</span> !defined (HAVE_CUDA) || defined (CUDA_DISABLER)</span>
+</code></pre><p>改为:</p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> "precomp.hpp"</span>
+<span class="preprocessor">#<span class="keyword">if</span> !defined (HAVE_CUDA) || defined (CUDA_DISABLER)  || (CUDART_VERSION &gt;= 8000)</span>
+</code></pre><p>because graphcuts is not supported directly with CUDA8 anymore.</p>
+<p>安装成功后配置环境：</p>
+<pre><code>sudo <span class="keyword">sh</span> -c 'echo <span class="string">"/usr/local/lib"</span> &gt; /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/opencv.<span class="keyword">conf</span>'
+sudo ldconfig
+</code></pre><p>测试OpenCV安装是否成功：</p>
+<pre><code><span class="built_in">mkdir</span> DisplayImage  
+<span class="built_in">cd</span> DisplayImage 
+gedit DisplayImage.cpp 
+</code></pre><p>添加代码：</p>
+<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;  </span>
+<span class="preprocessor">#<span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;  </span>
+<span class="keyword">using</span> <span class="keyword">namespace</span> cv;  
+
+<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  
+</span>{  
+     <span class="keyword">if</span>(argc!= <span class="number">2</span>)  
+     {  
+               <span class="built_in">printf</span>(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
+     }  
+
+     Mat image;  
+     image= imread(argv[<span class="number">1</span>], <span class="number">1</span>);  
+
+    <span class="keyword">if</span>(!image.data)  
+    {  
+               <span class="built_in">printf</span>(<span class="string">"Noimage data\n"</span>);  
+               <span class="keyword">return</span> -<span class="number">1</span>;  
+     }  
+
+     namedWindow(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE);  
+     imshow(<span class="string">"DisplayImage"</span>,image);  
+
+     waitKey(<span class="number">0</span>);  
+     <span class="keyword">return</span> <span class="number">0</span>;  
+}  
+</code></pre><p>创建CMake文件：</p>
+<pre><code>gedit CMakeLists<span class="class">.txt</span>  
+</code></pre><p>添加内容：</p>
+<pre><code><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span>  
+<span class="function"><span class="title">project</span><span class="params">(DisplayImage)</span></span>  
+<span class="function"><span class="title">find_package</span><span class="params">(OpenCV REQUIRED)</span></span>  
+<span class="function"><span class="title">add_executable</span><span class="params">(DisplayImage DisplayImage.cpp)</span></span>  
+<span class="function"><span class="title">target_link_libraries</span><span class="params">(DisplayImage ${OpenCV_LIBS})</span></span> 
+</code></pre><p>编译：</p>
+<pre><code>cmake .  
+<span class="built_in">make</span> 
+</code></pre><p>执行：</p>
+<pre><code>./DisplayImage lena<span class="class">.jpg</span>  
+</code></pre><p><strong>7.安装cudnn 5.1</strong></p>
+<p>从官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cudnn-8.0-linux-x64-v5.1.tgz</a> for CUDA 8.0. 解压到当前目录：</p>
+<pre><code><span class="tag">tar</span> <span class="tag">-zxvf</span> <span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>
+</code></pre><p>解压后的文件如下：</p>
+<pre><code>cuda/include/cudnn<span class="class">.h</span>
+cuda/lib64/libcudnn<span class="class">.so</span>
+cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
+cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5.1</span>.<span class="number">5</span>
+cuda/lib64/libcudnn_static.a
+</code></pre><p>然后执行：</p>
+<pre><code>sudo cp cuda<span class="regexp">/include/</span>cudnn.h <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/
+sudo cp cuda<span class="regexp">/lib64/</span>libcudnn* <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/
+sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/cudnn.h
+sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/libcudnn*
+</code></pre><p><strong>8.安装MATLAB 2014a</strong></p>
+<p>需要注意的是Ubuntu16.04 LTS的gcc版本为5.4，而Matlab2014a支持的是gcc4.7。</p>
+<p>降级安装gcc/g++版本为4.7.x</p>
+<p>下载gcc/g++ 4.7.x</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> -y gcc-<span class="number">4.7</span>
+
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> -y g++-<span class="number">4.7</span></span>
+</code></pre><p>链接gcc/g++实现降级</p>
+<pre><code><span class="keyword">cd</span> /usr/bin
+
+sudo <span class="keyword">rm</span> gcc
+
+sudo ln -s gcc-4.7 gcc
+
+sudo <span class="keyword">rm</span> <span class="keyword">g</span>++
+
+sudo ln -s <span class="keyword">g</span>++-4.7 <span class="keyword">g</span>++
+</code></pre><hr>
+<p>升级 gcc 到 gcc-5版本</p>
+<p>首先添加ppa到库：</p>
+<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:ubuntu-toolchain-r/test
+sudo apt-get update
+</code></pre><p>如果提示未安装，还需要先安装它的包：</p>
+<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> software-properties-common
+
+sudo apt-<span class="keyword">get</span> <span class="keyword">upgrade</span>
+sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> gcc-<span class="number">5</span> g++-<span class="number">5</span></span>
+</code></pre><p>（非必须）现在可以考虑刷新一下，否则locate等命令是找不到的：</p>
+<pre><code><span class="title">sudo</span> updatedb &amp;&amp; sudo ldconfig
+locate gcc
+</code></pre><p>你会发现  gcc -v 显示出来的版本还是gcc-4.7的，因此需要更新一下链接：</p>
+<pre><code>update-alternatives --install <span class="regexp">/usr/</span>bin<span class="regexp">/gcc gcc /u</span>sr<span class="regexp">/bin/g</span>cc-<span class="number">5</span> <span class="number">53</span> \
+--slave <span class="regexp">/usr/</span>bin<span class="regexp">/g++ g++ /u</span>sr<span class="regexp">/bin/g</span>++-<span class="number">5</span> \
+--slave <span class="regexp">/usr/</span>bin<span class="regexp">/gcc-ar gcc-ar /u</span>sr<span class="regexp">/bin/g</span>cc-ar-<span class="number">5</span> \
+--slave <span class="regexp">/usr/</span>bin<span class="regexp">/gcc-nm gcc-nm /u</span>sr<span class="regexp">/bin/g</span>cc-nm-<span class="number">5</span> \
+--slave <span class="regexp">/usr/</span>bin<span class="regexp">/gcc-ranlib gcc-ranlib /u</span>sr<span class="regexp">/bin/g</span>cc-ranlib-<span class="number">5</span>
+</code></pre><p>=======================================================</p>
+<p>用Crack文件中的install替换matlab2014安装目录下/java/jar/下的install文件，然后执行install程序</p>
+<pre><code><span class="built_in">cd</span> <span class="string">"MatlabFolder"</span>
+sudo ./install
+</code></pre><p>注意：选择“不联网安装”；当出现密钥时，随意输入20个数字12345-67890-12345-67890即可；需要激活时选择不要联网激活，用Crack目录下的“license_405329_R2014a.lic”文件激活。</p>
+<p>安装完成之后，将Crack/Linux目录下的libmwservices.so文件拷贝到/usr/local/MATLAB/R2014a/bin/glnxa64。</p>
+<pre><code>cd ..
+cd Crack<span class="regexp">/Linux/</span>
+sudo cp libmwservices.so <span class="regexp">/usr/</span>local<span class="regexp">/MATLAB/</span>R2014a<span class="regexp">/bin/g</span>lnxa64
+</code></pre><p>打开Matlab并激活：</p>
+<pre><code><span class="built_in">cd</span> /usr/<span class="built_in">local</span>/MATLAB/R2014a/bin
+sudo ./matlab <span class="comment"># sudo不可缺少，否则选择激活文件后报错</span>
+</code></pre><p>Test GPUdevice in Matlab:</p>
+<pre><code>&gt;&gt; gpuDevice
+
+ans = 
+
+  CUDADevice <span class="keyword">with</span> properties:
+
+                  Name: <span class="string">'GeForce GTX TITAN X'</span>
+                 <span class="keyword">Index</span>: <span class="number">1</span>
+     ComputeCapability: <span class="string">'5.2'</span>
+        SupportsDouble: <span class="number">1</span>
+         DriverVersion: <span class="number">8</span>
+        ToolkitVersion: <span class="number">5.5000</span>
+    MaxThreadsPerBlock: <span class="number">1024</span>
+      MaxShmemPerBlock: <span class="number">49152</span>
+    MaxThreadBlockSize: [<span class="number">1024</span> <span class="number">1024</span> <span class="number">64</span>]
+           MaxGridSize: [<span class="number">2.1475</span>e+<span class="number">09</span> <span class="number">65535</span> <span class="number">65535</span>]
+             SIMDWidth: <span class="number">32</span>
+           TotalMemory: <span class="number">1.2796</span>e+<span class="number">10</span>
+            FreeMemory: <span class="number">1.2475</span>e+<span class="number">10</span>
+       MultiprocessorCount: <span class="number">24</span>
+          ClockRateKHz: <span class="number">1076000</span>
+           ComputeMode: <span class="string">'Default'</span>
+      GPUOverlapsTransfers: <span class="number">1</span>
+    KernelExecutionTimeout: <span class="number">1</span>
+      CanMapHostMemory: <span class="number">1</span>
+       DeviceSupported: <span class="number">1</span>
+        DeviceSelected: <span class="number">1</span>
+</code></pre><p><strong>9.Python</strong></p>
+<p>选用Ubuntu16.04默认的安装和配置，python版本2.7.12.</p>
+<p><strong>10.BLAS安装与配置</strong></p>
+<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的序列号(<em>2HWS-34Z7S69B</em>)。</p>
+<pre><code>tar zxvf parallel_studio_xe_2017.tgz   <span class="comment">#解压下载文件</span>
+ chmod <span class="number">777</span> parallel_studio_xe_2017 -R   <span class="comment">#获取文件权限</span>
+<span class="built_in">cd</span> parallel_studio_xe_2017/
+ sudo ./install_GUI.sh
+</code></pre><p>安装完成之后，进行相关文件的链接：</p>
+<pre><code>sudo gedit /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/intel_mkl.<span class="keyword">conf</span>
+</code></pre><p>添加库文件:</p>
+<pre><code><span class="regexp">/opt/i</span>ntel<span class="regexp">/lib/i</span>ntel64
+<span class="regexp">/opt/i</span>ntel<span class="regexp">/mkl/</span>lib<span class="regexp">/intel64</span>
+</code></pre><p>编译链接使lib文件生效：</p>
+<pre><code><span class="title">sudo</span> ldconfig    
+</code></pre><p>如果选择安装ATLAS，在终端输入<code>sudo apt-get install libatlas-base-dev</code>即可。</p>
+<p><strong>11.Caffe的安装与配置</strong></p>
+<p>Caffe是由BVLC开发的一个深度学习框架，主要由贾扬清在UC Berkeley攻读PhD期间完成。参考官网上的<a href="http://caffe.berkeleyvision.org/installation.html" target="_blank" rel="external">教程</a>以及Github上针对Ubuntu15.04和16.04的<a href="https://github.com/BVLC/caffe/wiki/Ubuntu-16.04-or-15.10-Installation-Guide" target="_blank" rel="external">教程</a>。从官方下载caffe源包<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">caffe-master</a>。</p>
+<p>安装库文件：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libboost-<span class="built_in">all</span>-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span> protobuf-compiler
+</code></pre><p>安装依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install -y build-essential cmake git pkg-config libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libopencv-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> protobuf-compiler libatlas-base-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span>
+sudo apt-<span class="built_in">get</span> install --no-install-recommends libboost-<span class="built_in">all</span>-<span class="built_in">dev</span>
+</code></pre><p>Python接口依赖：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-pip
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy # (Python <span class="number">2.7</span> development <span class="keyword">files</span>)
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-dev
+sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy # (Python <span class="number">3.5</span> development <span class="keyword">files</span>)
+</code></pre><p>在python文件夹内，使用root执行依赖项的检查与安装：</p>
+<pre><code>sudo <span class="keyword">su</span>
+<span class="keyword">cd</span> caffe-master/python
+<span class="keyword">for</span> req <span class="keyword">in</span> $(<span class="keyword">cat</span> requirements.txt); <span class="keyword">do</span> pip install <span class="label">$req</span>; done
+</code></pre><p>Makefile.config：</p>
+<pre><code>cd ~/caffe-master
+cp Makefile<span class="class">.config</span><span class="class">.example</span> Makefile.config
+</code></pre><p>配置如下：</p>
+<pre><code><span class="preprocessor">## Refer to http://caffe.berkeleyvision.org/installation.html</span>
+<span class="preprocessor"># Contributions simplifying and improving our build system are welcome!</span>
+
+<span class="preprocessor"># cuDNN acceleration switch (uncomment to build with cuDNN).</span>
+<span class="constant"> USE_CUDNN </span>:= <span class="number">1</span>
+
+<span class="preprocessor"># CPU-only switch (uncomment to build without GPU support).</span>
+<span class="preprocessor"># CPU_ONLY := 1</span>
+
+<span class="preprocessor"># uncomment to disable IO dependencies and corresponding data layers</span>
+ <span class="constant"> USE_OPENCV </span>:= <span class="number">1</span>
+<span class="preprocessor"># USE_LEVELDB := 0</span>
+<span class="preprocessor"># USE_LMDB := 0</span>
+
+<span class="preprocessor"># uncomment to allow MDB_NOLOCK when reading LMDB files (only if necessary)</span>
+<span class="preprocessor">#    You should not set this flag if you will be reading LMDBs with any</span>
+<span class="preprocessor">#    possibility of simultaneous read and write</span>
+<span class="preprocessor"># ALLOW_LMDB_NOLOCK := 1</span>
+
+<span class="preprocessor"># Uncomment if you're using OpenCV 3</span>
+<span class="constant"> OPENCV_VERSION </span>:= <span class="number">3</span>
+
+<span class="preprocessor"># To customize your choice of compiler, uncomment and set the following.</span>
+<span class="preprocessor"># N.B. the default for Linux is g++ and the default for OSX is clang++</span>
+<span class="preprocessor"># CUSTOM_CXX := g++</span>
+
+<span class="preprocessor"># CUDA directory contains bin/ and lib/ directories that we need.</span>
+CUDA_DIR := /usr/local/cuda
+<span class="preprocessor"># On Ubuntu 14.04, if cuda tools are installed via</span>
+<span class="preprocessor"># "sudo apt-get install nvidia-cuda-toolkit" then use this instead:</span>
+<span class="preprocessor"># CUDA_DIR := /usr</span>
+
+<span class="preprocessor"># CUDA architecture setting: going with all of them.</span>
+<span class="preprocessor"># For CUDA &lt; 6.0, comment the *_50 lines for compatibility.</span>
+CUDA_ARCH := -gencode arch=compute_20,code=sm_20 \
+        -gencode arch=compute_20,code=sm_21 \
+        -gencode arch=compute_30,code=sm_30 \
+        -gencode arch=compute_35,code=sm_35 \
+        -gencode arch=compute_50,code=sm_50 \
+        -gencode arch=compute_50,code=compute_50
+
+<span class="preprocessor"># BLAS choice:</span>
+<span class="preprocessor"># atlas for ATLAS (default)</span>
+<span class="preprocessor"># mkl for MKL</span>
+<span class="preprocessor"># open for OpenBlas</span>
+BLAS := mkl
+<span class="preprocessor"># Custom (MKL/ATLAS/OpenBLAS) include and lib directories.</span>
+<span class="preprocessor"># Leave commented to accept the defaults for your choice of BLAS</span>
+<span class="preprocessor"># (which should work)!</span>
+<span class="preprocessor"># BLAS_INCLUDE := /path/to/your/blas</span>
+<span class="preprocessor"># BLAS_LIB := /path/to/your/blas</span>
+
+<span class="preprocessor"># Homebrew puts openblas in a directory that is not on the standard search path</span>
+<span class="preprocessor"># BLAS_INCLUDE := $(shell brew --prefix openblas)/include</span>
+<span class="preprocessor"># BLAS_LIB := $(shell brew --prefix openblas)/lib</span>
+
+<span class="preprocessor"># This is required only if you will compile the matlab interface.</span>
+<span class="preprocessor"># MATLAB directory should contain the mex binary in /bin.</span>
+ <span class="constant"> MATLAB_DIR </span>:= /usr/local/MATLAB/R2014a
+<span class="preprocessor"># MATLAB_DIR := /Applications/MATLAB_R2012b.app</span>
+
+<span class="preprocessor"># NOTE: this is required only if you will compile the python interface.</span>
+<span class="preprocessor"># We need to be able to find Python.h and numpy/arrayobject.h.</span>
+PYTHON_INCLUDE := /usr/include/python2.7 \
+        /usr/local/lib/python2.7/dist-packages/numpy/core/include
+<span class="preprocessor"># Anaconda Python distribution is quite popular. Include path:</span>
+<span class="preprocessor"># Verify anaconda location, sometimes it's in root.</span>
+<span class="preprocessor"># ANACONDA_HOME := $(HOME)/anaconda</span>
+<span class="preprocessor"># PYTHON_INCLUDE := $(ANACONDA_HOME)/include \</span>
+        # $(ANACONDA_HOME)/include/python2.7 \
+        # $(ANACONDA_HOME)/lib/python2.7/site-packages/numpy/core/include \
+
+<span class="preprocessor"># Uncomment to use Python 3 (default is Python 2)</span>
+<span class="preprocessor"># PYTHON_LIBRARIES := boost_python3 python3.5m</span>
+<span class="preprocessor"># PYTHON_INCLUDE := /usr/include/python3.5m \</span>
+<span class="preprocessor">#                 /usr/lib/python3.5/dist-packages/numpy/core/include</span>
+
+<span class="preprocessor"># We need to be able to find libpythonX.X.so or .dylib.</span>
+PYTHON_LIB := /usr/lib
+<span class="preprocessor"># PYTHON_LIB := $(ANACONDA_HOME)/lib</span>
+
+<span class="preprocessor"># Homebrew installs numpy in a non standard path (keg only)</span>
+<span class="preprocessor"># PYTHON_INCLUDE += $(dir $(shell python -c 'import numpy.core; print(numpy.core.__file__)'))/include</span>
+<span class="preprocessor"># PYTHON_LIB += $(shell brew --prefix numpy)/lib</span>
+
+<span class="preprocessor"># Uncomment to support layers written in Python (will link against Python libs)</span>
+ <span class="constant"> WITH_PYTHON_LAYER </span>:= <span class="number">1</span>
+
+<span class="preprocessor"># Whatever else you find you need goes here.</span>
+INCLUDE_DIRS := $(PYTHON_INCLUDE) /usr/local/include  /usr/include/hdf5/serial
+LIBRARY_DIRS := $(PYTHON_LIB) /usr/local/lib /usr/lib /usr/lib/x86_64-linux-gnu /usr/lib/x86_64-linux-gnu/hdf5/serial /usr/local/share/OpenCV/<span class="number">3</span>rdparty/lib/
+
+<span class="preprocessor"># If Homebrew is installed at a non standard location (for example your home directory) and you use it for general dependencies</span>
+<span class="preprocessor"># INCLUDE_DIRS += $(shell brew --prefix)/include</span>
+<span class="preprocessor"># LIBRARY_DIRS += $(shell brew --prefix)/lib</span>
+
+<span class="preprocessor"># Uncomment to use `pkg-config` to specify OpenCV library paths.</span>
+<span class="preprocessor"># (Usually not necessary -- OpenCV libraries are normally installed in one of the above $LIBRARY_DIRS.)</span>
+<span class="preprocessor"># USE_PKG_CONFIG := 1</span>
+
+<span class="preprocessor"># N.B. both build and distribute dirs are cleared on `make clean`</span>
+BUILD_DIR := build
+DISTRIBUTE_DIR := distribute
+
+<span class="preprocessor"># Uncomment for debugging. Does not work on OSX due to https://github.com/BVLC/caffe/issues/171</span>
+<span class="preprocessor"># DEBUG := 1</span>
+
+<span class="preprocessor"># The ID of the GPU that 'make runtest' will use to run unit tests.</span>
+TEST_GPUID := <span class="number">0</span>
+
+<span class="preprocessor"># enable pretty build (comment to see full commands)</span>
+Q ?= @
+</code></pre><p>在Makefile中配置：</p>
+<pre><code><span class="label">LIBRARIES</span> += glog gflags protobuf <span class="keyword">boost_system </span><span class="keyword">boost_filesystem </span>m hdf5_hl hdf5 opencv_core opencv_highgui opencv_imgproc opencv_imgcodecs
+</code></pre><p>hdf5的配置：官方说这对于Ubuntu 16.04是必须的。libhdf5的版本号需要根据实际来修改下。</p>
+<pre><code>sudo find . -<span class="keyword">type</span> f -exec sed -i -<span class="keyword">e</span> 's^<span class="string">"hdf5.h"</span>^<span class="string">"hdf5/serial/hdf5.h"</span>^<span class="keyword">g</span>' -<span class="keyword">e</span> 's^<span class="string">"hdf5_hl.h"</span>^<span class="string">"hdf5/serial/hdf5_hl.h"</span>^<span class="keyword">g</span>' '{}' \;
+<span class="keyword">cd</span> /usr/lib/x86_64-linux-gnu
+sudo ln -s libhdf5_serial.<span class="keyword">so</span>.10.1.0 libhdf5.<span class="keyword">so</span>
+sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<span class="keyword">so</span>
+</code></pre><p>编译：</p>
+<pre><code><span class="keyword">cd</span> ~/caffe-master
+<span class="keyword">make</span> clean
+<span class="keyword">make</span> <span class="keyword">all</span> -j8
+<span class="keyword">make</span> test -j8
+<span class="keyword">make</span> runtest -j8
+<span class="keyword">make</span> pycaffe -j8
+<span class="keyword">make</span> matcaffe -j8
+</code></pre><p>编译接口matcaffe时，有如下警告：</p>
+<pre><code>Warning: You are <span class="keyword">using</span> gcc <span class="built_in">version</span> <span class="string">'5.4.0'</span>. The <span class="built_in">version</span> <span class="operator">of</span> gcc is <span class="operator">not</span> supported. The <span class="built_in">version</span> currently supported <span class="operator">with</span> MEX is <span class="string">'4.7.x'</span>. For <span class="operator">a</span> list <span class="operator">of</span> currently supported compilers see: <span class="keyword">http</span>://www.mathworks.com/support/compilers/current_release.
+Warning: You are <span class="keyword">using</span> gcc <span class="built_in">version</span> <span class="string">'5.4.0-6ubuntu1~16.04.2)'</span>. The <span class="built_in">version</span> <span class="operator">of</span> gcc is <span class="operator">not</span> supported. The <span class="built_in">version</span> currently supported <span class="operator">with</span> MEX is <span class="string">'4.7.x'</span>. For <span class="operator">a</span> list <span class="operator">of</span> currently supported compilers see: <span class="keyword">http</span>://www.mathworks.com/support/compilers/current_release.
+MEX completed successfully.
+</code></pre><p>若OpenCV安装不正确则会在caffe编译过程中遇到如下错误：</p>
+<pre><code><span class="regexp">/usr/</span>bin/<span class="string">ld:</span> cannot find -lopencv_imgcodecs
+<span class="string">collect2:</span> <span class="string">error:</span> ld returned <span class="number">1</span> exit status
+<span class="string">Makefile:</span><span class="number">566</span>: recipe <span class="keyword">for</span> target <span class="string">'.build_release/lib/libcaffe.so.1.0.0-rc3'</span> failed
+<span class="string">make:</span> *** [.build_release<span class="regexp">/lib/</span>libcaffe.so.1.0.0-rc3] Error <span class="number">1</span>
+</code></pre><p>MNIST测试：</p>
+<pre><code>sh data/mnist/get_mnist<span class="class">.sh</span>  #数据预处理
+sh examples/mnist/create_mnist<span class="class">.sh</span> #重建lmdb文件。Caffe支持多种数据格式: <span class="function"><span class="title">Image</span><span class="params">(.jpg, .png等)</span></span>,leveldb,lmdb,HDF5. 生成mnist-train-lmdb 和 mnist-train-lmdb文件夹，这里包含了lmdb格式的数据集
+sh examples/mnist/train_lenet<span class="class">.sh</span> #训练mnist
+</code></pre><p>输出：</p>
+<pre><code>I<span class="number">1019 21:48</span>:<span class="number">30.078994</span> 20063 caffe.cpp:217] Using GPUs 0
+I<span class="number">1019 21:48</span>:<span class="number">30.092034</span> 20063 caffe.cpp:222] GPU 0: GeForce GTX TITAN X
+...
+....
+.....
+I<span class="number">1019 21:48</span>:<span class="number">49.415398</span> 20063 solver.cpp:317] Iteration 10000, loss = <span class="number">0.00242468</span>
+I<span class="number">1019 21:48</span>:<span class="number">49.415410</span> 20063 solver.cpp:337] Iteration 10000, Testing net (#0)
+I<span class="number">1019 21:48</span>:<span class="number">49.479605</span> 20063 solver.cpp:404] Test net output #0: accuracy = 0.9914
+I<span class="number">1019 21:48</span>:<span class="number">49.479625</span> 20063 solver.cpp:404] Test net output #1: loss = <span class="number">0.0284448</span> (* 1 = <span class="number">0.0284448</span> loss)
+I<span class="number">1019 21:48</span>:<span class="number">49.479629</span> 20063 solver.cpp:322] Optimization Done.
+I<span class="number">1019 21:48</span>:<span class="number">49.479632</span> 20063 caffe.cpp:254] Optimization Done.
+</code></pre><p><strong>12.Caffe下Matlab接口Demo测试</strong></p>
+<p>在使用Matlab运行caffe库时，即运行文件”caffe-master/matlab/demo/classification_demo.m”。遇到的错误信息如下：</p>
+<pre><code>Invalid MEX-<span class="built_in">file</span> <span class="string">'caffe-master/matlab/+caffe/private/caffe_.mexa64'</span>: libcudart.so.8.0: cannot <span class="built_in">open</span> shared object <span class="built_in">file</span>: No such <span class="built_in">file</span> <span class="operator">or</span> <span class="built_in">directory</span>
+</code></pre><p>错误原因是由于Matlab找不到caffe<em>.mexa64所依赖的所有库文件的路径，此时可以使用ldd命令来查看caffe\</em>.mexa64内库文件的地址：</p>
+<p>//1. 在Ubuntu系统的命令终端</p>
+<pre><code><span class="keyword">ldd</span> *caffe_.mexa64
+</code></pre><p>结果输出的是库文件对应的地址，与下文相对的缺失的库文件的地址可在此找到：</p>
+<pre><code>libcudart<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcudart<span class="class">.so</span>.<span class="number">8.0</span>
+libcublas<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcublas<span class="class">.so</span>.<span class="number">8.0</span>
+libcurand<span class="class">.so</span>.<span class="number">8.0</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcurand<span class="class">.so</span>.<span class="number">8.0</span>
+libcudnn<span class="class">.so</span>.<span class="number">5</span> =&gt; /usr/local/cuda-<span class="number">8.0</span>/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
+</code></pre><p>//2. 在Matlab命令窗口输入</p>
+<pre><code>!<span class="keyword">ldd</span> *caffe_.mexa64
+</code></pre><p>结果在Matlab窗口的输出信息中发现：</p>
+<pre><code>libcudart<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found
+libcublas<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found
+libcurand<span class="class">.so</span>.<span class="number">8.0</span> =&gt; not found 
+libcudnn<span class="class">.so</span>.<span class="number">5</span> =&gt; not found
+</code></pre><p>解决方法：通过如下命令将默认路径链接到真实路径下：</p>
+<pre><code>sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcudart.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcudart.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcublas.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcublas.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcurand.so.8.0 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcurand.so.8.0
+sudo ln -s <span class="regexp">/usr/</span>local<span class="regexp">/cuda-8.0/</span>lib64<span class="regexp">/libcudnn.so.5 /</span>usr<span class="regexp">/local/</span>MATLAB<span class="regexp">/R2014a/</span>sys<span class="regexp">/os/</span>glnxa64/libcudnn.so.5
+</code></pre><p>重新启动Matlab使之生效。</p>
+<p>另外，运行此例需要下载CaffeNet模型（Please download CaffeNet from Model Zoo before you run this demo.）<a href="https://github.com/BVLC/caffe/wiki/Model-Zoo" target="_blank" rel="external">https://github.com/BVLC/caffe/wiki/Model-Zoo</a> </p>
+<p>|| <em>name: BVLC CaffeNet Model</em></p>
+<p>|| <em>caffemodel: bvlc_reference_caffenet.caffemodel</em></p>
+<p>|| <em>caffemodel_url: <a href="https://dl.caffe.berkeleyvision.org/bvlc_reference_caffenet.caffemodel" target="_blank" rel="external">download</a></em></p>
+<p>|| <em>license: unrestricted</em></p>
+<p>详细说明可参见”caffe-master/models/bvlc_reference_caffenet”…</p>
+<p><strong>参考：</strong></p>
+<p><a href="http://www.2cto.com/os/201607/528798.html" target="_blank" rel="external">ubuntu14.04+cuda8.0（GTX1080）+caffe安装</a></p>
+<p><a href="http://www.52nlp.cn/%E6%B7%B1%E5%BA%A6%E5%AD%A6%E4%B9%A0%E4%B8%BB%E6%9C%BA%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE-ubuntu-16-04-nvidia-gtx-1080-cuda-8" target="_blank" rel="external">深度学习主机环境配置: Ubuntu16.04+Nvidia GTX 1080+CUDA8.0</a></p>
+<p><a href="http://www.jianshu.com/p/74e9c8697372" target="_blank" rel="external">深度学习框架torch/caffe/tensor/mxnet安装</a></p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/DeepLearning/">DeepLearning</a></li></ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+	<a class="article-category-link" href="/categories/Research/">Research</a>
+	</div>
+
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/30/Ubuntu配置——Chrome XX-Net Sogou Nodejs Hexo/" class="article-date">
+  	<time datetime="2016-12-30T01:59:46.000Z" itemprop="datePublished">2016-12-30</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu 配置——Chrome，XX-Net，Sogou，Nodejs，Hexo</p>
+<p>1.安装Chrome</p>
+<pre><code>sudo wget https://repo.fdzh<span class="preprocessor">.org</span>/chrome/google-chrome<span class="preprocessor">.list</span> -P /etc/apt/sources<span class="preprocessor">.list</span>.d/
+</code></pre><p>然后导入谷歌软件的公钥，用于下面步骤中对下载软件进行验证。命令将返回“OK”。</p>
+<pre><code>wget -<span class="keyword">q</span> -O - http<span class="variable">s:</span>//<span class="keyword">dl</span>.google.<span class="keyword">com</span>/linux/linux_signing_key.pub  | sudo apt-key <span class="built_in">add</span> -
+</code></pre><p>然后执行如下命令：</p>
+<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
+sudo apt-<span class="built_in">get</span> install google-chrome-stable
+</code></pre><p>2.配置XX-Net</p>
+<p>按照<a href="https://github.com/XX-net/XX-Net/wiki/%E4%BD%BF%E7%94%A8Chrome%E6%B5%8F%E8%A7%88%E5%99%A8" target="_blank" rel="external">说明文档</a>进行下载配置.</p>
+<p>3.搜狗输入法</p>
+<p>下载地址：<a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a></p>
+<p>安装：</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
+</code></pre><p>若出现问题安装错误时，或是由于缺少依赖，因此可执行如下语句：</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install -f
+</code></pre><p>然后再次执行安装命令即可：</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">dpkg</span> <span class="tag">-i</span> <span class="tag">sogoupinyin_2</span><span class="class">.1</span><span class="class">.0</span><span class="class">.0082_amd64</span><span class="class">.deb</span>
+</code></pre><p>4.搭建hexo</p>
+<p>4.1安装nodejs</p>
+<p>一个是通过ubuntu自带的包管理进行安装。不过它自带的版本可能过低，所以需要添加源：</p>
+<pre><code>sudo<span class="instruction"> add-apt-repository </span>ppa:chris-lea/node.js
+sudo apt-get update
+sudo apt-get install nodejs
+</code></pre><p>创建一个nodejs到node的软链接:</p>
+<pre><code>sudo ln -s <span class="regexp">/usr/</span>bin<span class="regexp">/nodejs /u</span>sr<span class="regexp">/bin/</span>node
+</code></pre><p>4.2安装Git</p>
+<pre><code>sudo apt-<span class="keyword">get</span> install git
+</code></pre><p>4.3安装hexo</p>
+<pre><code><span class="preprocessor"># 创建目录</span>
+mkdir hexo
+<span class="preprocessor"># 切换目录</span>
+cd hexo
+<span class="preprocessor"># 全局安装 Hexo，需要最高权限，记得输入root密码</span>
+sudo apt-<span class="keyword">get</span> install npm
+sudo npm install -g hexo-cli
+<span class="preprocessor"># 初始化 Hexo</span>
+hexo init
+</code></pre><p>安装插件</p>
+<pre><code>npm <span class="operator"><span class="keyword">install</span> hexo-generator-<span class="keyword">index</span> <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-archive <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-category <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-tag <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-<span class="keyword">server</span> <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-git <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-heroku <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-rsync <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-deployer-openshift <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-marked <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-renderer-stylus <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-feed <span class="comment">--save</span>
+npm <span class="keyword">install</span> hexo-generator-sitemap <span class="comment">--save</span></span>
+</code></pre><p>测试安装成功</p>
+<pre><code>hexo <span class="keyword">server</span>
+</code></pre><p>4.4配置本机全局git环境<br>首先请使用邮箱注册github账号，否则会影响下面操作，记住你注册的邮箱。</p>
+<pre><code>git config --global user<span class="class">.email</span> <span class="string">"you@example.com"</span>
+git config --global user<span class="class">.name</span> <span class="string">"Your Name"</span>
+</code></pre><p>生成SSH秘钥</p>
+<pre><code><span class="comment"># -C后面跟住你在github的用户名邮箱，这样公钥才会被github认可</span>
+ ssh-keygen -t rsa -C you<span class="property">@example</span>.com
+ <span class="comment"># 回车后，输入一个文件夹名字，存储新的SSH 秘钥</span>
+<span class="regexp">/home/username/</span>.ssh/id_rsa
+<span class="comment"># 查看 公钥内容 稍后加入Github 账户的 sshkey中</span>
+ less ~/.ssh/id_rsa.pub
+</code></pre><p>将id_rsa.pub中的文本拷贝到github设置SSh。</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
+    <article id="post-Ubuntu backup" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/12/28/Ubuntu backup/" class="article-date">
+  	<time datetime="2016-12-28T12:41:49.000Z" itemprop="datePublished">2016-12-28</time>
+</a>
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Ubuntu Backup</p>
+<ol>
+<li>backup</li>
+</ol>
+<p>然后打开终端，输入以下命令：</p>
+<pre><code>sudo su
+<span class="built_in">cd</span> /  <span class="comment">##转到根目录</span>
+</code></pre><p>然後，下面就是我用来备份我的系统的完整的命令：</p>
+<pre><code>tar -cvpzf /media/gwang/<span class="type">Work</span>/backup.tgz --exclude=/<span class="keyword">proc</span> --exclude=/lost+found --exclude=/mnt --exclude=/sys --exclude=/media --exclude=/tmp /
+</code></pre><p>PS:</p>
+<p>tar 是用来备份的程序</p>
+<p>c - 新建一个备份文档</p>
+<p>v - 详细模式， tar程序将在屏幕上实时输出所有信息。</p>
+<p>p - 保存权限，并应用到所有文件。</p>
+<p>z - 采用‘gzip’压缩备份文件，以减小备份文件体积。</p>
+<p>f - 说明备份文件存放的路径， /media/sda7/backup.tgz 是本例子中备份文件名。这个备份文件备份的位置是其它分区，也就是原来的WIN分区中。因为我的根目录的空间不足，所以只有备份在其它的地方了。</p>
+<p>—excloude - 排除指定目录,使其不被备份</p>
+<ol>
+<li><p>Linux 中美妙的事情之一就是在系统正在运行的情况下可以进行还原操作，而不需要启动光盘或者其他任何乱七八糟的东西。当然，如果您的系统已经崩溃，那您必须选择使用live CD，但是结果还是一样。</p>
+<p> tar -xvpzf /media/gwang/Work/backup.tgz -C /</p>
+</li>
+</ol>
+<p>如果您使用的是bz2压缩的：</p>
+<pre><code>tar -xvpjf /media/gwang/Work/backup<span class="class">.tar</span><span class="class">.bz2</span> -C /
+</code></pre><p>如果系统已经崩溃可以使用Live usb登录，然后</p>
+<pre><code>mkdir <span class="regexp">/tmp/</span>root
+mount <span class="regexp">/dev/</span>sdaX <span class="regexp">/tmp/</span>root
+
+tar -xvpjf <span class="regexp">/media/g</span>wang<span class="regexp">/Work/</span>backup.tar.bz2 -C <span class="regexp">/tmp/</span>root
+</code></pre><p>当然，恢复前可以先</p>
+<pre><code>rm -rf <span class="regexp">/tmp/root/</span>* 
+</code></pre><p>这样就删除根目录下的所有文件.</p>
+<p>这个只是在本机上还原，如果是还原到别的机子上记得修改fstab文件。（可能还需要安装grub）</p>
+<p>恢复命令结束时，别忘了重新创建那些在备份时被排除在外的目录：</p>
+<pre><code><span class="preprocessor"># mkdir proc</span>
+<span class="preprocessor"># mkdir lost+found</span>
+<span class="preprocessor"># mkdir mnt</span>
+<span class="preprocessor"># mkdir sys</span>
+<span class="preprocessor"># mkdir media</span>
+</code></pre>
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 </div>
