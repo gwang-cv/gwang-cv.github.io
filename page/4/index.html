@@ -139,6 +139,132 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Python爬取微博图片" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/03/31/Python爬取微博图片/">Python爬取微博图片</a>
+    </h1>
+  
+
+        
+        <a href="/2016/03/31/Python爬取微博图片/" class="archive-article-date">
+  	<time datetime="2016-03-31T08:13:29.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>爬取指定用户的页面内容，并将图片下载保存到本地</p>
+<pre><code><span class="keyword">import</span> requests
+<span class="keyword">import</span> urllib2
+<span class="keyword">from</span> lxml <span class="keyword">import</span> etree
+<span class="keyword">import</span> re
+<span class="keyword">from</span> multiprocessing.dummy <span class="keyword">import</span> Pool
+<span class="function"><span class="keyword">def</span> <span class="title">tosave</span><span class="params">(texta)</span>:</span>
+    f = open(<span class="string">'weibo.txt'</span>, <span class="string">'a'</span>)    
+    f.write(texta + <span class="string">'\n'</span>)    
+    f.close()
+cook = {<span class="string">"Cookie"</span>: <span class="string">"XXXXXX"</span>}
+url0 = <span class="string">'http://weibo.cn/u/XXXXX'</span>
+<span class="function"><span class="keyword">def</span> <span class="title">getContent</span><span class="params">(url, cook)</span>:</span>
+    html = requests.get(url, cookies=cook).content
+    selector = etree.HTML(html)
+    <span class="comment"># read text from weibo</span>
+    content = selector.xpath(<span class="string">'//span[@class="ctt"]'</span>)
+    <span class="keyword">for</span> each <span class="keyword">in</span> content:
+        text = each.xpath(<span class="string">'string(.)'</span>)
+        <span class="keyword">print</span> text        
+content = selector.xpath(<span class="string">'//*[@class="ib"]/@src'</span>)  <span class="comment"># copy from chrome # print content</span>
+<span class="keyword">return</span> content
+
+<span class="function"><span class="keyword">def</span> <span class="title">getDownImg</span><span class="params">(cons, page)</span>:</span>
+    x = <span class="number">0</span>
+    <span class="keyword">for</span> each <span class="keyword">in</span> cons:
+       <span class="keyword">print</span> each
+       fn = <span class="string">'%s'</span> % page + <span class="string">'%s'</span> % x
+       fl=<span class="string">'%s.jpg'</span> % fn
+       url=each.replace(<span class="string">'wap180'</span>,<span class="string">'large'</span>)
+       <span class="keyword">print</span> url
+       <span class="keyword">print</span> fn
+       r = requests.get(url)
+       <span class="keyword">with</span> open(fl, <span class="string">"wb"</span>) <span class="keyword">as</span> code:
+           code.write(r.content)
+       x += <span class="number">1</span>
+
+<span class="keyword">for</span> page <span class="keyword">in</span> range(<span class="number">1</span>, <span class="number">4</span>):
+   url = url0 + <span class="string">'?page='</span> + <span class="string">'%s'</span> % page
+   <span class="keyword">print</span> url
+   cons = getContent(url, cook)
+   getDownImg(cons, page)
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/03/31/Python爬取微博图片/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Python爬取微博关注" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     

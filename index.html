@@ -139,6 +139,140 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Retina Image Segmentation with UNet" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/06/29/Retina Image Segmentation with UNet/">Retina Image Segmentation with UNet</a>
+    </h1>
+  
+
+        
+        <a href="/2018/06/29/Retina Image Segmentation with UNet/" class="archive-article-date">
+  	<time datetime="2018-06-29T13:05:51.373Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-29</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.说明</p>
+<p>基于UNet的眼底图像血管分割方法：Retina-UNet，项目地址：<a href="https://github.com/orobix/retina-unet" target="_blank" rel="external">https://github.com/orobix/retina-unet</a></p>
+<p>2.配置运行环境及依赖：</p>
+<p>Ubuntu-16 + CUDA-9.0 + cudnn-7.0 + GPUDriver-390.67 + OpenCV-3.2</p>
+<pre><code>Python <span class="number">2.7</span>
+TensorFlow <span class="number">1.8</span>.<span class="number">0</span>
+TensorFlow-GPU <span class="number">1.8</span>.<span class="number">0</span> <span class="comment">#不安装，则直接用CPU训练</span>
+Keras <span class="number">2.2</span>.<span class="number">0</span> <span class="comment">#原release使用的1.1.0版本keras，若使用keras2.x，则需要修改部分代码</span>
+PIL (pillow <span class="number">3.1</span>.<span class="number">2</span>)
+h5py <span class="number">2.8</span>.<span class="number">0</span>
+ConfigParser <span class="number">3.5</span>.<span class="number">0</span>
+Numpy <span class="number">1.14</span>.<span class="number">5</span>
+scikit-learn <span class="number">0.19</span>.<span class="number">1</span>
+pydot <span class="number">1.2</span>.<span class="number">4</span>
+
+$ pip <span class="keyword">install</span> xxx --user <span class="comment">#安装上面这些依赖项</span>
+
+GraphViz
+
+$ sudo apt-get <span class="keyword">install</span> graphviz libgraphviz-dev
+</code></pre><p>3.数据集</p>
+<p>训练用的是视网膜血管分割经典的数据集DRIVE：<a href="http://www.isi.uu.nl/Research/Databases/DRIVE/" target="_blank" rel="external">http://www.isi.uu.nl/Research/Databases/DRIVE/</a>，其中包含手工分割的ground-truth和mask图像。</p>
+<p>下载解压后放于项目根目录下：</p>
+<pre><code>DRIVE
+│
+└───test
+<span class="string">|    ├───1st_manual</span>
+<span class="string">|    └───2nd_manual</span>
+<span class="string">|    └───images</span>
+<span class="string">|    └───mask</span>
+│
+└───training
+    ├───<span class="number">1</span>st_manual
+    └───images
+    └───mask
+</code></pre><p>4.训练</p>
+<p>首先整理数据：</p>
+<pre><code><span class="keyword">python</span> prepare_datasets_DRIVE.<span class="keyword">py</span>
+</code></pre><p>执行训练：</p>
+<p>配置文件可修改<code>configuration.txt</code></p>
+<pre><code>pytohn <span class="keyword">run_t</span>rain.py
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">1. Create directory <span class="keyword">for</span> the results (<span class="keyword">if</span> not already existing)</div><div class="line">Dir already existing</div><div class="line">copy the configuration file <span class="keyword">in</span> the results folder</div><div class="line"></div><div class="line">2. Run the training on GPU (no nohup)</div><div class="line">Using TensorFlow backend.</div><div class="line"></div><div class="line">train images/masks shape:</div><div class="line">(20, 1, 565, 565)</div><div class="line">train images range (min-max): 0.0 - 1.0</div><div class="line">train masks are within 0-1</div><div class="line"></div><div class="line">patches per full image: 9500</div><div class="line"></div><div class="line">train PATCHES images/masks shape:</div><div class="line">(190000, 1, 48, 48)</div><div class="line">train PATCHES images range (min-max): 0.0 - 1.0</div><div class="line">2018-06-30 00:43:12.163406: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA</div><div class="line">2018-06-30 00:43:12.584228: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:898] successful NUMA node <span class="built_in">read</span> from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero</div><div class="line">2018-06-30 00:43:12.585652: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: </div><div class="line">name: GeForce GTX TITAN X major: 5 minor: 2 memoryClockRate(GHz): 1.076</div><div class="line">pciBusID: 0000:01:00.0</div><div class="line">totalMemory: 11.92GiB freeMemory: 11.57GiB</div><div class="line">2018-06-30 00:43:12.585718: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0</div><div class="line">2018-06-30 00:43:20.161626: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:</div><div class="line">2018-06-30 00:43:20.161703: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 </div><div class="line">2018-06-30 00:43:20.161729: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N </div><div class="line">2018-06-30 00:43:20.174512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11206 MB memory) -&gt; physical GPU (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:01:00.0, compute capability: 5.2)</div><div class="line">Check: final output of the network:</div><div class="line">(None, 2304, 2)</div><div class="line">Train on 171000 samples, validate on 19000 samples</div><div class="line">Epoch 1/150</div><div class="line"> - 204s - loss: 0.2764 - acc: 0.9045 - val_loss: 0.2325 - val_acc: 0.9240</div><div class="line"></div><div class="line">Epoch 00001: val_loss improved from inf to 0.23253, saving model to ./train/train_best_weights.h5</div><div class="line">Epoch 2/150</div><div class="line"> - 199s - loss: 0.1679 - acc: 0.9380 - val_loss: 0.1698 - val_acc: 0.9420</div><div class="line"></div><div class="line">Epoch 00002: val_loss improved from 0.23253 to 0.16979, saving model to ./train/train_best_weights.h5</div><div class="line">Epoch 3/150</div></pre></td></tr></table></figure>
+<p>5.Debug：</p>
+<p>1) Keras2版本不兼容的问题：</p>
+<pre><code><span class="tag">from</span> <span class="tag">keras</span><span class="class">.utils</span><span class="class">.visualize_util</span> <span class="tag">import</span> <span class="tag">plot</span>
+<span class="rule"><span class="attribute">ImportError</span>:<span class="value"> No module named <span class="string">'keras.utils.visualize_util'</span></span></span>
+</code></pre><p>From <code>visualize_util</code> to <code>vis_utils</code>;<br>The <code>plot</code> function was also renamed to <code>plot_model</code>;<br>The <code>nb_epoch</code> argument in <code>fit</code> has been renamed <code>epochs</code>;<br>Update your <code>Model</code> call to the Keras 2 API: <code>Model(outputs=Tensor(&quot;ac..., inputs=Tensor(&quot;in...)</code><br>  <code>model = Model(input=inputs, output=conv7)</code>;<br>更新代码或者选用合适的Keras版本。</p>
+<p>2) <code>ImportError: No module named tensorflow</code><br>使用<code>pip install tensorflow</code>安装失败且出现importing error，解决方法是在命令后加上<code>--user</code>。</p>
+<p>3) ImportError: Failed to import <code>pydot</code>. Please install <code>pydot</code>. For example with <code>pip install pydot</code>.</p>
+<p>4) <code>pydot</code> failed to call GraphViz. Please install GraphViz <a href="https://www.graphviz.org/" target="_blank" rel="external">https://www.graphviz.org/</a> and ensure that its executables are in the $PATH. 在<code>~/.bashrc</code>中添加了PATH后错误仍然出现，不知道问题在哪。。。暂时注释掉<code>retinaNN_training.py</code>中的<code>#plot_model(model, to_file=&#39;./&#39;+name_experiment+&#39;/&#39;+name_experiment + &#39;_model.png&#39;)   #check how the model looks like</code>。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/06/29/Retina Image Segmentation with UNet/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Ubuntu下查看OpenCV版本号" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2089,272 +2223,6 @@ Percentage of the requests served within a certain time (ms)
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Caffe训练分类模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/08/31/Caffe训练分类模型/">Caffe训练分类模型</a>
-    </h1>
-  
-
-        
-        <a href="/2017/08/31/Caffe训练分类模型/" class="archive-article-date">
-  	<time datetime="2017-08-31T06:27:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-31</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>1.安装Caffe</strong></p>
-<p>按照官方<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">https://github.com/BVLC/caffe</a>说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。</p>
-<p><strong>2.整理自己的数据</strong></p>
-<p>图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.txt，一起放到caffe/data/mydata文件夹下。</p>
-<pre><code>path/to/image/<span class="number">001</span><span class="class">.jpg</span> <span class="number">0</span>
-path/to/image/<span class="number">002</span><span class="class">.jpg</span> <span class="number">1</span>
-path/to/image/<span class="number">003</span><span class="class">.jpg</span> <span class="number">2</span>
-</code></pre><p>在caffe/examples/imagenet中，将创建lmdb文件和mean文件的的几个sh文件拷贝到自己的examples/mytask中，然后修改这两个文件中的几个地址和名称：</p>
-<p><strong>修改create_imagenet.sh</strong></p>
-<pre><code><span class="comment">//当前路径</span>
-EXAMPLE=/home/xxx/caffe/examples/mytask
-<span class="comment">//存放train.txt和val.txt的路径，就是data/mydata</span>
-DATA=/home/xxx/caffe/data/mydata
-<span class="comment">//不变</span>
-TOOLS=/home/xxx/caffe/build/tools
-
-<span class="comment">//存放train和val图片文件夹的主目录（这里与txt文件中的目录合起来才是图片目录）</span>
-TRAIN_DATA_ROOT=/home/xxx/project-data/
-VAL_DATA_ROOT=/home/xxx/project-data/
-
-GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
-    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
-    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
-    --shuffle \
-    <span class="variable">$TRAIN_DATA_ROOT</span> \
-    <span class="variable">$DATA</span>/train<span class="class">.txt</span> \
-    <span class="variable">$EXAMPLE</span>/train_lmdb  ##修改名称，与prototxt中的对应
-
-echo <span class="string">"Creating val lmdb..."</span>
-
-GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
-    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
-    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
-    --shuffle \
-    <span class="variable">$VAL_DATA_ROOT</span> \
-    <span class="variable">$DATA</span>/val<span class="class">.txt</span> \
-    <span class="variable">$EXAMPLE</span>/val_lmdb  ##修改名称
-</code></pre><p>同理，修改make_imagenet_mean.sh。</p>
-<p>分别执行这两个命令，创建文件lmdb数据库和均值mean文件。</p>
-<p><strong>3.设置模型</strong></p>
-<p>在caffe/models下有很多预制的模型可供使用，模型文件一共可包括至少三个文件：deploy.prototxt；solver.prototxt；train_val.prototxt，有时需要finetune已训练好的模型，还需要一些比如在imagenet上预训练的caffemodel文件。</p>
-<p>sovler里面包含超参数和一些信息：</p>
-<pre><code><span class="attribute">net</span>: <span class="string">"models/bvlc_googlenet/train_val.prototxt"</span>
-<span class="attribute">test_iter</span>: <span class="string">1000</span>
-<span class="attribute">test_interval</span>: <span class="string">4000</span>
-<span class="attribute">test_initialization</span>: <span class="string">false</span>
-<span class="attribute">display</span>: <span class="string">40</span>
-<span class="attribute">average_loss</span>: <span class="string">40</span>
-<span class="attribute">base_lr</span>: <span class="string">0.01</span>
-<span class="attribute">lr_policy</span>: <span class="string">"step"</span>
-<span class="attribute">stepsize</span>: <span class="string">320000</span>
-<span class="attribute">gamma</span>: <span class="string">0.96</span>
-<span class="attribute">max_iter</span>: <span class="string">10000000</span>
-<span class="attribute">momentum</span>: <span class="string">0.9</span>
-<span class="attribute">weight_decay</span>: <span class="string">0.0002</span>
-<span class="attribute">snapshot</span>: <span class="string">40000</span>
-<span class="attribute">snapshot_prefix</span>: <span class="string">"models/bvlc_googlenet/bvlc_googlenet"</span>
-<span class="attribute">solver_mode</span>: <span class="string">GPU</span>
-</code></pre><p>train_val里面的主要修改的地方是batch_size，它与sovler里面的test_iter相乘的结果对应训练图像的总数；修改train和val的sorce文件地址：train_lmdb,val_lmdb. </p>
-<pre><code><span class="tag">data_param</span> {
-<span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
-<span class="attribute">batch_size</span>: <span class="number">32</span>
-<span class="attribute">backend</span>: LMDB
-  }
-</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
-<pre><code>layer {
-  name: <span class="string">"data"</span>
-  <span class="keyword">type</span>: <span class="string">"Data"</span>
-  top: <span class="string">"data"</span>
-  top: <span class="string">"label"</span>
-  <span class="keyword">include</span> {
-    phase: <span class="type">TRAIN</span>
-  }
-</code></pre><p>PS: 在finetune残差网络resnet时，网络结构文件中BatchNorm层的参数要注意： </p>
-<pre><code><span class="attribute">1.在训练时所有BN层要设置use_global_stats</span>: <span class="string">false（也可以不写，caffe默认是false） </span>
-<span class="attribute">2.在测试时所有BN层要设置use_global_stats</span>: <span class="string">true</span>
-
-<span class="cal"><span class="string">#1</span>.训练如果不设为<span class="literal">false</span>，会导致模型不收敛 
-<span class="string">#2</span>.测试如果不设置为<span class="literal">true</span>，会导致准确率极低 </span>
-</code></pre><p><strong>4.开始训练</strong></p>
-<pre><code><span class="shebang">#!/bin/bash</span>
-<span class="shebang">#!/usr/bin/env sh</span>
-PRETRAINED_MODEL=./models/resnet50/ResNet-<span class="number">50</span>-model.caffemodel
-t=$(date +%Y-%m-%d_%H:%M:%S) 
-LOG=./<span class="built_in">log</span>/train_res50_<span class="variable">$t</span>.log
-GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe train \
-    --solver=./models/resnet50/solver.prototxt \
-    --weights=<span class="variable">$PRETRAINED_MODEL</span> \
-    --gpu=<span class="number">0</span>,<span class="number">1</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> | tee <span class="variable">$LOG</span>
-</code></pre><p>训练时若出现内存不足停止，要减小train_val.prototxt中batchsize的大小。<br>若出现waiting for data，可能是硬盘读写速度慢，那就waiting吧。。。</p>
-<p><strong>5.测试</strong></p>
-<pre><code><span class="shebang">#!/bin/bash</span>
-<span class="shebang">#!/usr/bin/env sh</span>
-GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe <span class="built_in">test</span> \
-    --model=./models/resnet50/ResNet-<span class="number">50</span>-train-val.prototxt \
-    --weights=./models/resnet50/output_iter_100000.caffemodel \
-    --gpu=<span class="number">1</span> \
-    --iterations=<span class="number">2000</span>
-</code></pre><p><strong>6.分类demo</strong></p>
-<p>在caffe/python下的classify.py文件可以用来对图像进行分类，但是没有输出可见的分类结果，需要改写些内容。开始之前需要把mean均值文件转换为.npy格式，代码如下：</p>
-<pre><code>import caffe
-import numpy as np
-import sys
-
-<span class="keyword">if</span> <span class="function"><span class="title">len</span><span class="params">(sys.argv)</span></span> != <span class="number">3</span>:
-    print <span class="string">"Usage: python convert_protomean.py proto.mean out.npy"</span>
-    sys.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
-
-blob = caffe<span class="class">.proto</span><span class="class">.caffe_pb2</span><span class="class">.BlobProto</span>()
-data = <span class="function"><span class="title">open</span><span class="params">( sys.argv[<span class="number">1</span>] , <span class="string">'rb'</span> )</span></span>.<span class="function"><span class="title">read</span><span class="params">()</span></span>
-blob.<span class="function"><span class="title">ParseFromString</span><span class="params">(data)</span></span>
-arr = np.<span class="function"><span class="title">array</span><span class="params">( caffe.io.blobproto_to_array(blob)</span></span> )
-out = arr[<span class="number">0</span>]
-np.<span class="function"><span class="title">save</span><span class="params">( sys.argv[<span class="number">2</span>] , out )</span></span>
-</code></pre><p><strong>自己改写的classify-demo.py</strong></p>
-<pre><code><span class="built_in">import</span> numpy as np
-<span class="built_in">import</span> sys
-<span class="built_in">import</span> os
-<span class="built_in">import</span> caffe
-<span class="built_in">import</span> io
-<span class="built_in">#</span>from sys <span class="built_in">import</span> argv
-<span class="built_in">#</span>input filefolder you want to test
-<span class="built_in">#</span>tools,filefolder=argv
-
-caffe.set_device<span class="params">(<span class="number">0</span>)</span> 
-caffe.set_mode_gpu<span class="params">()</span>
-MODEL_FILE =<span class="string">"../models/googlenet/deploy.prototxt"</span>
-PRETRAINED = <span class="string">"../models/googlenet/output/bvlc_googlenet_iter_200000.caffemodel"</span>
-MEAN = <span class="string">"mean.npy"</span>
-
-net = caffe.Classifier<span class="params">(MODEL_FILE, PRETRAINED, mean = np.load<span class="params">(MEAN)</span>.mean<span class="params">(<span class="number">1</span>)</span>.mean<span class="params">(<span class="number">1</span>)</span>,
-channel_swap=<span class="params">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>)</span>,
-raw_scale=<span class="number">255</span>,
-image_dims=<span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span>)</span>
-
-filewriter = open<span class="params">(<span class="string">"../data/mydata/result.txt"</span>,<span class="string">"w+"</span>)</span>
-labels_file = '../data/mydata/synset_words.txt'
-labels = np.loadtxt<span class="params">(labels_file, str, delimiter='\t')</span>
-<span class="built_in">#</span>load groundtruth txt to dictionary
-groundtruth_file = '../data/mydata/groundtruth/abc.txt'
-dict_data = {}
-with open<span class="params">(groundtruth_file, 'r')</span> as df:
-    <span class="keyword">for</span> kv in [d.strip<span class="params">()</span>.split<span class="params">(' ')</span> <span class="keyword">for</span> d in df]:
-    dict_data[kv[<span class="number">0</span>]] = kv[<span class="number">1</span>]
-
-<span class="keyword">for</span> root,dirs,files in os.walk<span class="params">(<span class="string">"/home/xxx/project_data/mydata/abc/"</span>)</span>: <span class="built_in">#</span> all the images are in test folder
-
-    <span class="keyword">for</span> file in files:
-    IMAGE_FILE = os.path.join<span class="params">(root,file)</span>.decode<span class="params">('gbk')</span>.encode<span class="params">('utf8')</span>
-    <span class="built_in">#</span>print IMAGE_FILE
-    input_image = caffe.io.load_image<span class="params">(IMAGE_FILE)</span>
-    prediction = net.predict<span class="params">([input_image])</span>
-    string = os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>+<span class="string">"\n"</span>
-    filewriter.write<span class="params">(string)</span>
-    <span class="built_in">#</span>print os.path.basename<span class="params">(IMAGE_FILE)</span>, prediction[<span class="number">0</span>].argmax<span class="params">()</span>
-    <span class="built_in">#</span> load ImageNet labels
-
-    label_true=dict_data[os.path.basename<span class="params">(IMAGE_FILE)</span>]
-    <span class="keyword">if</span> label_true==<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>:
-        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'v'
-    <span class="keyword">else</span>:
-        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'x'
-
-filewriter.close<span class="params">()</span>
-</code></pre><p><strong>7.plot训练测试曲线</strong></p>
-<p>caffe/tools/extra下包含几个有用的工具，其中包括将日志文件.log绘制出训练阶段的loss变化和测试阶段accuracy的变化情况，具体：</p>
-<pre><code>./parse_log.<span class="keyword">sh</span> xxxx.<span class="keyword">log</span> #解析日志，划分为train <span class="keyword">test</span>两个文件
-
-./plot_training_log.py.example 0~7 <span class="keyword">save</span>.png xxxx.<span class="keyword">log</span> #绘制图
-
-<span class="keyword">Notes</span>:  
-    1. Supporting multiple logs.  
-    2. <span class="keyword">Log</span> <span class="keyword">file</span> name must end with the lower-cased <span class="string">".log"</span>.  
-Supported chart types:  
-    0: <span class="keyword">Test</span> accuracy  vs. Iters  
-    1: <span class="keyword">Test</span> accuracy  vs. Seconds  
-    2: <span class="keyword">Test</span> loss  vs. Iters  
-    3: <span class="keyword">Test</span> loss  vs. Seconds  
-    4: Train learning rate  vs. Iters  
-    5: Train learning rate  vs. Seconds  
-    6: Train loss  vs. Iters  
-    7: Train loss  vs. Seconds  
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/08/31/Caffe训练分类模型/">展开全文 >></a>
         </p>
       
 

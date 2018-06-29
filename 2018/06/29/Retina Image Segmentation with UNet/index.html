@@ -6,14 +6,36 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://gwang-cv.github.io">
-  <title>Archives | gwang&#39;s lab</title>
+  <title>Retina Image Segmentation with UNet | gwang&#39;s lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="gwang's lab">
-<meta property="og:url" content="http://gwang-cv.github.io/archives/page/3/index.html">
+  <meta name="description" content="1.说明
+基于UNet的眼底图像血管分割方法：Retina-UNet，项目地址：https://github.com/orobix/retina-unet
+2.配置运行环境及依赖：
+Ubuntu-16 + CUDA-9.0 + cudnn-7.0 + GPUDriver-390.67 + OpenCV-3.2
+Python 2.7
+TensorFlow 1.8.0
+TensorFlow-GPU 1">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Retina Image Segmentation with UNet">
+<meta property="og:url" content="http://gwang-cv.github.io/2018/06/29/Retina Image Segmentation with UNet/index.html">
 <meta property="og:site_name" content="gwang's lab">
+<meta property="og:description" content="1.说明
+基于UNet的眼底图像血管分割方法：Retina-UNet，项目地址：https://github.com/orobix/retina-unet
+2.配置运行环境及依赖：
+Ubuntu-16 + CUDA-9.0 + cudnn-7.0 + GPUDriver-390.67 + OpenCV-3.2
+Python 2.7
+TensorFlow 1.8.0
+TensorFlow-GPU 1">
+<meta property="og:updated_time" content="2018-06-29T16:55:43.079Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gwang's lab">
+<meta name="twitter:title" content="Retina Image Segmentation with UNet">
+<meta name="twitter:description" content="1.说明
+基于UNet的眼底图像血管分割方法：Retina-UNet，项目地址：https://github.com/orobix/retina-unet
+2.配置运行环境及依赖：
+Ubuntu-16 + CUDA-9.0 + cudnn-7.0 + GPUDriver-390.67 + OpenCV-3.2
+Python 2.7
+TensorFlow 1.8.0
+TensorFlow-GPU 1">
   
     <link rel="alternative" href="/atom.xml" title="gwang&#39;s lab" type="application/atom+xml">
   
@@ -137,181 +159,122 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Retina Image Segmentation with UNet" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Retina Image Segmentation with UNet
+    </h1>
+  
+
+        
+        <a href="/2018/06/29/Retina Image Segmentation with UNet/" class="archive-article-date">
+  	<time datetime="2018-06-29T13:05:51.373Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-06-29</time>
+</a>
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>1.说明</p>
+<p>基于UNet的眼底图像血管分割方法：Retina-UNet，项目地址：<a href="https://github.com/orobix/retina-unet" target="_blank" rel="external">https://github.com/orobix/retina-unet</a></p>
+<p>2.配置运行环境及依赖：</p>
+<p>Ubuntu-16 + CUDA-9.0 + cudnn-7.0 + GPUDriver-390.67 + OpenCV-3.2</p>
+<pre><code>Python <span class="number">2.7</span>
+TensorFlow <span class="number">1.8</span>.<span class="number">0</span>
+TensorFlow-GPU <span class="number">1.8</span>.<span class="number">0</span> <span class="comment">#不安装，则直接用CPU训练</span>
+Keras <span class="number">2.2</span>.<span class="number">0</span> <span class="comment">#原release使用的1.1.0版本keras，若使用keras2.x，则需要修改部分代码</span>
+PIL (pillow <span class="number">3.1</span>.<span class="number">2</span>)
+h5py <span class="number">2.8</span>.<span class="number">0</span>
+ConfigParser <span class="number">3.5</span>.<span class="number">0</span>
+Numpy <span class="number">1.14</span>.<span class="number">5</span>
+scikit-learn <span class="number">0.19</span>.<span class="number">1</span>
+pydot <span class="number">1.2</span>.<span class="number">4</span>
+
+$ pip <span class="keyword">install</span> xxx --user <span class="comment">#安装上面这些依赖项</span>
+
+GraphViz
+
+$ sudo apt-get <span class="keyword">install</span> graphviz libgraphviz-dev
+</code></pre><p>3.数据集</p>
+<p>训练用的是视网膜血管分割经典的数据集DRIVE：<a href="http://www.isi.uu.nl/Research/Databases/DRIVE/" target="_blank" rel="external">http://www.isi.uu.nl/Research/Databases/DRIVE/</a>，其中包含手工分割的ground-truth和mask图像。</p>
+<p>下载解压后放于项目根目录下：</p>
+<pre><code>DRIVE
+│
+└───test
+<span class="string">|    ├───1st_manual</span>
+<span class="string">|    └───2nd_manual</span>
+<span class="string">|    └───images</span>
+<span class="string">|    └───mask</span>
+│
+└───training
+    ├───<span class="number">1</span>st_manual
+    └───images
+    └───mask
+</code></pre><p>4.训练</p>
+<p>首先整理数据：</p>
+<pre><code><span class="keyword">python</span> prepare_datasets_DRIVE.<span class="keyword">py</span>
+</code></pre><p>执行训练：</p>
+<p>配置文件可修改<code>configuration.txt</code></p>
+<pre><code>pytohn <span class="keyword">run_t</span>rain.py
+</code></pre><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div></pre></td><td class="code"><pre><div class="line">1. Create directory <span class="keyword">for</span> the results (<span class="keyword">if</span> not already existing)</div><div class="line">Dir already existing</div><div class="line">copy the configuration file <span class="keyword">in</span> the results folder</div><div class="line"></div><div class="line">2. Run the training on GPU (no nohup)</div><div class="line">Using TensorFlow backend.</div><div class="line"></div><div class="line">train images/masks shape:</div><div class="line">(20, 1, 565, 565)</div><div class="line">train images range (min-max): 0.0 - 1.0</div><div class="line">train masks are within 0-1</div><div class="line"></div><div class="line">patches per full image: 9500</div><div class="line"></div><div class="line">train PATCHES images/masks shape:</div><div class="line">(190000, 1, 48, 48)</div><div class="line">train PATCHES images range (min-max): 0.0 - 1.0</div><div class="line">2018-06-30 00:43:12.163406: I tensorflow/core/platform/cpu_feature_guard.cc:140] Your CPU supports instructions that this TensorFlow binary was not compiled to use: AVX2 FMA</div><div class="line">2018-06-30 00:43:12.584228: I tensorflow/stream_executor/cuda/cuda_gpu_executor.cc:898] successful NUMA node <span class="built_in">read</span> from SysFS had negative value (-1), but there must be at least one NUMA node, so returning NUMA node zero</div><div class="line">2018-06-30 00:43:12.585652: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1356] Found device 0 with properties: </div><div class="line">name: GeForce GTX TITAN X major: 5 minor: 2 memoryClockRate(GHz): 1.076</div><div class="line">pciBusID: 0000:01:00.0</div><div class="line">totalMemory: 11.92GiB freeMemory: 11.57GiB</div><div class="line">2018-06-30 00:43:12.585718: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1435] Adding visible gpu devices: 0</div><div class="line">2018-06-30 00:43:20.161626: I tensorflow/core/common_runtime/gpu/gpu_device.cc:923] Device interconnect StreamExecutor with strength 1 edge matrix:</div><div class="line">2018-06-30 00:43:20.161703: I tensorflow/core/common_runtime/gpu/gpu_device.cc:929]      0 </div><div class="line">2018-06-30 00:43:20.161729: I tensorflow/core/common_runtime/gpu/gpu_device.cc:942] 0:   N </div><div class="line">2018-06-30 00:43:20.174512: I tensorflow/core/common_runtime/gpu/gpu_device.cc:1053] Created TensorFlow device (/job:localhost/replica:0/task:0/device:GPU:0 with 11206 MB memory) -&gt; physical GPU (device: 0, name: GeForce GTX TITAN X, pci bus id: 0000:01:00.0, compute capability: 5.2)</div><div class="line">Check: final output of the network:</div><div class="line">(None, 2304, 2)</div><div class="line">Train on 171000 samples, validate on 19000 samples</div><div class="line">Epoch 1/150</div><div class="line"> - 204s - loss: 0.2764 - acc: 0.9045 - val_loss: 0.2325 - val_acc: 0.9240</div><div class="line"></div><div class="line">Epoch 00001: val_loss improved from inf to 0.23253, saving model to ./train/train_best_weights.h5</div><div class="line">Epoch 2/150</div><div class="line"> - 199s - loss: 0.1679 - acc: 0.9380 - val_loss: 0.1698 - val_acc: 0.9420</div><div class="line"></div><div class="line">Epoch 00002: val_loss improved from 0.23253 to 0.16979, saving model to ./train/train_best_weights.h5</div><div class="line">Epoch 3/150</div></pre></td></tr></table></figure>
+<p>5.Debug：</p>
+<p>1) Keras2版本不兼容的问题：</p>
+<pre><code><span class="tag">from</span> <span class="tag">keras</span><span class="class">.utils</span><span class="class">.visualize_util</span> <span class="tag">import</span> <span class="tag">plot</span>
+<span class="rule"><span class="attribute">ImportError</span>:<span class="value"> No module named <span class="string">'keras.utils.visualize_util'</span></span></span>
+</code></pre><p>From <code>visualize_util</code> to <code>vis_utils</code>;<br>The <code>plot</code> function was also renamed to <code>plot_model</code>;<br>The <code>nb_epoch</code> argument in <code>fit</code> has been renamed <code>epochs</code>;<br>Update your <code>Model</code> call to the Keras 2 API: <code>Model(outputs=Tensor(&quot;ac..., inputs=Tensor(&quot;in...)</code><br>  <code>model = Model(input=inputs, output=conv7)</code>;<br>更新代码或者选用合适的Keras版本。</p>
+<p>2) <code>ImportError: No module named tensorflow</code><br>使用<code>pip install tensorflow</code>安装失败且出现importing error，解决方法是在命令后加上<code>--user</code>。</p>
+<p>3) ImportError: Failed to import <code>pydot</code>. Please install <code>pydot</code>. For example with <code>pip install pydot</code>.</p>
+<p>4) <code>pydot</code> failed to call GraphViz. Please install GraphViz <a href="https://www.graphviz.org/" target="_blank" rel="external">https://www.graphviz.org/</a> and ensure that its executables are in the $PATH. 在<code>~/.bashrc</code>中添加了PATH后错误仍然出现，不知道问题在哪。。。暂时注释掉<code>retinaNN_training.py</code>中的<code>#plot_model(model, to_file=&#39;./&#39;+name_experiment+&#39;/&#39;+name_experiment + &#39;_model.png&#39;)   #check how the model looks like</code>。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                    <div class="reward-box-item">
+                      <img class="reward-img" src="/img/zanshangma.png">
+                      <span class="reward-type">微信</span>
+                    </div>
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2016" class="archive-year">2016</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/12/28/Ubuntu backup/" class="archive-article-date">
-  	<time datetime="2016-12-28T12:41:49.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-12-28</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/29/数据挖掘界领军人物谢邦昌/" class="archive-article-date">
-  	<time datetime="2016-11-29T10:08:05.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-29</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/22/初探计算机视觉的三个源头、兼谈人工智能｜正本清源/" class="archive-article-date">
-  	<time datetime="2016-11-22T13:09:59.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-22</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/22/文本挖掘/" class="archive-article-date">
-  	<time datetime="2016-11-22T13:04:33.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-22</time>
-</a>
-        </div>
-    	 
-        <div class="article-info info-on-right">
-          
-          
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/08/天下第一铭[汤晓鸥]/" class="archive-article-date">
-  	<time datetime="2016-11-08T07:36:00.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-08</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/08/天下第一铭[汤晓鸥]/">天下第一铭--汤晓鸥【转载】</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Researcher</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Debug</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Researcher//" class="article-tag-list-link color1">Researcher</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/03/安装lpsolve库 for MATLAB/" class="archive-article-date">
-  	<time datetime="2016-11-03T02:29:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/03/安装lpsolve库 for MATLAB/">安装lpsolve库 for MATLAB</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Matlab</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -324,461 +287,116 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://gwang-cv.github.io/2018/06/29/Retina Image Segmentation with UNet/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/11/02/Clarifai API体验/" class="archive-article-date">
-  	<time datetime="2016-11-02T07:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-02</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2018/06/28/Ubuntu下查看OpenCV版本号/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Ubuntu下查看OpenCV版本号</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    目录，不存在的…
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/28/DL学习笔记/" class="archive-article-date">
-  	<time datetime="2016-10-28T09:08:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-28</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/28/DL学习笔记/">DL学习笔记</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
+        
+    </div>
+</aside>
 
 
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/21/Clarifai/" class="archive-article-date">
-  	<time datetime="2016-10-21T13:40:07.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/21/Clarifai/">Clarifai图像自动化标签</a>
-    </h1>
-  
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/10/21/深度学习硬件配置/" class="archive-article-date">
-  	<time datetime="2016-10-21T04:03:58.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/10/21/深度学习硬件配置/">深度学习硬件配置</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/04/07/MacOS安装torch7/" class="archive-article-date">
-  	<time datetime="2016-04-07T08:07:25.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/04/07/MacOS安装torch7/">MacOS安装torch7</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/04/07/MacOS安装caffe/" class="archive-article-date">
-  	<time datetime="2016-04-06T17:03:37.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-07</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/04/07/MacOS安装caffe/">MacOS安装caffe</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/04/04/Python爬取优酷视频/" class="archive-article-date">
-  	<time datetime="2016-04-04T14:12:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-04</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/04/04/Python爬取优酷视频/">Python爬取优酷视频</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/04/01/Python爬取arxiv的paper/" class="archive-article-date">
-  	<time datetime="2016-04-01T07:21:47.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-04-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/04/01/Python爬取arxiv的paper/">Python爬取arxiv的paper</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2016/03/31/深度学习开发包/" class="archive-article-date">
-  	<time datetime="2016-03-31T13:27:56.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-31</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2016/03/31/深度学习开发包/">Deep Learning Libraries by Language</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
   
   
-    </div></section>
   
 
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/page/2/">&laquo; Prev</a><a class="page-number" href="/archives/">1</a><a class="page-number" href="/archives/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/4/">Next &raquo;</a>
-    </nav>
+  
+
+  
+
   
 
 
@@ -802,8 +420,8 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
