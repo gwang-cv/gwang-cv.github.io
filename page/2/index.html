@@ -2693,103 +2693,6 @@ objs = cls_objs
 
 
   
-    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/06/Python除法/" class="archive-article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Git配置出错Permission Denied" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2862,6 +2765,103 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/07/06/Git配置出错Permission Denied/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/Python除法/" class="archive-article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
         </p>
       
 
