@@ -2956,11 +2956,11 @@ sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<
 </code></pre><hr>
 <p>常见的报错Debug：</p>
 <hr>
-<p>1.<em>AttributeError: ‘module’ object has no attribute ‘text_format’</em></p>
+<p>1.<code>*AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;*</code></p>
 <p>需要在py-faster-rcnn/lib/fast_rcnn/train.py中添加：</p>
 <pre><code>import google<span class="class">.protobuf</span><span class="class">.text_format</span>
 </code></pre><hr>
-<p>2.<em>KeyError: ‘chair’ [when train only several classes]</em><br><em>使用py-faster-rcnn训练VOC2007数据集时遇到如下问题：</em></p>
+<p>2.<code>*KeyError: &#39;chair&#39; [when train only several classes]*</code><br><em>使用py-faster-rcnn训练VOC2007数据集时遇到如下问题：</em></p>
 <p>File “/home/sai/py-faster-rcnn/tools/../lib/datasets/pascal_voc.py”, line 217, in _load_pascal_annotation<br>cls = self._class_to_ind[obj.find(‘name’).text.lower().strip()]<br>KeyError: ‘chair‘</p>
 <p>解决：</p>
 <p>You probably need to write some line of codes to ignore any objects with classes except the classes you are looking for when you are loading the annotation _load_pascal_annotation.<br>Something like</p>
@@ -2973,40 +2973,35 @@ objs = cls_objs
 </code></pre><p>参考：<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/316" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/316</a></p>
 <hr>
 <p>3.<em>Annotations files 标记文件问题</em></p>
-<pre><code>Note <span class="keyword">that</span>: `&lt;difficult&gt;<span class="number">0</span>&lt;/difficult&gt;  `
+<p>Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
+<p>must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
+<hr>
+<p>4.AssertionError: Selective search data not found at</p>
+<p>训练时报错，可修改为：<code>Change _C.TRAIN.PROPOSAL_METHOD = &#39;gt&#39;</code> the 118 line in model/config.py file. It should be OK.</p>
+<hr>
+<p>5.AttributeError: ‘module’ object has no attribute ‘text_format’</p>
+<p>在不采用预训练权重时，碰到错误<code>pb2.text_format.Merge(f.read(), self.solver_param) AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;</code><br>原因是protobuf的版本问题，更换版本或者修改：<br>在文件<code>./lib/fast_rcnn/train.py</code>增加一行<code>import google.protobuf.text_format</code>即可.          </p>
+<hr>
+<p>6.Ubuntu环境下python2和python3的切换</p>
+<p>用 update-alternatives</p>
+<p>1)建立链接：</p>
+<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">python2</span>.7 100</span></div><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">python3</span>.2 150</span></div></pre></td></tr></table></figure>
+<p>2)<code>sudo update-alternatives --config python</code>按照提示选择默认python</p>
+<p>3) 删除某个可选项：<br><code>sudo update-alternatives --remove python /usr/bin/python2.7</code></p>
+<hr>
+<p>7.网络更改</p>
+<p>修改类别数:<br>在train.prototxt中：<br><code>input-data</code>层的<code>num_classes</code>，为类别数+1 （1个背景类，下同）<br><code>roi-data</code>层的<code>num_classes</code>，为类别数+1<br><code>cls_score</code>层的<code>num_output</code>，为类别数+1<br><code>bbox_pred</code>层的<code>num_output</code>，为$(类别数+1)<em>4$， 4表示一个bbox的4个坐标值<br>在<code>test.prototxt</code>中<br>修改anchor数:<br><code>rpn_cls_prob_reshape</code>层的第二个<code>dim</code>: $2</em>anchor数量$（2表示bg/fg，背景和前景做二分类,下同）<br><code>rpn_cls_score</code>层的<code>num_output</code>: $2*anchor$数量<br>同时，python代码中也要修改这个anchor数.</p>
+<hr>
+<p>8.<code>..\lib\roi_data_layer\layer.py&quot;, line 125, in setup
+top[idx].reshape(1, self._num_classes * 4)
+IndexError: Index out of range</code></p>
+<p>Do you provide a config file (eg. <code>experiments/cfgs/faster_rcnn_end2end.yml</code>)? Looks like <code>cfg.TRAIN.HAS_RPN</code> is false but it should be true! Please have a look at <code>experiments/scripts/faster_rcnn_end2end.sh</code> for details.<br>keep <code>__C.TRAIN.PROPOSAL_METHOD = &#39;gt&#39; 
+__C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_end2end.yml</code></p>
+<hr>
+<p>9.<code>loss_layer.cpp:25] Check failed: bottom[0]-&gt;num() == bottom[1]-&gt;num() (2 vs. 1) The data and label should have the same number.
+*** Check failure stack trace: ***</code></p>
+<p>The data blob had <code>num = 2</code> so I set <code>cfg.TRAIN.IMS_PER_BATCh</code> to <code>1</code>, and the problem is gone now. </p>
 
-must be <span class="number">0</span>, <span class="keyword">if</span> <span class="keyword">not</span>, we will <span class="keyword">get</span> <span class="keyword">error</span>:  ZeroDivisionError: <span class="type">integer</span> division <span class="keyword">or</span> modulo <span class="keyword">by</span> zero
-</code></pre><p>4.AssertionError: Selective search data not found at</p>
-<pre><code>训练时报错，可修改为：`Change _C<span class="class">.TRAIN</span><span class="class">.PROPOSAL_METHOD</span> = <span class="string">'gt'</span>` the <span class="number">118</span> line <span class="keyword">in</span> model/config<span class="class">.py</span> file. It should be OK.
-</code></pre><p>5.AttributeError: ‘module’ object has no attribute ‘text_format’</p>
-<pre><code>在不采用预训练权重时，碰到错误`pb2<span class="class">.text_format</span><span class="class">.Merge</span>(f.<span class="function"><span class="title">read</span><span class="params">()</span></span>, self.solver_param) AttributeError: <span class="string">'module'</span> <span class="tag">object</span> has no attribute <span class="string">'text_format'</span>`
-原因是protobuf的版本问题，更换版本或者修改：
-在文件`./lib/fast_rcnn/train.py`增加一行`import google<span class="class">.protobuf</span><span class="class">.text_format</span>`即可.
-</code></pre><p>6.Ubuntu环境下python2和python3的切换</p>
-<pre><code>用 update-alternatives
-
-1)建立链接：
-
-<span class="comment"><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/<span class="built_in">local</span>/lib/python2.7 100</div><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/<span class="built_in">local</span>/lib/python3.2 150</div></pre></td></tr></table></figure></span>
-
-
-2)`sudo update-alternatives --config python`按照提示选择默认python
-
-3) 删除某个可选项：
-`sudo update-alternatives --remove python /usr/bin/python2.7`
-</code></pre><p>7.网络更改</p>
-<pre><code><span class="label">修改类别数:</span>
-在train.prototxt中：
-<span class="escape">`i</span>nput-data<span class="escape">`层</span>的<span class="escape">`n</span>um_classes<span class="escape">`，</span>为类别数+<span class="number">1</span> （<span class="number">1</span>个背景类，下同）
-<span class="escape">`r</span>oi-data<span class="escape">`层</span>的<span class="escape">`n</span>um_classes<span class="escape">`，</span>为类别数+<span class="number">1</span>
-<span class="escape">`c</span>ls_score<span class="escape">`层</span>的<span class="escape">`n</span>um_output<span class="escape">`，</span>为类别数+<span class="number">1</span>
-<span class="escape">`b</span>box_pred<span class="escape">`层</span>的<span class="escape">`n</span>um_output<span class="escape">`，</span>为$(类别数+<span class="number">1</span>)*<span class="number">4</span>$， <span class="number">4</span>表示一个bbox的<span class="number">4</span>个坐标值
-在<span class="escape">`t</span>est.prototxt<span class="escape">`中</span>
-<span class="label">修改anchor数:</span>
-<span class="escape">`r</span>pn_cls_prob_reshape<span class="escape">`层</span>的第二个<span class="escape">`d</span>im<span class="escape">`:</span> $<span class="number">2</span>*anchor数量$（<span class="number">2</span>表示bg/fg，背景和前景做二分类,下同）
-<span class="escape">`r</span>pn_cls_score<span class="escape">`层</span>的<span class="escape">`n</span>um_output<span class="escape">`:</span> $<span class="number">2</span>*anchor$数量
-同时，python代码中也要修改这个anchor数.
-</code></pre>
       
 
       
