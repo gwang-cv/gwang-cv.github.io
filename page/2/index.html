@@ -2360,7 +2360,7 @@ sudo reboot</span>
 sudo mv /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
 sudo ln -s /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
 sudo ln -s /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
-</code></pre><p>重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必安装驱动提示的x-config的选项安装，即一路yes即可。</p>
+</code></pre><h5 id="重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项：">重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项：</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo sh NVIDIA-Linux-x86_64-375.66.run -no-opengl-files –no-x-check -no-nouveau-check </div><div class="line"><span class="comment">#注意字符横线‘-’容易出错！</span></div></pre></td></tr></table></figure>
 <p>如果出现无法进入桌面的问题，这是因为驱动修改了xorg的配置，可执行一下命令：</p>
 <pre><code>cd /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/ 
 sudo mv nvidia-drm-outputclass<span class="class">.conf</span> nvidia-drm-outputclass<span class="class">.conf</span><span class="class">.bak</span>
@@ -2626,9 +2626,32 @@ sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<
 objs = cls_objs
 </code></pre><p>参考：<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/316" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/316</a></p>
 <hr>
-<p><em>Annotations files 标记文件问题</em></p>
-<p>Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
-<p>must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
+<ol>
+<li><p><em>Annotations files 标记文件问题</em></p>
+<p> Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
+<p> must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
+</li>
+<li><p>AssertionError: Selective search data not found at</p>
+<p> 训练时报错，可修改为：<code>Change _C.TRAIN.PROPOSAL_METHOD = &#39;gt&#39;</code> the 118 line in model/config.py file. It should be OK.</p>
+</li>
+<li><p>AttributeError: ‘module’ object has no attribute ‘text_format’</p>
+<p> 在不采用预训练权重时，碰到错误<code>pb2.text_format.Merge(f.read(), self.solver_param) AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;</code><br> 原因是protobuf的版本问题，更换版本或者修改：<br> 在文件<code>./lib/fast_rcnn/train.py</code>增加一行<code>import google.protobuf.text_format</code>即可.</p>
+</li>
+<li><p>Ubuntu环境下python2和python3的切换</p>
+<p> 用 update-alternatives</p>
+<p> 1)建立链接：</p>
+ <figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/<span class="built_in">local</span>/lib/python2.7 100</div><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/<span class="built_in">local</span>/lib/python3.2 150</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<pre><code><span class="number">2</span>)`sudo <span class="keyword">update</span>-alternatives --config <span class="keyword">python</span>`按照提示选择默认<span class="keyword">python</span>
+
+<span class="number">3</span>) 删除某个可选项：
+`sudo <span class="keyword">update</span>-alternatives --<span class="built_in">remove</span> <span class="keyword">python</span> /usr/bin/python2.<span class="number">7</span>`
+</code></pre><ol>
+<li><p>网络更改</p>
+<p> 修改类别数:<br> 在train.prototxt中：<br> <code>input-data</code>层的<code>num_classes</code>，为类别数+1 （1个背景类，下同）<br> <code>roi-data</code>层的<code>num_classes</code>，为类别数+1<br> <code>cls_score</code>层的<code>num_output</code>，为类别数+1<br> <code>bbox_pred</code>层的<code>num_output</code>，为$(类别数+1)<em>4$， 4表示一个bbox的4个坐标值<br> 在<code>test.prototxt</code>中<br> 修改anchor数:<br> <code>rpn_cls_prob_reshape</code>层的第二个<code>dim</code>: $2</em>anchor数量$（2表示bg/fg，背景和前景做二分类,下同）<br> <code>rpn_cls_score</code>层的<code>num_output</code>: $2*anchor$数量<br> 同时，python代码中也要修改这个anchor数.</p>
+</li>
+</ol>
 
       
 
