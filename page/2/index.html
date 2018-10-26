@@ -3000,7 +3000,8 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
 <hr>
 <p>9.<code>loss_layer.cpp:25] Check failed: bottom[0]-&gt;num() == bottom[1]-&gt;num() (2 vs. 1) The data and label should have the same number.
 *** Check failure stack trace: ***</code></p>
-<p>The data blob had <code>num = 2</code> so I set <code>cfg.TRAIN.IMS_PER_BATCh</code> to <code>1</code>, and the problem is gone now. </p>
+<p>使用end2end的方法训练py-faster-rcnn， 把 TRAIN.IMS_PER_BATCH 设置为 2的时候会出错，显示data和label的batch size不一致，在源码<code>lib/rpn/anchor_target_layer.py</code>中可以看到，<code>anchor_target_layer</code>的top[0] 的batchsize被写死为1了。<br>The data blob had <code>num = 2</code> so I set <code>cfg.TRAIN.IMS_PER_BATCh</code> to <code>1</code>, and the problem is gone now. </p>
+<hr>
 <p>10.train完之后在测试时碰到问题<code>Check failed: error == cudaSuccess (2 vs. 0) out of memory</code></p>
 <p>一般是通过减少Batch，此处通过减少TEST的两个参数值可解决问题！</p>
 <figure class="highlight vhdl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Number <span class="keyword">of</span> top scoring boxes <span class="keyword">to</span> keep before apply NMS <span class="keyword">to</span> RPN proposals</div><div class="line">__C.TEST.RPN_PRE_NMS_TOP_N = <span class="number">1000</span> </div><div class="line"># Number <span class="keyword">of</span> top scoring boxes <span class="keyword">to</span> keep <span class="keyword">after</span> applying NMS <span class="keyword">to</span> RPN proposals</div><div class="line">__C.TEST.RPN_POST_NMS_TOP_N = <span class="number">200</span></div></pre></td></tr></table></figure>
@@ -3267,7 +3268,7 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">Next &raquo;</a>
     </nav>
   
 
