@@ -139,6 +139,148 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Clarifai API体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/02/Clarifai API体验/" class="archive-article-date">
+  	<time datetime="2016-11-02T07:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-02</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
+<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
+<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
+<pre><code>pip install clarifai==<span class="number">2.0</span>.10
+clarifai config
+<span class="label">CLARIFAI_APP_ID:</span>
+<span class="label">CLARIFAI_APP_SECRET:</span>
+</code></pre><p>在python中实现测试：</p>
+<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
+app = ClarifaiApp()
+model = app.models.get(<span class="string">'general-v1.3'</span>)
+<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
+<span class="comment"># or local image</span>
+<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
+</code></pre><p>一、打开MAC终端，输入Request命令：</p>
+<ol>
+<li><p>测试在线图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试本地图片</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+<li><p>测试多幅图像</p>
+<pre><code>curl "https://api.clarifai.com/v1/tag/" \
+      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
+</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
+</code></pre></li>
+</ol>
+<p>二、读取Response结果</p>
+<p>在python中使用json来解析文本结果：</p>
+<pre><code># -*- coding: utf-<span class="number">8</span> -*-
+<span class="keyword">import</span> json
+<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
+    <span class="built_in">print</span> <span class="built_in">line</span>
+<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
+results=<span class="built_in">str</span>[<span class="string">'results'</span>]
+strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
+<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
+    <span class="built_in">print</span> ind
+    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
+</code></pre><p>输出解析结果（图像的tag类别）：</p>
+<pre><code><span class="number">0</span>
+[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
+<span class="number">1</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
+<span class="number">2</span>
+[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
+<span class="number">3</span>
+[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
+<span class="number">4</span>
+[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/02/Clarifai API体验/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-DL学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1950,97 +2092,6 @@ ImportError: Need nose &gt;= 0.10.0 <span class="keyword">for</span> tests - see
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/03/30/install nose numpy scipy/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Macos install cpu-only pyTorch" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/03/30/Macos install cpu-only pyTorch/">Macos install cpu-only pytorch</a>
-    </h1>
-  
-
-        
-        <a href="/2016/03/30/Macos install cpu-only pyTorch/" class="archive-article-date">
-  	<time datetime="2016-03-30T14:37:34.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-03-30</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>Macos without NVIDIA GPU, we need to use the CPU-only pytorch.</p>
-<p>Install pytorch</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">conda install pytorch torchvision -c pytorch</div></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pip install torch torchvision</div></pre></td></tr></table></figure>
-<p>Got RuntimeError:</p>
-<figure class="highlight stylus"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">RuntimeError: Attempting to deserialize <span class="selector-tag">object</span> on <span class="selector-tag">a</span> </div><div class="line">CUDA device but torch<span class="selector-class">.cuda</span><span class="selector-class">.is_available</span>() is False. If </div><div class="line">you are running on <span class="selector-tag">a</span> CPU-only machine, please use </div><div class="line">torch<span class="selector-class">.load</span> with map_location=<span class="string">'cpu'</span> to map your storages </div><div class="line">to the CPU.</div></pre></td></tr></table></figure>
-<p>modify your python code</p>
-<figure class="highlight ruby"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">torch.load(model_weights)</div><div class="line"><span class="params">||</span></div><div class="line"><span class="params">||</span></div><div class="line">vv</div><div class="line">torch.load(model_weights, map_location=torch.device(<span class="string">'cpu'</span>))</div></pre></td></tr></table></figure>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/03/30/Macos install cpu-only pyTorch/">展开全文 >></a>
         </p>
       
 

@@ -139,6 +139,194 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-python+opencv图像二值化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/python+opencv图像二值化/">python+opencv图像二值化</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/25/python+opencv图像二值化/" class="archive-article-date">
+  	<time datetime="2017-08-25T08:20:01.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Goal</strong></p>
+<p>In this tutorial, you will learn Simple thresholding, Adaptive thresholding, Otsu’s thresholding etc.<br>You will learn these functions : cv2.threshold, cv2.adaptiveThreshold etc.</p>
+<p><strong>Simple Thresholding</strong></p>
+<p>Here, the matter is straight forward. If pixel value is greater than a threshold value, it is assigned one value (may be white), else it is assigned another value (may be black). The function used is cv2.threshold. First argument is the source image, which should be a grayscale image. Second argument is the threshold value which is used to classify the pixel values. Third argument is the maxVal which represents the value to be given if pixel value is more than (sometimes less than) the threshold value. OpenCV provides different styles of thresholding and it is decided by the fourth parameter of the function. Different types are:</p>
+<pre><code>cv2<span class="class">.THRESH_BINARY</span>
+cv2<span class="class">.THRESH_BINARY_INV</span>
+cv2<span class="class">.THRESH_TRUNC</span>
+cv2<span class="class">.THRESH_TOZERO</span>
+cv2.THRESH_TOZERO_INV
+</code></pre><p>Documentation clearly explain what each type is meant for. Please check out the documentation.</p>
+<p>Two outputs are obtained. First one is a retval which will be explained later. Second output is our thresholded image.</p>
+<p><strong>code:</strong></p>
+<pre><code><span class="comment">#!/usr/bin/python</span>
+<span class="comment"># -*- coding: UTF-8 -*-</span>
+<span class="keyword">import</span> cv2
+<span class="keyword">import</span> numpy <span class="keyword">as</span> np
+<span class="keyword">from</span> PIL <span class="keyword">import</span> Image 
+<span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt
+<span class="keyword">import</span> matplotlib
+<span class="keyword">import</span> os
+<span class="keyword">import</span> sys
+reload(sys) 
+sys.setdefaultencoding(<span class="string">'utf-8'</span>) 
+
+fln=<span class="string">'76.jpg'</span>
+img = cv2.imread(fln,<span class="number">0</span>)
+ret,thresh1 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)
+ret,thresh2 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY_INV)
+ret,thresh3 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TRUNC)
+ret,thresh4 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO)
+ret,thresh5 = cv2.threshold(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_TOZERO_INV)
+titles = [<span class="string">'Original_Image'</span>,<span class="string">'BINARY'</span>,<span class="string">'BINARY_INV'</span>,<span class="string">'TRUNC'</span>,<span class="string">'TOZERO'</span>,<span class="string">'TOZERO_INV'</span>]
+images = [img, thresh1, thresh2, thresh3, thresh4, thresh5]
+<span class="keyword">for</span> i <span class="keyword">in</span> xrange(<span class="number">6</span>):
+    cv2.imwrite(<span class="string">'0_'</span>+titles[i]+<span class="string">'.jpg'</span>,images[i])
+    plt.subplot(<span class="number">2</span>,<span class="number">3</span>,i+<span class="number">1</span>),plt.imshow(images[i],<span class="string">'gray'</span>)
+
+    plt.title(titles[i])
+    plt.xticks([]), plt.yticks([])
+
+plt.savefig(<span class="string">'res_'</span>+fln)
+plt.show()
+</code></pre><h2 id=""><img src="http://docs.opencv.org/master/threshold.jpg" alt="http://docs.opencv.org/master/threshold.jpg"></h2><p><strong>Adaptive Thresholding</strong></p>
+<p>In the previous section, we used a global value as threshold value. But it may not be good in all the conditions where image has different lighting conditions in different areas. In that case, we go for adaptive thresholding. In this, the algorithm calculate the threshold for a small regions of the image. So we get different thresholds for different regions of the same image and it gives us better results for images with varying illumination.</p>
+<p>It has three ‘special’ input params and only one output argument.</p>
+<p>Adaptive Method - It decides how thresholding value is calculated.</p>
+<pre><code>cv2.ADAPTIVE_THRESH_MEAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> mean <span class="operator">of</span> neighbourhood area.
+cv2.ADAPTIVE_THRESH_GAUSSIAN_C : threshold <span class="built_in">value</span> is <span class="operator">the</span> weighted <span class="built_in">sum</span> <span class="operator">of</span> neighbourhood values where weights are <span class="operator">a</span> gaussian window.
+Block Size - It decides <span class="operator">the</span> size <span class="operator">of</span> neighbourhood area.
+</code></pre><p>C - It is just a constant which is subtracted from the mean or weighted mean calculated.</p>
+<p>Below piece of code compares global thresholding and adaptive thresholding for an image with varying illumination:</p>
+<pre><code>import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+<span class="tag">img</span> = cv2.<span class="function"><span class="title">imread</span><span class="params">(<span class="string">'sudoku.png'</span>,<span class="number">0</span>)</span></span>
+<span class="tag">img</span> = cv2.<span class="function"><span class="title">medianBlur</span><span class="params">(img,<span class="number">5</span>)</span></span>
+ret,th1 = cv2.<span class="function"><span class="title">threshold</span><span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span></span>
+th2 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_MEAN_C</span>,\
+            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
+th3 = cv2.adaptiveThreshold(<span class="tag">img</span>,<span class="number">255</span>,cv2<span class="class">.ADAPTIVE_THRESH_GAUSSIAN_C</span>,\
+            cv2<span class="class">.THRESH_BINARY</span>,<span class="number">11</span>,<span class="number">2</span>)
+titles = [<span class="string">'Original Image'</span>, <span class="string">'Global Thresholding (v = 127)'</span>,
+            <span class="string">'Adaptive Mean Thresholding'</span>, <span class="string">'Adaptive Gaussian Thresholding'</span>]
+images = [<span class="tag">img</span>, th1, th2, th3]
+<span class="keyword">for</span> <span class="tag">i</span> <span class="keyword">in</span> <span class="function"><span class="title">xrange</span><span class="params">(<span class="number">4</span>)</span></span>:
+    plt.<span class="function"><span class="title">subplot</span><span class="params">(<span class="number">2</span>,<span class="number">2</span>,i+<span class="number">1</span>)</span></span>,plt.<span class="function"><span class="title">imshow</span><span class="params">(images[i],<span class="string">'gray'</span>)</span></span>
+    plt.<span class="function"><span class="title">title</span><span class="params">(titles[i])</span></span>
+    plt.<span class="function"><span class="title">xticks</span><span class="params">([])</span></span>,plt.<span class="function"><span class="title">yticks</span><span class="params">([])</span></span>
+plt.<span class="function"><span class="title">show</span><span class="params">()</span></span>    
+</code></pre><p><img src="http://docs.opencv.org/master/ada_threshold.jpg" alt="result"></p>
+<hr>
+<p><strong>Otsu’s Binarization</strong></p>
+<p>In the first section, I told you there is a second parameter retVal. Its use comes when we go for Otsu’s Binarization. So what is it?</p>
+<p>In global thresholding, we used an arbitrary value for threshold value, right? So, how can we know a value we selected is good or not? Answer is, trial and error method. But consider a bimodal image (In simple words, bimodal image is an image whose histogram has two peaks). For that image, we can approximately take a value in the middle of those peaks as threshold value, right ? That is what Otsu binarization does. So in simple words, it automatically calculates a threshold value from image histogram for a bimodal image. (For images which are not bimodal, binarization won’t be accurate.)</p>
+<p>For this, our cv2.threshold() function is used, but pass an extra flag, cv2.THRESH_OTSU. For threshold value, simply pass zero. Then the algorithm finds the optimal threshold value and returns you as the second output, retVal. If Otsu thresholding is not used, retVal is same as the threshold value you used.</p>
+<p>Check out below example. Input image is a noisy image. In first case, I applied global thresholding for a value of 127. In second case, I applied Otsu’s thresholding directly. In third case, I filtered image with a 5x5 gaussian kernel to remove the noise, then applied Otsu thresholding. See how noise filtering improves the result.</p>
+<pre><code><span class="built_in">import</span> cv2
+<span class="built_in">import</span> numpy as np
+from matplotlib <span class="built_in">import</span> pyplot as plt
+img = cv2.imread<span class="params">('noisy2.png',<span class="number">0</span>)</span>
+<span class="built_in">#</span> global thresholding
+ret1,th1 = cv2.threshold<span class="params">(img,<span class="number">127</span>,<span class="number">255</span>,cv2.THRESH_BINARY)</span>
+<span class="built_in">#</span> Otsu's thresholding
+ret2,th2 = cv2.threshold<span class="params">(img,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
+<span class="built_in">#</span> Otsu's thresholding after Gaussian filtering
+blur = cv2.GaussianBlur<span class="params">(img,<span class="params">(<span class="number">5</span>,<span class="number">5</span>)</span>,<span class="number">0</span>)</span>
+ret3,th3 = cv2.threshold<span class="params">(blur,<span class="number">0</span>,<span class="number">255</span>,cv2.THRESH_BINARY+cv2.THRESH_OTSU)</span>
+<span class="built_in">#</span> plot all the images and their histograms
+images = [img, <span class="number">0</span>, th1,
+          img, <span class="number">0</span>, th2,
+          blur, <span class="number">0</span>, th3]
+titles = ['Original Noisy Image','Histogram','Global Thresholding <span class="params">(v=<span class="number">127</span>)</span>',
+          'Original Noisy Image','Histogram',<span class="string">"Otsu's Thresholding"</span>,
+          'Gaussian filtered Image','Histogram',<span class="string">"Otsu's Thresholding"</span>]
+<span class="keyword">for</span> i in xrange<span class="params">(<span class="number">3</span>)</span>:
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">1</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>],'gray')</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">2</span>)</span>,plt.hist<span class="params">(images[i*<span class="number">3</span>].ravel<span class="params">()</span>,<span class="number">256</span>)</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">1</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+    plt.subplot<span class="params">(<span class="number">3</span>,<span class="number">3</span>,i*<span class="number">3</span>+<span class="number">3</span>)</span>,plt.imshow<span class="params">(images[i*<span class="number">3</span>+<span class="number">2</span>],'gray')</span>
+    plt.title<span class="params">(titles[i*<span class="number">3</span>+<span class="number">2</span>])</span>, plt.xticks<span class="params">([])</span>, plt.yticks<span class="params">([])</span>
+plt.show<span class="params">()</span>
+</code></pre><h2 id="-1"><img src="http://docs.opencv.org/master/otsu.jpg" alt="http://docs.opencv.org/master/otsu.jpg"></h2><p>Link:</p>
+<p><a href="http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html" target="_blank" rel="external">http://docs.opencv.org/master/d7/d4d/tutorial_py_thresholding.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/25/python+opencv图像二值化/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Tesseract4.0+jTessBoxEditor训练(ubuntu下)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2061,6 +2249,103 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
 
 
   
+    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/Python除法/" class="archive-article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Git配置出错Permission Denied" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2133,103 +2418,6 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/07/06/Git配置出错Permission Denied/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/06/Python除法/" class="archive-article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
         </p>
       
 
@@ -3901,148 +4089,6 @@ ans =
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/11/03/安装lpsolve库 for MATLAB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Clarifai API体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/02/Clarifai API体验/">Clarifai API体验</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/02/Clarifai API体验/" class="archive-article-date">
-  	<time datetime="2016-11-02T07:37:27.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-02</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>参考官方给出的文档：<a href="https://developer.clarifai.com/guide/tag#guide-tag-responses" target="_blank" rel="external">https://developer.clarifai.com/guide/tag#guide-tag-responses</a>，在本机进行简单的体验。</p>
-<p>首先注册账户，然后创建Application，获取ID及Secret，并在Application页面下生成“Access Token”码：XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX</p>
-<p>〇、客户端API参考：<a href="https://github.com/Clarifai/clarifai-python" target="_blank" rel="external">https://github.com/Clarifai/clarifai-python</a></p>
-<pre><code>pip install clarifai==<span class="number">2.0</span>.10
-clarifai config
-<span class="label">CLARIFAI_APP_ID:</span>
-<span class="label">CLARIFAI_APP_SECRET:</span>
-</code></pre><p>在python中实现测试：</p>
-<pre><code><span class="keyword">from</span> clarifai.rest <span class="keyword">import</span> ClarifaiApp
-app = ClarifaiApp()
-model = app.models.get(<span class="string">'general-v1.3'</span>)
-<span class="built_in">print</span> model.predict_by_url(<span class="string">'https://samples.clarifai.com/metro-north.jpg'</span>)
-<span class="comment"># or local image</span>
-<span class="built_in">print</span> model.predict_by_filename(<span class="string">'/Users/USER/my_image.jpeg'</span>)
-</code></pre><p>一、打开MAC终端，输入Request命令：</p>
-<ol>
-<li><p>测试在线图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> --data-urlencode <span class="string">"url=https://samples.clarifai.com/metro-north.jpg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试本地图片</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-<li><p>测试多幅图像</p>
-<pre><code>curl "https://api.clarifai.com/v1/tag/" \
-      -<span class="ruby"><span class="constant">X</span> <span class="constant">POST</span> -<span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image1.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image2.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image3.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">F</span> <span class="string">"encoded_data=@/Users/USER/my_image4.jpeg"</span> \
-</span>      -<span class="ruby"><span class="constant">H</span> <span class="string">"Authorization: Bearer XXx2QXEzmXXfj1eXkXXXUFLYXXX7DX"</span></span>
-</code></pre></li>
-</ol>
-<p>二、读取Response结果</p>
-<p>在python中使用json来解析文本结果：</p>
-<pre><code># -*- coding: utf-<span class="number">8</span> -*-
-<span class="keyword">import</span> json
-<span class="keyword">for</span> <span class="built_in">line</span> in <span class="built_in">open</span>(<span class="string">"response.txt"</span>):
-    <span class="built_in">print</span> <span class="built_in">line</span>
-<span class="built_in">str</span>=json.loads(<span class="built_in">line</span>)
-results=<span class="built_in">str</span>[<span class="string">'results'</span>]
-strNum=len(<span class="built_in">str</span>[<span class="string">'results'</span>])
-<span class="keyword">for</span> ind in range(<span class="number">0</span>,strNum):
-    <span class="built_in">print</span> ind
-    <span class="built_in">print</span> results[ind][<span class="string">'result'</span>][<span class="string">'tag'</span>][<span class="string">'classes'</span>]
-</code></pre><p>输出解析结果（图像的tag类别）：</p>
-<pre><code><span class="number">0</span>
-[<span class="string">u'sketch'</span>, <span class="string">u'illustration'</span>, <span class="string">u'cute'</span>, <span class="string">u'man'</span>, <span class="string">u'no person'</span>, <span class="string">u'funny'</span>, <span class="string">u'fun'</span>, <span class="string">u'vector'</span>, <span class="string">u'character'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'business'</span>, <span class="string">u'child'</span>, <span class="string">u'art'</span>, <span class="string">u'retro'</span>, <span class="string">u'love'</span>, <span class="string">u'moon'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'graphic'</span>, <span class="string">u'design'</span>, <span class="string">u'isolated'</span>]
-<span class="number">1</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'retro'</span>, <span class="string">u'design'</span>, <span class="string">u'sketch'</span>, <span class="string">u'business'</span>, <span class="string">u'symbol'</span>, <span class="string">u'man'</span>, <span class="string">u'family'</span>, <span class="string">u'no person'</span>, <span class="string">u'graphic'</span>, <span class="string">u'humor'</span>, <span class="string">u'people'</span>, <span class="string">u'outdoors'</span>, <span class="string">u'image'</span>, <span class="string">u'art'</span>, <span class="string">u'nature'</span>, <span class="string">u'house'</span>, <span class="string">u'animal'</span>]
-<span class="number">2</span>
-[<span class="string">u'vector'</span>, <span class="string">u'vector'</span>, <span class="string">u'illustration'</span>, <span class="string">u'no person'</span>, <span class="string">u'internet'</span>, <span class="string">u'technology'</span>, <span class="string">u'design'</span>, <span class="string">u'symbol'</span>, <span class="string">u'graphic design'</span>, <span class="string">u'data'</span>, <span class="string">u'flat'</span>, <span class="string">u'data'</span>, <span class="string">u'business'</span>, <span class="string">u'stripe'</span>, <span class="string">u'set'</span>, <span class="string">u'design'</span>, <span class="string">u'square'</span>, <span class="string">u'science'</span>, <span class="string">u'education'</span>, <span class="string">u'creativity'</span>]
-<span class="number">3</span>
-[<span class="string">u'sleeve'</span>, <span class="string">u'illustration'</span>, <span class="string">u'isolated'</span>, <span class="string">u'polo'</span>, <span class="string">u'shirt'</span>, <span class="string">u'vector'</span>, <span class="string">u'design'</span>, <span class="string">u'image'</span>, <span class="string">u'wear'</span>, <span class="string">u'garment'</span>, <span class="string">u'sale'</span>, <span class="string">u'man'</span>, <span class="string">u'fashion'</span>, <span class="string">u'shopping'</span>, <span class="string">u'casual'</span>, <span class="string">u'front'</span>, <span class="string">u'shop'</span>, <span class="string">u'apparel'</span>, <span class="string">u'graphic'</span>, <span class="string">u'flat'</span>]
-<span class="number">4</span>
-[<span class="string">u'illustration'</span>, <span class="string">u'vector'</span>, <span class="string">u'sketch'</span>, <span class="string">u'Halloween'</span>, <span class="string">u'cute'</span>, <span class="string">u'animal'</span>, <span class="string">u'skittish'</span>, <span class="string">u'funny'</span>, <span class="string">u'design'</span>, <span class="string">u'art'</span>, <span class="string">u'graphic'</span>, <span class="string">u'fun'</span>, <span class="string">u'ghost'</span>, <span class="string">u'scary'</span>, <span class="string">u'no person'</span>, <span class="string">u'vicious'</span>, <span class="string">u'desktop'</span>, <span class="string">u'retro'</span>, <span class="string">u'image'</span>, <span class="string">u'business'</span>]
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/02/Clarifai API体验/">展开全文 >></a>
         </p>
       
 
