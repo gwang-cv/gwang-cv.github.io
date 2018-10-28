@@ -139,6 +139,272 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Caffe训练分类模型" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/31/Caffe训练分类模型/">Caffe训练分类模型</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/31/Caffe训练分类模型/" class="archive-article-date">
+  	<time datetime="2017-08-31T06:27:54.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>1.安装Caffe</strong></p>
+<p>按照官方<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">https://github.com/BVLC/caffe</a>说明进行编译，若使用了较老的cudnn版本，则要在老版本的caffe与新版本的caffe进行合并，具体是将cudnn开头的相关文件替换掉旧版本caffe里的。</p>
+<p><strong>2.整理自己的数据</strong></p>
+<p>图像文件可以放置在硬盘的任何位置，将训练的图像及label生成一个train.txt文件，然后验证图像和label生成一个val.txt，一起放到caffe/data/mydata文件夹下。</p>
+<pre><code>path/to/image/<span class="number">001</span><span class="class">.jpg</span> <span class="number">0</span>
+path/to/image/<span class="number">002</span><span class="class">.jpg</span> <span class="number">1</span>
+path/to/image/<span class="number">003</span><span class="class">.jpg</span> <span class="number">2</span>
+</code></pre><p>在caffe/examples/imagenet中，将创建lmdb文件和mean文件的的几个sh文件拷贝到自己的examples/mytask中，然后修改这两个文件中的几个地址和名称：</p>
+<p><strong>修改create_imagenet.sh</strong></p>
+<pre><code><span class="comment">//当前路径</span>
+EXAMPLE=/home/xxx/caffe/examples/mytask
+<span class="comment">//存放train.txt和val.txt的路径，就是data/mydata</span>
+DATA=/home/xxx/caffe/data/mydata
+<span class="comment">//不变</span>
+TOOLS=/home/xxx/caffe/build/tools
+
+<span class="comment">//存放train和val图片文件夹的主目录（这里与txt文件中的目录合起来才是图片目录）</span>
+TRAIN_DATA_ROOT=/home/xxx/project-data/
+VAL_DATA_ROOT=/home/xxx/project-data/
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$TRAIN_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/train<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/train_lmdb  ##修改名称，与prototxt中的对应
+
+echo <span class="string">"Creating val lmdb..."</span>
+
+GLOG_logtostderr=<span class="number">1</span> <span class="variable">$TOOLS</span>/convert_imageset \
+    --resize_height=<span class="variable">$RESIZE_HEIGHT</span> \
+    --resize_width=<span class="variable">$RESIZE_WIDTH</span> \
+    --shuffle \
+    <span class="variable">$VAL_DATA_ROOT</span> \
+    <span class="variable">$DATA</span>/val<span class="class">.txt</span> \
+    <span class="variable">$EXAMPLE</span>/val_lmdb  ##修改名称
+</code></pre><p>同理，修改make_imagenet_mean.sh。</p>
+<p>分别执行这两个命令，创建文件lmdb数据库和均值mean文件。</p>
+<p><strong>3.设置模型</strong></p>
+<p>在caffe/models下有很多预制的模型可供使用，模型文件一共可包括至少三个文件：deploy.prototxt；solver.prototxt；train_val.prototxt，有时需要finetune已训练好的模型，还需要一些比如在imagenet上预训练的caffemodel文件。</p>
+<p>sovler里面包含超参数和一些信息：</p>
+<pre><code><span class="attribute">net</span>: <span class="string">"models/bvlc_googlenet/train_val.prototxt"</span>
+<span class="attribute">test_iter</span>: <span class="string">1000</span>
+<span class="attribute">test_interval</span>: <span class="string">4000</span>
+<span class="attribute">test_initialization</span>: <span class="string">false</span>
+<span class="attribute">display</span>: <span class="string">40</span>
+<span class="attribute">average_loss</span>: <span class="string">40</span>
+<span class="attribute">base_lr</span>: <span class="string">0.01</span>
+<span class="attribute">lr_policy</span>: <span class="string">"step"</span>
+<span class="attribute">stepsize</span>: <span class="string">320000</span>
+<span class="attribute">gamma</span>: <span class="string">0.96</span>
+<span class="attribute">max_iter</span>: <span class="string">10000000</span>
+<span class="attribute">momentum</span>: <span class="string">0.9</span>
+<span class="attribute">weight_decay</span>: <span class="string">0.0002</span>
+<span class="attribute">snapshot</span>: <span class="string">40000</span>
+<span class="attribute">snapshot_prefix</span>: <span class="string">"models/bvlc_googlenet/bvlc_googlenet"</span>
+<span class="attribute">solver_mode</span>: <span class="string">GPU</span>
+</code></pre><p>train_val里面的主要修改的地方是batch_size，它与sovler里面的test_iter相乘的结果对应训练图像的总数；修改train和val的sorce文件地址：train_lmdb,val_lmdb. </p>
+<pre><code><span class="tag">data_param</span> {
+<span class="attribute">source</span>: <span class="string">"examples/imagenet/ilsvrc12_train_lmdb"</span>
+<span class="attribute">batch_size</span>: <span class="number">32</span>
+<span class="attribute">backend</span>: LMDB
+  }
+</code></pre><p>PS: 若使用lmdb的话，type为Data，使用图像的话就是ImageData</p>
+<pre><code>layer {
+  name: <span class="string">"data"</span>
+  <span class="keyword">type</span>: <span class="string">"Data"</span>
+  top: <span class="string">"data"</span>
+  top: <span class="string">"label"</span>
+  <span class="keyword">include</span> {
+    phase: <span class="type">TRAIN</span>
+  }
+</code></pre><p>PS: 在finetune残差网络resnet时，网络结构文件中BatchNorm层的参数要注意： </p>
+<pre><code><span class="attribute">1.在训练时所有BN层要设置use_global_stats</span>: <span class="string">false（也可以不写，caffe默认是false） </span>
+<span class="attribute">2.在测试时所有BN层要设置use_global_stats</span>: <span class="string">true</span>
+
+<span class="cal"><span class="string">#1</span>.训练如果不设为<span class="literal">false</span>，会导致模型不收敛 
+<span class="string">#2</span>.测试如果不设置为<span class="literal">true</span>，会导致准确率极低 </span>
+</code></pre><p><strong>4.开始训练</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+PRETRAINED_MODEL=./models/resnet50/ResNet-<span class="number">50</span>-model.caffemodel
+t=$(date +%Y-%m-%d_%H:%M:%S) 
+LOG=./<span class="built_in">log</span>/train_res50_<span class="variable">$t</span>.log
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe train \
+    --solver=./models/resnet50/solver.prototxt \
+    --weights=<span class="variable">$PRETRAINED_MODEL</span> \
+    --gpu=<span class="number">0</span>,<span class="number">1</span> <span class="number">2</span>&gt;&amp;<span class="number">1</span> | tee <span class="variable">$LOG</span>
+</code></pre><p>训练时若出现内存不足停止，要减小train_val.prototxt中batchsize的大小。<br>若出现waiting for data，可能是硬盘读写速度慢，那就waiting吧。。。</p>
+<p><strong>5.测试</strong></p>
+<pre><code><span class="shebang">#!/bin/bash</span>
+<span class="shebang">#!/usr/bin/env sh</span>
+GLOG_logtostderr=<span class="number">1</span> ./build/tools/caffe <span class="built_in">test</span> \
+    --model=./models/resnet50/ResNet-<span class="number">50</span>-train-val.prototxt \
+    --weights=./models/resnet50/output_iter_100000.caffemodel \
+    --gpu=<span class="number">1</span> \
+    --iterations=<span class="number">2000</span>
+</code></pre><p><strong>6.分类demo</strong></p>
+<p>在caffe/python下的classify.py文件可以用来对图像进行分类，但是没有输出可见的分类结果，需要改写些内容。开始之前需要把mean均值文件转换为.npy格式，代码如下：</p>
+<pre><code>import caffe
+import numpy as np
+import sys
+
+<span class="keyword">if</span> <span class="function"><span class="title">len</span><span class="params">(sys.argv)</span></span> != <span class="number">3</span>:
+    print <span class="string">"Usage: python convert_protomean.py proto.mean out.npy"</span>
+    sys.<span class="function"><span class="title">exit</span><span class="params">()</span></span>
+
+blob = caffe<span class="class">.proto</span><span class="class">.caffe_pb2</span><span class="class">.BlobProto</span>()
+data = <span class="function"><span class="title">open</span><span class="params">( sys.argv[<span class="number">1</span>] , <span class="string">'rb'</span> )</span></span>.<span class="function"><span class="title">read</span><span class="params">()</span></span>
+blob.<span class="function"><span class="title">ParseFromString</span><span class="params">(data)</span></span>
+arr = np.<span class="function"><span class="title">array</span><span class="params">( caffe.io.blobproto_to_array(blob)</span></span> )
+out = arr[<span class="number">0</span>]
+np.<span class="function"><span class="title">save</span><span class="params">( sys.argv[<span class="number">2</span>] , out )</span></span>
+</code></pre><p><strong>自己改写的classify-demo.py</strong></p>
+<pre><code><span class="built_in">import</span> numpy as np
+<span class="built_in">import</span> sys
+<span class="built_in">import</span> os
+<span class="built_in">import</span> caffe
+<span class="built_in">import</span> io
+<span class="built_in">#</span>from sys <span class="built_in">import</span> argv
+<span class="built_in">#</span>input filefolder you want to test
+<span class="built_in">#</span>tools,filefolder=argv
+
+caffe.set_device<span class="params">(<span class="number">0</span>)</span> 
+caffe.set_mode_gpu<span class="params">()</span>
+MODEL_FILE =<span class="string">"../models/googlenet/deploy.prototxt"</span>
+PRETRAINED = <span class="string">"../models/googlenet/output/bvlc_googlenet_iter_200000.caffemodel"</span>
+MEAN = <span class="string">"mean.npy"</span>
+
+net = caffe.Classifier<span class="params">(MODEL_FILE, PRETRAINED, mean = np.load<span class="params">(MEAN)</span>.mean<span class="params">(<span class="number">1</span>)</span>.mean<span class="params">(<span class="number">1</span>)</span>,
+channel_swap=<span class="params">(<span class="number">2</span>,<span class="number">1</span>,<span class="number">0</span>)</span>,
+raw_scale=<span class="number">255</span>,
+image_dims=<span class="params">(<span class="number">256</span>, <span class="number">256</span>)</span>)</span>
+
+filewriter = open<span class="params">(<span class="string">"../data/mydata/result.txt"</span>,<span class="string">"w+"</span>)</span>
+labels_file = '../data/mydata/synset_words.txt'
+labels = np.loadtxt<span class="params">(labels_file, str, delimiter='\t')</span>
+<span class="built_in">#</span>load groundtruth txt to dictionary
+groundtruth_file = '../data/mydata/groundtruth/abc.txt'
+dict_data = {}
+with open<span class="params">(groundtruth_file, 'r')</span> as df:
+    <span class="keyword">for</span> kv in [d.strip<span class="params">()</span>.split<span class="params">(' ')</span> <span class="keyword">for</span> d in df]:
+    dict_data[kv[<span class="number">0</span>]] = kv[<span class="number">1</span>]
+
+<span class="keyword">for</span> root,dirs,files in os.walk<span class="params">(<span class="string">"/home/xxx/project_data/mydata/abc/"</span>)</span>: <span class="built_in">#</span> all the images are in test folder
+
+    <span class="keyword">for</span> file in files:
+    IMAGE_FILE = os.path.join<span class="params">(root,file)</span>.decode<span class="params">('gbk')</span>.encode<span class="params">('utf8')</span>
+    <span class="built_in">#</span>print IMAGE_FILE
+    input_image = caffe.io.load_image<span class="params">(IMAGE_FILE)</span>
+    prediction = net.predict<span class="params">([input_image])</span>
+    string = os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>+<span class="string">"\n"</span>
+    filewriter.write<span class="params">(string)</span>
+    <span class="built_in">#</span>print os.path.basename<span class="params">(IMAGE_FILE)</span>, prediction[<span class="number">0</span>].argmax<span class="params">()</span>
+    <span class="built_in">#</span> load ImageNet labels
+
+    label_true=dict_data[os.path.basename<span class="params">(IMAGE_FILE)</span>]
+    <span class="keyword">if</span> label_true==<span class="built_in">str</span><span class="params">(prediction[<span class="number">0</span>].argmax<span class="params">()</span>)</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'v'
+    <span class="keyword">else</span>:
+        print os.path.basename<span class="params">(IMAGE_FILE)</span>+<span class="string">" "</span>+labels[prediction[<span class="number">0</span>].argmax<span class="params">()</span>]+' '+'x'
+
+filewriter.close<span class="params">()</span>
+</code></pre><p><strong>7.plot训练测试曲线</strong></p>
+<p>caffe/tools/extra下包含几个有用的工具，其中包括将日志文件.log绘制出训练阶段的loss变化和测试阶段accuracy的变化情况，具体：</p>
+<pre><code>./parse_log.<span class="keyword">sh</span> xxxx.<span class="keyword">log</span> #解析日志，划分为train <span class="keyword">test</span>两个文件
+
+./plot_training_log.py.example 0~7 <span class="keyword">save</span>.png xxxx.<span class="keyword">log</span> #绘制图
+
+<span class="keyword">Notes</span>:  
+    1. Supporting multiple logs.  
+    2. <span class="keyword">Log</span> <span class="keyword">file</span> name must end with the lower-cased <span class="string">".log"</span>.  
+Supported chart types:  
+    0: <span class="keyword">Test</span> accuracy  vs. Iters  
+    1: <span class="keyword">Test</span> accuracy  vs. Seconds  
+    2: <span class="keyword">Test</span> loss  vs. Iters  
+    3: <span class="keyword">Test</span> loss  vs. Seconds  
+    4: Train learning rate  vs. Iters  
+    5: Train learning rate  vs. Seconds  
+    6: Train loss  vs. Iters  
+    7: Train loss  vs. Seconds  
+</code></pre>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/31/Caffe训练分类模型/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-python+opencv图像二值化" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2249,103 +2515,6 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
 
 
   
-    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/06/Python除法/" class="archive-article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Git配置出错Permission Denied" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2418,6 +2587,103 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/07/06/Git配置出错Permission Denied/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/Python除法/" class="archive-article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
         </p>
       
 
@@ -3830,265 +4096,6 @@ tar -xvpjf <span class="regexp">/media/g</span>wang<span class="regexp">/Work/</
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/11/08/天下第一铭[汤晓鸥]/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-安装lpsolve库 for MATLAB" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/03/安装lpsolve库 for MATLAB/">安装lpsolve库 for MATLAB</a>
-    </h1>
-  
-
-        
-        <a href="/2016/11/03/安装lpsolve库 for MATLAB/" class="archive-article-date">
-  	<time datetime="2016-11-03T02:29:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>lpsolve是sourceforge下的一个开源项目，它的介绍如下： </p>
-<p><em>Mixed Integer Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) integer/binary, semi-cont and special ordered sets (SOS) models.lp_solve is written in ANSI C and can be compiled on many different platforms like Linux and WINDOWS </em>.</p>
-<p>lpsolve是一个混合整数线性规划求解器，可以求解纯线性、（混合）整数/二值、半连续和特殊有序集模型。并且经过实际验证，有极高的求解效率。 </p>
-<p><a href="http://sourceforge.net/projects/lpsolve/?source=directory" target="_blank" rel="external">sourceforge主页</a></p>
-<p>1.在Windows x64和Matlab环境下使用lpsolve</p>
-<p>需要在网址<a href="https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.5/" target="_blank" rel="external">lpsolve_5.5.2.5</a> 提供的文件列表中下载文件lp_solve_5.5.2.5_MATLAB_exe_win64.zip。或者下载文件lp_solve_5.5.2.5_source.tar.gz自行编译dll。</p>
-<p>注：在Matlab下运行示例报错：</p>
-<pre><code>Error <span class="keyword">using</span> mxlpsolve
-Failed <span class="keyword">to</span> initialise lpsolve <span class="keyword">library</span>.
-</code></pre><p>参考Using lpsolve from MATLAB: <a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a>给出的说明，需要将编译得到的mxlpsolve.dll拷贝到 WINDOWS\system32文件夹下。</p>
-<p>2.在MacOS下使用lpsolve</p>
-<p>参考<a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">Using lp_solve in Java with Mac OS X</a>的配置说明，下载源文件lp_solve_5.5.2.5_source.tar.gz，然后跳转到lp_solve_5.5/lpsolve55文件夹内，并执行ccc.osx：</p>
-<pre><code><span class="keyword">cd</span> lp_solve_5.5/lpsolve55
-<span class="keyword">sh</span> ccc.osx
-</code></pre><p>生成的文件所在的文件夹：lpsolve55/bin/osx64/，将此文件夹内生成的两个文件liblpsolve55.dylib，liblpsolve55.a拷贝到/usr/local/lib文件夹内即可：</p>
-<pre><code>sudo cp liblpsolve55<span class="class">.a</span> liblpsolve55<span class="class">.dylib</span> /usr/local/lib
-</code></pre><p>测试demo：</p>
-<pre><code><span class="keyword">cd</span> lp_solve_5.5/demo
-<span class="keyword">sh</span> ccc
-./demo
-</code></pre><p>3.在MacOS的Matlab中需要文件mxlpsolve.mexmaci64</p>
-<p>需要从lpsolve主页下载源文件lp_solve_5.5.2.5_MATLAB_source.tar.gz，解压缩后，在Matlab中执行文件Makefile.m，期间需要添加各种头文件：</p>
-<pre><code>lp_Hash<span class="class">.h</span>
-lp_lib<span class="class">.h</span>
-lp_matrix<span class="class">.h</span>
-lp_mipbb<span class="class">.h</span>
-lp_SOS<span class="class">.h</span>
-lp_types<span class="class">.h</span>
-lp_utils.h
-</code></pre><p>可下载lp_solve_5.5.2.5_dev_ux64.tar.gz并从中获取即可。</p>
-<p>4.举例</p>
-<p>mxlpsove.m是建模的核心函数，一个线性规划模型的所有配置和求解都是通过这个函数完成的。lp_maker.m和lp_solve.m是对mxlpsolve.m的高层包装，简化了模型建立和求解的过程。例如用lpsolve求解数学规划问题：</p>
-<p>$$ \max 4x_1+2x_2+x_3\\<br>s.t.~ 2x_1+x_2\le 1\\<br>x_1+2x_3\le 2\\<br>x_1+x_2+x_3=1\\<br>0\le x_1\le1\\<br>0\le x_2\le1\\<br>0\le x_3\le2$$</p>
-<p>相应的Matlab语句为：</p>
-<pre><code>f = [<span class="number">4</span> <span class="number">2</span> <span class="number">1</span>];
-A = [<span class="number">2</span> <span class="number">1</span> <span class="number">0</span>; <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>];
-b = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">1</span>];
-l = [ <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];
-u = [ <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>];
-lp=mxlpsolve<span class="comment">('make_lp', 1, 3)</span>;
-mxlpsolve<span class="comment">('set_verbose', lp, 3)</span>;
-mxlpsolve<span class="comment">('set_obj_fn', lp, f)</span>;
-mxlpsolve<span class="comment">('add_constraint', lp, A(1, :)</span>, <span class="number">1</span>, b<span class="comment">(1)</span>); 
-mxlpsolve<span class="comment">('add_constraint', lp, A(2, :)</span>, <span class="number">1</span>, b<span class="comment">(2)</span>); 
-mxlpsolve<span class="comment">('add_constraint', lp, A(3, :)</span>, <span class="number">0</span>, b<span class="comment">(3)</span>; 
-mxlpsolve<span class="comment">('set_lowbo', lp, l)</span>; 
-mxlpsolve<span class="comment">('set_upbo', lp, u)</span>; 
-mxlpsolve<span class="comment">('write_lp', lp, 'a.lp')</span>; 
-mxlpsolve<span class="comment">('get_mat', lp, 1, 2)</span> 
-mxlpsolve<span class="comment">('solve', lp)</span> 
-mxlpsolve<span class="comment">('get_objective', lp)</span> 
-mxlpsolve<span class="comment">('get_variables', lp)</span> 
-mxlpsolve<span class="comment">('get_constraints', lp)</span> 
-mxlpsolve<span class="comment">('delete_lp', lp)</span>
-</code></pre><p>重要函数说明：</p>
-<p><strong>lp_solve</strong></p>
-<pre><code>LP_SOLVE  Solves mixed <span class="built_in">integer</span> linear programming problems.
-
-SYNOPSIS: [obj,x,duals] = lp_solve(f,a,b,e,vlb,vub,xint,scalemode,keep)
-
-  solves the MILP problem
-
-          max v = f<span class="comment">'*x</span>
-            a*x &lt;&gt; b
-              vlb &lt;= x &lt;= vub
-              x(int) are <span class="built_in">integer</span>
-
-ARGUMENTS: The first four arguments are required:
-
-        f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
-        a: m <span class="keyword">by</span> n matrix representing linear constraints.
-        b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
-        e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
-                  e(i) = -<span class="number">1</span>  ==&gt; Less Than
-                  e(i) =  <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
-                  e(i) =  <span class="number">1</span>  ==&gt; Greater Than
-      vlb: n vector <span class="keyword">of</span> lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
-           <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
-      vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
-     xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
-scalemode: scale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
-     keep: Flag <span class="keyword">for</span> keeping the lp problem after it<span class="comment">'s been solved.</span>
-           <span class="keyword">If</span> omitted, the lp will be deleted <span class="keyword">when</span> solved.
-
-   OUTPUT: A nonempty output <span class="keyword">is</span> returned <span class="keyword">if</span> a solution <span class="keyword">is</span> found:
-
-      obj: Optimal value <span class="keyword">of</span> the objective <span class="keyword">function</span>.
-        x: Optimal value <span class="keyword">of</span> the decision variables.
-    duals: solution <span class="keyword">of</span> the dual problem.
-
-    Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create <span class="keyword">and</span> solve following lp-model:
-
-max: -x1 + <span class="number">2</span> x2;
-C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
--<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
-
-int x2,x1;
-The following command can be used:
-
-&gt;&gt; [obj, x]=lp_solve([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
-
-obj =
-
-         <span class="number">3</span>
-
-x =
-
-        <span class="number">1</span>
-         <span class="number">2</span>
-</code></pre><p><strong>lp_maker</strong>　　
-　　</p>
-<pre><code>LP_MAKER  Makes mixed <span class="built_in">integer</span> linear programming problems.
-SYNOPSIS: lp_handle = lp_maker(f,a,b,e,vlb,vub,xint,scalemode,setminim)
-      make the MILP problem
-        max v = f<span class="comment">'*x</span>
-          a*x &lt;&gt; b
-            vlb &lt;= x &lt;= vub
-            x(int) are <span class="built_in">integer</span>
-
-   ARGUMENTS: The first four arguments are required:
-            f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
-            a: m <span class="keyword">by</span> n matrix representing linear constraints.
-            b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
-            e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
-                      e(i) &lt; <span class="number">0</span>  ==&gt; Less Than
-                      e(i) = <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
-                      e(i) &gt; <span class="number">0</span>  ==&gt; Greater Than
-          vlb: n vector <span class="keyword">of</span> non-negative lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
-               <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
-          vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
-         xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
-    scalemode: Autoscale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
-     setminim: <span class="keyword">Set</span> maximum lp <span class="keyword">when</span> this flag <span class="keyword">equals</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
-
-   OUTPUT: lp_handle <span class="keyword">is</span> an <span class="built_in">integer</span> handle <span class="keyword">to</span> the lp created.
-Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create following lp-model:
-
-max: -x1 + <span class="number">2</span> x2;
-C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
--<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
-
-int x2,x1;
-The following command can be used:
-
-&gt;&gt; lp=lp_maker([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
-
-lp =
-
-     <span class="number">0</span>
-<span class="keyword">To</span> solve the model <span class="keyword">and</span> <span class="keyword">get</span> the solution:
-
-&gt;&gt; mxlpsolve(<span class="comment">'solve', lp)</span>
-
-ans =
-
-     <span class="number">0</span>
-
-&gt;&gt; mxlpsolve(<span class="comment">'get_objective', lp)</span>
-
-ans =
-
-     <span class="number">3</span>
-
-&gt;&gt; mxlpsolve(<span class="comment">'get_variables', lp)</span>
-
-ans =
-
-     <span class="number">1</span>
-     <span class="number">2</span>
-</code></pre><p>注意：Don’t forget to free the handle and its associated memory when you are done:</p>
-<pre><code><span class="prompt">&gt;&gt;</span> mxlpsolve(<span class="string">'delete_lp'</span>, lp);
-</code></pre><p>5.参考</p>
-<p><a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/</a></p>
-<p><a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a></p>
-<p><a href="http://www.cnblogs.com/kane1990/p/3428129.html" target="_blank" rel="external">http://www.cnblogs.com/kane1990/p/3428129.html</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Matlab</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/11/03/安装lpsolve库 for MATLAB/">展开全文 >></a>
         </p>
       
 

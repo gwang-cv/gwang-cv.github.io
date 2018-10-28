@@ -139,6 +139,265 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-安装lpsolve库 for MATLAB" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/03/安装lpsolve库 for MATLAB/">安装lpsolve库 for MATLAB</a>
+    </h1>
+  
+
+        
+        <a href="/2016/11/03/安装lpsolve库 for MATLAB/" class="archive-article-date">
+  	<time datetime="2016-11-03T02:29:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-11-03</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>lpsolve是sourceforge下的一个开源项目，它的介绍如下： </p>
+<p><em>Mixed Integer Linear Programming (MILP) solver lp_solve solves pure linear, (mixed) integer/binary, semi-cont and special ordered sets (SOS) models.lp_solve is written in ANSI C and can be compiled on many different platforms like Linux and WINDOWS </em>.</p>
+<p>lpsolve是一个混合整数线性规划求解器，可以求解纯线性、（混合）整数/二值、半连续和特殊有序集模型。并且经过实际验证，有极高的求解效率。 </p>
+<p><a href="http://sourceforge.net/projects/lpsolve/?source=directory" target="_blank" rel="external">sourceforge主页</a></p>
+<p>1.在Windows x64和Matlab环境下使用lpsolve</p>
+<p>需要在网址<a href="https://sourceforge.net/projects/lpsolve/files/lpsolve/5.5.2.5/" target="_blank" rel="external">lpsolve_5.5.2.5</a> 提供的文件列表中下载文件lp_solve_5.5.2.5_MATLAB_exe_win64.zip。或者下载文件lp_solve_5.5.2.5_source.tar.gz自行编译dll。</p>
+<p>注：在Matlab下运行示例报错：</p>
+<pre><code>Error <span class="keyword">using</span> mxlpsolve
+Failed <span class="keyword">to</span> initialise lpsolve <span class="keyword">library</span>.
+</code></pre><p>参考Using lpsolve from MATLAB: <a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a>给出的说明，需要将编译得到的mxlpsolve.dll拷贝到 WINDOWS\system32文件夹下。</p>
+<p>2.在MacOS下使用lpsolve</p>
+<p>参考<a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">Using lp_solve in Java with Mac OS X</a>的配置说明，下载源文件lp_solve_5.5.2.5_source.tar.gz，然后跳转到lp_solve_5.5/lpsolve55文件夹内，并执行ccc.osx：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/lpsolve55
+<span class="keyword">sh</span> ccc.osx
+</code></pre><p>生成的文件所在的文件夹：lpsolve55/bin/osx64/，将此文件夹内生成的两个文件liblpsolve55.dylib，liblpsolve55.a拷贝到/usr/local/lib文件夹内即可：</p>
+<pre><code>sudo cp liblpsolve55<span class="class">.a</span> liblpsolve55<span class="class">.dylib</span> /usr/local/lib
+</code></pre><p>测试demo：</p>
+<pre><code><span class="keyword">cd</span> lp_solve_5.5/demo
+<span class="keyword">sh</span> ccc
+./demo
+</code></pre><p>3.在MacOS的Matlab中需要文件mxlpsolve.mexmaci64</p>
+<p>需要从lpsolve主页下载源文件lp_solve_5.5.2.5_MATLAB_source.tar.gz，解压缩后，在Matlab中执行文件Makefile.m，期间需要添加各种头文件：</p>
+<pre><code>lp_Hash<span class="class">.h</span>
+lp_lib<span class="class">.h</span>
+lp_matrix<span class="class">.h</span>
+lp_mipbb<span class="class">.h</span>
+lp_SOS<span class="class">.h</span>
+lp_types<span class="class">.h</span>
+lp_utils.h
+</code></pre><p>可下载lp_solve_5.5.2.5_dev_ux64.tar.gz并从中获取即可。</p>
+<p>4.举例</p>
+<p>mxlpsove.m是建模的核心函数，一个线性规划模型的所有配置和求解都是通过这个函数完成的。lp_maker.m和lp_solve.m是对mxlpsolve.m的高层包装，简化了模型建立和求解的过程。例如用lpsolve求解数学规划问题：</p>
+<p>$$ \max 4x_1+2x_2+x_3\\<br>s.t.~ 2x_1+x_2\le 1\\<br>x_1+2x_3\le 2\\<br>x_1+x_2+x_3=1\\<br>0\le x_1\le1\\<br>0\le x_2\le1\\<br>0\le x_3\le2$$</p>
+<p>相应的Matlab语句为：</p>
+<pre><code>f = [<span class="number">4</span> <span class="number">2</span> <span class="number">1</span>];
+A = [<span class="number">2</span> <span class="number">1</span> <span class="number">0</span>; <span class="number">1</span> <span class="number">0</span> <span class="number">2</span>; <span class="number">1</span> <span class="number">1</span> <span class="number">1</span>];
+b = [<span class="number">1</span>; <span class="number">2</span>; <span class="number">1</span>];
+l = [ <span class="number">0</span> <span class="number">0</span> <span class="number">0</span>];
+u = [ <span class="number">1</span> <span class="number">1</span> <span class="number">2</span>];
+lp=mxlpsolve<span class="comment">('make_lp', 1, 3)</span>;
+mxlpsolve<span class="comment">('set_verbose', lp, 3)</span>;
+mxlpsolve<span class="comment">('set_obj_fn', lp, f)</span>;
+mxlpsolve<span class="comment">('add_constraint', lp, A(1, :)</span>, <span class="number">1</span>, b<span class="comment">(1)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(2, :)</span>, <span class="number">1</span>, b<span class="comment">(2)</span>); 
+mxlpsolve<span class="comment">('add_constraint', lp, A(3, :)</span>, <span class="number">0</span>, b<span class="comment">(3)</span>; 
+mxlpsolve<span class="comment">('set_lowbo', lp, l)</span>; 
+mxlpsolve<span class="comment">('set_upbo', lp, u)</span>; 
+mxlpsolve<span class="comment">('write_lp', lp, 'a.lp')</span>; 
+mxlpsolve<span class="comment">('get_mat', lp, 1, 2)</span> 
+mxlpsolve<span class="comment">('solve', lp)</span> 
+mxlpsolve<span class="comment">('get_objective', lp)</span> 
+mxlpsolve<span class="comment">('get_variables', lp)</span> 
+mxlpsolve<span class="comment">('get_constraints', lp)</span> 
+mxlpsolve<span class="comment">('delete_lp', lp)</span>
+</code></pre><p>重要函数说明：</p>
+<p><strong>lp_solve</strong></p>
+<pre><code>LP_SOLVE  Solves mixed <span class="built_in">integer</span> linear programming problems.
+
+SYNOPSIS: [obj,x,duals] = lp_solve(f,a,b,e,vlb,vub,xint,scalemode,keep)
+
+  solves the MILP problem
+
+          max v = f<span class="comment">'*x</span>
+            a*x &lt;&gt; b
+              vlb &lt;= x &lt;= vub
+              x(int) are <span class="built_in">integer</span>
+
+ARGUMENTS: The first four arguments are required:
+
+        f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+        a: m <span class="keyword">by</span> n matrix representing linear constraints.
+        b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+        e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                  e(i) = -<span class="number">1</span>  ==&gt; Less Than
+                  e(i) =  <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                  e(i) =  <span class="number">1</span>  ==&gt; Greater Than
+      vlb: n vector <span class="keyword">of</span> lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+           <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+      vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+     xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+scalemode: scale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     keep: Flag <span class="keyword">for</span> keeping the lp problem after it<span class="comment">'s been solved.</span>
+           <span class="keyword">If</span> omitted, the lp will be deleted <span class="keyword">when</span> solved.
+
+   OUTPUT: A nonempty output <span class="keyword">is</span> returned <span class="keyword">if</span> a solution <span class="keyword">is</span> found:
+
+      obj: Optimal value <span class="keyword">of</span> the objective <span class="keyword">function</span>.
+        x: Optimal value <span class="keyword">of</span> the decision variables.
+    duals: solution <span class="keyword">of</span> the dual problem.
+
+    Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create <span class="keyword">and</span> solve following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; [obj, x]=lp_solve([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+obj =
+
+         <span class="number">3</span>
+
+x =
+
+        <span class="number">1</span>
+         <span class="number">2</span>
+</code></pre><p><strong>lp_maker</strong>　　
+　　</p>
+<pre><code>LP_MAKER  Makes mixed <span class="built_in">integer</span> linear programming problems.
+SYNOPSIS: lp_handle = lp_maker(f,a,b,e,vlb,vub,xint,scalemode,setminim)
+      make the MILP problem
+        max v = f<span class="comment">'*x</span>
+          a*x &lt;&gt; b
+            vlb &lt;= x &lt;= vub
+            x(int) are <span class="built_in">integer</span>
+
+   ARGUMENTS: The first four arguments are required:
+            f: n vector <span class="keyword">of</span> coefficients <span class="keyword">for</span> a linear objective <span class="keyword">function</span>.
+            a: m <span class="keyword">by</span> n matrix representing linear constraints.
+            b: m vector <span class="keyword">of</span> right sides <span class="keyword">for</span> the inequality constraints.
+            e: m vector that determines the sense <span class="keyword">of</span> the inequalities:
+                      e(i) &lt; <span class="number">0</span>  ==&gt; Less Than
+                      e(i) = <span class="number">0</span>  ==&gt; <span class="keyword">Equals</span>
+                      e(i) &gt; <span class="number">0</span>  ==&gt; Greater Than
+          vlb: n vector <span class="keyword">of</span> non-negative lower bounds. <span class="keyword">If</span> empty <span class="keyword">or</span> omitted,
+               <span class="keyword">then</span> the lower bounds are <span class="keyword">set</span> <span class="keyword">to</span> zero.
+          vub: n vector <span class="keyword">of</span> upper bounds. May be omitted <span class="keyword">or</span> empty.
+         xint: vector <span class="keyword">of</span> <span class="built_in">integer</span> variables. May be omitted <span class="keyword">or</span> empty.
+    scalemode: Autoscale flag. <span class="keyword">Off</span> <span class="keyword">when</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+     setminim: <span class="keyword">Set</span> maximum lp <span class="keyword">when</span> this flag <span class="keyword">equals</span> <span class="number">0</span> <span class="keyword">or</span> omitted.
+
+   OUTPUT: lp_handle <span class="keyword">is</span> an <span class="built_in">integer</span> handle <span class="keyword">to</span> the lp created.
+Example <span class="keyword">of</span> usage. <span class="keyword">To</span> create following lp-model:
+
+max: -x1 + <span class="number">2</span> x2;
+C1: <span class="number">2</span>x1 + x2 &lt; <span class="number">5</span>;
+-<span class="number">4</span> x1 + <span class="number">4</span> x2 &lt;<span class="number">5</span>;
+
+int x2,x1;
+The following command can be used:
+
+&gt;&gt; lp=lp_maker([-<span class="number">1</span>, <span class="number">2</span>], [<span class="number">2</span>, <span class="number">1</span>; -<span class="number">4</span>, <span class="number">4</span>], [<span class="number">5</span>, <span class="number">5</span>], [-<span class="number">1</span>, -<span class="number">1</span>], [], [], [<span class="number">1</span>, <span class="number">2</span>])
+
+lp =
+
+     <span class="number">0</span>
+<span class="keyword">To</span> solve the model <span class="keyword">and</span> <span class="keyword">get</span> the solution:
+
+&gt;&gt; mxlpsolve(<span class="comment">'solve', lp)</span>
+
+ans =
+
+     <span class="number">0</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_objective', lp)</span>
+
+ans =
+
+     <span class="number">3</span>
+
+&gt;&gt; mxlpsolve(<span class="comment">'get_variables', lp)</span>
+
+ans =
+
+     <span class="number">1</span>
+     <span class="number">2</span>
+</code></pre><p>注意：Don’t forget to free the handle and its associated memory when you are done:</p>
+<pre><code><span class="prompt">&gt;&gt;</span> mxlpsolve(<span class="string">'delete_lp'</span>, lp);
+</code></pre><p>5.参考</p>
+<p><a href="https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/" target="_blank" rel="external">https://diegoresearch.wordpress.com/2008/07/10/using-lp_solve-in-java-with-mac-os-x/</a></p>
+<p><a href="http://web.mit.edu/lpsolve/doc/MATLAB.htm" target="_blank" rel="external">http://web.mit.edu/lpsolve/doc/MATLAB.htm</a></p>
+<p><a href="http://www.cnblogs.com/kane1990/p/3428129.html" target="_blank" rel="external">http://www.cnblogs.com/kane1990/p/3428129.html</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Matlab</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2016/11/03/安装lpsolve库 for MATLAB/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Clarifai API体验" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2382,114 +2641,6 @@ sudo make install
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/01/26/Mac安装OpenCV/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Mac设置环境变量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/01/25/Mac设置环境变量/">Mac设置环境变量</a>
-    </h1>
-  
-
-        
-        <a href="/2016/01/25/Mac设置环境变量/" class="archive-article-date">
-  	<time datetime="2016-01-25T12:35:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-01-25</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p> （1）首先要知道你使用的Mac OS X是什么样的Shell，使用命令</p>
-<pre><code><span class="built_in">echo</span> <span class="variable">$SHELL</span>
-</code></pre><p>如果输出的是：csh或者是tcsh，那么你用的就是C Shell。</p>
-<p>如果输出的是：bash，sh，zsh，那么你的用的可能就是Bourne Shell的一个变种。</p>
-<p>Mac OS X 10.2之前默认的是C Shell。</p>
-<p>Mac OS X 10.3之后默认的是Bourne Shell。</p>
-<p>（2）如果是Bourne Shell。</p>
-<p>那么你可以把你要添加的环境变量添加到你主目录下面的.profile或者.bash_profile，如果存在没有关系添加进去即可，如果没有生成一个。</p>
-<pre><code><span class="number">1</span>. <span class="keyword">open</span>/<span class="keyword">vim</span>  /etc/<span class="keyword">profile</span>   （建议不修改这个文件 ）
-</code></pre><p> 全局（公有）配置，不管是哪个用户，登录时都会读取该文件。</p>
-<pre><code><span class="number">2</span>. /etc/<span class="keyword">bashrc </span>   （一般在这个文件中添加系统级环境变量）
-</code></pre><p> 全局（公有）配置，bash shell执行时，不管是何种方式，都会读取此文件。</p>
-<p> 我在这里加入mysqlstart、mysql和mysqladmin命令的别名，保证每一个用户都可以使用这3个命令。</p>
-<pre><code><span class="number">3</span>. ~/<span class="class">.bash_profile</span>  （一般在这个文件中添加用户级环境变量）
-</code></pre><p>（注：Linux 里面是 .bashrc 而 Mac 是 .bash_profile）</p>
-<p> 若bash shell是以login方式执行时，才会读取此文件。该文件仅仅执行一次!默认情况下,他设置一些环境变量</p>
-<p> 我在这里：设置终端配色、</p>
-<p> 我在这里：设置命令别名     </p>
-<pre><code><span class="built_in">alias</span> ll=<span class="string">'ls -la'</span>
-</code></pre><p> 我在这里：设置环境变量：</p>
-<pre><code><span class="built_in">export</span> PATH=/opt/<span class="built_in">local</span>/bin:/opt/<span class="built_in">local</span>/sbin:<span class="variable">$PATH</span>
-</code></pre><hr>
-<p>MAC 修改host文件 </p>
-<pre><code>sudo vi <span class="regexp">/etc/</span>hosts
-</code></pre>
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Mac</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/01/25/Mac设置环境变量/">展开全文 >></a>
         </p>
       
 
