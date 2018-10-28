@@ -139,6 +139,165 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Tesseract4.0+jTessBoxEditor训练(ubuntu下)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/">Tesseract4.0+jTessBoxEditor训练(ubuntu下)</a>
+    </h1>
+  
+
+        
+        <a href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/" class="archive-article-date">
+  	<time datetime="2017-08-25T07:48:57.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-08-25</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>下载jTessBoxEditor</strong></p>
+<p><a href="https://sourceforge.net/projects/vietocr/files/" target="_blank" rel="external">https://sourceforge.net/projects/vietocr/files/</a></p>
+<pre><code>unzip jTessBoxEditor-<span class="number">2.0</span>-Beta<span class="class">.zip</span>
+cd jTessBoxEditor
+java -Xms128m -Xmx1024m -jar jTessBoxEditor<span class="class">.jar</span>  #打开可视化界面
+</code></pre><p>—- <strong>训练</strong> —-</p>
+<p><strong>预处理</strong></p>
+<p>把所有待训练的图像转换为tiff格式（可使用ubuntu下的imageMagick的convert命令或mogrify命令批量处理）</p>
+<pre><code>mogrify -<span class="built_in">path</span> ./TIFF/ -<span class="built_in">format</span> tiff *.jpg
+</code></pre><p>然后采用jTessBoxEditor中的<code>tools/Merge Tiff</code>功能，将待训练的tiff图像合并为一个tiff文件，在可视化界面中先选中所有tiff文件，然后点击OK，然后在再次弹出的窗口中输入要合并的tiff文件的名称，例如chi.wang.exp0.tif，chi表示中文，wang表示字体。</p>
+<p><strong>生成.box 文件</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> batch<span class="class">.nochop</span> makebox
+</code></pre><p>or</p>
+<pre><code><span class="tag">sudo</span> <span class="tag">tesseract</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> <span class="tag">chi</span><span class="class">.wang</span><span class="class">.exp0</span> <span class="tag">-l</span> <span class="tag">chi_smi</span> <span class="tag">-psm</span> 7 <span class="tag">digits</span> <span class="tag">batch</span><span class="class">.nochop</span> <span class="tag">makebox</span> # 数字
+</code></pre><p>会生成一个名为chi.wang.exp0.box文件</p>
+<p><strong>使用jTessBoxEditor校正字符</strong></p>
+<p>在可视化界面中，在<code>Box Editor</code>面板中点击open按钮打开合并的tiff文件，然后每一页每一页的去矫正矩形框的位置以及正确的识别字符，亦可以同时修改chi.wang.exp0.box文件来添加一下empty pages的识别框！</p>
+<p><strong>生成自制语言库</strong></p>
+<pre><code>sudo tesseract chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tif</span> chi<span class="class">.wang</span><span class="class">.exp0</span> nobatch box<span class="class">.train</span> #生成字符特征文件
+
+sudo unicharset_extractor chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.box</span>  #产生字符集
+
+vim font_properties
+wang <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> <span class="number">0</span> #向新生成的文件font_properties中录入此内容，普通字体，不加粗，不倾斜
+
+sudo shapeclustering -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成shapetable
+
+sudo mftraining -F font_properties -U unicharset chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span> #聚集字符特征
+
+sudo cntraining chi<span class="class">.wang</span><span class="class">.exp0</span><span class="class">.tr</span>  #生成字符形状正常变化特征文件normproto
+</code></pre><p><strong>重命名如下文件</strong>：</p>
+<pre><code><span class="title">inttemp</span>
+├──
+normproto
+├──
+pffmtable
+├──
+shapetable
+└──
+unicharset
+</code></pre><p>为</p>
+<pre><code>wang<span class="class">.inttemp</span>
+├──
+wang<span class="class">.normproto</span>
+├──
+wang<span class="class">.pffmtable</span>
+├──
+wang<span class="class">.shapetable</span>
+└──
+wang.unicharset
+</code></pre><p><strong>生成语言库</strong></p>
+<pre><code>sudo <span class="keyword">combine_t</span>essdata wang.
+</code></pre><p>此时得到了训练好的wang.traineddata</p>
+<pre><code>sudo cp wang<span class="class">.traineddata</span> /usr/share/tesseract-ocr/tessdata/wang<span class="class">.traineddata</span>  #复制到安装目录
+</code></pre><p><strong>测试</strong></p>
+<pre><code>tesseract <span class="number">1</span><span class="class">.jpg</span> <span class="number">1</span> -l wang 
+</code></pre><hr>
+<p>上述命令可能会出错，得到如下输出：</p>
+<pre><code>FAIL!
+APPLY_BOXES: boxfile line <span class="number">22</span>/园 ((<span class="number">1108</span>,<span class="number">4637</span>),(<span class="number">1150</span>,<span class="number">4686</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+FAIL!
+APPLY_BOXES: boxfile line <span class="number">25</span>/园 ((<span class="number">1258</span>,<span class="number">4641</span>),(<span class="number">1300</span>,<span class="number">4689</span>)): FAILURE! Couldn<span class="comment">'t find a matching blob</span>
+APPLY_BOXES:
+   Boxes read <span class="keyword">from</span> boxfile:      <span class="number">40</span>
+   Boxes failed resegmentation:       <span class="number">2</span>
+   Found <span class="number">38</span> good blobs.
+Generated training data <span class="keyword">for</span> <span class="number">4</span> words
+Warning <span class="keyword">in</span> pixReadMemTiff: tiff page <span class="number">1</span> <span class="keyword">not</span> found
+</code></pre><p>意味着<code>园</code>字的块没找到，tr文件中就缺失了<code>园</code>字的特征。如果出现FATALITIES错误，必须先修正box文件修订错误才能继续。FATALITY通常意味着没有找到box文件中的任何字体。要么是坐标错误，要么是字符图像出了问题。如果字符没有可供使用的样本，它就不能被识别，那么得到的inttemp文件和unicharset文件就不匹配，Tesseract会退出。</p>
+<p>如果tif/box文件对是通过jTessBoxEditor可视化工具得到的，那么生成文件时选定<code>Anti-Aliasing</code>可消除上述错误。</p>
+<hr>
+<p>参考link：</p>
+<p><a href="http://qianjiye.de/2015/08/tesseract-ocr" target="_blank" rel="external">http://qianjiye.de/2015/08/tesseract-ocr</a></p>
+<p><a href="http://lib.csdn.net/article/deeplearning/50598" target="_blank" rel="external">http://lib.csdn.net/article/deeplearning/50598</a></p>
+<p><a href="http://www.jianshu.com/p/31afd7fc5813" target="_blank" rel="external">http://www.jianshu.com/p/31afd7fc5813</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/08/25/Tesseract4.0+jTessBoxEditor训练(ubuntu下)/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-ubuntu16.04+python2.7中文编码" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1902,103 +2061,6 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
 
 
   
-    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
-    </h1>
-  
-
-        
-        <a href="/2017/07/06/Python除法/" class="archive-article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Git配置出错Permission Denied" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2071,6 +2133,103 @@ Identity <span class="string">added:</span> <span class="regexp">/Users/</span>x
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/07/06/Git配置出错Permission Denied/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Python除法" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/07/06/Python除法/">Python除法</a>
+    </h1>
+  
+
+        
+        <a href="/2017/07/06/Python除法/" class="archive-article-date">
+  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>python 2.x版本中存在两种除法运算:</p>
+<p>即所谓的true除法和floor除法。</p>
+<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
+<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
+<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
+<hr>
+<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
+<hr>
+<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
+<p>Python代码 </p>
+<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
+a=<span class="number">2</span>/<span class="number">3</span>                  
+</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2017/07/06/Python除法/">展开全文 >></a>
         </p>
       
 
@@ -3884,180 +4043,6 @@ strNum=len(<span class="built_in">str</span>[<span class="string">'results'</spa
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2016/11/02/Clarifai API体验/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-DL学习笔记" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/28/DL学习笔记/">DL学习笔记</a>
-    </h1>
-  
-
-        
-        <a href="/2016/10/28/DL学习笔记/" class="archive-article-date">
-  	<time datetime="2016-10-28T09:08:10.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2016-10-28</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=default"></script>
-
-<h3 id="（一）DeepLearning_(DL)概述">（一）DeepLearning (DL)概述</h3><h4 id="1-_什么是DL？">1. 什么是DL？</h4><p>机器学习ML的框架：</p>
-<p>(1)数据：\({(x_i,y_i)}, 1\le i \le m\)</p>
-<p>(2)模型：\(\mathcal{F}={f(x;\theta)}, \theta\in\Theta\)</p>
-<p>i. 线性： \(y=f(x)=w^Tx+b\) 【x——&gt;y】</p>
-<p>ii. 广义线性：\(y=f(x)=w^T\phi(x)+b\)  【x——&gt;[\(\bar{x}=\phi(x)\)]——&gt;y，其中的\(\phi\)为模式识别中的特征Feature，这一步也称为特征学习。】</p>
-<p>iii. 非线性：人工神经网络（ANN）</p>
-<p>(3)准则：损失函数\(L(y,f(x))\)</p>
-<p>经验风险：\(R(\theta)=\frac{1}{m}\sum_{i=1}^m{L(y,f(x_i,\theta))}\)</p>
-<p>正则化项：\(|w|_2^2\)</p>
-<p>Minimizing： \(R(\theta)+\lambda|w|_2^2\)，或稀疏正则项L1.</p>
-<p>因此转化为一个最优化问题。</p>
-<p>神经网络ANN中 \(y=\sigma(\sum_i{w_i x_i+b})\) 相当于从P维到Q维的一个映射函数。则DL就是解决这个深度前馈神经网络的算法。</p>
-<h4 id="2-_存在的困难及挑战">2. 存在的困难及挑战</h4><p>可训练的<strong>参数太多</strong>；【参数过多带来的问题具体包括：计算资源要大，数据要多(否则出现过拟合)，算法效率要高】</p>
-<p>多层网络以后的优化问题变为<strong>非凸优化</strong>问题；</p>
-<p><strong>梯度弥散</strong>问题，即从网络层由上往下的参数调节变得非常困难；</p>
-<p>解释困难(可通过一些可视化的方法一定程度上来进行解释)；</p>
-<h4 id="3-算法历史">3.算法历史</h4><p>1958年，感知机Perception：一个神经细胞的处理能力较差，与或运算无法实现。</p>
-<p>1986年，神经网络的概念出现：BP算法，对浅层网络做了很多的工作。一方面受限于当时的硬件和软件问题。</p>
-<p>1998年，CNN卷积神经网络，在手写体识别中取得了成功。—LeCun</p>
-<p>2006年，DBN深度置信网络，—Hinton</p>
-<h4 id="4-为什么学习DL">4.为什么学习DL</h4><p>有效！【语音识别，目标识别，NLP，CV….】</p>
-<h4 id="5-领域概述">5.领域概述</h4><p>学术机构：</p>
-<p>TorontoU，Hinton，1975年EdinburghU’s PHD;<br>NewYorkU，LeCun，1987年PHD;<br>MentrealU，Bengio，1991年McGillU’s PHD;<br>StanfordU, Ng，2003年UCBerkeley’s PHD;</p>
-<p>学术会议：<br>NIPS，ICML，ICRL，…</p>
-<p>参考: <a href="http://v.youku.com/v_show/id_XNjU1MzU4NDIw.html?f=21508721&amp;o=1" target="_blank" rel="external">深度学习课程-概述</a></p>
-<h3 id="（二）FNN_&amp;_BP">（二）FNN &amp; BP</h3><h4 id="一-前馈神经网络FNN">一.前馈神经网络FNN</h4><h5 id="1-神经元、神经层、神经网">1.神经元、神经层、神经网</h5><p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/SingleNeuron.png" alt=""></p>
-<pre><code>神经元
-x_1 -w_1-\
-..  -w_i<span class="comment">--〇z---&gt;a</span>
-x_p -w_p-/
-</code></pre><p>一个神经元的输出是一个线性函数与一个非线性函数的复合：\([z=\sum w_ix_i+b,~a=f(z)]=&gt;a=f(\sum w_ix_i+b)\). </p>
-<p>其中激活函数包括：sigmod: \(\sigma(x)=\frac{1}{1+e^x};~\tan(x)=\frac{e^x-e^{-x}}{e^x+e^{-x}};~|x|;~\)等</p>
-<pre><code><span class="comment">神经层</span>
-<span class="comment">x_1</span> <span class="literal">-</span><span class="comment">w_1</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">\</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">a_1</span> 
-              <span class="comment">X</span>
-<span class="string">.</span><span class="string">.</span>  <span class="literal">-</span><span class="comment">w_i</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">X</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="string">.</span><span class="string">.</span><span class="string">.</span>
-              <span class="comment">X</span>
-<span class="comment">x_p</span> <span class="literal">-</span><span class="comment">w_p</span><span class="literal">-</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span><span class="comment">/</span><span class="literal">-</span><span class="comment">〇</span><span class="literal">-</span><span class="literal">-</span>&gt;<span class="comment">a_p</span>
-</code></pre><p>神经层上的每个神经元的输入时相同的，但权值是不同的。我们用 \( a^{(l)}_i \)表示第 \( l \)层第 \( i \)单元的激活值（输出值）。</p>
-<p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network331.png" alt=""></p>
-<pre><code>神经网
--<span class="ruby">〇-\    -〇-\
-</span>-<span class="ruby">〇--〇-<span class="regexp">/-〇--〇-...
-</span></span>-<span class="ruby">〇--〇-\-〇--〇-...
-</span>-<span class="ruby">〇-<span class="regexp">/    -〇-/</span>
-</span>n_1  n_2  n_3   ...   n_L
-</code></pre><h5 id="2-记号">2.记号</h5><p>超参数(并不是学习出来的，而是认为根据需要设定的参数，也称元参数)：层数L，第l层的神经元个数\(n^{(l)}\)，神经元非线性函数\(f_l()\).</p>
-<p>要学习的参数：连接权weight参数\(w_i^{(1)},w_i^{(2)},..w_i^{(L)}\)，两层之间的连接权。 偏bias参数\(b^{(1)},b^{(2)},..b^{(L)}\).</p>
-<p>第l层神经元的状态\(z^{(l)},1\le l\le L\)；第l层神经元的激活activation：\(a^{(l)}\)</p>
-<h5 id="3-前馈计算">3.前馈计算</h5><p>(1)基本公式</p>
-<p>\(z^{(l+1)}=w^l a^l+b^l  \)</p>
-<p>\(a^l=f_l(z^l) \) </p>
-<p>\(h_{w,b}(x)=a^{(l+1)}=f(z^{(l+1)})\)</p>
-<p>(2)前馈计算(\(W=(w^1,…,w^l),b=(b^1,..,b^l)\))</p>
-<p>\(l=1, a^l=x\) </p>
-<p>计算步骤：\(a^1-&gt;z^2-&gt;a^2-&gt;…-&gt;z^L-&gt;a^L\) </p>
-<p><img src="https://raw.githubusercontent.com/gwang-cv/gwang-cv.github.io/master/img/Network3322.png" alt=""></p>
-<p>“目前为止，我们讨论了一种神经网络，我们也可以构建另一种结构的神经网络（这里结构指的是神经元之间的联接模式），也就是包含多个隐藏层的神经网络。最常见的一个例子是\(n<em>l\)层的神经网络，第1层是输入层，第 \(n_l\)层是输出层，中间的每个层 \(l\)与层 \(l+1\)紧密相联。这种模式下，要计算神经网络的输出结果，我们可以按照之前描述的等式，按部就班，进行前向传播，逐一计算第 \(L_2\)层的所有激活值，然后是第 \(L_3\)层的激活值，以此类推，直到第 \(L</em>{n_l}\)层。这是一个前馈神经网络的例子，因为这种联接图没有闭环或回路。”——<a href="http://ufldl.stanford.edu/wiki/index.php/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C" target="_blank" rel="external">UFLDL</a></p>
-<h5 id="4-应用于ML">4.应用于ML</h5><p>数据D：\((x_i,y_i),1\le i\le N\)</p>
-<p>模型M：\(y=h(x|w,b)\)</p>
-<p>准则C: \(\sum_i|y_i-a^l(x|w,b)|^2+\lambda|w|_F^2) \)=min</p>
-<p>其中，第二项是一个规则化项（也叫权重衰减项），其目的是减小权重的幅度，防止过度拟合: \(||w||<em>F^2=\sum_i\sum_jw</em>{ij}^2\)</p>
-<p>权重衰减参数 \( \lambda \)用于控制公式中两项的相对重要性。</p>
-<p>使用梯度下降法进行求解这个优化问题。</p>
-<p>将上式写为：\(\sum_i J(x_i,y_i;w,b)+\lambda|w|_F^2\)=min</p>
-<p>目标函数关于待求参数的导数：</p>
-<p>其中：$$\frac{\partial|w|_F^2}{\partial w}=2w$$</p>
-<p>然后重点求:$$\frac{\partial \sum J(.)}{\partial w};~~\frac{\partial \sum J(.)}{\partial b}$$</p>
-<p>迭代公式：<br>$$w^{t+1}=w^t-\alpha \frac{\partial \sum J(.)}{\partial w}$$<br>$$b^{t+1}=b^t-\alpha \frac{\partial \sum J(.)}{\partial b}$$<br>其中\(\alpha\)是学习速率。</p>
-<h4 id="二-BP算法">二.BP算法</h4><p>“我们的目标是针对参数 \( W \)和 \( b \)来求其函数 \( J(W,b) \)的最小值。为了求解神经网络，我们需要将每一个参数 \( W^{(l)}<em>{ij} \)和 \( b^{(l)}_i \)初始化为一个很小的、接近零的随机值（比如说，使用正态分布 \( {Normal}(0,\epsilon^2) \)生成的随机值，其中 \( \epsilon \)设置为 \( 0.01 \) ），之后对目标函数使用诸如批量梯度下降法的最优化算法。因为 \( J(W, b) \)是一个非凸函数，梯度下降法很可能会收敛到局部最优解；但是在实际应用中，梯度下降法通常能得到令人满意的结果。最后，需要再次强调的是，要将参数进行随机初始化，而不是全部置为  0。如果所有参数都用相同的值作为初始值，那么所有隐藏层单元最终会得到与输入值有关的、相同的函数（也就是说，对于所有 \( i\)，\( W^{(1)}</em>{ij}\)都会取相同的值，那么对于任何输入 \( x \)都会有：\( a^{(2)}_1 = a^{(2)}_2 = a^{(2)}_3 = \ldots \)）。随机初始化的目的是使对称失效。”——<a href="http://ufldl.stanford.edu/wiki/index.php/%E5%8F%8D%E5%90%91%E4%BC%A0%E5%AF%BC%E7%AE%97%E6%B3%95" target="_blank" rel="external">UFLDL</a></p>
-<h5 id="1-多元函数的偏导数">1.多元函数的偏导数</h5><p>(1)<br>$$X=[x_1,…,x_p]^T\in R^p,~ y=f(X)=f(x_1,…,x_p)$$<br>$$\nabla_x f(x)=\nabla_x y=\frac{\partial y}{\partial x}=[\frac{\partial f(x_1)}{\partial x},…,\frac{\partial f(x_p)}{\partial x}]^T\in R^p$$<br>(2)<br>$$x\in R^p, y=[..]^T\in R^q$$<br>$$y=[f_1(x),..,f_q(x)]^T$$<br>$$\nabla_xy=\nabla_x f(x)=\frac{\partial y}{\partial x}=[\frac{\partial f(x)}{\partial x_i}]^T\in R^{p\times q}$$<br>(3) 导数法则：链式法则</p>
-<h5 id="2-BP算法">2.BP算法</h5><p>BP思路：给定一个样例 \( (x,y)\)，我们首先进行“前向传导”运算，计算出网络中所有的激活值，包括 \( h_{W,b}(x) \)的输出值。之后，针对第 \( l \)层的每一个节点 \( i\)，我们计算出其“残差” \( \delta^{(l)}_i\)，该残差表明了该节点对最终输出值的残差产生了多少影响。对于最终的输出节点，我们可以直接算出网络产生的激活值与实际值之间的差距，我们将这个差距定义为 \( \delta^{(n_l)}_i \)（第 \( n_l \)层表示输出层）。对于隐藏单元我们如何处理呢？我们将基于节点（第 \( l+1 \)层节点）残差的加权平均值计算 \( \delta^{(l)}_i\)，这些节点以 \( a^{(l)}_i \)作为输入。</p>
-<p>BP算法步骤：</p>
-<p>(i)进行前馈传导计算，利用前向传导公式，得到 \( L<em>2, L_3, \ldots \) 直到输出层 \( L</em>{n_l} \)的激活值。</p>
-<p>(ii)对于第 \( n_l \)层（输出层）的每个输出单元 \( i\)，我们根据以下公式计算残差：</p>
-<p>$$\delta_i^{(n_l)}= \frac{\partial J}{\partial z_i^{n_l}}=-(y_i-a_i^{(n_l)})\cdot f’(z_i^{(n_l)})$$</p>
-<p>(iii)令\(\delta^l=\frac{\partial J}{\partial z^l}\)，则对 \(  l = n_l-1, n_l-2, n_l-3, \ldots, 2 \)的各个层，第 \(  l \)层的第 \(  i \)个节点的残差计算方法如下：（矩阵向量形式）</p>
-<p>$$\begin{equation}\begin{split}\delta^{l}&amp;=\frac{\partial J}{\partial z^{l}}=\frac{\partial a^l}{\partial z^l}\frac{\partial z^{l+1}}{\partial a^l}\frac{\partial J}{\partial z^{l+1}}\\<br>&amp;=diag(f’(z^l))\cdot((w^l)^T\cdot\delta^{l+1})\\<br>&amp;=(f’_l(z^l))\odot((w^l)^T\cdot\delta^{l+1})\\<br>&amp;=((w^l)^T\cdot\delta^{l+1})\odot(f’_l(z^l))<br>\end{split}\end{equation}$$<br>以上逐次从后向前求导的过程即为“反向传导（BP）”的本意所在.</p>
-<p>(iv)计算所需的偏导数：<br>$$\frac{\partial J}{\partial w^l}=\delta^{l+1}\cdot(a^l)^T$$<br>$$\frac{\partial J}{\partial b^l}=\delta^{l+1}$$</p>
-<p>其中，假设 \( f(z) \)是sigmoid函数，并且我们已经在前向传导运算中得到了 \( a^{(l)}_i\)。那么，使用我们早先推导出的 \( f’(z)\)表达式，就可以计算得到 \( f’(z^{(l)}_i) = a^{(l)}_i (1- a^{(l)}_i)\)。</p>
-<h5 id="3-梯度下降法求解过程">3.梯度下降法求解过程</h5><p>(1) 对所有 \(  l\)，令 \(  \Delta W^{(l)} := 0 \),  \(  \Delta b^{(l)} := 0 \)（设置为全零矩阵或全零向量）</p>
-<p>(2) For     \(  i = 1 \) to \(  m\)，使用反向传播算法计算: </p>
-<p>\(\nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \nabla_{b^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \Delta W^{(l)} := \Delta W^{(l)} + \nabla_{W^{(l)}} J(W,b;x,y)  \)</p>
-<p>\( \Delta b^{(l)} := \Delta b^{(l)} + \nabla_{b^{(l)}} J(W,b;x,y) \)</p>
-<p>(3) 更新参数：<br>$$ \begin{align}<br>W^{(l)} &amp;= W^{(l)} - \alpha \left[ \left(\frac{1}{m} \Delta W^{(l)} \right) + \lambda W^{(l)}\right] \\<br>b^{(l)} &amp;= b^{(l)} - \alpha \left[\frac{1}{m} \Delta b^{(l)}\right]<br>\end{align}$$</p>
-<p>重复梯度下降法的迭代步骤来减小代价函数 \( J(W,b)\) ，以训练我们的神经网络。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2016/10/28/DL学习笔记/">展开全文 >></a>
         </p>
       
 

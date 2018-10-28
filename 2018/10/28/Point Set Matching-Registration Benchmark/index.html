@@ -6,30 +6,23 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://gwang-cv.github.io">
-  <title>Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0 | gwang&#39;s lab</title>
+  <title>gwang&#39;s lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="1.安装Ubuntu16.04 LTS x64
-利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso).
-语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。
-2.更新源
-c">
+  <meta name="description" content="Point Set Matching/Registration Benchmark
+A list of point set matching/registration resources collected by Gang Wang. If you find that important resources are not included, please feel free to contact">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0">
-<meta property="og:url" content="http://gwang-cv.github.io/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/index.html">
+<meta property="og:title" content="gwang's lab">
+<meta property="og:url" content="http://gwang-cv.github.io/2018/10/28/Point Set Matching-Registration Benchmark/index.html">
 <meta property="og:site_name" content="gwang's lab">
-<meta property="og:description" content="1.安装Ubuntu16.04 LTS x64
-利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso).
-语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。
-2.更新源
-c">
-<meta property="og:updated_time" content="2018-10-04T19:29:56.850Z">
+<meta property="og:description" content="Point Set Matching/Registration Benchmark
+A list of point set matching/registration resources collected by Gang Wang. If you find that important resources are not included, please feel free to contact">
+<meta property="og:image" content="https://img.shields.io/github/license/mashape/apistatus.svg">
+<meta property="og:updated_time" content="2018-10-28T13:28:45.104Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0">
-<meta name="twitter:description" content="1.安装Ubuntu16.04 LTS x64
-利用工具rufus制作USB系统盘(官方下载64位版本: ubuntu-16.04-desktop-amd64.iso).
-语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。
-2.更新源
-c">
+<meta name="twitter:title" content="gwang's lab">
+<meta name="twitter:description" content="Point Set Matching/Registration Benchmark
+A list of point set matching/registration resources collected by Gang Wang. If you find that important resources are not included, please feel free to contact">
+<meta name="twitter:image" content="https://img.shields.io/github/license/mashape/apistatus.svg">
   
     <link rel="alternative" href="/atom.xml" title="gwang&#39;s lab" type="application/atom+xml">
   
@@ -153,434 +146,130 @@ c">
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Point Set Matching-Registration Benchmark" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0
-    </h1>
-  
-
-        
-        <a href="/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" class="archive-article-date">
-  	<time datetime="2017-07-26T03:36:45.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-26</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p><strong>1.安装Ubuntu16.04 LTS x64</strong></p>
-<p>利用工具rufus制作USB系统盘(官方下载64位版本: <a href="http://www.ubuntu.com/download/alternative-downloads" target="_blank" rel="external">ubuntu-16.04-desktop-amd64.iso</a>).</p>
-<p>语言选择English，安装开始：1.不选安装第三方软件；2.安装类型选择“其他选项（something else）”；3.设置分区，多硬盘挂载，如挂载到/data，/data2…；开始执行安装直到提示重新启动。</p>
-<p><strong>2.更新源</strong></p>
-<pre><code>cd /etc/apt/
-sudo cp sources<span class="class">.list</span> sources<span class="class">.list</span><span class="class">.bak</span>
-sudo gedit sources.list
-</code></pre><p>在sources.list文件头部添加如下源：</p>
-<pre><code>deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
-deb <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-updates main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-proposed main restricted universe multiverse</span>
-deb-src <span class="string">http:</span><span class="comment">//mirrors.ustc.edu.cn/ubuntu/ xenial-backports main restricted universe multiverse</span>
-</code></pre><p>然后更新源和安装的包:</p>
-<pre><code>sudo apt-<span class="built_in">get</span> <span class="keyword">update</span>
-sudo apt-<span class="built_in">get</span> upgrade
-</code></pre><p>常用软件安装：</p>
-<pre><code>sudo apt-<span class="keyword">get</span> install vim <span class="comment">#编辑</span>
-sudo apt-<span class="keyword">get</span> install htop <span class="comment">#查看cpu和内存占用情况</span>
-sudo apt-<span class="keyword">get</span> install python-pip
-</code></pre><p><strong>3.配置静态IP</strong></p>
-<p>首先查看本机的网卡名称</p>
-<pre><code>ifconfig
-</code></pre><p>配置静态ip地址</p>
-<pre><code><span class="title">sudo</span> vim /etc/network/interfaces
+        <h1 id="Point_Set_Matching/Registration_Benchmark">Point Set Matching/Registration Benchmark</h1><p><img src="https://img.shields.io/github/license/mashape/apistatus.svg" alt=""></p>
+<p>A list of point set matching/registration resources collected by <a href="https://sites.google.com/site/2013gwang/" target="_blank" rel="external">Gang Wang</a>. If you find that important resources are not included, please feel free to contact me.</p>
+<h4 id="Point_Set_Matching/Registration_Methods">Point Set Matching/Registration Methods</h4><h6 id="Point_Matching/Registration_Methods">Point Matching/Registration Methods</h6><ul>
+<li>[ICP] A Method for Registration of 3-D Shapes, TPAMI’1992</li>
+<li>[RPM] New algorithms for 2d and 3d point matching: pose estimation and correspondence, PR’1998</li>
+<li>[SC] Shape matching and object recognition using shape contexts, TPAMI’2002</li>
+<li>[RPM-TPS] A new point matching algorithm for non-rigid registration, CVIU’2003</li>
+<li>[KC] A correlation-based approach to robust point set registration, ECCV’2004</li>
+<li>[RPM-PLNS] Robust point matching for nonrigid shapes by preserving local neighborhood structures, TPAMI’2006</li>
+<li>[GF] A new method for the registration of three-dimensional point-sets: The Gaussian fields framework, IVC’2010</li>
+<li>[QPCCP] A quadratic programming based cluster correspondence projection algorithm for fast point matching, CVIU’2010</li>
+<li>[CPD] Point set registration: Coherent point drift, TPAMI’2010</li>
+<li>[GMMReg/L2E-TPS] Robust point set registration using gaussian mixture models, TPAMI’2011</li>
+<li>[RPM-L2E] Robust estimation of nonrigid transformation for point set registration, CVPR’2013</li>
+<li>[GO-ICP] Go-ICP: Solving 3D Registration Efficiently and Globally Optimally, ICCV’2013</li>
+<li>[RPM-VFC] Robust Point Matching via Vector Field Consensus, TIP’2014</li>
+<li>[MoAGReg] A robust non-rigid point set registration method based on asymmetric gaussian representation, CVIU’2015</li>
+<li>[GLMD-TPS] A robust global and local mixture distance based non-rigid point set registration, PR’2015</li>
+<li>[GO-APM] An Efficient Globally Optimal Algorithm for Asymmetric Point Matching, TPAMI’2016</li>
+<li>[PR-GLS] Non-Rigid Point Set Registration by Preserving Global and Local Structures, TIP’2016</li>
+<li>[PM] Probabilistic Model for Robust Affine and Non-rigid Point Set Matching, TPAMI’2016</li>
+<li>[SCGF] Robust Non-rigid Point Set Registration Using Spatially Constrained Gaussian Fields, TIP’2017</li>
+<li>[LPM] Locality preserving matching, IJCV’2018</li>
+</ul>
+<h6 id="Mismatch_Removal_Methods">Mismatch Removal Methods</h6><ul>
+<li>[RANSAC] Random sample consensus: a paradigm for model fitting with applications to image analysis and automated cartography, 1981</li>
+<li>[MLESAC] MLESAC: A new robust estimator with application to estimating image geometry, CVIU’2000</li>
+<li>[PROSAC] Matching with PROSAC-progressive sample consensus, CVPR’2005</li>
+<li>[ICF] Rejecting mismatches by correspondence function, IJCV’2010</li>
+<li>[GS] Common visual pattern discovery via spatially coherent correspondences, CVPR’2010</li>
+<li>[VFC] A robust method for vector field learning with application to mismatch removing, CVPR’2011</li>
+<li>[DefRANSAC] In defence of RANSAC for outlier rejection in deformable registration, ECCV’2012 </li>
+<li>[TC] Epipolar geometry estimation for wide baseline stereo by Clustering Pairing Consensus, PRL’2014</li>
+<li>[WxBS] WxBS: Wide Baseline Stereo Generalizations, BMVC’2015</li>
+<li>[GFC] Gaussian Field Consensus: A Robust Nonparametric Matching Method for Outlier Rejection, PR’2018</li>
+</ul>
+<h6 id="Graph_Matching_Methods">Graph Matching Methods</h6><ul>
+<li>[SM] A spectral technique for correspondence problems using pairwise constraints, ICCV’2005 <a href="https://sites.google.com/site/graphmatchingmethods/Code_including_Spectral_Matching.zip?attredirects=0" target="_blank" rel="external">[code]</a></li>
+<li>[SM-MAP] Efficient MAP approximation for dense energy functions, ICML’2006 <a href="https://sites.google.com/site/graphmatchingmethods/Code_including_IPFP_and_L2QP_for_MAP_Inference.zip?attredirects=0" target="_blank" rel="external">[code]</a></li>
+<li>[SMAC] Balanced Graph Matching, NIPS’2006 <a href="http://www.timotheecour.com/software/graph_matching/graph_matching.html" target="_blank" rel="external">[code]</a></li>
+<li>[FCGM] Feature correspondence via graph matching: Models and global optimization, ECCV’2008</li>
+<li>[PM] Probabilistic Graph and Hypergraph Matching, CVPR’2008</li>
+<li>[IPFP] An Integer Projected Fixed Point Method for Graph Matching and MAP Inference, NIPS’2009 <a href="https://sites.google.com/site/graphmatchingmethods/Code_including_IPFP.zip?attredirects=0" target="_blank" rel="external">[code]</a></li>
+<li>[RRWM] Reweighted Random Walks for Graph Matching, ECCV’2010</li>
+<li>[FGM] Factorized graph matching, CVPR’2012 <a href="http://www.f-zhou.com/gm_code.html" target="_blank" rel="external">[code]</a></li>
+<li>[DGM] Deformable Graph Matching, CVPR’2013 <a href="https://github.com/zhfe99/fgm" target="_blank" rel="external">[code]</a></li>
+<li>[MS] Progressive mode-seeking on graphs for sparse feature matching, ECCV’2014</li>
+</ul>
+<h6 id="Other_Related_Works">Other Related Works</h6><ul>
+<li>[RootSIFT] Three things everyone should know to improve object retrieval, CVPR’2012 <a href="https://www.pyimagesearch.com/2015/04/13/implementing-rootsift-in-python-and-opencv/#" target="_blank" rel="external">[related code]</a></li>
+<li>[DM-CNN] Descriptor Matching with Convolutional Neural Networks: a Comparison to SIFT, arXiv’2014</li>
+<li>[DASC] DASC: Robust Dense Descriptor for Multi-modal and Multi-spectral Correspondence Estimation, TPAMI’2017 <a href="http://diml.yonsei.ac.kr/~srkim/DASC/" target="_blank" rel="external">[project]</a></li>
+<li>[MODS] MODS: Fast and Robust Method for Two-View Matching, CVIU’2015 <a href="http://cmp.felk.cvut.cz/wbs/" target="_blank" rel="external">[project]</a> <a href="https://github.com/ducha-aiki/mods" target="_blank" rel="external">[github]</a></li>
+<li>[Elastic2D3D] Efficient Globally Optimal 2D-to-3D Deformable Shape Matching, CVPR’2016 <a href="https://vision.in.tum.de/~laehner/Elastic2D3D/" target="_blank" rel="external">[project]</a></li>
+<li>[TCDCN] Facial Landmark Detection by Deep Multi-task Learning, ECCV’2014 <a href="http://mmlab.ie.cuhk.edu.hk/projects/TCDCN.html" target="_blank" rel="external">[project]</a></li>
+</ul>
+<h6 id="deep_features">deep features</h6><ul>
+<li>[TFeat] Learning local feature descriptors with triplets and shallow convolutional neural networks, BMVC’2016 <a href="https://github.com/vbalnt/tfeat" target="_blank" rel="external">[github]</a></li>
+<li>[L2-Net] L2-Net: Deep Learning of Discriminative Patch Descriptor in Euclidean Space, CVPR’2017 <a href="https://github.com/yuruntian/L2-Net" target="_blank" rel="external">[github]</a></li>
+<li>[HardNet] Working hard to know your neighbor’s margins: Local descriptor learning loss, CVPR’2018 <a href="https://github.com/DagnyT/hardnet/tree/master" target="_blank" rel="external">[github]</a></li>
+<li>[AffNet] Repeatability Is Not Enough: Learning Discriminative Affine Regions via Discriminability, ECCV’2018 <a href="https://github.com/ducha-aiki/affnet" target="_blank" rel="external">[github]</a></li>
+</ul>
+<h4 id="Applications">Applications</h4><h6 id="Remote_Sensing_Image_Registration">Remote Sensing Image Registration</h6><ul>
+<li>[LLT] Robust Feature Matching for Remote Sensing Image Registration via Locally Linear Transforming, TGRS’2015</li>
+<li>[GLPM] Guided Locality Preserving Feature Matching for Remote Sensing Image Registration, TGRS’2018</li>
+</ul>
+<h6 id="Retinal_Image_Registration">Retinal Image Registration</h6><ul>
+<li>[DB-ICP] The dual-bootstrap iterative closest point algorithm with application to retinal image registration, TMI’2003</li>
+<li>[GDB-ICP] Registration of Challenging Image Pairs: Initialization, Estimation, and Decision, TPAMI’2007 <a href="http://www.vision.cs.rpi.edu/gdbicp/" target="_blank" rel="external">[project]</a></li>
+<li>[ED-DB-ICP] The edge-driven dual-bootstrap iterative closest point algorithm for registration of multimodal fluorescein angiogram sequence, TMI’2010</li>
+<li>[RPM-SURFPIIFD] Robust point matching method for multimodal retinal image registration, BSPC’2015</li>
+</ul>
+<h6 id="Visual_Homing_Navigation">Visual Homing Navigation</h6><ul>
+<li>[GLPM] Visual Homing via Guided Locality Preserving Matching, ICRA’2018</li>
+</ul>
+<h6 id="HDR_Imaging">HDR Imaging</h6><ul>
+<li>[LNR] Locally non-rigid registration for mobile HDR photography, CVPRW’2015</li>
+</ul>
+<h4 id="Databases">Databases</h4><h6 id="Classical_databases">Classical databases</h6><ul>
+<li><a href="https://www.cise.ufl.edu/~anand/students/chui/research.html" target="_blank" rel="external">2D Synthesized Chui-Rangarajan Dataset (deformation, noise, and outliers)</a></li>
+<li><a href="http://tosca.cs.technion.ac.il/book/resources_data.html" target="_blank" rel="external">TOSCA</a></li>
+<li><a href="http://vision.middlebury.edu/mview/data/" target="_blank" rel="external">Multi-View Stereo Dataset</a></li>
+<li><a href="http://grail.cs.washington.edu/projects/mvscpc/" target="_blank" rel="external">Multi-View Stereo for Community Photo Collections</a></li>
+<li><a href="http://www.robots.ox.ac.uk/~vgg/data/data-aff.html" target="_blank" rel="external">VGG Affine Datasets</a></li>
+<li><a href="http://www.robots.ox.ac.uk/~vgg/data1.html" target="_blank" rel="external">Multi-view VGG’s Dataset</a></li>
+<li><a href="http://www.robots.ox.ac.uk/~vgg/data2.html" target="_blank" rel="external">Oxford Building Reconstruction</a></li>
+<li><a href="http://www.imm.dtu.dk/~aam/datasets/datasets.html" target="_blank" rel="external">IMM Datasets</a></li>
+<li><a href="http://www.imageprocessingplace.com/downloads_V3/root_downloads/image_databases/MPEG7_CE-Shape-1_Part_B.zip" target="_blank" rel="external">MPEG7 CE Shape-1 Part B</a></li>
+<li><a href="http://www.imageprocessingplace.com/downloads_V3/root_downloads/image_databases/leaf%20shape%20database/leaf_shapes_downloads.htm" target="_blank" rel="external">Leaf Shapes Database</a></li>
+<li>[CMU House/Hotel Sequence Images]</li>
+<li><a href="https://lmb.informatik.uni-freiburg.de/resources/datasets/genmatch.en.html" target="_blank" rel="external">Generated Matching Dataset</a></li>
+<li><a href="https://lmb.informatik.uni-freiburg.de/resources/datasets/sequences.en.html" target="_blank" rel="external">Image Sequences</a> </li>
+<li><a href="http://tosca.cs.technion.ac.il/book/resources_data.html" target="_blank" rel="external">Mythological creatures 2D</a></li>
+<li><a href="http://tosca.cs.technion.ac.il/book/resources_data.html" target="_blank" rel="external">Tools 2D</a></li>
+<li><a href="http://tosca.cs.technion.ac.il/book/resources_data.html" target="_blank" rel="external">Human face</a></li>
+<li><a href="https://drive.google.com/drive/folders/0B7CshFGxfi_5RVoyYzFyMUhuZnM" target="_blank" rel="external">Cars &amp; Motorbikes</a></li>
+<li><a href="http://diml.yonsei.ac.kr/~srkim/DASC/DIMLmultimodal/" target="_blank" rel="external">DIML Multimodal Benchmark</a></li>
+<li><a href="http://3drepresentation.stanford.edu/" target="_blank" rel="external">Street View Dataset</a> <a href="https://github.com/amir32002/3D_Street_View" target="_blank" rel="external">[github]</a> <a href="https://console.cloud.google.com/storage/browser/streetview_image_pose_3d" target="_blank" rel="external">[data]</a></li>
+<li><a href="http://cmp.felk.cvut.cz/wbs/datasets/EVD.zip" target="_blank" rel="external">EVD: Extreme View Dataset</a> <a href="http://cmp.felk.cvut.cz/wbs/datasets/EVD_tentatives.zip" target="_blank" rel="external">[EVD_tentatives]</a> <a href="http://cmp.felk.cvut.cz/wbs/datasets/ExtremeZoomDataset.zip" target="_blank" rel="external">[EZD]</a></li>
+<li><a href="http://cmp.felk.cvut.cz/wbs/datasets/WxBS-dataset.zip" target="_blank" rel="external">WxBS: Wide Baseline Dataset</a> <a href="http://cmp.felk.cvut.cz/wbs/datasets/W1BS.tar.gz" target="_blank" rel="external">[W1BS]</a></li>
+<li><a href="http://graphics.stanford.edu/data/3Dscanrep/" target="_blank" rel="external">Stanford 3D Scanning</a></li>
+<li><a href="http://faust.is.tue.mpg.de/" target="_blank" rel="external">MPI FAUST Dataset</a></li>
+<li><a href="http://lear.inrialpes.fr/people/mikolajczyk/Database/index.html" target="_blank" rel="external">Mikolajczyk Database</a></li>
+<li><a href="http://www.ti.uni-bielefeld.de/html/research/avardy/index.html" target="_blank" rel="external">Panoramic Image Database</a></li>
+<li><a href="https://github.com/rmitra/PS-Dataset" target="_blank" rel="external">PS-Dataset (A Large Dataset for improving Patch Matching, PhotoSynth Dataset for improving local patch Descriptors)</a></li>
+</ul>
+<h6 id="Other_databases">Other databases</h6><ul>
+<li><a href="https://www.ics.forth.gr/cvrl/fire/" target="_blank" rel="external">FIRE: Fundus Image Registration Dataset</a></li>
+<li><a href="http://www.isi.uu.nl/Research/Databases/DRIVE/" target="_blank" rel="external">DRIVE (Retinal Images)</a></li>
+<li><a href="http://www.ia.uned.es/~ejcarmona/DRIONS-DB.html" target="_blank" rel="external">DRIONS-DB (Retinal Images)</a></li>
+<li><a href="http://cecas.clemson.edu/~ahoover/stare/" target="_blank" rel="external">STARE (Retinal Images)</a></li>
+<li><a href="https://www.plant-phenotyping.org/datasets-download" target="_blank" rel="external">Plant Images</a></li>
+<li><a href="https://bigr-xnat.erasmusmc.nl/" target="_blank" rel="external">MR Prostate Images</a></li>
+<li><a href="http://www.cs.cmu.edu/afs/cs/project/cil/www/v-images.html" target="_blank" rel="external">CV Images</a></li>
+<li><a href="http://www.vision.ee.ethz.ch/en/datasets/" target="_blank" rel="external">ETHZ Datasets</a></li>
+<li><a href="http://www.cvpapers.com/datasets.html" target="_blank" rel="external">CVPapers</a></li>
+<li><a href="https://riemenschneider.hayko.at/vision/dataset" target="_blank" rel="external">YACVID</a></li>
+</ul>
 
-<span class="comment">#在打开的interfaces文件中添加如下信息：</span>
-auto eth0 <span class="comment">#eth0对应你的网卡名称，在ifconfig中查看</span>
-iface eth0 inet static
-address <span class="number">192.168.1.100</span>
-netmask <span class="number">255.255.255.0</span>
-gateway <span class="number">192.168.1.1</span>
-dns-nameserver <span class="number">114.114.114.114</span>
-</code></pre><p>配置DNS</p>
-<pre><code><span class="title">sudo</span> vim /etc/resolv.conf
-
-<span class="comment">#添加如下信息：</span>
-nameserver <span class="number">114.114.114.114</span>
-
-sudo vim /etc/resolvconf/resolv.conf.d/base
-
-<span class="comment">#添加如下信息：</span>
-nameserver <span class="number">114.114.114.114</span>
-</code></pre><p>重启网卡服务</p>
-<pre><code><span class="title">sudo</span> /etc/init.d/networking restart
-<span class="comment">#重启检验是否设置成功</span>
-sudo reboot
-</code></pre><p><strong>4.配置SSH和SFTP</strong></p>
-<p>SSH安装命令：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-<span class="keyword">server</span></span>
-</code></pre><p>ssh-server配置文件位于<code>/etc/ssh/sshd_config</code>，在这里可以定义SSH的服务端口，默认端口是22。</p>
-<pre><code><span class="comment">#若更改端口后请重启SSH服务：</span>
-<span class="title">sudo</span> /etc/init.d/ssh resart
-</code></pre><p>Ubuntu或Mac客户端可在命令行中执行如下语句来使用ssh：</p>
-<pre><code><span class="title">ssh</span> username@<span class="number">192.168.1.100</span> 
-</code></pre><p>sftp安装：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> openssh-sftp-<span class="keyword">server</span></span>
-</code></pre><p>Ubuntu客户端可在文件管理器中选择“connect to server”，然后输入：</p>
-<pre><code><span class="string">sftp:</span><span class="comment">//192.168.1.100</span>
-</code></pre><p>即可查看到username所在的home文件夹下的内容。</p>
-<p><strong>5.安装NVIDIA显卡驱动</strong></p>
-<p>此处由于NVIDIA驱动和Ubuntu桌面冲突的问题（如循环卡在登录界面）。这里我们的VGA显示器默认接在主板的集显上，而不是接在NVIDIA显卡上，所以我们不采用ppa的显卡安装方式，而是采用独立的显卡驱动安装方式，关键之处在于不勾选OpenGL即可。</p>
-<p>首先到NVIDIA官网下载官方驱动：<a href="http://www.nvidia.cn/Download/index.aspx?lang=cn" target="_blank" rel="external">http://www.nvidia.cn/Download/index.aspx?lang=cn</a>，其中Titan XP属于GeForce 10 series系列。下载驱动：NVIDIA-Linux-x86_64-375.66.run</p>
-<p><strong>安装前准备：</strong></p>
-<p>卸载原有nvidia驱动，若采用的是<code>apt-get</code>安装方式</p>
-<pre><code>sudo apt-<span class="keyword">get</span> purge nvidia* 
-</code></pre><p>或者采用<code>--uninstall</code>的方式卸载，按提示操作</p>
-<pre><code>sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.<span class="command">run</span> <span class="comment">--uninstall</span>
-</code></pre><p>禁用nouveau</p>
-<pre><code>sudo vim /etc/modprobe.<span class="keyword">d</span>/blacklist.<span class="keyword">conf</span>
-</code></pre><p>在打开的文件的最后加入nouveau黑名单，禁用第三方驱动</p>
-<pre><code><span class="keyword">blacklist </span>nouveau 
-</code></pre><p>然后执行</p>
-<pre><code>sudo <span class="keyword">update</span>-initramfs -<span class="keyword">u</span>
-</code></pre><p>再执行如下语句，没有输出即说明已屏蔽成功</p>
-<pre><code>lsmod <span class="string">| grep nouveau </span>
-</code></pre><p><strong>开始安装驱动</strong></p>
-<p>首先关闭X服务：</p>
-<pre><code>sudo <span class="keyword">service</span> lightdm <span class="literal">stop</span>
-</code></pre><p>若在本机则要进入<code>Ctrl-Alt+F1</code>命令行界面</p>
-<p>若在远程主机则在ssh中执行即可，前提是要关闭x服务。</p>
-<p>开始：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> build-essential pkg-config xserver-xorg-dev linux-headers-<span class="string">`uname -r`</span>
-
-sudo chmod a+x NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run
-sudo sh NVIDIA-Linux-x86_64-<span class="number">375.66</span>.run -<span class="keyword">no</span>-opengl-files
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> mesa-common-dev
-sudo apt-<span class="keyword">get</span> <span class="keyword">install</span> freeglut3-dev
-sudo reboot</span>
-</code></pre><p>其中参数(后面两个参数不加):</p>
-<pre><code>–<span class="literal">no</span>-opengl-files <span class="comment">#只安装驱动文件，不安装OpenGL文件。这个参数最重要</span>
-–<span class="literal">no</span>-x-check <span class="comment">#安装驱动时不检查X服务</span>
-–<span class="literal">no</span>-nouveau-check <span class="comment">#安装驱动时不检查nouveau </span>
-</code></pre><p>若安装过程中报关于kernel-source的错误:</p>
-<pre><code><span class="constant">E</span>RROR: <span class="constant">Unable</span> to find the <span class="built_in">kernel</span> <span class="literal">source</span> tree for the currently <span class="literal">running</span> <span class="built_in">kernel</span>.  <span class="constant">Please</span> make sure you have installed the <span class="built_in">kernel</span> <span class="literal">source</span> files for your <span class="built_in">kernel</span> <span class="keyword">and</span> that they are properly configured; on <span class="constant">Red</span> <span class="constant">Hat</span> <span class="constant">Linux</span> systems, for example, be sure you have the <span class="string">'kernel-source'</span> <span class="keyword">or</span> <span class="string">'kernel-devel'</span> <span class="constant">R</span>PM installed.  <span class="constant">If</span> you know the correct <span class="built_in">kernel</span> <span class="literal">source</span> files are installed, you may specify the <span class="built_in">kernel</span> <span class="literal">source</span> <span class="built_in">path</span> with the <span class="string">'--kernel-source-path'</span> <span class="literal">command</span> line option.
-</code></pre><p>请务必执行如下语句：</p>
-<pre><code>sudo apt-get <span class="operator"><span class="keyword">install</span> linux-headers-<span class="string">`uname -r`</span></span>
-</code></pre><p>若出现警告说：</p>
-<pre><code>/sbin/ldconfig<span class="class">.real</span>: /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> is not <span class="tag">a</span> symbolic link
-</code></pre><p>可能是由于libEGL.lib存在多个版本的冲突，解决方法：</p>
-<pre><code>sudo mv /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
-sudo mv /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span><span class="class">.org</span>
-sudo ln -s /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
-sudo ln -s /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">375.66</span> /usr/lib32/nvidia-<span class="number">375</span>/libEGL<span class="class">.so</span>.<span class="number">1</span>
-</code></pre><h5 id="重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项：">重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项：</h5><figure class="highlight sh"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo sh NVIDIA-Linux-x86_64-375.66.run -no-opengl-files –no-x-check -no-nouveau-check </div><div class="line"><span class="comment">#注意字符横线‘-’容易出错！</span></div></pre></td></tr></table></figure>
-<p>如果出现无法进入桌面的问题，这是因为驱动修改了xorg的配置，可执行一下命令：</p>
-<pre><code>cd /usr/share/X11/xorg<span class="class">.conf</span><span class="class">.d</span>/ 
-sudo mv nvidia-drm-outputclass<span class="class">.conf</span> nvidia-drm-outputclass<span class="class">.conf</span><span class="class">.bak</span>
-</code></pre><p>若进入到界面后发现分辨率问题：启动到界面之后发现分辨率只有600x480，而显示器适合1920x1080，采用xrandr并修改xorg.conf来解决：</p>
-<pre><code>sudo gedit /etc/X11/xorg<span class="class">.conf</span>
-修改如下：
-HorizSync <span class="number">31.0</span> - <span class="number">84.0</span>
-VertRefresh <span class="number">56.0</span>-<span class="number">77.0</span>
-</code></pre><p>即最终的xorg.conf文件部分内容为：</p>
-<pre><code><span class="title">Section "Device"    </span>
-    Identifier <span class="string">"Configured Video Device"</span>
-EndSection
-
-<span class="title">Section "Monitor"</span>
-    Identifier <span class="string">"Configured Monitor"</span>
-    Horizsync 30-84
-    Vertrefresh 56-77
-EndSection
-
-<span class="title">Section "Screen"</span>
-Identifier <span class="string">"Default Screen"</span>
-Monitor <span class="string">"Configured Monitor"</span>
-Device <span class="string">"Configured Video Device"</span>
-    SubSection <span class="string">"Display"</span>
-        Modes <span class="string">"1920x1080"</span> <span class="string">"1360x768"</span> <span class="string">"1024x768"</span> <span class="string">"1152x864"</span>
-    EndSubSection
-EndSection    
-</code></pre><p>或者采用cvt xrand方法修改分辨率：</p>
-<pre><code>cvt <span class="number">1920 1080</span>
-
-# <span class="number">1920x1080</span> 59.96 Hz (CVT 2.07M9) hsync: 67.16 kHz<span class="comment">; 173.00 MHZ</span>
-# Modeline "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
-
-xrandr --newmode "<span class="number">1920x1080</span>_60.00" <span class="number">173.00 1920</span> <span class="number">2048 2248</span> <span class="number">2576 1080</span> <span class="number">1083 1088</span> 1120 -hsync +vsync
-
-xrandr -q #查看VGA
-# Sceen 0: minimum 320 x 200 .....
-# VGA-1 connected ....
-
-xrandr --addmode VGA-1 "<span class="number">1920x1080</span>_60.00"
-xrandr --output VGA-1 --mode "<span class="number">1920x1080</span>_60.00"
-</code></pre><p><strong>6.安装CUDA8.0</strong></p>
-<p>到官网下载<a href="https://developer.nvidia.com/cuda-release-candidate-download" target="_blank" rel="external">cuda_8.0.61_linux.run</a>，复制到根目录下。</p>
-<pre><code>sudo sh cuda_8.0.61_linux.<span class="command">run</span> <span class="comment">--tmpdir=/tmp/</span>
-</code></pre><p>遇到问题：incomplete installation，然后执行</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install libx11-<span class="built_in">dev</span> libxmu-<span class="built_in">dev</span> libxi-<span class="built_in">dev</span> libgl1-mesa-glx libglu1-mesa libglu1-mesa-<span class="built_in">dev</span>
-
-sudo sh cuda_8.0.61_linux.run -silent -driver
-</code></pre><p>注：此时安装过程中提示是否要安装NVIDIA驱动时选择no。其他选择yes或默认即可。</p>
-<pre><code>Install NVIDIA Accelerated Graphics Driver <span class="keyword">for</span> Linux-x86_64 <span class="number">375.26</span>? <span class="params">(y)</span>es/<span class="params">(n)</span>o/<span class="params">(q)</span>uit: n
-</code></pre><p>安装完毕后声明环境变量：</p>
-<pre><code><span class="title">sudo</span> vim ~/.bashrc
-</code></pre><p>在.bashrc尾部添加如下内容：</p>
-<pre><code>export <span class="constant">PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/bin</span><span class="variable">${</span><span class="constant">PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">PATH</span>}}
-export <span class="constant">LD_LIBRARY_PATH</span>=<span class="regexp">/usr/local</span><span class="regexp">/cuda-8.0/lib</span>64<span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span><span class="symbol">:+</span><span class="symbol">:</span><span class="variable">${</span><span class="constant">LD_LIBRARY_PATH</span>}}
-</code></pre><p>测试下安装是否成功：</p>
-<p>测试：</p>
-<pre><code>nvidia-<span class="keyword">smi</span>
-</code></pre><p>输出：</p>
-<pre><code>xx xx xx 15:20:34 2017       
-+-----------------------------------------------------------------------------+
-|<span class="string"> NVIDIA-SMI 375.66                 Driver Version: 375.66                    </span>|
-|<span class="string">-------------------------------+----------------------+----------------------+
-</span>|<span class="string"> GPU  Name        Persistence-M</span>|<span class="string"> Bus-Id        Disp.A </span>|<span class="string"> Volatile Uncorr. ECC </span>|
-|<span class="string"> Fan  Temp  Perf  Pwr:Usage/Cap</span>|<span class="string">         Memory-Usage </span>|<span class="string"> GPU-Util  Compute M. </span>|
-|<span class="string">===============================+======================+======================</span>|
-|<span class="string">   0  GeForce GTX TIT...  Off  </span>|<span class="string"> 0000:01:00.0      On </span>|<span class="string">                  N/A </span>|
-|<span class="string"> 22%   48C    P5    27W / 250W </span>|<span class="string">    169MiB / 12205MiB </span>|<span class="string">      1%      Default </span>|
-+-------------------------------+----------------------+----------------------+
-
-+-----------------------------------------------------------------------------+
-|<span class="string"> Processes:                                                       GPU Memory </span>|
-|<span class="string">  GPU       PID  Type  Process name                               Usage      </span>|
-|<span class="string">=============================================================================</span>|
-|<span class="string">    0      2421    G   /usr/lib/xorg/Xorg                             105MiB </span>|
-|<span class="string">    0     10062    G   compiz                                          63MiB </span>|
-+-----------------------------------------------------------------------------+
-</code></pre><p><strong>7.安装OpenCV 3.2.0</strong></p>
-<p>从官网下载zip源代码，解压到根目录下。<br>安装依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> -y remove ffmpeg x264 libx264-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> -y install libopencv-<span class="built_in">dev</span> build-essential checkinstall cmake pkg-config yasm  libjpeg-<span class="built_in">dev</span> libjasper-<span class="built_in">dev</span> libavcodec-<span class="built_in">dev</span> libavformat-<span class="built_in">dev</span> libswscale-<span class="built_in">dev</span> libdc1394-<span class="number">22</span>-<span class="built_in">dev</span>  libgstreamer0.10-<span class="built_in">dev</span> libgstreamer-plugins-base0.10-<span class="built_in">dev</span> libv4l-<span class="built_in">dev</span> python-<span class="built_in">dev</span> python-numpy libtbb-<span class="built_in">dev</span> libqt4-<span class="built_in">dev</span> libgtk2.0-<span class="built_in">dev</span> libfaac-<span class="built_in">dev</span> libmp3lame-<span class="built_in">dev</span> libopencore-amrnb-<span class="built_in">dev</span> libopencore-amrwb-<span class="built_in">dev</span> libtheora-<span class="built_in">dev</span> libvorbis-<span class="built_in">dev</span> libxvidcore-<span class="built_in">dev</span> x264 v4l-utils ffmpeg libgtk2.0-<span class="built_in">dev</span>
-
-cd opencv-<span class="number">3.2</span>.0
-mkdir build   
-cd build/
-cmake -D CMAKE_BUILD_TYPE=RELEASE -D CMAKE_INSTALL_PREFIX=/usr/local -D WITH_TBB=ON -D BUILD_NEW_PYTHON_SUPPORT=ON -D WITH_V4L=ON -D INSTALL_C_EXAMPLES=ON -D INSTALL_PYTHON_EXAMPLES=ON -D BUILD_EXAMPLES=ON -D WITH_QT=ON -D WITH_OPENGL=ON ..
-make -j32
-sudo make install
-</code></pre><p>安装成功后配置环境：</p>
-<pre><code>sudo <span class="keyword">sh</span> -c 'echo <span class="string">"/usr/local/lib"</span> &gt; /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/opencv.<span class="keyword">conf</span>'
-sudo ldconfig
-</code></pre><p>测试OpenCV安装是否成功：</p>
-<pre><code><span class="built_in">mkdir</span> DisplayImage  
-<span class="keyword">cd</span> DisplayImage 
-<span class="keyword">vim</span> DisplayImage.cpp 
-</code></pre><p>添加代码：</p>
-<pre><code><span class="preprocessor">#<span class="keyword">include</span> &lt;stdio.h&gt;  </span>
-<span class="preprocessor">#<span class="keyword">include</span> &lt;opencv2/opencv.hpp&gt;  </span>
-<span class="keyword">using</span> <span class="keyword">namespace</span> cv;  
-
-<span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>** argv)</span>  
-</span>{  
-     <span class="keyword">if</span>(argc!= <span class="number">2</span>)  
-     {  
-               <span class="built_in">printf</span>(<span class="string">"usage:DisplayImage.out &lt;Image_Path&gt;\n"</span>);  
-               <span class="keyword">return</span> -<span class="number">1</span>;  
-     }  
-
-     Mat image;  
-     image= imread(argv[<span class="number">1</span>], <span class="number">1</span>);  
-
-    <span class="keyword">if</span>(!image.data)  
-    {  
-               <span class="built_in">printf</span>(<span class="string">"Noimage data\n"</span>);  
-               <span class="keyword">return</span> -<span class="number">1</span>;  
-     }  
-
-     namedWindow(<span class="string">"DisplayImage"</span>,CV_WINDOW_AUTOSIZE);  
-     imshow(<span class="string">"DisplayImage"</span>,image);  
-
-     waitKey(<span class="number">0</span>);  
-     <span class="keyword">return</span> <span class="number">0</span>;  
-}  
-</code></pre><p>创建CMake文件：</p>
-<pre><code>vim CMakeLists<span class="class">.txt</span>  
-</code></pre><p>添加内容：</p>
-<pre><code><span class="function"><span class="title">cmake_minimum_required</span><span class="params">(VERSION <span class="number">2.8</span>)</span></span>  
-<span class="function"><span class="title">project</span><span class="params">(DisplayImage)</span></span>  
-<span class="function"><span class="title">find_package</span><span class="params">(OpenCV REQUIRED)</span></span>  
-<span class="function"><span class="title">add_executable</span><span class="params">(DisplayImage DisplayImage.cpp)</span></span>  
-<span class="function"><span class="title">target_link_libraries</span><span class="params">(DisplayImage ${OpenCV_LIBS})</span></span> 
-</code></pre><p>编译：</p>
-<pre><code>cmake .  
-<span class="built_in">make</span> 
-</code></pre><p>执行：</p>
-<pre><code>./DisplayImage lena<span class="class">.jpg</span>  
-</code></pre><p>如果在make opencv-3.2过程中错误：</p>
-<pre><code>fatal <span class="keyword">error</span>: LAPACKE_H_PATH-NOTFOUND/lapacke.<span class="keyword">h</span>: <span class="keyword">No</span> such <span class="keyword">file</span> or directory #<span class="keyword">include</span> <span class="string">"LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
-</code></pre><p>此时LAPACK和BLAS都已经安装了，解决方案：</p>
-<pre><code>sudo apt-get install liblapacke-dev checkinstall
-修改在build文件夹内的lapack.h文件，将如下语句
-<span class="preprocessor">#<span class="keyword">include</span> "LAPACKE_H_PATH-NOTFOUND/lapacke.h"</span>
-改为
-<span class="preprocessor">#<span class="keyword">include</span> "lapacke.h"</span>
-</code></pre><p><strong>8.安装cudnn 5.0</strong></p>
-<p>从官网下载<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cudnn-8.0-linux-x64-v5.0.tgz</a> for CUDA 8.0. 解压到当前目录：</p>
-<pre><code><span class="tag">tar</span> <span class="tag">-zxvf</span> <span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.0</span><span class="class">.tgz</span>
-</code></pre><p>解压后的文件如下：</p>
-<pre><code>cuda/include/cudnn<span class="class">.h</span>
-cuda/lib64/libcudnn<span class="class">.so</span>
-cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5</span>
-cuda/lib64/libcudnn<span class="class">.so</span>.<span class="number">5.0</span>.<span class="number">5</span>
-cuda/lib64/libcudnn_static.a
-</code></pre><p>然后执行：</p>
-<pre><code>sudo cp cuda<span class="regexp">/include/</span>cudnn.h <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/
-sudo cp cuda<span class="regexp">/lib64/</span>libcudnn* <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/
-sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>include/cudnn.h
-sudo chmod a+r <span class="regexp">/usr/</span>local<span class="regexp">/cuda/</span>lib64/libcudnn*
-</code></pre><p><strong>9.BLAS安装与配置</strong></p>
-<p>BLAS（基础线性代数集合）是一个应用程序接口的标准。caffe官网上推荐了三种实现：ATLAS, MKL, OpenBLAS。其中ATLAS可以直接通过命令行安装。MKL是微软开发的商业工具包，面向科研和学生免费开放。申请学生版的<a href="https://software.intel.com/en-us/qualify-for-free-software/student" target="_blank" rel="external">Parallel Studio XE Cluster Edition</a>，下载parallel_studio_xe_2017.tgz。注意接收邮件中的key(<em>2HWS-34Z7S69B</em>)。</p>
-<pre><code>tar zxvf parallel_studio_xe_2017.tgz   <span class="comment">#解压下载文件</span>
-chmod <span class="number">777</span> parallel_studio_xe_2017 -R   <span class="comment">#获取文件权限</span>
-<span class="built_in">cd</span> parallel_studio_xe_2017/
-sudo ./install_GUI.sh
-</code></pre><p>安装完成之后，进行相关文件的链接：</p>
-<pre><code>sudo gedit /etc/ld.<span class="keyword">so</span>.<span class="keyword">conf</span>.<span class="keyword">d</span>/intel_mkl.<span class="keyword">conf</span>
-</code></pre><p>添加库文件:</p>
-<pre><code><span class="regexp">/opt/i</span>ntel<span class="regexp">/lib/i</span>ntel64
-<span class="regexp">/opt/i</span>ntel<span class="regexp">/mkl/</span>lib<span class="regexp">/intel64</span>
-</code></pre><p>编译链接使lib文件生效：</p>
-<pre><code><span class="title">sudo</span> ldconfig    
-</code></pre><p>如果选择安装ATLAS，在终端输入<code>sudo apt-get install libatlas-base-dev</code>即可。</p>
-<p><strong>10.Py-Faster-RCNN配置</strong></p>
-<p>下载源码：包含caffe文件夹</p>
-<pre><code>git clone --recursive http<span class="variable">s:</span>//github.<span class="keyword">com</span>/rbgirshick/<span class="keyword">py</span>-faster-rcnn.git
-</code></pre><p>安装库文件：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install python-opencv
-sudo pip install cython easydict
-
-sudo apt-<span class="built_in">get</span> install libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libboost-<span class="built_in">all</span>-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span> protobuf-compiler
-</code></pre><p>安装依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install -y build-essential cmake git pkg-config libprotobuf-<span class="built_in">dev</span> libleveldb-<span class="built_in">dev</span> libsnappy-<span class="built_in">dev</span> libopencv-<span class="built_in">dev</span> libhdf5-serial-<span class="built_in">dev</span> protobuf-compiler libatlas-base-<span class="built_in">dev</span> libgflags-<span class="built_in">dev</span> libgoogle-glog-<span class="built_in">dev</span> liblmdb-<span class="built_in">dev</span>
-sudo apt-<span class="built_in">get</span> install --no-install-recommends libboost-<span class="built_in">all</span>-<span class="built_in">dev</span>
-</code></pre><p>安装Python接口依赖：</p>
-<pre><code>sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-tk
-sudo apt-<span class="built_in">get</span> install <span class="keyword">python</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-pip
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python</span>-numpy <span class="keyword">python</span>-scipy     sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-dev
-sudo apt-<span class="built_in">get</span> install -<span class="keyword">y</span> <span class="keyword">python3</span>-numpy <span class="keyword">python3</span>-scipy 
-</code></pre><p>在caffe的python文件夹内，使用root执行依赖项的检查与安装：</p>
-<pre><code>sudo <span class="keyword">su</span>
-<span class="keyword">cd</span> caffe-fast-rcnn/python
-<span class="keyword">for</span> req <span class="keyword">in</span> $(<span class="keyword">cat</span> requirements.txt); <span class="keyword">do</span> pip install <span class="label">$req</span>; done
-</code></pre><p>修改Makefile文件</p>
-<pre><code>终端输入
-cd py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>
-cp Makefile.config.example Makefile.config
-vim Makefile.config
-
-使用python层
-将 # <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>修改为 <span class="string">WITH_PYTHON_LAYER :</span>= <span class="number">1</span>
-
-使用cudnn加速
-将 # <span class="string">USE_CUDNN :</span>= <span class="number">1</span>修改为 <span class="string">USE_CUDNN :</span>= <span class="number">1</span>
-
-保留 # <span class="string">CPU_ONLY :</span>= <span class="number">1</span>不变，使用GPU运行
-
-如下两行对应内容修改为：
-<span class="string">INCLUDE_DIRS :</span>= $(PYTHON_INCLUDE) <span class="regexp">/usr/</span>local<span class="regexp">/include  /</span>usr<span class="regexp">/include/</span>hdf5/serial
-<span class="string">LIBRARY_DIRS :</span>= $(PYTHON_LIB) <span class="regexp">/usr/</span>local<span class="regexp">/lib /</span>usr<span class="regexp">/lib /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>hdf5<span class="regexp">/serial /</span>usr<span class="regexp">/local/</span>share<span class="regexp">/OpenCV/</span><span class="number">3</span>rdparty<span class="regexp">/lib/</span>
-</code></pre><p>在Makefile中配置：</p>
-<pre><code>LIBRARIES += glog gflags protobuf boost_system boost_filesystem <span class="keyword">m</span> hdf5_hl hdf5 opencv_core opencv_highgui opencv_imgproc opencv_imgcodecs
-
-hdf5的配置：官方说这对于Ubuntu 16.04是必须的；（libhdf5的版本号需要根据实际来修改）
-sudo find . -<span class="keyword">type</span> f -exec sed -i -<span class="keyword">e</span> 's^<span class="string">"hdf5.h"</span>^<span class="string">"hdf5/serial/hdf5.h"</span>^<span class="keyword">g</span>' -<span class="keyword">e</span> 's^<span class="string">"hdf5_hl.h"</span>^<span class="string">"hdf5/serial/hdf5_hl.h"</span>^<span class="keyword">g</span>' '{}' \;
-<span class="keyword">cd</span> /usr/lib/x86_64-linux-gnu
-sudo ln -s libhdf5_serial.<span class="keyword">so</span>.10.1.0 libhdf5.<span class="keyword">so</span>
-sudo ln -s libhdf5_serial_hl.<span class="keyword">so</span>.10.0.2 libhdf5_hl.<span class="keyword">so</span>
-</code></pre><p><strong>编译Cython模块</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/lib/
-<span class="keyword">make</span>
-</code></pre><p><strong>编译caffe</strong></p>
-<p>由于当前版本的caffe中cudnn实现与系统所安装的cudnn的版本不一致会引起错误，rbgirshick的py-faster-rcnn其cudnn实现为旧版本的实现，所有出现了以上问题。</p>
-<pre><code><span class="tag">cudnn-7</span><span class="class">.0-linux-x64-v4</span><span class="class">.0-prod</span><span class="class">.tgz</span>不会出现此问题
-<span class="tag">cudnn-7</span><span class="class">.5-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
-<span class="tag">cudnn-8</span><span class="class">.0-linux-x64-v5</span><span class="class">.1</span><span class="class">.tgz</span>会出现同样问题
-</code></pre><p>解决办法：</p>
-<pre><code><span class="number">1</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>util/cudnn.hpp 换成最新版caffe里的相应目录下的cudnn.hpp；
-<span class="number">2</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>include<span class="regexp">/caffe/</span>layers/下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
-<span class="number">3</span>将py-faster-rcnn<span class="regexp">/caffe-fast-rcnn/</span>src<span class="regexp">/caffe/</span>layer下所有cudnn开头的文件都替换为最新版caffe里相应目录下的同名文件；
-</code></pre><p>注：官方caffe源包<a href="https://github.com/BVLC/caffe" target="_blank" rel="external">caffe-master：https://github.com/BVLC/caffe</a></p>
-<p>编译</p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
-<span class="keyword">make</span> clean #清除前一次编译结果
-<span class="keyword">make</span> -j32
-</code></pre><p><strong>编译pycaffe</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/caffe-fast-rcnn/
-<span class="keyword">make</span> pycaffe
-</code></pre><p><strong>下载训练好的模型</strong></p>
-<pre><code>终端输入
-<span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
-./data/scripts/fetch_faster_rcnn_models.<span class="keyword">sh</span>
-</code></pre><p><strong>faster-rcnn测试pascal_voc目标检测</strong></p>
-<pre><code><span class="keyword">cd</span> <span class="keyword">py</span>-faster-rcnn/
-./tools/demo.<span class="keyword">py</span>
-</code></pre><hr>
-<p>常见的报错Debug：</p>
-<hr>
-<p>1.<code>*AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;*</code></p>
-<p>需要在py-faster-rcnn/lib/fast_rcnn/train.py中添加：</p>
-<pre><code>import google<span class="class">.protobuf</span><span class="class">.text_format</span>
-</code></pre><hr>
-<p>2.<code>*KeyError: &#39;chair&#39; [when train only several classes]*</code><br><em>使用py-faster-rcnn训练VOC2007数据集时遇到如下问题：</em></p>
-<p>File “/home/sai/py-faster-rcnn/tools/../lib/datasets/pascal_voc.py”, line 217, in _load_pascal_annotation<br>cls = self._class_to_ind[obj.find(‘name’).text.lower().strip()]<br>KeyError: ‘chair‘</p>
-<p>解决：</p>
-<p>You probably need to write some line of codes to ignore any objects with classes except the classes you are looking for when you are loading the annotation _load_pascal_annotation.<br>Something like</p>
-<pre><code>cls_objs = [obj <span class="keyword">for</span> obj, clas <span class="keyword">in</span> objs, self._classes <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(‘name‘)</span></span>.text== clas]
-</code></pre><p>when you are loading the annotation in _load_pascal_annotation method, look for something like</p>
-<pre><code>objs = diff_objs <span class="list">(<span class="keyword">or</span> non_diff_objs)</span> <span class="list">(<span class="keyword">after</span> this line in pascal_voc.py)</span>
-</code></pre><p>After that line insert something similar to below code</p>
-<pre><code>cls_objs = [obj <span class="keyword">for</span> obj <span class="keyword">in</span> objs <span class="keyword">if</span> obj.<span class="function"><span class="title">find</span><span class="params">(<span class="string">'name'</span>)</span></span><span class="class">.text</span> <span class="keyword">in</span> self._classes]
-objs = cls_objs
-</code></pre><p>参考：<a href="https://github.com/rbgirshick/py-faster-rcnn/issues/316" target="_blank" rel="external">https://github.com/rbgirshick/py-faster-rcnn/issues/316</a></p>
-<hr>
-<p>3.<em>Annotations files 标记文件问题</em></p>
-<p>Note that: <code>&lt;difficult&gt;0&lt;/difficult&gt;</code></p>
-<p>must be 0, if not, we will get error:  ZeroDivisionError: integer division or modulo by zero</p>
-<hr>
-<p>4.AssertionError: Selective search data not found at</p>
-<p>训练时报错，可修改为：<code>Change _C.TRAIN.PROPOSAL_METHOD = &#39;gt&#39;</code> the 118 line in model/config.py file. It should be OK.</p>
-<hr>
-<p>5.AttributeError: ‘module’ object has no attribute ‘text_format’</p>
-<p>在不采用预训练权重时，碰到错误<code>pb2.text_format.Merge(f.read(), self.solver_param) AttributeError: &#39;module&#39; object has no attribute &#39;text_format&#39;</code><br>原因是protobuf的版本问题，更换版本或者修改：<br>在文件<code>./lib/fast_rcnn/train.py</code>增加一行<code>import google.protobuf.text_format</code>即可.          </p>
-<hr>
-<p>6.Ubuntu环境下python2和python3的切换</p>
-<p>用 update-alternatives</p>
-<p>1)建立链接：</p>
-<figure class="highlight crystal"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">python2</span>.7 100</span></div><div class="line">sudo update-alternatives --install /usr/bin/python python /usr/local/<span class="class"><span class="keyword">lib</span>/<span class="title">python3</span>.2 150</span></div></pre></td></tr></table></figure>
-<p>2)<code>sudo update-alternatives --config python</code>按照提示选择默认python</p>
-<p>3) 删除某个可选项：<br><code>sudo update-alternatives --remove python /usr/bin/python2.7</code></p>
-<hr>
-<p>7.网络更改</p>
-<p>修改类别数:<br>在train.prototxt中：<br><code>input-data</code>层的<code>num_classes</code>，为类别数+1 （1个背景类，下同）<br><code>roi-data</code>层的<code>num_classes</code>，为类别数+1<br><code>cls_score</code>层的<code>num_output</code>，为类别数+1<br><code>bbox_pred</code>层的<code>num_output</code>，为$(类别数+1)<em>4$， 4表示一个bbox的4个坐标值<br>在<code>test.prototxt</code>中<br>修改anchor数:<br><code>rpn_cls_prob_reshape</code>层的第二个<code>dim</code>: $2</em>anchor数量$（2表示bg/fg，背景和前景做二分类,下同）<br><code>rpn_cls_score</code>层的<code>num_output</code>: $2*anchor$数量<br>同时，python代码中也要修改这个anchor数.</p>
-<hr>
-<p>8.<code>..\lib\roi_data_layer\layer.py&quot;, line 125, in setup
-top[idx].reshape(1, self._num_classes * 4)
-IndexError: Index out of range</code></p>
-<p>Do you provide a config file (eg. <code>experiments/cfgs/faster_rcnn_end2end.yml</code>)? Looks like <code>cfg.TRAIN.HAS_RPN</code> is false but it should be true! Please have a look at <code>experiments/scripts/faster_rcnn_end2end.sh</code> for details.<br>keep <code>__C.TRAIN.PROPOSAL_METHOD = &#39;gt&#39; 
-__C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_end2end.yml</code></p>
-<hr>
-<p>9.<code>loss_layer.cpp:25] Check failed: bottom[0]-&gt;num() == bottom[1]-&gt;num() (2 vs. 1) The data and label should have the same number.
-*** Check failure stack trace: ***</code></p>
-<p>使用end2end的方法训练py-faster-rcnn， 把 TRAIN.IMS_PER_BATCH 设置为 2的时候会出错，显示data和label的batch size不一致，在源码<code>lib/rpn/anchor_target_layer.py</code>中可以看到，<code>anchor_target_layer</code>的top[0] 的batchsize被写死为1了。<br>The data blob had <code>num = 2</code> so I set <code>cfg.TRAIN.IMS_PER_BATCh</code> to <code>1</code>, and the problem is gone now. </p>
-<hr>
-<p>10.train完之后在测试时碰到问题<code>Check failed: error == cudaSuccess (2 vs. 0) out of memory</code></p>
-<p>一般是通过减少Batch，此处通过减少TEST的两个参数值可解决问题！</p>
-<figure class="highlight vhdl"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Number <span class="keyword">of</span> top scoring boxes <span class="keyword">to</span> keep before apply NMS <span class="keyword">to</span> RPN proposals</div><div class="line">__C.TEST.RPN_PRE_NMS_TOP_N = <span class="number">1000</span> </div><div class="line"># Number <span class="keyword">of</span> top scoring boxes <span class="keyword">to</span> keep <span class="keyword">after</span> applying NMS <span class="keyword">to</span> RPN proposals</div><div class="line">__C.TEST.RPN_POST_NMS_TOP_N = <span class="number">200</span></div></pre></td></tr></table></figure>
       
 
       
@@ -614,29 +303,7 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">DeepLearning</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -686,7 +353,7 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://gwang-cv.github.io/2017/07/26/Faster-RCNN+Ubuntu16.04+Titan XP+CUDA8.0+cudnn5.0/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://gwang-cv.github.io/2018/10/28/Point Set Matching-Registration Benchmark/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -700,18 +367,9 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
   
 <nav id="article-nav">
   
-    <a href="/2017/07/29/py-R-FCN-MultiGPU安装/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          py-R-FCN-MultiGPU安装
-        
-      </div>
-    </a>
   
-  
-    <a href="/2017/07/06/Git配置出错Permission Denied/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Git配置出现Permission denied问题</div>
+    <a href="/2018/10/04/项目页的盾牌小图标/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">项目页的盾牌小图标</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -738,7 +396,7 @@ __C.TEST.PROPOSAL_METHOD = &#39;gt&#39;</code> same with the <code>faster_rcnn_e
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-5"><a class="toc-link" href="#重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项："><span class="toc-number">1.</span> <span class="toc-text">重启后若还是循环卡在登录界面，则要卸载到驱动，重新安装，在安装过程中务必不安装驱动提示的x-config的选项：</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Point_Set_Matching/Registration_Benchmark"><span class="toc-number">1.</span> <span class="toc-text">Point Set Matching/Registration Benchmark</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Point_Set_Matching/Registration_Methods"><span class="toc-number">1.0.0.1.</span> <span class="toc-text">Point Set Matching/Registration Methods</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Point_Matching/Registration_Methods"><span class="toc-number">1.0.0.1.0.1.</span> <span class="toc-text">Point Matching/Registration Methods</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Mismatch_Removal_Methods"><span class="toc-number">1.0.0.1.0.2.</span> <span class="toc-text">Mismatch Removal Methods</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Graph_Matching_Methods"><span class="toc-number">1.0.0.1.0.3.</span> <span class="toc-text">Graph Matching Methods</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Other_Related_Works"><span class="toc-number">1.0.0.1.0.4.</span> <span class="toc-text">Other Related Works</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#deep_features"><span class="toc-number">1.0.0.1.0.5.</span> <span class="toc-text">deep features</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Applications"><span class="toc-number">1.0.0.2.</span> <span class="toc-text">Applications</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Remote_Sensing_Image_Registration"><span class="toc-number">1.0.0.2.0.1.</span> <span class="toc-text">Remote Sensing Image Registration</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Retinal_Image_Registration"><span class="toc-number">1.0.0.2.0.2.</span> <span class="toc-text">Retinal Image Registration</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Visual_Homing_Navigation"><span class="toc-number">1.0.0.2.0.3.</span> <span class="toc-text">Visual Homing Navigation</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#HDR_Imaging"><span class="toc-number">1.0.0.2.0.4.</span> <span class="toc-text">HDR Imaging</span></a></li></ol></li></ol></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Databases"><span class="toc-number">1.0.0.3.</span> <span class="toc-text">Databases</span></a><ol class="toc-child"><li class="toc-item toc-level-6"><a class="toc-link" href="#Classical_databases"><span class="toc-number">1.0.0.3.0.1.</span> <span class="toc-text">Classical databases</span></a></li><li class="toc-item toc-level-6"><a class="toc-link" href="#Other_databases"><span class="toc-number">1.0.0.3.0.2.</span> <span class="toc-text">Other databases</span></a></li></ol></li></ol></li></ol></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
