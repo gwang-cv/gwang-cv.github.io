@@ -139,6 +139,99 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Matlab Mex Warning" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2018/10/31/Matlab Mex Warning/">Matlab Mex Warning</a>
+    </h1>
+  
+
+        
+        <a href="/2018/10/31/Matlab Mex Warning/" class="archive-article-date">
+  	<time datetime="2018-10-31T09:15:51.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2018-10-31</time>
+</a>
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Mac下使用Matlab2017/2018，执行mex -setup后提示警告：</p>
+<pre><code>Warning: 
+Xcode <span class="keyword">is</span> installed, <span class="keyword">but</span> <span class="keyword">its</span> license has <span class="keyword">not</span> been accepted. 
+Run Xcode <span class="keyword">and</span> accept <span class="keyword">its</span> license agreement
+</code></pre><p>首先Max中已经安装好了commend-line-tools</p>
+<p>然后在Matlab安装目录文件内修改：</p>
+<p>打开文件<br><code>/Applications/MATLAB_R2017a.app/bin/maci64/mexopts/clang++_maci64.xml</code><br>和 <code>/Applications/MATLAB_R2017a.app/bin/maci64/mexopts/clang_maci64.xml</code></p>
+<p>搜索<code>Xcode is installed, but its license has not been accepted. Run Xcode and accept its license agreement</code>, 定位到warning提示行，在代码行<code>&lt;cmdReturns name=&quot;defaults read com.apple.dt.Xcode IDEXcodeVersionForAgreedToGMLicense&quot;/&gt;</code>之前添加如下代码：</p>
+<pre><code>&lt;cmdReturns <span class="property">name</span>=<span class="string">"echo 4.3.3"</span>/&gt; 
+</code></pre><h4 id="solved!">solved!</h4>
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2018/10/31/Matlab Mex Warning/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Build your github codes via Travis" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -2620,213 +2713,6 @@ sudo ln -s <span class="regexp">/home/</span>xxx<span class="regexp">/opencv3.2/
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2017/09/10/解决opencv无法读取视频数据(Ubuntu)/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-编译ab压力测试并发(Ubuntu)" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">编译ab压力测试并发(Ubuntu)</a>
-    </h1>
-  
-
-        
-        <a href="/2017/09/08/编译ab压力测试并发(Ubuntu)/" class="archive-article-date">
-  	<time datetime="2017-09-08T07:50:31.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-09-08</time>
-</a>
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong>Abstract</strong></p>
-<p>用深度学习框架caffe做的project，需要对其进行并发数请求数的压力测试，找到了apachebench(ab)简单的压力测试工具，但在Ubuntu下通过apt-get安装的ab，在处理请求数高于200,300左右的时候就会报错终止<code>apr_socket_recv: Connection reset by peer</code>，查阅资料显示需要对ab进行重新修改并编译后方可破除这个问题（无论是如何安装的，都要从头开始重新修改编译安装）。</p>
-<p><strong>1.下载所需要的源码</strong></p>
-<p>apr和apr-util下载：<a href="http://apr.apache.org/download.cgi" target="_blank" rel="external">http://apr.apache.org/download.cgi </a></p>
-<p>ab-standalone源码下载:<a href="https://code.google.com/p/apachebench-standalone/downloads/list" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/downloads/list</a></p>
-<p><strong>2.编译安装</strong></p>
-<p>分别解压三个压缩包：</p>
-<pre><code>ab-standalone-<span class="number">0.1</span><span class="class">.tar</span><span class="class">.bz2</span> 
-apr-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-apr-util-<span class="number">1</span><span class="class">.x</span><span class="class">.x</span><span class="class">.tar</span><span class="class">.gz</span>  
-</code></pre><p><strong>a.编译apr</strong></p>
-<pre><code><span class="variable">$ </span>cd apr
-<span class="variable">$ </span>./configure  
-<span class="variable">$ </span>make  
-<span class="variable">$ </span>sudo make install  
-</code></pre><p><strong>b.编译apr-util</strong></p>
-<pre><code><span class="char">$ </span>cd apr-util 
-<span class="char">$ </span>./configure --with-apr=/usr/local/apr  
-<span class="char">$ </span>make  
-<span class="char">$ </span>sudo make install  
-</code></pre><p><strong>c.编译ab</strong></p>
-<p>修改ab-standalone/ab.c文件</p>
-<pre><code>$ <span class="keyword">cd</span> <span class="keyword">ab</span>/<span class="keyword">ab</span>-standalone  
-$ <span class="keyword">vim</span> <span class="keyword">ab</span>.<span class="keyword">c</span>  
-</code></pre><p>到1380行修改成如下:</p>
-<pre><code><span class="comment">/* catch legitimate fatal apr_socket_recv errors */</span>  
-<span class="keyword">else</span> <span class="keyword">if</span> <span class="params">(status != APR_SUCCESS)</span> {  
-    err_recv++;  
-    <span class="keyword">if</span> <span class="params">(recverrok)</span> {  
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        <span class="keyword">if</span> <span class="params">(verbosity &gt;= <span class="number">1</span>)</span> {  
-            char buf[<span class="number">120</span>];  
-            fprintf<span class="params">(stderr,<span class="string">"%s: %s (%d)\n"</span>, <span class="string">"apr_socket_recv"</span>, apr_strerror<span class="params">(status, buf, sizeof buf)</span>, status)</span>;  
-        }  
-        return;  
-    } <span class="keyword">else</span> {  
-        <span class="comment">//apr_err("apr_socket_recv", status);   // begin </span>
-        bad++;  
-        close_connection<span class="params">(c)</span>;  
-        return;      <span class="comment">// end </span>
-    }  
-}  
-</code></pre><p><em>然后在编译之前将apr-util/include/下的apr_base64.h和apu.h拷贝到ab-standalone文件夹内，否则找不到头文件</em></p>
-<p>开始编译ab</p>
-<pre><code>$ <span class="keyword">make</span> apr-skeleton
-$ sudo <span class="keyword">make</span> <span class="keyword">ab</span>
-$ sudo <span class="keyword">cp</span> <span class="keyword">ab</span> apr-skeleton /usr/local/bin/
-</code></pre><hr>
-<p><strong>3.注意</strong></p>
-<p>连接库文件问题：</p>
-<p>终端中安装： libapr1，否则会出错找不到apr-1：<code>sudo apt-get install libapr1</code></p>
-<p>或者从编译后的usr/local/apr/lib下面将几个文件拷贝到/usr/lib/x86_64-linux-gnu下做链接：</p>
-<pre><code>sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.a /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/liaprutil-1.so /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.so.0.6.0 /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-sudo cp <span class="regexp">/usr/</span>local<span class="regexp">/apr/</span>lib<span class="regexp">/libaprutil-1.la /</span>usr<span class="regexp">/lib/</span>x86_64-linux-gnu/
-cd <span class="regexp">/usr/</span>lib<span class="regexp">/x86_64-linux-gnu/</span>
-sudo ln -s libaprutil-<span class="number">1.</span>so.0.6.0 libaprutil-<span class="number">1.</span>so.0
-sudo ldconfig
-</code></pre><p>同理，不选择apt-get安装，而如此设置libapr1.so.0即可。</p>
-<hr>
-<p><strong>4.测试</strong></p>
-<p>查看版本：</p>
-<pre><code><span class="variable">$ </span>ab -<span class="constant">V</span>
-<span class="constant">This </span>is <span class="constant">ApacheBench,</span> <span class="constant">Version </span><span class="number">2.3</span> &lt;<span class="variable">$Revision</span><span class="variable">$&gt;</span>
-<span class="constant">Copyright </span><span class="number">1996</span> <span class="constant">Adam Twiss,</span> <span class="constant">Zeus Technology Ltd,</span> <span class="symbol">http:</span>/<span class="regexp">/www.zeustech.net/</span>
-<span class="constant">Licensed </span>to <span class="constant">The Apache Software Foundation,</span> <span class="symbol">http:</span>/<span class="regexp">/www.apache.org/</span>
-</code></pre><p>测试并发数：</p>
-<pre><code>ab -n <span class="number">500</span> -c <span class="number">500</span> <span class="number">127.0</span>.0.1  # -n请求数，-c并发数，-n&gt;=-c
-
-This is ApacheBench, Version <span class="number">2.3</span> &lt;$Revision$&gt;
-Copyright <span class="number">1996</span> Adam Twiss, Zeus Technology Ltd, <span class="string">http:</span><span class="comment">//www.zeustech.net/</span>
-Licensed to The Apache Software Foundation, <span class="string">http:</span><span class="comment">//www.apache.org/</span>
-
-Benchmarking <span class="number">127.0</span>.0.1 (be patient)
-Completed <span class="number">100</span> requests
-Completed <span class="number">200</span> requests
-Completed <span class="number">300</span> requests
-Completed <span class="number">400</span> requests
-Completed <span class="number">500</span> requests
-Finished <span class="number">500</span> requests
-
-
-Server <span class="string">Software:</span>        TornadoServer/<span class="number">4.5</span>.2
-Server <span class="string">Hostname:</span>        <span class="number">127.0</span>.0.1
-Server <span class="string">Port:</span>            <span class="number">1000</span>
-
-Document <span class="string">Path:</span>          /
-Document <span class="string">Length:</span>        <span class="number">221727</span> bytes
-
-Concurrency <span class="string">Level:</span>      <span class="number">500</span>
-Time taken <span class="keyword">for</span> <span class="string">tests:</span>   <span class="number">215.661</span> seconds
-Complete <span class="string">requests:</span>      <span class="number">500</span>
-Failed <span class="string">requests:</span>        <span class="number">1023</span>
-   (<span class="string">Connect:</span> <span class="number">0</span>, <span class="string">Receive:</span> <span class="number">341</span>, <span class="string">Length:</span> <span class="number">341</span>, <span class="string">Exceptions:</span> <span class="number">341</span>)
-Write <span class="string">errors:</span>           <span class="number">0</span>
-Total <span class="string">transferred:</span>      <span class="number">35272401</span> bytes
-HTML <span class="string">transferred:</span>       <span class="number">35254593</span> bytes
-Requests per <span class="string">second:</span>    <span class="number">2.32</span> [#/sec] (mean)
-Time per <span class="string">request:</span>       <span class="number">215661.110</span> [ms] (mean)
-Time per <span class="string">request:</span>       <span class="number">431.322</span> [ms] (mean, across all concurrent requests)
-Transfer <span class="string">rate:</span>          <span class="number">159.72</span> [Kbytes/sec] received
-
-Connection Times (ms)
-              min  mean[+/-sd] median   max
-<span class="string">Connect:</span>        <span class="number">0</span>  <span class="number">355</span> <span class="number">3586.5</span>      <span class="number">0</span>   <span class="number">63141</span>
-<span class="string">Processing:</span>  <span class="number">1557</span> <span class="number">119576</span> <span class="number">33974.7</span> <span class="number">127335</span>  <span class="number">182963</span>
-<span class="string">Waiting:</span>        <span class="number">0</span> <span class="number">33466</span> <span class="number">58718.9</span>      <span class="number">0</span>  <span class="number">182963</span>
-<span class="string">Total:</span>       <span class="number">1566</span> <span class="number">119931</span> <span class="number">34207.2</span> <span class="number">127335</span>  <span class="number">210234</span>
-
-Percentage of the requests served within a certain time (ms)
-  <span class="number">50</span>%  <span class="number">127335</span>
-  <span class="number">66</span>%  <span class="number">127336</span>
-  <span class="number">75</span>%  <span class="number">127337</span>
-  <span class="number">80</span>%  <span class="number">127337</span>
-  <span class="number">90</span>%  <span class="number">151213</span>
-  <span class="number">95</span>%  <span class="number">175948</span>
-  <span class="number">98</span>%  <span class="number">176152</span>
-  <span class="number">99</span>%  <span class="number">177742</span>
- <span class="number">100</span>%  <span class="number">210234</span> (longest request)
-</code></pre><p><strong>参考</strong></p>
-<p><a href="http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/" target="_blank" rel="external">http://shenwang.blog.ustc.edu.cn/%E5%AE%89%E8%A3%85abapachebench-standalone/</a><br><a href="http://blog.csdn.net/kimsung/article/details/9422991" target="_blank" rel="external">http://blog.csdn.net/kimsung/article/details/9422991</a><br><a href="https://code.google.com/p/apachebench-standalone/wiki/HowToBuild" target="_blank" rel="external">https://code.google.com/p/apachebench-standalone/wiki/HowToBuild</a></p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Research//" class="article-tag-list-link color4">Research</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2017/09/08/编译ab压力测试并发(Ubuntu)/">展开全文 >></a>
         </p>
       
 
