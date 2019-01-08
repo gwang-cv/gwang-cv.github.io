@@ -162,16 +162,18 @@
         <p>Mac下使用点云工具包PCL，按照官方说明可采用homebrew安装：</p>
 <pre><code><span class="keyword">brew </span>install pcl
 </code></pre><p>但是会在vtk这个依赖工具上存在一些问题。</p>
-<p>先安装好vtk，可采用homebrew：</p>
+<p>先安装好vtk (8.1.2)，可采用homebrew：</p>
 <pre><code><span class="keyword">brew </span>install vtk
 </code></pre><p>采用source源码编译安装：</p>
-<pre><code>git clone git@github<span class="class">.com</span>:PointCloudLibrary/pcl<span class="class">.git</span>
-source pcl
-mkdir build &amp;&amp; cd build 
+<pre><code>git <span class="built_in">clone</span> git@github.com:PointCloudLibrary/pcl.git
+<span class="built_in">source</span> pcl
+mkdir build &amp;&amp; <span class="built_in">cd</span> build 
 cmake ..
-make 
+make   <span class="comment">## 好慢。。</span>
 sudo make install
-</code></pre><p>测试：<br>iterative_closest_point.cpp</p>
+</code></pre><p>PS: pcl官方还给出采用MacPorts的安装方式，测试之后发现有一些问题没配置成。。。所以卸载删除Macports，按照以上方式调通。</p>
+<hr>
+<p>测试：<br>iterative_closest_point.cpp</p>
 <pre><code><span class="comment">#include &lt;iostream&gt;</span>
 <span class="comment">#include &lt;pcl/io/pcd_io.h&gt;</span>
 <span class="comment">#include &lt;pcl/point_types.h&gt;</span>
@@ -236,6 +238,30 @@ target_link_libraries <span class="list">(<span class="keyword">iterative_closes
 <span class="built_in">mkdir</span> build &amp;&amp; <span class="keyword">cd</span> build
 cmake ..
 <span class="keyword">make</span>
+</code></pre><p>PS：可以根据自己project的需要来调用pcl相应的函数，特别是其中的3DSC以及FPFH。 可参考源码中<code>example/features/</code>下的几个demo。</p>
+<p>亦可采用<a href="https://github.com/IntelVCL/FastGlobalRegistration" target="_blank" rel="external">fast global registration</a>提供的方法，将features写入到文件：</p>
+<pre><code><span class="comment">// Assume a point cloud with normal is given as</span>
+<span class="comment">// pcl::PointCloud&lt;pcl::PointNormal&gt;::Ptr object</span>
+
+pcl::FPFHEstimationOMP&lt;pcl::PointNormal, pcl::PointNormal, pcl::FPFHSignature33&gt; fest;
+pcl::PointCloud&lt;pcl::FPFHSignature33&gt;::Ptr object_features(new pcl::PointCloud&lt;pcl::FPFHSignature33&gt;());
+fest.setRadiusSearch(feature_radius_);  
+fest.setInputCloud(object);
+fest.setInputNormals(object);
+fest.compute(*object_features);
+
+FILE* fid = fopen(<span class="string">"features.bin"</span>, <span class="string">"wb"</span>);
+<span class="keyword">int</span> nV = object-&gt;size(), nDim = <span class="number">33</span>;
+fwrite(&amp;nV, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), <span class="number">1</span>, fid);
+fwrite(&amp;nDim, <span class="keyword">sizeof</span>(<span class="keyword">int</span>), <span class="number">1</span>, fid);
+<span class="keyword">for</span> (<span class="keyword">int</span> v = <span class="number">0</span>; v &lt; nV; v++) {
+    <span class="keyword">const</span> pcl::PointNormal &amp;pt = object-&gt;points[v];
+    <span class="keyword">float</span> xyz[<span class="number">3</span>] = {pt.x, pt.y, pt.z};
+    fwrite(xyz, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), <span class="number">3</span>, fid);
+    <span class="keyword">const</span> pcl::FPFHSignature33 &amp;feature = object_features-&gt;points[v];
+    fwrite(feature.histogram, <span class="keyword">sizeof</span>(<span class="keyword">float</span>), <span class="number">33</span>, fid);
+}
+fclose(fid);
 </code></pre>
       
 
