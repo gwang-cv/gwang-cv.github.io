@@ -6,30 +6,24 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://gwang-cv.github.io">
-  <title>Python除法 | gwang&#39;s lab</title>
+  <title>gwang&#39;s lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="python 2.x版本中存在两种除法运算:
-即所谓的true除法和floor除法。
-当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
-如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
-另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
+  <meta name="description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
+IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
+FLANN is a library for performing fast approximate nearest neighbor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Python除法">
-<meta property="og:url" content="http://gwang-cv.github.io/2017/07/06/Python除法/index.html">
+<meta property="og:title" content="gwang's lab">
+<meta property="og:url" content="http://gwang-cv.github.io/2019/01/08/FLANN/index.html">
 <meta property="og:site_name" content="gwang's lab">
-<meta property="og:description" content="python 2.x版本中存在两种除法运算:
-即所谓的true除法和floor除法。
-当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
-如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
-另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
-<meta property="og:updated_time" content="2017-07-06T12:02:31.000Z">
+<meta property="og:description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
+IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
+FLANN is a library for performing fast approximate nearest neighbor">
+<meta property="og:updated_time" content="2019-01-08T04:09:32.607Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Python除法">
-<meta name="twitter:description" content="python 2.x版本中存在两种除法运算:
-即所谓的true除法和floor除法。
-当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；
-如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。
-另外一种除法是采用x//y的形式，那么这里采用的是所谓floor">
+<meta name="twitter:title" content="gwang's lab">
+<meta name="twitter:description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
+IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
+FLANN is a library for performing fast approximate nearest neighbor">
   
     <link rel="alternative" href="/atom.xml" title="gwang&#39;s lab" type="application/atom+xml">
   
@@ -153,39 +147,28 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Python除法" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-FLANN" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      Python除法
-    </h1>
-  
-
-        
-        <a href="/2017/07/06/Python除法/" class="archive-article-date">
-  	<time datetime="2017-07-06T03:20:16.000Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2017-07-06</time>
-</a>
-        
-      </header>
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>python 2.x版本中存在两种除法运算:</p>
-<p>即所谓的true除法和floor除法。</p>
-<p>当使用x/y形式进行除法运算时，如果x和y都是整形，那么运算的会对结果进行截取，取运算的整数部分，比如2/3的运算结果是0；</p>
-<p>如果x和y中有一个是浮点数，那么会进行所谓的true除法，比如2.0/3的结果是 0.66666666666666663。</p>
-<p>另外一种除法是采用x//y的形式，那么这里采用的是所谓floor除法，即得到不大于结果的最大整数值，这个运算时与操作数无关的。比如2//3的结果是0，-2//3的结果是-1，-2.0//3的结果是-1.0。</p>
-<hr>
-<p>在python 3.x中，x/y将只执行true除法，而与操作数无关；x//y则执行floor除法。</p>
-<hr>
-<p>如果需要在2.x版本的python中进行这样的用法，则需要在代码最前加入from <strong>future</strong> import division的声明。</p>
-<p>Python代码 </p>
-<pre><code><span class="keyword">from</span> __future__ <span class="keyword">import</span> division  
-a=<span class="number">2</span>/<span class="number">3</span>                  
-</code></pre><p>这时变量a的结果将是0.66666666666666663，而不是原来的0了。</p>
+        <p>title: FLANN<br>date: 2019/01/08 12:05:51<br>tags: Debug<br>categories: Debug</p>
+<h4 id="Introduction">Introduction</h4><p>FLANN - Fast Library for Approximate Nearest Neighbors</p>
+<p>FLANN is a library for performing fast approximate nearest neighbor searches in high dimensional spaces. It contains a collection of algorithms we found to work best for nearest neighbor search and a system for automatically choosing the best algorithm and optimum parameters depending on the dataset.</p>
+<p>FLANN is written in C++ and contains bindings for the following languages: C, MATLAB and Python.</p>
+<p><a href="http://www.cs.ubc.ca/research/flann/#download" target="_blank" rel="external">Download</a></p>
+<h4 id="Install">Install</h4><pre><code><span class="variable">$ </span>cd flann-<span class="number">1.8</span>.<span class="number">4</span>-src 
+<span class="variable">$ </span>mkdir build
+<span class="variable">$ </span>cd build
+<span class="variable">$ </span>cmake ..
+<span class="variable">$ </span>make
+</code></pre><p>Errors:</p>
+<pre><code>flann-1.8.4-src/src/cpp/flann/algorithms/kdtree_index.h:667:36: error: <span class="operator"><span class="keyword">call</span> <span class="keyword">to</span> <span class="string">'abs'</span> <span class="keyword">is</span> ambiguous
+ElementType span = <span class="keyword">abs</span>(point[i]-leaf_point[i]);</span>
+                                   ^~~
+</code></pre><p>Debug:</p>
+<p><code>kdtree_index.h</code>: insert <code>#include &lt;cmath&gt;</code> </p>
+<p><a href="https://stackoverflow.com/questions/1374037/ambiguous-overload-call-to-absdouble" target="_blank" rel="external">https://stackoverflow.com/questions/1374037/ambiguous-overload-call-to-absdouble</a></p>
 
       
 
@@ -220,29 +203,7 @@ a=<span class="number">2</span>/<span class="number">3</span>
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">python</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
       
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Debug//" class="article-tag-list-link color1">Debug</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
 
       
 
@@ -292,7 +253,7 @@ a=<span class="number">2</span>/<span class="number">3</span>
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://gwang-cv.github.io/2017/07/06/Python除法/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://gwang-cv.github.io/2019/01/08/FLANN/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -306,18 +267,9 @@ a=<span class="number">2</span>/<span class="number">3</span>
   
 <nav id="article-nav">
   
-    <a href="/2017/07/06/Git配置出错Permission Denied/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          Git配置出现Permission denied问题
-        
-      </div>
-    </a>
   
-  
-    <a href="/2016/12/30/Ubuntu16.04+Titan X+CUDA8.0+cudnn5/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Ubuntu16.04+Titan X+CUDA8.0+cudnn5.1+Caffe</div>
+    <a href="/2019/01/08/MacOS 10.13 install PCL 1.9/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">MacOS 10.13 install PCL 1.9</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -344,7 +296,7 @@ a=<span class="number">2</span>/<span class="number">3</span>
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    目录，不存在的…
+                    <ol class="toc"><li class="toc-item toc-level-4"><a class="toc-link" href="#Introduction"><span class="toc-number">1.</span> <span class="toc-text">Introduction</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Install"><span class="toc-number">2.</span> <span class="toc-text">Install</span></a></li></ol>
                     </div>
                 </span>
             </div>
