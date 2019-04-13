@@ -6,26 +6,26 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://gwang-cv.github.io">
-  <title>gwang&#39;s lab</title>
+  <title>my lab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta name="description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
 IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
 FLANN is a library for performing fast approximate nearest neighbor">
 <meta property="og:type" content="article">
-<meta property="og:title" content="gwang's lab">
+<meta property="og:title" content="my lab">
 <meta property="og:url" content="http://gwang-cv.github.io/2019/01/08/FLANN/index.html">
-<meta property="og:site_name" content="gwang's lab">
+<meta property="og:site_name" content="my lab">
 <meta property="og:description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
 IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
 FLANN is a library for performing fast approximate nearest neighbor">
-<meta property="og:updated_time" content="2019-01-08T04:09:32.607Z">
+<meta property="og:updated_time" content="2019-01-08T05:43:06.512Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gwang's lab">
+<meta name="twitter:title" content="my lab">
 <meta name="twitter:description" content="title: FLANNdate: 2019/01/08 12:05:51tags: Debugcategories: Debug
 IntroductionFLANN - Fast Library for Approximate Nearest Neighbors
 FLANN is a library for performing fast approximate nearest neighbor">
   
-    <link rel="alternative" href="/atom.xml" title="gwang&#39;s lab" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="my lab" type="application/atom+xml">
   
   
     <link rel="icon" href="/favicon.png">
@@ -55,10 +55,8 @@ FLANN is a library for performing fast approximate nearest neighbor">
 			<img src="/img/head.png" class="js-avatar">
 		</a>
 		<hgroup>
-		  <h1 class="header-author"><a href="/">gwang&#39;s lab</a></h1>
+		  <h1 class="header-author"><a href="/">my lab</a></h1>
 		</hgroup>
-		
-		<p class="header-subtitle">CV researcher</p>
 		
 
 		<nav class="header-menu">
@@ -80,10 +78,6 @@ FLANN is a library for performing fast approximate nearest neighbor">
 		<nav class="header-nav">
 			<div class="social">
 				
-					<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github"><i class="icon-github"></i></a>
-		        
-					<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google"><i class="icon-google"></i></a>
-		        
 			</div>
 		</nav>
 	</header>		
@@ -103,10 +97,8 @@ FLANN is a library for performing fast approximate nearest neighbor">
 				<img src="/img/head.png" class="js-avatar">
 			</div>
 			<hgroup>
-			  <h1 class="header-author js-header-author">gwang&#39;s lab</h1>
+			  <h1 class="header-author js-header-author">my lab</h1>
 			</hgroup>
-			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>CV researcher<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -119,10 +111,6 @@ FLANN is a library for performing fast approximate nearest neighbor">
 			<nav class="header-nav">
 				<div class="social">
 					
-						<a class="github" target="_blank" href="https://github.com/gwang-cv" title="github"><i class="icon-github"></i></a>
-			        
-						<a class="google" target="_blank" href="https://sites.google.com/site/2013gwang/" title="google"><i class="icon-google"></i></a>
-			        
 				</div>
 			</nav>
 
@@ -169,7 +157,76 @@ ElementType span = <span class="keyword">abs</span>(point[i]-leaf_point[i]);</sp
 </code></pre><p>Debug:</p>
 <p><code>kdtree_index.h</code>: insert <code>#include &lt;cmath&gt;</code> </p>
 <p><a href="https://stackoverflow.com/questions/1374037/ambiguous-overload-call-to-absdouble" target="_blank" rel="external">https://stackoverflow.com/questions/1374037/ambiguous-overload-call-to-absdouble</a></p>
+<p>Unit test</p>
+<pre><code>make test   
 
+Scanning dependencies of target dataset_sift10K<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/sift10K.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/sift10K.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_sift10K<span class="class">.h5</span>
+Scanning dependencies of target dataset_sift100K_byte<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/sift100K_byte.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/sift100K_byte.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_sift100K_byte<span class="class">.h5</span>
+Scanning dependencies of target dataset_cloud<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/cloud.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/cloud.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_cloud<span class="class">.h5</span>
+Scanning dependencies of target dataset_brief100K<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/brief100K.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/brief100K.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_brief100K<span class="class">.h5</span>
+Scanning dependencies of target dataset_sift100K<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/sift100K.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/sift100K.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_sift100K<span class="class">.h5</span>
+Scanning dependencies of target dataset_sift10K_byte<span class="class">.h5</span>
+Downloading from http:<span class="comment">//people.cs.ubc.ca/~mariusm/uploads/FLANN/datasets/sift10K_byte.h5 to /Users/gwang/Documents/Kuaipan/Projects/REG/flann-1.8.4-src/test/sift10K_byte.h5... done</span>
+[  <span class="number">0%</span>] Built target dataset_sift10K_byte<span class="class">.h5</span>
+Scanning dependencies of target flann_gtests
+[  <span class="number">0%</span>] Built target flann_gtests
+Scanning dependencies of target tests
+[  <span class="number">0%</span>] Built target tests
+[ <span class="number">28%</span>] Built target flann
+Scanning dependencies of target pyunit_test_index_save<span class="class">.py</span>
+[ <span class="number">42%</span>] Running pyunit <span class="function"><span class="title">test</span><span class="params">(s)</span></span> test_index_save<span class="class">.py</span>
+..............
+----------------------------------------------------------------------
+Ran <span class="number">14</span> tests <span class="keyword">in</span> <span class="number">2.263s</span>
+
+OK
+[ <span class="number">42%</span>] Built target pyunit_test_index_save<span class="class">.py</span>
+Scanning dependencies of target pyunit_test_nn_index<span class="class">.py</span>
+[ <span class="number">57%</span>] Running pyunit <span class="function"><span class="title">test</span><span class="params">(s)</span></span> test_nn_index<span class="class">.py</span>
+....
+----------------------------------------------------------------------
+Ran <span class="number">4</span> tests <span class="keyword">in</span> <span class="number">2.503s</span>
+
+OK
+[ <span class="number">57%</span>] Built target pyunit_test_nn_index<span class="class">.py</span>
+Scanning dependencies of target pyunit_test_clustering<span class="class">.py</span>
+[ <span class="number">71%</span>] Running pyunit <span class="function"><span class="title">test</span><span class="params">(s)</span></span> test_clustering<span class="class">.py</span>
+.........
+----------------------------------------------------------------------
+Ran <span class="number">9</span> tests <span class="keyword">in</span> <span class="number">0.187s</span>
+
+OK
+[ <span class="number">71%</span>] Built target pyunit_test_clustering<span class="class">.py</span>
+Scanning dependencies of target flann_gtest
+[ <span class="number">71%</span>] Built target flann_gtest
+Scanning dependencies of target pyunit_test_nn_autotune<span class="class">.py</span>
+[ <span class="number">85%</span>] Running pyunit <span class="function"><span class="title">test</span><span class="params">(s)</span></span> test_nn_autotune<span class="class">.py</span>
+----------------------------------------------------------------------
+Ran <span class="number">5</span> tests <span class="keyword">in</span> <span class="number">424.571s</span>
+
+OK
+[ <span class="number">85%</span>] Built target pyunit_test_nn_autotune<span class="class">.py</span>
+Scanning dependencies of target pyunit_test_nn<span class="class">.py</span>
+[<span class="number">100%</span>] Running pyunit <span class="function"><span class="title">test</span><span class="params">(s)</span></span> test_nn<span class="class">.py</span>
+...................
+----------------------------------------------------------------------
+Ran <span class="number">19</span> tests <span class="keyword">in</span> <span class="number">3.686s</span>
+
+OK
+[<span class="number">100%</span>] Built target pyunit_test_nn<span class="class">.py</span>
+Scanning dependencies of target test
+[<span class="number">100%</span>] Built target test
+</code></pre>
       
 
       
@@ -325,7 +382,7 @@ ElementType span = <span class="keyword">abs</span>(point[i]-leaf_point[i]);</sp
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2019 gwang&#39;s lab
+    		&copy; 2019 my lab
     	</div>
       	<div class="footer-right">
       		<a href="http://hexo.io/" target="_blank">Hexo</a>  Theme <a href="https://github.com/litten/hexo-theme-yilia" target="_blank">Yilia</a> by Litten
@@ -405,7 +462,7 @@ MathJax.Hub.Queue(function() {
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">Hi,&lt;br&gt;this is my lab, &lt;br&gt;thanks!</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">Hi,&lt;br&gt;this is my lab.</div>
   	  	
     	</section>
     
